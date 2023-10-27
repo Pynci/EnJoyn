@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">EnJoyn</string>
+    <string name="Login">Login</string>
+    <string name="forgotPassword">Hai dimenticato la password?</string>
+    <string name="clickHere"> <u>Clicca qui</u></string>
+    <string name="notRegister">Non sei registrato?</string>
+    <string name="register"><u>Registrati</u></string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+</resources>
