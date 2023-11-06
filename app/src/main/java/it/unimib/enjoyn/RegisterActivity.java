@@ -3,6 +3,8 @@ package it.unimib.enjoyn;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -10,17 +12,22 @@ import com.google.android.material.textfield.TextInputLayout;
 public class RegisterActivity extends AppCompatActivity {
     TextInputLayout Textpassword;
     Button ButtonRegister;
+    private static final String TAG = RegisterActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         Textpassword = (findViewById(R.id.insertPassword));
-       // ButtonRegister= findViewById(R.id.button)
-        boolean checkedPassword = checkPassword(Textpassword.getEditText().getText().toString());
+        ButtonRegister= findViewById(R.id.buttonRegister);
+        ButtonRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String password = Textpassword.getEditText().getText().toString();
+                boolean checkedPassword = checkPassword(password);
+                Log.d(TAG, "funziona"+checkedPassword);
+            }
+        });
     }
-
-   // public void setOnClickListener(new )
-
 
 
 
@@ -46,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         else{
             Textpassword.setError("@string/tooShortPassword");
+            return false;
         }
         if(!number){
             Textpassword.setError("@string/numberMissingPassword");
