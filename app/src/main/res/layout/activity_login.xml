@@ -71,7 +71,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonRegister"
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,14 +89,14 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="24dp"
         android:text="@string/forgotPassword"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/buttonRegister"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonBackToLogin"
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="120dp"
         android:layout_height="56dp"
@@ -132,7 +132,7 @@
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/buttonBackToLogin"
         app:layout_constraintVertical_bias="0.166" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

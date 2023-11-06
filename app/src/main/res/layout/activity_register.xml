@@ -170,16 +170,18 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/cofirmPhoneNumber"
+                android:id="@+id/confirmPhoneNumber"
                 android:layout_width="312dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:startIconDrawable="@drawable/baseline_local_phone_24"
-                tools:layout_editor_absoluteX="50dp"
-                tools:layout_editor_absoluteY="661dp">
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/confirmPassword"
+                app:startIconDrawable="@drawable/baseline_local_phone_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -202,10 +204,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonRegister"
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:layout_width="230dp"
                 android:layout_height="70dp"
+                android:layout_marginTop="32dp"
                 android:backgroundTint="#042187"
                 android:text="@string/bottonRegister"
                 android:textColor="@color/white"
@@ -214,31 +217,31 @@
                 android:textSize="32sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
-                tools:layout_editor_absoluteY="754dp" />
+                app:layout_constraintTop_toBottomOf="@+id/confirmPhoneNumber" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textBackToLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="@string/DoneLogin"
-                app:layout_constraintEnd_toStartOf="@+id/button2"
+                app:layout_constraintEnd_toStartOf="@+id/buttonBackToLogin"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonRegister" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/buttonBackToLogin"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/bottonLogin"
                 android:textSize="14sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textBackToLogin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/textView" />
+                app:layout_constraintStart_toEndOf="@+id/textBackToLogin" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
