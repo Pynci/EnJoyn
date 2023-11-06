@@ -7,4 +7,14 @@
     <string name="register"><u>Registrati</u></string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="imagePassword">TODO</string>
+    <string name="confirmPassword">Conferma password</string>
+    <string name="username">Username</string>
+    <string name="surname">Cognome</string>
+    <string name="phoneNumber">Telefono</string>
+    <string name="WelcomeTextRegister">Registrati:</string>
+    <string name="insertName">Nome</string>
+    <string name="bottonRegister">Registrati</string>
+    <string name="bottonLogin"><u>Login</u></string>
+    <string name="DoneLogin">Hai gia fatto il login?</string>
 </resources>

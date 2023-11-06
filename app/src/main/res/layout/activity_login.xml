@@ -29,7 +29,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView3"
-        app:startIconDrawable="@drawable/baseline_alternate_email_24">
+        app:startIconDrawable="@drawable/baseline_alternate_email_24"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -53,7 +57,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         app:passwordToggleEnabled="true"
-        app:startIconDrawable="@drawable/baseline_key_24">
+        app:startIconDrawable="@drawable/baseline_key_24"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
