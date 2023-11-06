@@ -17,4 +17,9 @@
     <string name="bottonRegister">Registrati</string>
     <string name="bottonLogin"><u>Login</u></string>
     <string name="DoneLogin">Hai gia fatto il login?</string>
+    <string name="numberMissingPassword">inserisci almeno un numero</string>
+    <string name="upperCaseMissingPassword">inserisci almeno una lettera maiuscola</string>
+    <string name="specialCharacterMissingPassword">inserisci almeno un carattere speciale</string>
+    <string name="tooShortPassword">Password troppo corta, almeno di 8 caratteri</string>
+
 </resources>
