@@ -22,4 +22,9 @@
     <string name="specialCharacterMissingPassword">inserisci almeno un carattere speciale</string>
     <string name="tooShortPassword">Password troppo corta, almeno di 8 caratteri</string>
     <string name="notValidEmail">Email non valida</string>
+    <string name="passwordNotEqual">Password non uguali</string>
+    <string name="StringTooLong">Troppo lungo</string>
+    <string name="Stringnull">Campo obbligatorio</string>
+    <string name="notSerious">FAI IL SERIO</string>
+
 </resources>
