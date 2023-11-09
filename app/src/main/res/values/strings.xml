@@ -26,5 +26,6 @@
     <string name="StringTooLong">Troppo lungo</string>
     <string name="Stringnull">Campo obbligatorio</string>
     <string name="notSerious">FAI IL SERIO</string>
+    <string name="InsertNumbers">Inserisci solo numeri</string>
 
 </resources>

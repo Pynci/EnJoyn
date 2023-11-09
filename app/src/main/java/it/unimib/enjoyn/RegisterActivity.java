@@ -17,6 +17,8 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout TextConfirmpassword;
     TextInputLayout TextName;
     TextInputLayout TextSurname;
+    TextInputLayout TextPhoneNumber;
+    TextInputLayout TextUsername;
     Button ButtonRegister;
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
@@ -31,6 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
         TextName = findViewById(R.id.insertName);
         TextSurname = findViewById(R.id.insertSurname);
         TextConfirmpassword = findViewById(R.id.confirmPassword);
+        TextPhoneNumber = findViewById(R.id.confirmPhoneNumber);
+        TextUsername = findViewById(R.id.insertUsername);
         ButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,10 +43,14 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = Textpassword.getEditText().getText().toString();
                 String email = TextEmail.getEditText().getText().toString();
                 String confirmPassword = TextConfirmpassword.getEditText().getText().toString();
+                String username = TextUsername.getEditText().getText().toString();
+                String phoneNumber = TextPhoneNumber.getEditText().getText().toString();
                 boolean checkedConfirmPassword = false;
                 boolean checkedName = checkSurName(name, TextName);
                 boolean checkedSurname = checkSurName(surname, TextSurname);
                 boolean checkedPassword = checkPassword(password);
+                boolean checkedUsername = checkUsername(username);
+                boolean checkedPhoneNumber = checkPhoneNumber(phoneNumber);
                 if(checkedPassword){
                     checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);
                 }
@@ -146,5 +154,39 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
 
         }
+
+    private boolean checkUsername(String username){
+        if (username == null || username.length()==0) {
+            TextUsername.setError(getString(R.string.Stringnull));
+            return false;}
+        if(username.length()>=20) {
+            TextUsername.setError(getString(R.string.StringTooLong));
+            return false;
+        }
+        //aggiungere controllo di esistenza sul db
+
+        TextUsername.setError(null);
+        return true;
+    }
+
+    private boolean checkPhoneNumber(String phoneNumber){
+        if (phoneNumber == null || phoneNumber.length()==0) {
+            TextPhoneNumber.setError(getString(R.string.Stringnull));
+            return false;}
+        if(phoneNumber.length()>=10) {
+            TextPhoneNumber.setError(getString(R.string.StringTooLong));
+            return false;
+        }
+
+        for (int i = 0; i < phoneNumber.length(); i++){
+            if(!(phoneNumber.charAt(i)>='0' && phoneNumber.charAt(i)<='9')){
+                TextPhoneNumber.setError(getString(R.string.InsertNumbers));
+                return false;
+            }
+        }
+
+        TextPhoneNumber.setError(null);
+        return true;
+    }
 
 }
