@@ -27,5 +27,7 @@
     <string name="Stringnull">Campo obbligatorio</string>
     <string name="notSerious">FAI IL SERIO</string>
     <string name="InsertNumbers">Inserisci solo numeri</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

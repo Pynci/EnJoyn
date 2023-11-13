@@ -18,22 +18,22 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
-        android:layout_width="368dp"
+        android:layout_width="312dp"
         android:layout_height="63dp"
         android:layout_marginTop="100dp"
         android:textColorHint="@color/material_dynamic_tertiary50"
         app:boxBackgroundColor="@android:color/transparent"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
         app:helperTextTextColor="@color/material_dynamic_neutral0"
         app:hintTextColor="@color/material_dynamic_tertiary30"
         app:layout_constraintBottom_toTopOf="@id/textInputLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView3"
-        app:startIconDrawable="@drawable/baseline_alternate_email_24"
-        app:boxCornerRadiusBottomEnd="30dp"
-        app:boxCornerRadiusBottomStart="30dp"
-        app:boxCornerRadiusTopEnd="30dp"
-        app:boxCornerRadiusTopStart="30dp">
+        app:startIconDrawable="@drawable/baseline_alternate_email_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -46,22 +46,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
-        android:layout_width="368dp"
+        android:layout_width="312dp"
         android:layout_height="63dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:textColorHint="@color/material_dynamic_tertiary50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-        app:passwordToggleEnabled="true"
-        app:startIconDrawable="@drawable/baseline_key_24"
         app:boxCornerRadiusBottomEnd="30dp"
         app:boxCornerRadiusBottomStart="30dp"
         app:boxCornerRadiusTopEnd="30dp"
-        app:boxCornerRadiusTopStart="30dp">
+        app:boxCornerRadiusTopStart="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        app:passwordToggleEnabled="true"
+        app:startIconDrawable="@drawable/baseline_key_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -86,7 +85,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="24dp"
         android:text="@string/forgotPassword"
         app:layout_constraintEnd_toStartOf="@+id/buttonRegister"
