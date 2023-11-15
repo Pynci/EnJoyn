@@ -2,11 +2,20 @@ package it.unimib.enjoyn;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.core.view.MenuProvider;
+
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +67,11 @@ public class Discover extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+            // Use getViewLifecycleOwner() to avoid that the listener
+            // associated with a menu icon is called twice
+             getViewLifecycleOwner();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_discover, container, false);
+
     }
 }
