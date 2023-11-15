@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main_button_menu"
+    app:startDestination="@id/discover">
+
+    <fragment
+        android:id="@+id/discover"
+        android:name="it.unimib.enjoyn.Discover"
+        android:label="fragment_discover"
+        tools:layout="@layout/fragment_discover" />
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="it.unimib.enjoyn.FriendsFragment"
+        android:label="fragment_friends"
+        tools:layout="@layout/fragment_friends" />
+    <fragment
+        android:id="@+id/newEventFragment"
+        android:name="it.unimib.enjoyn.NewEventFragment"
+        android:label="fragment_new_event"
+        tools:layout="@layout/fragment_new_event" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="it.unimib.enjoyn.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/todo"
+        android:name="it.unimib.enjoyn.Todo"
+        android:label="fragment_todo"
+        tools:layout="@layout/fragment_todo" />
+    <include app:graph="@navigation/nav_welcome" />
+</navigation>

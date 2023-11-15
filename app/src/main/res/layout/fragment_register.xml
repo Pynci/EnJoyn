@@ -225,13 +225,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="@string/DoneLogin"
-                app:layout_constraintEnd_toStartOf="@+id/buttonRegisterToLogin"
+                app:layout_constraintEnd_toStartOf="@+id/buttonLogin"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonForgottenPassword" />
 
             <Button
-                android:id="@+id/buttonRegisterToLogin"
+                android:id="@+id/buttonLogin"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

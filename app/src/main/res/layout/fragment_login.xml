@@ -100,7 +100,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
 
         <Button
-            android:id="@+id/buttonRegisterToLogin"
+            android:id="@+id/buttonLogin"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="120dp"
             android:layout_height="56dp"
@@ -136,7 +136,7 @@
             app:layout_constraintHorizontal_bias="0.48"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonRegisterToLogin"
+            app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
             app:layout_constraintVertical_bias="0.166" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

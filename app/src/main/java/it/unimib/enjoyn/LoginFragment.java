@@ -16,6 +16,8 @@ import android.widget.Button;
 public class LoginFragment extends Fragment {
 
     Button ButtonLoginToRegister;
+
+    Button LoginButton;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
 
     @Override
@@ -33,6 +35,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ButtonLoginToRegister = view.findViewById(R.id.buttonLoginToRegister);
+        LoginButton = view.findViewById(R.id.buttonLogin);
         ButtonLoginToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +43,16 @@ public class LoginFragment extends Fragment {
                         R.id.action_loginFragment_to_registerFragment);
             }
         });
+
+        LoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityBasedOnCondition(MainButtonMenuActivity.class,
+                        R.id.action_loginFragment_to_mainButtonMenuActivity);
+            }
+        }
+
+        );
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {

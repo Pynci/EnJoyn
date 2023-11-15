@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_welcome"
-    app:startDestination="@id/registerFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/registerFragment"
@@ -22,5 +22,14 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_mainButtonMenuActivity"
+            app:destination="@id/mainButtonMenuActivity" />
     </fragment>
+    <activity
+        android:id="@+id/mainButtonMenuActivity"
+        android:name="it.unimib.enjoyn.MainButtonMenuActivity"
+        android:label="activity_main_button_menu"
+        tools:layout="@layout/activity_main_button_menu" />
+
 </navigation>
