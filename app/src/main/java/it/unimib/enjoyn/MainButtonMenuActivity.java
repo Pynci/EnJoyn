@@ -17,12 +17,17 @@ public class MainButtonMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main_button_menu);
+
         Toolbar toolBar = findViewById(R.id.top_appbar);
         setSupportActionBar(toolBar);
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().
                 findFragmentById(R.id.nav_host_fragment);
+
         NavController navController = navHostFragment.getNavController();
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(

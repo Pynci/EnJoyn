@@ -34,6 +34,9 @@
     <string name="ProfileButton">Profilo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit">Modifica</string>
+    <string name="Description">Descrizione</string>
+    <string name="NameSurname">Nome Cognome</string>
 
 
 </resources>
