@@ -38,6 +38,8 @@
     <string name="Description">Descrizione</string>
     <string name="NameSurname">Nome Cognome</string>
     <string name="ButtonShare">Bottone Condividi</string>
+    <string name="immagineProfilo">Immagine del profilo</string>
+    <string name="modifica_immagine">Modifica immagine</string>
 
 
 </resources>
