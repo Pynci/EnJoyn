@@ -101,7 +101,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivityBasedOnCondition(LoginActivity.class,
-                        R.id.action_registerFragment_to_loginFragment);
+                        R.id.action_registerFragment_to_nav_welcome, true);
             }
         });
     }
@@ -233,14 +233,16 @@ public class RegisterFragment extends Fragment {
         return true;
     }
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
         if (USE_NAVIGATION_COMPONENT) {
             Navigation.findNavController(requireView()).navigate(destination);
         } else {
             Intent intent = new Intent(requireContext(), destinationActivity);
             startActivity(intent);
         }
-        //commentato momentaneamente
-        //requireActivity().finish();
+        //da utilizzare solo se si passa ad un'altra activity
+        if (finishActivity){
+            requireActivity().finish();
+        }
     }
 }

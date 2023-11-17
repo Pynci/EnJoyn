@@ -40,7 +40,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivityBasedOnCondition(RegisterActivity.class,
-                        R.id.action_loginFragment_to_registerFragment);
+                        R.id.action_loginFragment_to_registerActivity, true);
             }
         });
 
@@ -48,21 +48,23 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivityBasedOnCondition(MainButtonMenuActivity.class,
-                        R.id.action_loginFragment_to_mainButtonMenuActivity);
+                        R.id.action_loginFragment_to_mainButtonMenuActivity, true);
             }
         }
 
         );
     }
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
         if (USE_NAVIGATION_COMPONENT) {
             Navigation.findNavController(requireView()).navigate(destination);
         } else {
             Intent intent = new Intent(requireContext(), destinationActivity);
             startActivity(intent);
         }
-        //commentato momentaneamente
-        //requireActivity().finish();
+        //da utilizzare solo se si passa ad un'altra activity
+        if (finishActivity){
+            requireActivity().finish();
+        }
     }
 }

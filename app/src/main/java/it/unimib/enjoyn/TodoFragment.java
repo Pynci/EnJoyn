@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,16 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.core.view.MenuProvider;
-
-import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Discover#newInstance} factory method to
+ * Use the {@link TodoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Discover extends Fragment {
+public class TodoFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +30,7 @@ public class Discover extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Discover() {
+    public TodoFragment() {
         // Required empty public constructor
     }
 
@@ -44,11 +40,11 @@ public class Discover extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Discover.
+     * @return A new instance of fragment Todo.
      */
     // TODO: Rename and change types and number of parameters
-    public static Discover newInstance(String param1, String param2) {
-        Discover fragment = new Discover();
+    public static TodoFragment newInstance(String param1, String param2) {
+        TodoFragment fragment = new TodoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,12 +64,9 @@ public class Discover extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            // Use getViewLifecycleOwner() to avoid that the listener
-            // associated with a menu icon is called twice
-             getViewLifecycleOwner();
+        getViewLifecycleOwner();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
-
+        return inflater.inflate(R.layout.fragment_todo, container, false);
     }
 
     @Override

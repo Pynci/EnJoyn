@@ -6,30 +6,26 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/registerFragment"
-        android:name="it.unimib.enjoyn.RegisterFragment"
-        android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
-        <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/loginFragment"
         android:name="it.unimib.enjoyn.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_mainButtonMenuActivity"
             app:destination="@id/mainButtonMenuActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerActivity"
+            app:destination="@id/registerActivity" />
     </fragment>
     <activity
         android:id="@+id/mainButtonMenuActivity"
         android:name="it.unimib.enjoyn.MainButtonMenuActivity"
         android:label="activity_main_button_menu"
         tools:layout="@layout/activity_main_button_menu" />
+    <activity
+        android:id="@+id/registerActivity"
+        android:name="it.unimib.enjoyn.RegisterActivity"
+        android:label="activity_register"
+        tools:layout="@layout/activity_register" />
 
 </navigation>
