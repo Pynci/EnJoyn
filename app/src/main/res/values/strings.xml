@@ -37,6 +37,7 @@
     <string name="edit">Modifica</string>
     <string name="Description">Descrizione</string>
     <string name="NameSurname">Nome Cognome</string>
+    <string name="ButtonShare">Bottone Condividi</string>
 
 
 </resources>
