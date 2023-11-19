@@ -11,8 +11,12 @@
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_nav_welcome"
-            app:destination="@id/nav_welcome" />
+            android:id="@+id/action_registerFragment_to_loginActivity"
+            app:destination="@id/loginActivity" />
     </fragment>
-    <include app:graph="@navigation/nav_welcome" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="it.unimib.enjoyn.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 </navigation>

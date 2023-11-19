@@ -101,7 +101,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivityBasedOnCondition(LoginActivity.class,
-                        R.id.action_registerFragment_to_nav_welcome, true);
+                        R.id.action_registerFragment_to_loginActivity, true);
             }
         });
     }

@@ -12,13 +12,13 @@
 
         <ImageButton
             android:id="@+id/shareButton"
+            style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="48dp"
             android:layout_height="53dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:background="@color/white"
             android:contentDescription="@string/ButtonShare"
-            android:src="@drawable/baseline_ios_share_24"
+            android:src="@drawable/baseline_share_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
