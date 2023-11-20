@@ -1,5 +1,8 @@
 package it.unimib.enjoyn;
 
+import static it.unimib.enjoyn.util.Costants.ENCRYPTED_DATA_FILE_NAME;
+import static it.unimib.enjoyn.util.Costants.SHARED_PREFERENCES_FILE_NAME;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,6 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
+import it.unimib.enjoyn.util.DataEncryptionUtil;
+import it.unimib.enjoyn.util.SharedPreferencesUtil;
 
 public class LoginFragment extends Fragment {
 
@@ -36,6 +45,18 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ButtonLoginToRegister = view.findViewById(R.id.buttonLoginToRegister);
         LoginButton = view.findViewById(R.id.buttonLogin);
+
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
+        try {
+            if (!dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME).isEmpty()) {
+                SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+
+
+            }
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+
         ButtonLoginToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
