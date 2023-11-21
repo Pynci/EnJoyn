@@ -52,6 +52,7 @@ public class RegisterFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
+
     }
 
     @Override
@@ -64,6 +65,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         Textpassword = (view.findViewById(R.id.insertPassword));
         ButtonRegister = view.findViewById(R.id.buttonForgottenPassword);
         ButtonRegisterToLogin = view.findViewById(R.id.buttonLogin);

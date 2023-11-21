@@ -33,7 +33,6 @@
             app:boxCornerRadiusTopEnd="30dp"
             app:boxCornerRadiusTopStart="30dp"
             app:helperTextTextColor="@color/material_dynamic_neutral0"
-            app:hintTextColor="@color/material_dynamic_tertiary30"
             app:layout_constraintBottom_toTopOf="@id/textInputLayout3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,12 +40,12 @@
             app:startIconDrawable="@drawable/baseline_alternate_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/Email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="email"
                 android:hint="@string/email"
-                android:textColor="@color/design_default_color_primary_dark"
-                android:textColorHint="@color/design_default_color_primary" />
+                 />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -56,7 +55,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:textColorHint="@color/material_dynamic_tertiary50"
+
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
             app:boxCornerRadiusTopEnd="30dp"
@@ -68,9 +67,11 @@
             app:startIconDrawable="@drawable/baseline_key_24">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password" />
+                android:hint="@string/password"
+                android:inputType="text|textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,9 +106,10 @@
             android:layout_width="120dp"
             android:layout_height="56dp"
             android:layout_marginTop="48dp"
-            android:backgroundTint="@color/material_dynamic_tertiary80"
+            android:backgroundTint="@color/md_theme_light_primary"
             android:text="@string/Login"
             android:textAllCaps="true"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />

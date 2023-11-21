@@ -1,5 +1,6 @@
 package it.unimib.enjoyn;
 
+import static it.unimib.enjoyn.util.Costants.EMAIL_ADDRESS;
 import static it.unimib.enjoyn.util.Costants.ENCRYPTED_DATA_FILE_NAME;
 import static it.unimib.enjoyn.util.Costants.SHARED_PREFERENCES_FILE_NAME;
 
@@ -16,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -27,7 +30,13 @@ public class LoginFragment extends Fragment {
     Button ButtonLoginToRegister;
 
     Button LoginButton;
+
+    final String KEY_EMAIL="email";
     private static final boolean USE_NAVIGATION_COMPONENT = true;
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,10 +50,16 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
+
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         ButtonLoginToRegister = view.findViewById(R.id.buttonLoginToRegister);
         LoginButton = view.findViewById(R.id.buttonLogin);
+
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
         try {
@@ -56,6 +71,7 @@ public class LoginFragment extends Fragment {
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
+
 
         ButtonLoginToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
