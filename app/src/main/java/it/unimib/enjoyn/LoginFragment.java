@@ -19,6 +19,8 @@ import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -30,6 +32,10 @@ public class LoginFragment extends Fragment {
     Button ButtonLoginToRegister;
 
     Button LoginButton;
+
+    TextInputLayout TextEmailLogin;
+
+    TextInputLayout TextPasswordLogin;
 
     final String KEY_EMAIL="email";
     private static final boolean USE_NAVIGATION_COMPONENT = true;
@@ -59,7 +65,8 @@ public class LoginFragment extends Fragment {
 
         ButtonLoginToRegister = view.findViewById(R.id.buttonLoginToRegister);
         LoginButton = view.findViewById(R.id.buttonLogin);
-
+        TextEmailLogin = view.findViewById(R.id.insertEmailLogin);
+        TextPasswordLogin = view.findViewById(R.id.insertPasswordLogin);
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
         try {
@@ -84,8 +91,18 @@ public class LoginFragment extends Fragment {
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String password = TextPasswordLogin.getEditText().getText().toString();
+                String email = TextEmailLogin.getEditText().getText().toString();
+                boolean checkedEmail = checkEmail(email);
+                boolean checkedPassword = checkPassword(password);
                 startActivityBasedOnCondition(MainButtonMenuActivity.class,
                         R.id.action_loginFragment_to_mainButtonMenuActivity, true);
+                /**
+                 if(checkedEmail && checkedPassword){
+                    startActivityBasedOnCondition(MainButtonMenuActivity.class,
+                            R.id.action_loginFragment_to_mainButtonMenuActivity, true);
+                }
+                 */
             }
         }
 
@@ -103,5 +120,28 @@ public class LoginFragment extends Fragment {
         if (finishActivity){
             requireActivity().finish();
         }
+    }
+
+    private boolean checkEmail(String email) {
+        if(email==null || email.length()==0) {
+            TextEmailLogin.setError(getString(R.string.Stringnull));
+            return false;
+        }
+        if (!(EmailValidator.getInstance().isValid(email))) {
+            TextEmailLogin.setError(getString(R.string.notValidEmail));
+            return false;
+        } else {
+            TextEmailLogin.setError(null);
+            return true;
+        }
+    }
+
+    private boolean checkPassword(String password){
+        if(password==null || password.length()==0){
+            TextPasswordLogin.setError(getString(R.string.Stringnull));
+            return false;
+        }
+        TextPasswordLogin.setError(null);
+        return true;
     }
 }

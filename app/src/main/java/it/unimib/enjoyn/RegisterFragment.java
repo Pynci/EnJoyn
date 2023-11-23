@@ -86,15 +86,17 @@ public class RegisterFragment extends Fragment {
                 String confirmPassword = TextConfirmpassword.getEditText().getText().toString();
                 String username = TextUsername.getEditText().getText().toString();
                 String phoneNumber = TextPhoneNumber.getEditText().getText().toString();
-                boolean checkedConfirmPassword = false;
+                boolean checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);;
                 boolean checkedName = checkSurName(name, TextName);
                 boolean checkedSurname = checkSurName(surname, TextSurname);
                 boolean checkedPassword = checkPassword(password);
                 boolean checkedUsername = checkUsername(username);
                 boolean checkedPhoneNumber = checkPhoneNumber(phoneNumber);
+                /**
                 if(checkedPassword){
                     checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);
                 }
+                 */
                 boolean checkedEmail = checkEmail(email);
             }
         });
