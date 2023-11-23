@@ -34,7 +34,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/insertEmailLogin"
                 android:layout_width="312dp"
-                android:layout_height="63dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:textColorHint="@color/material_dynamic_tertiary50"
                 app:boxBackgroundColor="@android:color/transparent"
@@ -60,7 +60,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/insertPasswordLogin"
                 android:layout_width="312dp"
-                android:layout_height="63dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
