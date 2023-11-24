@@ -40,8 +40,6 @@
         android:layout_height="wrap_content"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="@+id/nav_host_fragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

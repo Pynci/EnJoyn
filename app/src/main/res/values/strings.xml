@@ -45,6 +45,7 @@
     <string name="Street">Via</string>
     <string name="Join">Unisciti</string>
     <string name="Tag">Tag</string>
+    <string name="Title">Titolo</string>
 
 
 </resources>
