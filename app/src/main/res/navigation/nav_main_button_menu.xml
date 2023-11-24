@@ -9,7 +9,8 @@
         android:id="@+id/discover"
         android:name="it.unimib.enjoyn.DiscoverFragment"
         android:label="fragment_discover"
-        tools:layout="@layout/fragment_discover" />
+        tools:layout="@layout/fragment_discover" >
+    </fragment>
     <fragment
         android:id="@+id/friendsFragment"
         android:name="it.unimib.enjoyn.FriendsFragment"

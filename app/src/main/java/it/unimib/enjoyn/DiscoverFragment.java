@@ -1,11 +1,13 @@
 package it.unimib.enjoyn;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +32,8 @@ public class DiscoverFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    Button EventButton;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -75,6 +80,8 @@ public class DiscoverFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        EventButton = view.findViewById(R.id.eventButton);
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -86,5 +93,27 @@ public class DiscoverFragment extends Fragment {
                 return false;
             }
         });
+/**
+        EventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityBasedOnCondition(MainButtonMenuActivity.class,
+                        R.id.action_discover_to_mainActivity, false);
+
+            }
+        });
+    }
+
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
+        if (true) {
+            Navigation.findNavController(requireView()).navigate(destination);
+        } else {
+            Intent intent = new Intent(requireContext(), destinationActivity);
+            startActivity(intent);
+        }
+        //da utilizzare solo se si passa ad un'altra activity
+        if (finishActivity){
+            requireActivity().finish();
+        }*/
     }
 }

@@ -38,6 +38,13 @@
     <string name="Description">Descrizione</string>
     <string name="NameSurname">Nome Cognome</string>
     <string name="ButtonShare">Bottone Condividi</string>
+    <string name="ActivityName">Nome Attività</string>
+    <string name="NumberOfParticipants">N</string>
+    <string name="Date">Data</string>
+    <string name="Time">Orario</string>
+    <string name="Street">Via</string>
+    <string name="Join">Unisciti</string>
+    <string name="Tag">Tag</string>
 
 
 </resources>
