@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class ProfileConfigurationActivity extends AppCompatActivity {
+public class FirstProfileConfigurationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_configuration);
+        setContentView(R.layout.first_activity_profile_configuration);
     }
 }
