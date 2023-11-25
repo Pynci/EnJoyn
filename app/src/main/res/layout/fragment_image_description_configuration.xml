@@ -10,7 +10,7 @@
         android:id="@+id/propic"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:contentDescription="@string/immagineProfilo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
