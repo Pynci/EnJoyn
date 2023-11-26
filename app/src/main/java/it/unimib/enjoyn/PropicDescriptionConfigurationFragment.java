@@ -19,21 +19,21 @@ import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ImageDescriptionConfigurationFragment#newInstance} factory method to
+ * Use the {@link PropicDescriptionConfigurationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ImageDescriptionConfigurationFragment extends Fragment {
+public class PropicDescriptionConfigurationFragment extends Fragment {
 
-    public static final String TAG = ImageDescriptionConfigurationFragment.class.getSimpleName();
+    public static final String TAG = PropicDescriptionConfigurationFragment.class.getSimpleName();
     private static final boolean USE_NAVIGATION_COMPONENT = true;
 
-    public ImageDescriptionConfigurationFragment() {
+    public PropicDescriptionConfigurationFragment() {
         // Required empty public constructor
     }
 
     //factory method per ottenere istanze del fragment
-    public static ImageDescriptionConfigurationFragment newInstance() {
-        return new ImageDescriptionConfigurationFragment();
+    public static PropicDescriptionConfigurationFragment newInstance() {
+        return new PropicDescriptionConfigurationFragment();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ImageDescriptionConfigurationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image_description_configuration, container, false);
+        return inflater.inflate(R.layout.fragment_propic_description_configuration, container, false);
     }
 
     @Override

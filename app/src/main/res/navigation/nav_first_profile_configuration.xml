@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/imageDescriptionConfigurationFragment"
-        android:name="it.unimib.enjoyn.ImageDescriptionConfigurationFragment"
+        android:name="it.unimib.enjoyn.PropicDescriptionConfigurationFragment"
         android:label="fragment_image_description_configuration"
-        tools:layout="@layout/fragment_image_description_configuration" >
+        tools:layout="@layout/fragment_propic_description_configuration" >
     </fragment>
     <fragment
         android:id="@+id/interestsConfigurationFragment"
