@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/baseline_account_circle_24" />
 
     <ImageButton
-        android:id="@+id/button_addPropic"
+        android:id="@+id/imageButton_addPropic"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="75dp"
         android:layout_height="75dp"

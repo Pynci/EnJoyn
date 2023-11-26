@@ -9,5 +9,11 @@
         android:id="@+id/imageDescriptionConfigurationFragment"
         android:name="it.unimib.enjoyn.ImageDescriptionConfigurationFragment"
         android:label="fragment_image_description_configuration"
-        tools:layout="@layout/fragment_image_description_configuration" />
+        tools:layout="@layout/fragment_image_description_configuration" >
+    </fragment>
+    <fragment
+        android:id="@+id/interestsConfigurationFragment"
+        android:name="it.unimib.enjoyn.InterestsConfigurationFragment"
+        android:label="fragment_interests_configuration"
+        tools:layout="@layout/fragment_interests_configuration" />
 </navigation>

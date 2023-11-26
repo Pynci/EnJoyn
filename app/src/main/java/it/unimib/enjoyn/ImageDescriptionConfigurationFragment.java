@@ -1,12 +1,21 @@
 package it.unimib.enjoyn;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,44 +24,21 @@ import android.view.ViewGroup;
  */
 public class ImageDescriptionConfigurationFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public static final String TAG = ImageDescriptionConfigurationFragment.class.getSimpleName();
+    private static final boolean USE_NAVIGATION_COMPONENT = true;
 
     public ImageDescriptionConfigurationFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ImageDescriptionConfigurationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ImageDescriptionConfigurationFragment newInstance(String param1, String param2) {
-        ImageDescriptionConfigurationFragment fragment = new ImageDescriptionConfigurationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    //factory method per ottenere istanze del fragment
+    public static ImageDescriptionConfigurationFragment newInstance() {
+        return new ImageDescriptionConfigurationFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -60,5 +46,49 @@ public class ImageDescriptionConfigurationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_image_description_configuration, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceBundle){
+        super.onViewCreated(view, savedInstanceBundle);
+
+
+        final Button buttonNext = view.findViewById(R.id.button_next);
+        final ImageButton imageButtonAddPropic = view.findViewById(R.id.imageButton_addPropic);
+
+        //questi potrebbero in futuro servire come attributi del fragment
+        EditText username = view.findViewById(R.id.editText_username);
+        TextInputEditText description = view.findViewById(R.id.textInputEditText_description);
+
+
+
+        buttonNext.setOnClickListener(v -> {
+
+            //TODO: inserire il controllo sull'username (dal DB)
+
+            //TODO: capire come cazzo si passa da un fragment all'altro. Serve activity?
+        });
+
+        imageButtonAddPropic.setOnClickListener(v -> {
+
+            //TODO: implementare la logica di caricamento dell'immagine
+
+        });
+
+    }
+
+    /*
+    Avvia un'activity utilizzando gli Intent oppure il NavigationComponent.
+    Prende in input la classe dell'activity da avviare e l'id associato all'azione (passaggio da un'activity
+    all'altra) definita in nav_first_profile_configuration.xml.
+    */
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
+        if (USE_NAVIGATION_COMPONENT) {
+            Navigation.findNavController(requireView()).navigate(destination);
+        } else {
+            Intent intent = new Intent(requireContext(), destinationActivity);
+            startActivity(intent);
+        }
+        requireActivity().finish();
     }
 }
