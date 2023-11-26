@@ -1,21 +1,32 @@
 package it.unimib.enjoyn;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+
+//classi per la gestione del caricamento immagine
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +37,22 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
 
     public static final String TAG = PropicDescriptionConfigurationFragment.class.getSimpleName();
     private static final boolean USE_NAVIGATION_COMPONENT = true;
+
+    //callback settata per ricevere la foto selezionata dalla galleria (minuto 23 esercitazione Intent)
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
+                        ((ImageView) getView().findViewById(R.id.imageView_propic)).setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+
+
 
     public PropicDescriptionConfigurationFragment() {
         // Required empty public constructor
@@ -71,8 +98,9 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
 
         imageButtonAddPropic.setOnClickListener(v -> {
 
-            //TODO: implementare la logica di caricamento dell'immagine
-
+            //TODO: implementare la logica di caricamento dell'immagine in relazione con il DB
+            //TODO: manipolare l'immagine in modo che non si smerdi
+            mGetContent.launch("image/*");
         });
 
     }
