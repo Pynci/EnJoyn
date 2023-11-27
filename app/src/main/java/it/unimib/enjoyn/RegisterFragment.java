@@ -93,7 +93,7 @@ public class RegisterFragment extends Fragment {
         Password = view.findViewById(R.id.password);
         Email = view.findViewById(R.id.email);
         Name = view.findViewById(R.id.name);
-        Surname = view.findViewById(R.id.username);
+        Surname = view.findViewById(R.id.surname);
         ConfirmPassword = view.findViewById(R.id.confirmPasswordId);
         Username = view.findViewById(R.id.username);
 
