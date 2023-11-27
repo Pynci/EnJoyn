@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -36,6 +37,8 @@ public class LoginFragment extends Fragment {
     TextInputLayout TextEmailLogin;
 
     TextInputLayout TextPasswordLogin;
+
+    EditText Email;
 
     final String KEY_EMAIL="email";
     private static final boolean USE_NAVIGATION_COMPONENT = true;
@@ -67,6 +70,9 @@ public class LoginFragment extends Fragment {
         LoginButton = view.findViewById(R.id.buttonLogin);
         TextEmailLogin = view.findViewById(R.id.insertEmailLogin);
         TextPasswordLogin = view.findViewById(R.id.insertPasswordLogin);
+        Email = view.findViewById(R.id.Email);
+
+
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
         try {
@@ -79,7 +85,18 @@ public class LoginFragment extends Fragment {
             e.printStackTrace();
         }
 
-
+      Email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String email = Email.getText().toString();
+                    checkEmail(email);
+                }
+                else {
+                    TextEmailLogin.setError(null);
+                }
+            }
+        });
         ButtonLoginToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

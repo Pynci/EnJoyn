@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -31,6 +32,20 @@ public class RegisterFragment extends Fragment {
     TextInputLayout TextSurname;
     TextInputLayout TextPhoneNumber;
     TextInputLayout TextUsername;
+
+    EditText Password;
+
+    EditText Email;
+
+    EditText Name;
+
+    EditText Surname;
+
+    EditText ConfirmPassword;
+
+    EditText Username;
+
+
     Button ButtonRegister;
     Button ButtonRegisterToLogin;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
@@ -75,10 +90,103 @@ public class RegisterFragment extends Fragment {
         TextConfirmpassword = view.findViewById(R.id.confirmPassword);
         TextPhoneNumber = view.findViewById(R.id.confirmPhoneNumber);
         TextUsername = view.findViewById(R.id.insertUsername);
+        Password = view.findViewById(R.id.password);
+        Email = view.findViewById(R.id.email);
+        Name = view.findViewById(R.id.name);
+        Surname = view.findViewById(R.id.username);
+        ConfirmPassword = view.findViewById(R.id.confirmPasswordId);
+        Username = view.findViewById(R.id.username);
+
+
+
+
+
+
+       Email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String email = Email.getText().toString();
+                    checkEmail(email);
+                }
+                else {
+                    TextEmail.setError(null);
+                }
+            }
+        });
+
+        Password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String password = Password.getText().toString();
+                    checkPassword(password);
+                }
+                else {
+                    Textpassword.setError(null);
+                }
+            }
+        });
+
+        ConfirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String password = Password.getText().toString();
+                    String confirmPassword = ConfirmPassword.getText().toString();
+                    checkConfirmPassword(password, confirmPassword);
+                }
+                else {
+                    TextConfirmpassword.setError(null);
+                }
+            }
+        });
+
+        Name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String name = Name.getText().toString();
+                    checkSurName(name, TextName);
+                }
+                else {
+                    TextName.setError(null);
+                }
+            }
+        });
+
+        Surname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String surname = Surname.getText().toString();
+                    checkSurName(surname, TextSurname);
+                }
+                else {
+                    TextSurname.setError(null);
+                }
+            }
+        });
+
+        Username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String username = Username.getText().toString();
+                    checkUsername(username);
+                }
+                else {
+                    TextUsername.setError(null);
+                }
+            }
+        });
+
+
 
         ButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String name = TextName.getEditText().getText().toString();
                 String surname = TextSurname.getEditText().getText().toString();
                 String password = Textpassword.getEditText().getText().toString();
