@@ -17,141 +17,138 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+       <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="363dp"
-                android:layout_height="544dp"
-                app:cardBackgroundColor="@color/md_theme_dark_onPrimaryContainer"
-                app:cardCornerRadius="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.245">
+           <androidx.cardview.widget.CardView
+               android:layout_width="363dp"
+               android:layout_height="544dp"
+               android:layout_marginStart="16dp"
+               android:layout_marginTop="32dp"
+               app:cardBackgroundColor="@color/md_theme_dark_onPrimaryContainer"
+               app:cardCornerRadius="20dp"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_begin="20dp" />
+                   <androidx.constraintlayout.widget.Guideline
+                       android:id="@+id/guideline3"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical"
+                       app:layout_constraintGuide_begin="20dp" />
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_end="20dp" />
+                   <androidx.constraintlayout.widget.Guideline
+                       android:id="@+id/guideline4"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical"
+                       app:layout_constraintGuide_end="20dp" />
 
-                    <TextView
-                        android:id="@+id/EventName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="0dp"
-                        android:text="@string/ActivityName"
-                        android:textSize="30dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline3"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.095" />
+                   <TextView
+                       android:id="@+id/EventName"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginStart="0dp"
+                       android:text="@string/ActivityName"
+                       android:textSize="30dp"
+                       android:textStyle="bold"
+                       app:layout_constraintBottom_toBottomOf="parent"
+                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintVertical_bias="0.095" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/Tag"
-                        app:layout_constraintStart_toStartOf="@+id/guideline3"
-                        app:layout_constraintTop_toBottomOf="@+id/EventName" />
+                   <com.google.android.material.chip.Chip
+                       android:id="@+id/chip"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="12dp"
+                       android:text="@string/Tag"
+                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintTop_toBottomOf="@+id/EventName" />
 
-                    <ImageView
-                        android:id="@+id/people"
-                        android:layout_width="93dp"
-                        android:layout_height="96dp"
-                        android:layout_marginTop="88dp"
-                        tools:src="@tools:sample/avatars"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/baseline_person_24" />
+                   <ImageView
+                       android:id="@+id/people"
+                       android:layout_width="93dp"
+                       android:layout_height="96dp"
+                       android:layout_marginTop="88dp"
+                       app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:srcCompat="@drawable/baseline_person_24"
+                       tools:src="@tools:sample/avatars" />
 
-                    <TextView
-                        android:id="@+id/NumberOfParticipants"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="52dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="@string/NumberOfParticipants"
-                        android:textSize="30sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/people"
-                        app:layout_constraintEnd_toStartOf="@+id/people"
-                        app:layout_constraintTop_toBottomOf="@+id/EventName" />
+                   <TextView
+                       android:id="@+id/NumberOfParticipants"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="52dp"
+                       android:layout_marginEnd="8dp"
+                       android:text="@string/NumberOfParticipants"
+                       android:textSize="30sp"
+                       app:layout_constraintBottom_toBottomOf="@+id/people"
+                       app:layout_constraintEnd_toStartOf="@+id/people"
+                       app:layout_constraintTop_toBottomOf="@+id/EventName" />
 
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:inputType="@string/Date"
-                        android:text="@string/Date"
-                        android:textSize="24sp"
-                        app:layout_constraintStart_toStartOf="@+id/guideline3"
-                        app:layout_constraintTop_toBottomOf="@+id/people" />
+                   <TextView
+                       android:id="@+id/textView5"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="16dp"
 
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="@string/Time"
-                        android:textSize="24sp"
-                        app:layout_constraintStart_toStartOf="@+id/guideline3"
-                        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                       android:text="@string/Date"
+                       android:textSize="24sp"
+                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintTop_toBottomOf="@+id/people" />
 
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="@string/Street"
-                        android:textSize="24sp"
-                        app:layout_constraintStart_toStartOf="@+id/guideline3"
-                        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                   <TextView
+                       android:id="@+id/textView6"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="20dp"
+                       android:text="@string/Time"
+                       android:textSize="24sp"
+                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="@string/Description"
-                        android:textSize="24sp"
-                        app:layout_constraintStart_toStartOf="@+id/guideline3"
-                        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                   <TextView
+                       android:id="@+id/textView7"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="20dp"
+                       android:text="@string/Street"
+                       android:textSize="24sp"
+                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-                    <Button
-                        android:id="@+id/button"
-                        style="@style/Widget.Material3.Button.IconButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="84dp"
-                        android:text="@string/Join"
-                        android:textSize="20sp"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                   <TextView
+                       android:id="@+id/textView8"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="20dp"
+                       android:text="@string/Description"
+                       android:textSize="24sp"
+                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
+                   <Button
+                       android:id="@+id/button"
+                       style="@style/Widget.Material3.Button.IconButton"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="84dp"
+                       android:text="@string/Join"
+                       android:textSize="20sp"
+                       app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                       app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
 
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+               </androidx.constraintlayout.widget.ConstraintLayout>
+           </androidx.cardview.widget.CardView>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

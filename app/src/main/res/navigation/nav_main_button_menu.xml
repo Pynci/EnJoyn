@@ -10,6 +10,9 @@
         android:name="it.unimib.enjoyn.DiscoverFragment"
         android:label="fragment_discover"
         tools:layout="@layout/fragment_discover" >
+        <action
+            android:id="@+id/action_discover_to_discoverSingleEvent"
+            app:destination="@id/discoverSingleEvent" />
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
@@ -32,4 +35,9 @@
         android:label="fragment_todo"
         tools:layout="@layout/fragment_todo" />
     <include app:graph="@navigation/nav_welcome" />
+    <fragment
+        android:id="@+id/discoverSingleEvent"
+        android:name="it.unimib.enjoyn.DiscoverSingleEvent"
+        android:label="fragment_discover_single_event"
+        tools:layout="@layout/fragment_discover_single_event" />
 </navigation>

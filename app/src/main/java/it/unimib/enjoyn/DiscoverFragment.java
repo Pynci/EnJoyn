@@ -93,12 +93,12 @@ public class DiscoverFragment extends Fragment {
                 return false;
             }
         });
-/**
+
         EventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivityBasedOnCondition(MainButtonMenuActivity.class,
-                        R.id.action_discover_to_mainActivity, false);
+                        R.id.action_discover_to_discoverSingleEvent, false);
 
             }
         });
@@ -114,6 +114,6 @@ public class DiscoverFragment extends Fragment {
         //da utilizzare solo se si passa ad un'altra activity
         if (finishActivity){
             requireActivity().finish();
-        }*/
+        }
     }
 }
