@@ -77,6 +77,9 @@ public class RegisterFragment extends Fragment {
         ButtonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /*
+
                 String name = TextName.getEditText().getText().toString();
                 String surname = TextSurname.getEditText().getText().toString();
                 String password = Textpassword.getEditText().getText().toString();
@@ -94,6 +97,10 @@ public class RegisterFragment extends Fragment {
                     checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);
                 }
                 boolean checkedEmail = checkEmail(email);
+
+                 */
+
+                Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
             }
         });
 
