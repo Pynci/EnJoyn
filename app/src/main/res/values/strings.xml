@@ -48,6 +48,7 @@
     <string name="PinviewDescription">Prova</string>
     <string name="text_for_new_confirmation_code">"Non hai ricevuto nessuna? Per generare un nuovo codice "</string>
     <string name="string_button_to_send_another_confirmation_code">premi qui</string>
+    <string name="name">Nome</string>
 
 
 </resources>

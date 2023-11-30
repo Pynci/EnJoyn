@@ -43,12 +43,16 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
             new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri uri) {
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                        ((ImageView) getView().findViewById(R.id.imageView_propic)).setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+
+                    if(uri != null){
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
+                            ((ImageView) getView().findViewById(R.id.imageView_propic)).setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
+
                 }
             });
 
@@ -84,7 +88,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         final ImageButton imageButtonAddPropic = view.findViewById(R.id.imageButton_addPropic);
 
         //questi potrebbero in futuro servire come attributi del fragment
-        EditText username = view.findViewById(R.id.editText_username);
+        EditText username = view.findViewById(R.id.editText_cognome);
         TextInputEditText description = view.findViewById(R.id.textInputEditText_description);
 
 

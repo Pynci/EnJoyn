@@ -32,7 +32,7 @@
 
 
     <EditText
-        android:id="@+id/editText_username"
+        android:id="@+id/editText_cognome"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -40,12 +40,30 @@
         android:ellipsize="start"
         android:ems="10"
         android:gravity="center_horizontal"
-        android:hint="@string/username"
+        android:hint="@string/surname"
         android:inputType="text"
-        android:textSize="48dp"
+        android:textSize="45dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_nome" />
+
+    <EditText
+        android:id="@+id/editText_nome"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@null"
+        android:ellipsize="start"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="@string/name"
+        android:inputType="text"
+        android:textSize="45dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_propic" />
 
@@ -65,7 +83,7 @@
         android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_username">
+        app:layout_constraintTop_toBottomOf="@+id/editText_cognome">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditText_description"
