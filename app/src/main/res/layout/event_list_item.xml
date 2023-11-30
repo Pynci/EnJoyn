@@ -43,13 +43,13 @@
                 android:layout_marginTop="8dp"
                 android:text="30/11/2023"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintTop_toBottomOf="@+id/Distanza" />
 
             <TextView
                 android:id="@+id/Orario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 android:text="17:00 - 19:00"
                 app:layout_constraintBaseline_toBaselineOf="@+id/Data"
                 app:layout_constraintStart_toEndOf="@+id/Data" />
@@ -58,40 +58,40 @@
                 android:id="@+id/Luogo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp"
                 android:text="via bicocca 29"
-                app:layout_constraintStart_toStartOf="@+id/Data"
-                app:layout_constraintTop_toBottomOf="@+id/Data" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/Distanza"
+                app:layout_constraintStart_toEndOf="@+id/Distanza" />
 
             <TextView
                 android:id="@+id/Distanza"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawableStart="@drawable/baseline_place_24"
+                android:layout_marginTop="8dp"
                 android:text="2 Km"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                app:drawableStartCompat="@drawable/baseline_place_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <Button
                 android:id="@+id/button2"
                 style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:text="+"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unisciti"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Distanza" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:drawableEnd="@drawable/baseline_people_outline_24"
                 android:text="3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/button2"
+                app:layout_constraintEnd_toEndOf="@+id/button2"
+                app:layout_constraintStart_toStartOf="@+id/button2" />
 
             <ImageView
                 android:id="@+id/imageView"
