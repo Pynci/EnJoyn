@@ -19,7 +19,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            style="@style/Theme.EnJoyn">
+
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -36,7 +38,6 @@
                 android:layout_width="312dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
-                android:textColorHint="@color/material_dynamic_tertiary50"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -115,10 +116,8 @@
                 android:layout_width="120dp"
                 android:layout_height="56dp"
                 android:layout_marginTop="48dp"
-                android:backgroundTint="@color/md_theme_light_primary"
                 android:text="@string/Login"
                 android:textAllCaps="true"
-                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/forgottenPassword" />
