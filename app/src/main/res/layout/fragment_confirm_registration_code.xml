@@ -47,7 +47,6 @@
             android:cursorVisible="true"
             android:gravity="center"
             android:inputType="number"
-            android:itemBackground="@color/white"
             android:hint="@string/textRegistrationCodeSubtitles"
             app:hideLineWhenFilled="false"
             app:itemCount="6"

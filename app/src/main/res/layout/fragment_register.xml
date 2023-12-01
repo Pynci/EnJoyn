@@ -7,8 +7,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".RegisterFragment"
-    android:theme="@style/AppThemeDark">
+    tools:context=".RegisterFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -197,7 +196,6 @@
 
         <Button
             android:id="@+id/buttonForgottenPassword"
-            style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="230dp"
             android:layout_height="70dp"
             android:layout_marginTop="32dp"
@@ -220,7 +218,6 @@
 
         <Button
             android:id="@+id/buttonLogin"
-            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
