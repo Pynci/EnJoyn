@@ -1,108 +1,183 @@
 package it.unimib.enjoyn;
 
-import java.util.Date;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Event {
+import androidx.annotation.NonNull;
 
-private int id;
-private String titolo;
+import java.util.Calendar;
 
-private String descrizione;
+public class Event implements Parcelable {
 
-private Date data;
+    private int id;
+    private String title;
 
-private boolean privata;
+    private String description;
 
-private String Luogo;
+    private String date;
 
-private String nomeLuogo;
+    private String time;
 
-private Category categoria;
+    private boolean confidential;
 
-private int numeroPersone;
+    private String place;
 
+    private String placeName;
 
-    public Event(int id, String titolo, String descrizione, Date data, boolean privata, String luogo, String nomeLuogo, Category categoria, int numeroPersone) {
+    private Category category;
+
+    private int peopleNumber;
+
+    private double distance;
+
+    public Event(int id, String title, String description, String date, String time, boolean confidential,
+                 String place, String placeName, Category category, int peopleNumber, double distance) {
         setId(id);
-        setTitolo(titolo);
-        setDescrizione(descrizione);
-        setData(data);
-        setPrivata(privata);
-        setLuogo(luogo);
-        setNomeLuogo(nomeLuogo);
-        setCategoria(categoria);
-        setNumeroPersone(numeroPersone);
+        setTitle(title);
+        setDescription(description);
+        setDate(date);
+        setTime(time);
+        setConfidential(confidential);
+        setPlace(place);
+        setPlaceName(placeName);
+        setCategory(category);
+        setPeopleNumber(peopleNumber);
+        setDistance(distance);
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    protected Event(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        description = in.readString();
+        date = in.readString();
+        time = in.readString();
+        confidential = in.readByte() != 0;
+        place = in.readString();
+        placeName = in.readString();
+        peopleNumber = in.readInt();
+        distance = in.readDouble();
     }
 
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public boolean isConfidential() {
+        return confidential;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public int getPeopleNumber() {
+        return peopleNumber;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public String getDistanceString(){
+        return Double.toString(distance);
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setLuogo(String luogo) {
-        Luogo = luogo;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setCategoria(Category categoria) {
-        this.categoria = categoria;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setNomeLuogo(String nomeLuogo) {
-        this.nomeLuogo = nomeLuogo;
+    public void setConfidential(boolean confidential) {
+        this.confidential = confidential;
     }
 
-    public void setPrivata(boolean privata) {
-        this.privata = privata;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
-    public void setTitolo(String titolo) {
-        this.titolo = titolo;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 
-    public void setNumeroPersone(int numeroPersone) {
-        this.numeroPersone = numeroPersone;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public int getId() {
-        return id;
+    public void setPeopleNumber(int peopleNumber) {
+        this.peopleNumber = peopleNumber;
     }
 
-    public String getTitolo() {
-        return titolo;
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public Date getData() {
-        return data;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public boolean isPrivata() {
-        return privata;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public String getLuogo() {
-        return Luogo;
-    }
-
-    public String getNomeLuogo() {
-        return nomeLuogo;
-    }
-
-    public Category getCategoria() {
-        return categoria;
-    }
-
-    public int getNumeroPersone() {
-        return numeroPersone;
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(date);
+        dest.writeString(time);
+        dest.writeByte((byte) (confidential ? 1 : 0));
+        dest.writeString(place);
+        dest.writeString(placeName);
+        dest.writeInt(peopleNumber);
+        dest.writeDouble(distance);
     }
 }

@@ -1,5 +1,6 @@
 package it.unimib.enjoyn;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +19,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
+import it.unimib.enjoyn.util.JSONParserUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +96,6 @@ public class DiscoverFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EventButton = view.findViewById(R.id.eventButton);
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -94,14 +108,31 @@ public class DiscoverFragment extends Fragment {
             }
         });
 
-        EventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityBasedOnCondition(MainButtonMenuActivity.class,
-                        R.id.action_discover_to_discoverSingleEvent, false);
+        RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.recyclerview_discover_event);
 
-            }
-        });
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
+                LinearLayoutManager.VERTICAL, false);
+
+        //List<Event> eventList = getEventListWithGSon();
+
+        List<Event> eventList = new ArrayList<Event>() ;
+        eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
+
+
+        EventReclyclerViewAdapter eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
+                new EventReclyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onEventItemClick(Event event) {
+                        Snackbar.make(view, event.getTitle(), Snackbar.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onJoinButtonPressed(int position) {
+
+                    }
+                });
+        recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
+        recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
@@ -115,5 +146,23 @@ public class DiscoverFragment extends Fragment {
         if (finishActivity){
             requireActivity().finish();
         }
+    }
+
+    private List<Event> getEventListWithGSon() {
+        JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
+        try {
+            /**TODO
+             * sistemare questa parte
+             * */
+
+            Context context = requireActivity().getApplication().getApplicationContext();
+            InputStream inputStream = context.getAssets().open("prova.json"); //apro file
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
+
+            return jsonParserUtil.parseJSONFileWithGSon(bufferedReader).getEvents();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
