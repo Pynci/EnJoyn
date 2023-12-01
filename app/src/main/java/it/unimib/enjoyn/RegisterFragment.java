@@ -119,7 +119,7 @@ public class RegisterFragment extends Fragment {
         boolean specialChar = false;
         boolean capLetter = false;
         if (password == null || password.length()==0) {
-            Textpassword.setError(getString(R.string.Stringnull));
+            Textpassword.setError(getString(R.string.stringNull));
             return false;
         }
         if(password.length() < 8) {
@@ -162,7 +162,7 @@ public class RegisterFragment extends Fragment {
 
     private boolean checkEmail(String email) {
         if(email==null || email.length()==0) {
-            TextEmail.setError(getString(R.string.Stringnull));
+            TextEmail.setError(getString(R.string.stringNull));
             return false;
         }
         if (!(EmailValidator.getInstance().isValid(email))) {
@@ -175,7 +175,7 @@ public class RegisterFragment extends Fragment {
     }
     private boolean checkConfirmPassword(String password, String confirmPassword) {
         if(confirmPassword==null || confirmPassword.length()==0) {
-            TextConfirmpassword.setError(getString(R.string.Stringnull));
+            TextConfirmpassword.setError(getString(R.string.stringNull));
             return false;
         }
         if (!(confirmPassword.equals(password))) {
@@ -189,10 +189,10 @@ public class RegisterFragment extends Fragment {
     private boolean checkSurName(String name, TextInputLayout Text) {
 
         if (name == null || name.length()==0) {
-            Text.setError(getString(R.string.Stringnull));
+            Text.setError(getString(R.string.stringNull));
             return false;}
         if( name.length()>=42) {
-            Text.setError(getString(R.string.StringTooLong));
+            Text.setError(getString(R.string.stringTooLong));
             return false;
         }
         for (int i = 0; i < name.length(); i++) {
@@ -208,10 +208,10 @@ public class RegisterFragment extends Fragment {
 
     private boolean checkUsername(String username){
         if (username == null || username.length()==0) {
-            TextUsername.setError(getString(R.string.Stringnull));
+            TextUsername.setError(getString(R.string.stringNull));
             return false;}
         if(username.length()>=20) {
-            TextUsername.setError(getString(R.string.StringTooLong));
+            TextUsername.setError(getString(R.string.stringTooLong));
             return false;
         }
         //aggiungere controllo di esistenza sul db
@@ -222,16 +222,16 @@ public class RegisterFragment extends Fragment {
 
     private boolean checkPhoneNumber(String phoneNumber){
         if (phoneNumber == null || phoneNumber.length()==0) {
-            TextPhoneNumber.setError(getString(R.string.Stringnull));
+            TextPhoneNumber.setError(getString(R.string.stringNull));
             return false;}
         if(phoneNumber.length()>10) {
-            TextPhoneNumber.setError(getString(R.string.StringTooLong));
+            TextPhoneNumber.setError(getString(R.string.stringTooLong));
             return false;
         }
 
         for (int i = 0; i < phoneNumber.length(); i++){
             if(!(phoneNumber.charAt(i)>='0' && phoneNumber.charAt(i)<='9') && !(phoneNumber.charAt(i) == 32)){
-                TextPhoneNumber.setError(getString(R.string.InsertNumbers));
+                TextPhoneNumber.setError(getString(R.string.insertNumbers));
                 return false;
             }
         }

@@ -17,7 +17,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@color/white"
-            android:contentDescription="@string/ButtonShare"
+            android:contentDescription="@string/buttonShare"
             android:src="@drawable/baseline_ios_share_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -63,7 +63,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/NameSurname"
+            android:text="@string/nameSurname"
             android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +88,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/Description"
+                android:text="@string/description"
                 android:textSize="20sp" />
 
         </androidx.cardview.widget.CardView>

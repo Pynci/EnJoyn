@@ -106,7 +106,7 @@
             android:layout_height="56dp"
             android:layout_marginTop="48dp"
             android:backgroundTint="@color/material_dynamic_tertiary80"
-            android:text="@string/Login"
+            android:text="@string/login"
             android:textAllCaps="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
