@@ -4,56 +4,31 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
 
 import com.chaos.view.PinView;
 
 public class ConfirmRegistrationCode extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public ConfirmRegistrationCode() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ConfirmRegistrationCode.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ConfirmRegistrationCode newInstance(String param1, String param2) {
-        ConfirmRegistrationCode fragment = new ConfirmRegistrationCode();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static ConfirmRegistrationCode newInstance() {
+        return new ConfirmRegistrationCode();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-
-        }
     }
 
     @Override
@@ -61,5 +36,42 @@ public class ConfirmRegistrationCode extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_confirm_registration_code, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceBundle) {
+        super.onViewCreated(view, savedInstanceBundle);
+
+        PinView pinViewOTPcode = view.findViewById(R.id.fragmentConfirmRegistrationCode_PinView_OTPcode);
+
+        pinViewOTPcode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Non deve fare nulla prima di cambiare il testo
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                /*
+                 * TODO: modificare il codice seguente quando avremo il DB
+                 * Quando l'utente ha inserito 6 numeri, il sitema dovrà interrogare il DB per
+                 * verificare che l'OTP code inserito sia corretto. In tal caso l'utente potrà
+                 * accedere alla fase di customizzazione del profilo; altrimenti no.
+                 * Il sistema dovrà anche ridurre il numero massimo di tentativi di un'unità
+                 * nel caso in cui l'utente inserisca il codice sbagliato; inoltre deve
+                 * essere cancellato ciò che l'utente ha scritto nel PinView.
+                 */
+
+                if (s.toString().length() == 6){
+                    Navigation.findNavController(view).navigate(R.id.action_confirmRegistrationCode_to_propicDescriptionConfigurationFragment);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //Non deve fare nulla dopo che il testo è stato cambiato
+            }
+        });
     }
 }
