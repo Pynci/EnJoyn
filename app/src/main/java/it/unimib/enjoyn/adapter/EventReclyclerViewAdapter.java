@@ -51,6 +51,9 @@ public class EventReclyclerViewAdapter extends
 
     @Override
     public int getItemCount() {
+        if (eventList != null) {
+            return eventList.size();
+        }
         return 0;
     }
 
@@ -108,7 +111,7 @@ public class EventReclyclerViewAdapter extends
             textViewData.setText(event.getDate());
             textViewTime.setText(event.getTime());
             textViewPlace.setText(event.getPlace());
-            textViewPeopleNumber.setText(event.getPeopleNumber());
+            textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
 
         }

@@ -110,6 +110,10 @@ public class Event implements Parcelable {
         return peopleNumber;
     }
 
+    public String getPeopleNumberString(){
+        return Integer.toString(peopleNumber);
+    }
+
     public double getDistance() {
         return distance;
     }
