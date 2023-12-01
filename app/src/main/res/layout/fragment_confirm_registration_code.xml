@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/text_view_confirm_registration_code_title"
+            android:id="@+id/fragmentConfirmRegistrationCode_textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="200dp"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_view_registration_code_subtitle"
+            android:id="@+id/fragmentConfirmRegistrationCode_textView_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -35,10 +35,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_confirm_registration_code_title" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmRegistrationCode_textView_title" />
 
         <com.chaos.view.PinView
-            android:id="@+id/pinview_profile_confirmation"
+            android:id="@+id/fragmentConfirmRegistrationCode_PinView_OTPcode"
             style="@style/PinWidget.PinView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,10 +59,10 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_registration_code_subtitle" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmRegistrationCode_textView_subtitle" />
 
         <TextView
-            android:id="@+id/text_view_for_new_confirmation_code"
+            android:id="@+id/fragmentConfirmRegistrationCode_textView_newOTPcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -73,10 +73,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pinview_profile_confirmation" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmRegistrationCode_PinView_OTPcode" />
 
         <Button
-            android:id="@+id/button_to_send_another_confirmation_code"
+            android:id="@+id/fragmentConfirmRegistrationCode_button_newOTPcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -85,7 +85,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_for_new_confirmation_code" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmRegistrationCode_textView_newOTPcode" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
