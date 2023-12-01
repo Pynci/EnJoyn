@@ -12,11 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/propicDescriptionConfiguration_button_skip"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/skip"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
-            android:id="@+id/imageView_propic"
+            android:id="@+id/propicDescriptionConfiguration_imageView_propic"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:contentDescription="@string/immagineProfilo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +35,7 @@
             app:srcCompat="@drawable/baseline_account_circle_24" />
 
         <ImageButton
-            android:id="@+id/imageButton_addPropic"
+            android:id="@+id/propicDescriptionConfiguration_imageButton_addPropic"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -33,12 +44,12 @@
             android:paddingStart="20dp"
             android:paddingTop="20dp"
             android:src="@drawable/baseline_add_circle_24"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView_propic"
-            app:layout_constraintEnd_toEndOf="@+id/imageView_propic" />
+            app:layout_constraintBottom_toBottomOf="@+id/propicDescriptionConfiguration_imageView_propic"
+            app:layout_constraintEnd_toEndOf="@+id/propicDescriptionConfiguration_imageView_propic" />
 
 
         <EditText
-            android:id="@+id/editText_cognome"
+            android:id="@+id/propicDescriptionConfiguration_editText_cognome"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -53,11 +64,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_nome"
+            app:layout_constraintTop_toBottomOf="@+id/propicDescriptionConfiguration_editText_nome"
             android:autofillHints="person-name-family" />
 
         <EditText
-            android:id="@+id/editText_nome"
+            android:id="@+id/propicDescriptionConfiguration_editText_nome"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -72,38 +83,38 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView_propic"
+            app:layout_constraintTop_toBottomOf="@+id/propicDescriptionConfiguration_imageView_propic"
             android:autofillHints="person-name-given" />
 
         <TextView
-            android:id="@+id/textView_describeYourself"
+            android:id="@+id/propicDescriptionConfiguration_textView_describeYourself"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/DescribeYourself"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/textInputLayout_description"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayout_description" />
+            app:layout_constraintBottom_toTopOf="@+id/propicDescriptionConfiguration_textInputLayout_description"
+            app:layout_constraintStart_toStartOf="@+id/propicDescriptionConfiguration_textInputLayout_description" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout_description"
+            android:id="@+id/propicDescriptionConfiguration_textInputLayout_description"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_cognome">
+            app:layout_constraintTop_toBottomOf="@+id/propicDescriptionConfiguration_editText_cognome">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText_description"
+                android:id="@+id/propicDescriptionConfiguration_textInputEditText_description"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="250dp"
                 android:gravity="start"
                 android:hint="@string/Description" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/button_next"
+            android:id="@+id/propicDescriptionConfiguration_button_next"
             style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -114,17 +125,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_description" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="Button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/propicDescriptionConfiguration_textInputLayout_description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

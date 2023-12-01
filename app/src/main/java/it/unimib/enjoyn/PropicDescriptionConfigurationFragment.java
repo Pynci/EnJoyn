@@ -47,7 +47,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                     if(uri != null){
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                            ((ImageView) getView().findViewById(R.id.imageView_propic)).setImageBitmap(bitmap);
+                            ((ImageView) getView().findViewById(R.id.propicDescriptionConfiguration_imageView_propic)).setImageBitmap(bitmap);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -84,12 +84,12 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceBundle);
 
 
-        final Button buttonNext = view.findViewById(R.id.button_next);
-        final ImageButton imageButtonAddPropic = view.findViewById(R.id.imageButton_addPropic);
+        final Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
+        final ImageButton imageButtonAddPropic = view.findViewById(R.id.propicDescriptionConfiguration_imageButton_addPropic);
 
         //questi potrebbero in futuro servire come attributi del fragment
-        EditText username = view.findViewById(R.id.editText_cognome);
-        TextInputEditText description = view.findViewById(R.id.textInputEditText_description);
+        EditText username = view.findViewById(R.id.propicDescriptionConfiguration_editText_cognome);
+        TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
 
 
 
