@@ -43,11 +43,11 @@
     <string name="DescribeYourself">Raccontaci di te…</string>
     <string name="skip">Salta</string>
     <string name="next">Avanti</string>
-    <string name="conferma_profilo">CONFERMA PROFILO</string>
-    <string name="text_registration_code_subtitle">Per confermare il tuo profilo, inserisci il codice di sei cifre che hai ricevuto tramite mail</string>
+    <string name="strConfermaEmail">CONFERMA MAIL</string>
+    <string name="strTextRegistrationCodeSubtitles">Per confermare il tuo profilo, inserisci il codice di sei cifre che hai ricevuto tramite mail</string>
     <string name="PinviewDescription">Prova</string>
-    <string name="text_for_new_confirmation_code">"Non hai ricevuto nessuna? Per generare un nuovo codice "</string>
-    <string name="string_button_to_send_another_confirmation_code">premi qui</string>
+    <string name="strNewConfirmationCode">"Non hai ricevuto nessuna? Per generare un nuovo codice "</string>
+    <string name="strPremiQui">premi qui</string>
     <string name="name">Nome</string>
 
 
