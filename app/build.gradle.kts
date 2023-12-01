@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "it.unimib.enjoyn"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "it.unimib.enjoyn"
