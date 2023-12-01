@@ -1,111 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PropicDescriptionConfigurationFragment">
 
-    <ImageView
-        android:id="@+id/imageView_propic"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="50dp"
-        android:contentDescription="@string/immagineProfilo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_account_circle_24" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/imageButton_addPropic"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:background="@null"
-        android:contentDescription="@string/modifica_immagine"
-        android:paddingStart="20dp"
-        android:paddingTop="20dp"
-        android:src="@drawable/baseline_add_circle_24"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_propic"
-        app:layout_constraintEnd_toEndOf="@+id/imageView_propic" />
+        <ImageView
+            android:id="@+id/imageView_propic"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/immagineProfilo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_account_circle_24" />
+
+        <ImageButton
+            android:id="@+id/imageButton_addPropic"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@null"
+            android:contentDescription="@string/modifica_immagine"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:src="@drawable/baseline_add_circle_24"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_propic"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_propic" />
 
 
-    <EditText
-        android:id="@+id/editText_cognome"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@null"
-        android:ellipsize="start"
-        android:ems="10"
-        android:gravity="center_horizontal"
-        android:hint="@string/surname"
-        android:inputType="text"
-        android:textSize="45sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_nome"
-        android:autofillHints="person-name-family" />
+        <EditText
+            android:id="@+id/editText_cognome"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@null"
+            android:ellipsize="start"
+            android:ems="10"
+            android:gravity="center_horizontal"
+            android:hint="@string/surname"
+            android:inputType="text"
+            android:textSize="45sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText_nome"
+            android:autofillHints="person-name-family" />
 
-    <EditText
-        android:id="@+id/editText_nome"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@null"
-        android:ellipsize="start"
-        android:ems="10"
-        android:gravity="center_horizontal"
-        android:hint="@string/name"
-        android:inputType="text"
-        android:textSize="45sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_propic"
-        android:autofillHints="person-name-given" />
+        <EditText
+            android:id="@+id/editText_nome"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@null"
+            android:ellipsize="start"
+            android:ems="10"
+            android:gravity="center_horizontal"
+            android:hint="@string/name"
+            android:inputType="text"
+            android:textSize="45sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_propic"
+            android:autofillHints="person-name-given" />
 
-    <TextView
-        android:id="@+id/textView_describeYourself"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/DescribeYourself"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout_description"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout_description" />
+        <TextView
+            android:id="@+id/textView_describeYourself"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/DescribeYourself"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayout_description"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout_description" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_description"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_cognome">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_description"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText_cognome">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_description"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:gravity="start"
-            android:hint="@string/Description" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText_description"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:gravity="start"
+                android:hint="@string/Description" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/button_next"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="@string/next"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_description" />
+        <Button
+            android:id="@+id/button_next"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/next"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_description" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
