@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_profile_configuration"
+    app:startDestination="@id/imageDescriptionConfigurationFragment">
+
+    <fragment
+        android:id="@+id/imageDescriptionConfigurationFragment"
+        android:name="it.unimib.enjoyn.PropicDescriptionConfigurationFragment"
+        android:label="fragment_image_description_configuration"
+        tools:layout="@layout/fragment_propic_description_configuration" >
+    </fragment>
+    <fragment
+        android:id="@+id/interestsConfigurationFragment"
+        android:name="it.unimib.enjoyn.InterestsConfigurationFragment"
+        android:label="fragment_interests_configuration"
+        tools:layout="@layout/fragment_interests_configuration" />
+</navigation>

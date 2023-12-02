@@ -46,6 +46,16 @@
     <string name="Join">Unisciti</string>
     <string name="Tag">Tag</string>
     <string name="Title">Titolo</string>
+    <string name="propic">Immagine del profilo</string>
+    <string name="editPropic">Modifica immagine</string>
+    <string name="describeYourself">Raccontaci di te…</string>
+    <string name="skip">Salta</string>
+    <string name="next">Avanti</string>
+    <string name="confirmEmail">CONFERMA MAIL</string>
+    <string name="textRegistrationCodeSubtitles">Per confermare il tuo profilo, inserisci il codice di sei cifre che hai ricevuto tramite mail</string>
+    <string name="pinviewDescription">Prova</string>
+    <string name="newConfirmationCode">"Non hai ricevuto nessuna mail? Per generare un nuovo codice "</string>
+    <string name="tapHere">premi qui</string>
 
 
 </resources>
