@@ -102,98 +102,30 @@
             android:id="@+id/insertUsername"
             android:layout_width="312dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
             app:boxCornerRadiusTopEnd="30dp"
             app:boxCornerRadiusTopStart="30dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.526"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/insertSurname"
-            app:startIconDrawable="@drawable/baseline_person_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/username"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/insertSurname"
-            android:layout_width="312dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:boxCornerRadiusBottomEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusTopStart="30dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/insertName"
-            app:startIconDrawable="@drawable/baseline_person_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/surname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/surname"
-                    android:inputType="text|textPersonName" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/insertName"
-            android:layout_width="312dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:boxCornerRadiusBottomEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusTopStart="30dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/TextRegister"
-            app:startIconDrawable="@drawable/baseline_person_24">
+            app:startIconDrawable="@drawable/baseline_person_24"
+            tools:layout_editor_absoluteY="125dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name"
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/insertName"
-                android:inputType="text|textPersonName" />
+                android:hint="@string/username"
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/confirmPhoneNumber"
-            android:layout_width="312dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:boxCornerRadiusBottomEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusTopStart="30dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/confirmPassword"
-            app:startIconDrawable="@drawable/baseline_local_phone_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/phoneNumber"
-                    android:inputType="phone" />
-            </com.google.android.material.textfield.TextInputLayout>
-
         <TextView
-            android:id="@+id/TextRegister"
+            android:id="@+id/fragmentRegister_textview_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/welcomeTextRegister"
+            android:text="@string/Register"
             android:textAllCaps="false"
             android:textSize="40sp"
             android:textStyle="bold"
@@ -201,15 +133,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/buttonForgottenPassword"
+            android:id="@+id/fragmentLogin_button_PasswordDimenticata"
             android:layout_width="230dp"
             android:layout_height="70dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/bottonRegister"
+            android:text="@string/Register"
             android:textSize="32sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/confirmPhoneNumber" />
+            tools:layout_editor_absoluteY="753dp" />
 
         <TextView
             android:id="@+id/textBackToLogin"
@@ -220,7 +151,7 @@
             app:layout_constraintEnd_toStartOf="@+id/buttonLogin"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonForgottenPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentLogin_button_PasswordDimenticata" />
 
         <Button
             android:id="@+id/buttonLogin"
@@ -233,14 +164,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/textBackToLogin" />
-
-        <Switch
-            android:id="@+id/switch1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Switch"
-            tools:layout_editor_absoluteX="253dp"
-            tools:layout_editor_absoluteY="28dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

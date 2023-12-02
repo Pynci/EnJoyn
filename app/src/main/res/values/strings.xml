@@ -39,9 +39,8 @@
     <string name="name">Nome</string>
     <string name="surname">Cognome</string>
     <string name="phoneNumber">Telefono</string>
-    <string name="welcomeTextRegister">Registrati:</string>
     <string name="insertName">Nome</string>
-    <string name="bottonRegister">Registrati</string>
+    <string name="Register">Registrati</string>
     <string name="bottonLogin"><u>Login</u></string>
     <string name="doneLogin">Hai gia fatto il login?</string>
     <string name="numberMissingPassword">inserisci almeno un numero</string>
@@ -75,5 +74,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="helloBlankFragment">Hello blank fragment</string>
+    <string name="logoApplicazione">Immagine rappresentante il logo dell\'applicazione</string>
 
 </resources>

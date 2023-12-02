@@ -1,8 +1,6 @@
 package it.unimib.enjoyn;
 
-import static it.unimib.enjoyn.util.Costants.EMAIL_ADDRESS;
 import static it.unimib.enjoyn.util.Costants.ENCRYPTED_DATA_FILE_NAME;
-import static it.unimib.enjoyn.util.Costants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -66,13 +64,11 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ButtonLoginToRegister = view.findViewById(R.id.buttonLoginToRegister);
+        ButtonLoginToRegister = view.findViewById(R.id.fragmentLogin_button_toLoginPage);
         LoginButton = view.findViewById(R.id.buttonLogin);
-        TextEmailLogin = view.findViewById(R.id.insertEmailLogin);
-        TextPasswordLogin = view.findViewById(R.id.insertPasswordLogin);
-        Email = view.findViewById(R.id.Email);
-
-
+        TextEmailLogin = view.findViewById(R.id.fragmentLogin_textInputLayout_Email);
+        TextPasswordLogin = view.findViewById(R.id.fragmentLogin_textInputLayout_Password);
+        Email = view.findViewById(R.id.fragmentLogin_textInputEditText_Email);
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
         try {

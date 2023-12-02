@@ -82,25 +82,15 @@ public class RegisterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Textpassword = (view.findViewById(R.id.insertPassword));
-        ButtonRegister = view.findViewById(R.id.buttonForgottenPassword);
+        ButtonRegister = view.findViewById(R.id.fragmentLogin_button_PasswordDimenticata);
         ButtonRegisterToLogin = view.findViewById(R.id.buttonLogin);
         TextEmail = view.findViewById(R.id.insertEmail);
-        TextName = view.findViewById(R.id.insertName);
-        TextSurname = view.findViewById(R.id.insertSurname);
         TextConfirmpassword = view.findViewById(R.id.confirmPassword);
-        TextPhoneNumber = view.findViewById(R.id.confirmPhoneNumber);
         TextUsername = view.findViewById(R.id.insertUsername);
         Password = view.findViewById(R.id.password);
         Email = view.findViewById(R.id.email);
-        Name = view.findViewById(R.id.name);
-        Surname = view.findViewById(R.id.surname);
         ConfirmPassword = view.findViewById(R.id.confirmPasswordId);
         Username = view.findViewById(R.id.username);
-
-
-
-
-
 
        Email.setOnFocusChangeListener((v, hasFocus) -> {
            if(!hasFocus){
