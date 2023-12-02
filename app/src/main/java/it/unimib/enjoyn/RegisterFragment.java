@@ -102,127 +102,101 @@ public class RegisterFragment extends Fragment {
 
 
 
-       Email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    String email = Email.getText().toString();
-                    checkEmail(email);
-                }
-                else {
-                    TextEmail.setError(null);
-                }
+       Email.setOnFocusChangeListener((v, hasFocus) -> {
+           if(!hasFocus){
+               String email = Email.getText().toString();
+               checkEmail(email);
+           }
+           else {
+               TextEmail.setError(null);
+           }
+       });
+
+        Password.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                String password = Password.getText().toString();
+                checkPassword(password);
+            }
+            else {
+                Textpassword.setError(null);
             }
         });
 
-        Password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    String password = Password.getText().toString();
-                    checkPassword(password);
-                }
-                else {
-                    Textpassword.setError(null);
-                }
+        ConfirmPassword.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                String password = Password.getText().toString();
+                String confirmPassword = ConfirmPassword.getText().toString();
+                checkConfirmPassword(password, confirmPassword);
+            }
+            else {
+                TextConfirmpassword.setError(null);
             }
         });
 
-        ConfirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    String password = Password.getText().toString();
-                    String confirmPassword = ConfirmPassword.getText().toString();
-                    checkConfirmPassword(password, confirmPassword);
-                }
-                else {
-                    TextConfirmpassword.setError(null);
-                }
+        Name.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                String name = Name.getText().toString();
+                checkSurName(name, TextName);
+            }
+            else {
+                TextName.setError(null);
             }
         });
 
-        Name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    String name = Name.getText().toString();
-                    checkSurName(name, TextName);
-                }
-                else {
-                    TextName.setError(null);
-                }
+        Surname.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                String surname = Surname.getText().toString();
+                checkSurName(surname, TextSurname);
+            }
+            else {
+                TextSurname.setError(null);
             }
         });
 
-        Surname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    String surname = Surname.getText().toString();
-                    checkSurName(surname, TextSurname);
-                }
-                else {
-                    TextSurname.setError(null);
-                }
+        Username.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                String username = Username.getText().toString();
+                checkUsername(username);
             }
-        });
-
-        Username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    String username = Username.getText().toString();
-                    checkUsername(username);
-                }
-                else {
-                    TextUsername.setError(null);
-                }
+            else {
+                TextUsername.setError(null);
             }
         });
 
 
 
-        ButtonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        ButtonRegister.setOnClickListener(v -> {
 
-                /*
+            /*
 
-                String name = TextName.getEditText().getText().toString();
-                String surname = TextSurname.getEditText().getText().toString();
-                String password = Textpassword.getEditText().getText().toString();
-                String email = TextEmail.getEditText().getText().toString();
-                String confirmPassword = TextConfirmpassword.getEditText().getText().toString();
-                String username = TextUsername.getEditText().getText().toString();
-                String phoneNumber = TextPhoneNumber.getEditText().getText().toString();
-                boolean checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);;
-                boolean checkedName = checkSurName(name, TextName);
-                boolean checkedSurname = checkSurName(surname, TextSurname);
-                boolean checkedPassword = checkPassword(password);
-                boolean checkedUsername = checkUsername(username);
-                boolean checkedPhoneNumber = checkPhoneNumber(phoneNumber);
+            String name = TextName.getEditText().getText().toString();
+            String surname = TextSurname.getEditText().getText().toString();
+            String password = Textpassword.getEditText().getText().toString();
+            String email = TextEmail.getEditText().getText().toString();
+            String confirmPassword = TextConfirmpassword.getEditText().getText().toString();
+            String username = TextUsername.getEditText().getText().toString();
+            String phoneNumber = TextPhoneNumber.getEditText().getText().toString();
+            boolean checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);;
+            boolean checkedName = checkSurName(name, TextName);
+            boolean checkedSurname = checkSurName(surname, TextSurname);
+            boolean checkedPassword = checkPassword(password);
+            boolean checkedUsername = checkUsername(username);
+            boolean checkedPhoneNumber = checkPhoneNumber(phoneNumber);
 
-                if(checkedPassword){
-                    checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);
-                }
-
-
-
-                boolean checkedEmail = checkEmail(email);
-
-                */
-                Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
+            if(checkedPassword){
+                checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);
             }
+
+
+
+            boolean checkedEmail = checkEmail(email);
+
+            */
+            Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
         });
 
-        ButtonRegisterToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityBasedOnCondition(LoginActivity.class,
-                        R.id.action_registerFragment_to_nav_welcome, true);
-            }
-        });
+        ButtonRegisterToLogin.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
+                R.id.action_registerFragment_to_nav_welcome, true));
     }
 
         private boolean checkPassword(String password) {
@@ -329,26 +303,6 @@ public class RegisterFragment extends Fragment {
         //aggiungere controllo di esistenza sul db
 
         TextUsername.setError(null);
-        return true;
-    }
-
-    private boolean checkPhoneNumber(String phoneNumber){
-        if (phoneNumber == null || phoneNumber.length()==0) {
-            TextPhoneNumber.setError(getString(R.string.stringNull));
-            return false;}
-        if(phoneNumber.length()>10) {
-            TextPhoneNumber.setError(getString(R.string.stringTooLong));
-            return false;
-        }
-
-        for (int i = 0; i < phoneNumber.length(); i++){
-            if(!(phoneNumber.charAt(i)>='0' && phoneNumber.charAt(i)<='9') && !(phoneNumber.charAt(i) == 32)){
-                TextPhoneNumber.setError(getString(R.string.insertNumbers));
-                return false;
-            }
-        }
-
-        TextPhoneNumber.setError(null);
         return true;
     }
 
