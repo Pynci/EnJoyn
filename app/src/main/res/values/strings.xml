@@ -1,35 +1,12 @@
 <resources>
     <string name="app_name">EnJoyn</string>
     <string name="Login">Login</string>
-    <string name="forgotPassword">Hai dimenticato la password?</string>
-    <string name="clickHere"> <u>Clicca qui</u></string>
-    <string name="notRegister">Non sei registrato?</string>
-    <string name="register"><u>Registrati</u></string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="imagePassword">TODO</string>
-    <string name="confirmPassword">Conferma password</string>
-    <string name="username">Username</string>
-    <string name="surname">Cognome</string>
-    <string name="phoneNumber">Telefono</string>
     <string name="WelcomeTextRegister">Registrati:</string>
-    <string name="insertName">Nome</string>
-    <string name="bottonRegister">Registrati</string>
-    <string name="bottonLogin"><u>Login</u></string>
     <string name="DoneLogin">Hai gia fatto il login?</string>
-    <string name="numberMissingPassword">inserisci almeno un numero</string>
-    <string name="upperCaseMissingPassword">inserisci almeno una lettera maiuscola</string>
-    <string name="specialCharacterMissingPassword">inserisci almeno un carattere speciale</string>
-    <string name="tooShortPassword">Password troppo corta, almeno di 8 caratteri</string>
-    <string name="notValidEmail">Email non valida</string>
-    <string name="passwordNotEqual">Password non uguali</string>
     <string name="StringTooLong">Troppo lungo</string>
     <string name="Stringnull">Campo obbligatorio</string>
-    <string name="notSerious">FAI IL SERIO</string>
     <string name="InsertNumbers">Inserisci solo numeri</string>
     <string name="DiscoverButton">Scopri</string>
-    <string name="todoButton">ToDo</string>
-    <string name="newEventButton">Nuovo</string>
     <string name="FriendsButton">Amici</string>
     <string name="ProfileButton">Profilo</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -46,6 +23,45 @@
     <string name="Join">Unisciti</string>
     <string name="Tag">Tag</string>
     <string name="Title">Titolo</string>
+
+
+    <string name="appName">EnJoyn</string>
+    <string name="login">Login</string>
+    <string name="forgotPassword">Hai dimenticato la password?</string>
+    <string name="clickHere"> <u>Clicca qui</u></string>
+    <string name="notRegister">Non sei registrato?</string>
+    <string name="register"><u>Registrati</u></string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="imagePassword">TODO</string>
+    <string name="confirmPassword">Conferma password</string>
+    <string name="username">Username</string>
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
+    <string name="phoneNumber">Telefono</string>
+    <string name="welcomeTextRegister">Registrati:</string>
+    <string name="insertName">Nome</string>
+    <string name="bottonRegister">Registrati</string>
+    <string name="bottonLogin"><u>Login</u></string>
+    <string name="doneLogin">Hai gia fatto il login?</string>
+    <string name="numberMissingPassword">inserisci almeno un numero</string>
+    <string name="upperCaseMissingPassword">inserisci almeno una lettera maiuscola</string>
+    <string name="specialCharacterMissingPassword">inserisci almeno un carattere speciale</string>
+    <string name="tooShortPassword">Password troppo corta, almeno di 8 caratteri</string>
+    <string name="notValidEmail">Email non valida</string>
+    <string name="passwordNotEqual">Password non uguali</string>
+    <string name="stringTooLong">Troppo lungo</string>
+    <string name="stringNull">Campo obbligatorio</string>
+    <string name="notSerious">FAI IL SERIO</string>
+    <string name="insertNumbers">Inserisci solo numeri</string>
+    <string name="discoverButton">Scopri</string>
+    <string name="todoButton">ToDo</string>
+    <string name="newEventButton">Nuovo</string>
+    <string name="friendsButton">Amici</string>
+    <string name="profileButton">Profilo</string>
+    <string name="description">Descrizione</string>
+    <string name="nameSurname">Nome Cognome</string>
+    <string name="buttonShare">Bottone Condividi</string>
     <string name="propic">Immagine del profilo</string>
     <string name="editPropic">Modifica immagine</string>
     <string name="describeYourself">Raccontaci di te…</string>
@@ -57,5 +73,7 @@
     <string name="newConfirmationCode">"Non hai ricevuto nessuna mail? Per generare un nuovo codice "</string>
     <string name="tapHere">premi qui</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="helloBlankFragment">Hello blank fragment</string>
 
 </resources>
