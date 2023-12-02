@@ -45,7 +45,7 @@
     <string name="confirmEmail">CONFERMA MAIL</string>
     <string name="textRegistrationCodeSubtitles">Per confermare il tuo profilo, inserisci il codice di sei cifre che hai ricevuto tramite mail</string>
     <string name="pinviewDescription">Prova</string>
-    <string name="newConfirmationCode">"Non hai ricevuto nessuna? Per generare un nuovo codice "</string>
+    <string name="newConfirmationCode">"Non hai ricevuto nessuna mail? Per generare un nuovo codice "</string>
     <string name="tapHere">premi qui</string>
 
     <!-- TODO: Remove or change this placeholder text -->
