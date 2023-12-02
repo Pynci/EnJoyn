@@ -33,7 +33,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_account_circle_24" />
+            app:srcCompat="@drawable/baseline_account_circle_24"/>
 
         <ImageButton
             android:id="@+id/propicDescriptionConfiguration_imageButton_addPropic"
@@ -45,8 +45,9 @@
             android:paddingStart="20dp"
             android:paddingTop="20dp"
             android:src="@drawable/baseline_add_circle_24"
+            android:theme="@style/AppTheme"
             app:layout_constraintBottom_toBottomOf="@+id/propicDescriptionConfiguration_imageView_propic"
-            app:layout_constraintEnd_toEndOf="@+id/propicDescriptionConfiguration_imageView_propic" />
+            app:layout_constraintEnd_toEndOf="@+id/propicDescriptionConfiguration_imageView_propic"/>
 
 
         <EditText
