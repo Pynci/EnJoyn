@@ -13,15 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="@string/register"
+        <ImageView
+            android:id="@+id/fragmentRegister_imageView_appLogo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="75dp"
+            android:contentDescription="@string/logoApplicazione"
+            android:src="@mipmap/ic_launcher_round"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_ConfermaPassword" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragmentRegister_TextInputLayout_username"
@@ -121,16 +122,39 @@
                 android:inputType="text|textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/fragmentRegister_imageView_appLogo"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="75dp"
-            android:contentDescription="@string/logoApplicazione"
-            android:src="@mipmap/ic_launcher_round"
+        <Button
+            android:id="@+id/fragmentRegister_Button_RegisterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="@string/register"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_ConfermaPassword" />
+
+        <TextView
+            android:id="@+id/fragmentRegister_textView_alreadyRegisterd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/DoneLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.203"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_Button_RegisterButton" />
+
+        <Button
+            android:id="@+id/fragmentRegister_Button_buttonToLogin"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="80dp"
+            android:text="@string/Login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fragmentRegister_textView_alreadyRegisterd"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_Button_RegisterButton" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
