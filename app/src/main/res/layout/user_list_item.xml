@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:descendantFocusability="blocksDescendants"
+    android:padding="12dp"
+    tools:layout_editor_absoluteX="-30dp"
+    tools:layout_editor_absoluteY="0dp">
+
+
+    <ImageView
+        android:id="@+id/userListItem_imageView_userPhoto"
+        android:layout_width="129dp"
+        android:layout_height="123dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_person_pin_24" />
+
+    <TextView
+        android:id="@+id/userListItem_textView_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/username"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/userListItem_textView_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/insertName"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/userListItem_textView_surname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userListItem_textView_username" />
+
+    <TextView
+        android:id="@+id/userListItem_textView_surname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/surname"
+        android:textSize="20dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/userListItem_textView_name"
+        app:layout_constraintStart_toEndOf="@+id/userListItem_textView_name" />
+</androidx.constraintlayout.widget.ConstraintLayout>

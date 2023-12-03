@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
+import it.unimib.enjoyn.model.UsersDatabaseResponse;
 
 public class JSONParserUtil {
 
@@ -19,8 +20,12 @@ public class JSONParserUtil {
         this.context = application.getApplicationContext();
     }
 
-    public EventsDatabaseResponse parseJSONFileWithGSon(BufferedReader bufferedReader) throws IOException{
+    public EventsDatabaseResponse parseJSONEventFileWithGSon(BufferedReader bufferedReader) throws IOException{
 
         return new Gson().fromJson(bufferedReader, EventsDatabaseResponse.class);
+    }
+
+    public UsersDatabaseResponse parseJSONUserFileWithGSon(BufferedReader bufferedReader) throws IOException{
+        return new Gson().fromJson(bufferedReader, UsersDatabaseResponse.class);
     }
 }
