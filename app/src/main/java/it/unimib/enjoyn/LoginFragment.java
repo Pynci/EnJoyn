@@ -62,16 +62,6 @@ public class LoginFragment extends Fragment {
         EditText editTextMail = view.findViewById(R.id.fragmentLogin_textInputEditText_Email);
         EditText editTextPassword = view.findViewById(R.id.fragmentLogin_textInputEditText_Password);
 
-        /*
-        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
-        try {
-            if (!dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME).isEmpty()) {
-                SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
-            }
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
-         */
 
 
         /*
@@ -133,6 +123,17 @@ public class LoginFragment extends Fragment {
         );
          */
     }
+
+    /*
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
+        try {
+            if (!dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME).isEmpty()) {
+                SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
+            }
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+         */
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
         if (USE_NAVIGATION_COMPONENT) {
