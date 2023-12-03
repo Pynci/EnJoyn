@@ -159,7 +159,7 @@ public class DiscoverFragment extends Fragment {
             InputStream inputStream = context.getAssets().open("prova.json"); //apro file
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
 
-            return jsonParserUtil.parseJSONFileWithGSon(bufferedReader).getEvents();
+            return jsonParserUtil.parseJSONEventFileWithGSon(bufferedReader).getEvents();
         } catch (IOException e) {
             e.printStackTrace();
         }
