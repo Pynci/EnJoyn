@@ -30,7 +30,6 @@ public class RegisterFragment extends Fragment {
     TextInputLayout TextConfirmpassword;
     TextInputLayout TextName;
     TextInputLayout TextSurname;
-    TextInputLayout TextPhoneNumber;
     TextInputLayout TextUsername;
 
     EditText Password;
@@ -120,26 +119,6 @@ public class RegisterFragment extends Fragment {
             }
             else {
                 TextConfirmpassword.setError(null);
-            }
-        });
-
-        Name.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                String name = Name.getText().toString();
-                checkSurName(name, TextName);
-            }
-            else {
-                TextName.setError(null);
-            }
-        });
-
-        Surname.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                String surname = Surname.getText().toString();
-                checkSurName(surname, TextSurname);
-            }
-            else {
-                TextSurname.setError(null);
             }
         });
 
