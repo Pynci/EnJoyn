@@ -1,7 +1,5 @@
 package it.unimib.enjoyn;
 
-import static it.unimib.enjoyn.util.Costants.ENCRYPTED_DATA_FILE_NAME;
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,12 +17,6 @@ import android.widget.EditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.apache.commons.validator.routines.EmailValidator;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
-import it.unimib.enjoyn.util.DataEncryptionUtil;
-import it.unimib.enjoyn.util.SharedPreferencesUtil;
 
 public class LoginFragment extends Fragment {
 
@@ -54,7 +46,7 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Button buttonLoginToRegister = view.findViewById(R.id.fragmentLogin_button_toLoginPage);
-        Button buttonLogin = view.findViewById(R.id.buttonLogin);
+        Button buttonLogin = view.findViewById(R.id.fragmentLogin_button_ButtonLogin);
 
         TextInputLayout textInputLayoutEmail = view.findViewById(R.id.fragmentLogin_textInputLayout_Email);
         TextInputLayout textInputLayoutPassword = view.findViewById(R.id.fragmentLogin_textInputLayout_Password);

@@ -80,16 +80,16 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Textpassword = (view.findViewById(R.id.insertPassword));
+        Textpassword = (view.findViewById(R.id.fragmentRegister_TextInputLayout_Password));
         ButtonRegister = view.findViewById(R.id.fragmentLogin_button_PasswordDimenticata);
-        ButtonRegisterToLogin = view.findViewById(R.id.buttonLogin);
-        TextEmail = view.findViewById(R.id.insertEmail);
-        TextConfirmpassword = view.findViewById(R.id.confirmPassword);
-        TextUsername = view.findViewById(R.id.insertUsername);
-        Password = view.findViewById(R.id.password);
-        Email = view.findViewById(R.id.email);
-        ConfirmPassword = view.findViewById(R.id.confirmPasswordId);
-        Username = view.findViewById(R.id.username);
+        ButtonRegisterToLogin = view.findViewById(R.id.fragmentLogin_button_ButtonLogin);
+        TextEmail = view.findViewById(R.id.fragmentRegister_TextInputLayout_Email);
+        TextConfirmpassword = view.findViewById(R.id.fragmentRegister_TextInputLayout_ConfermaPassword);
+        TextUsername = view.findViewById(R.id.fragmentRegister_TextInputLayout_username);
+        Password = view.findViewById(R.id.fragmentRegister_TextInputEditText_Password);
+        Email = view.findViewById(R.id.fragmentRegister_TextInputEditText_Email);
+        ConfirmPassword = view.findViewById(R.id.fragmentRegister_TextInputEditText_ConfermaPassword);
+        Username = view.findViewById(R.id.fragmentRegister_TextInputEditText_Username);
 
        Email.setOnFocusChangeListener((v, hasFocus) -> {
            if(!hasFocus){

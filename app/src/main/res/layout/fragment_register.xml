@@ -13,8 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="@string/register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_ConfermaPassword" />
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/insertUsername"
+            android:id="@+id/fragmentRegister_TextInputLayout_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -30,7 +40,7 @@
             app:startIconDrawable="@drawable/baseline_person_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/username"
+                android:id="@+id/fragmentRegister_TextInputEditText_Username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
@@ -38,7 +48,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/insertEmail"
+            android:id="@+id/fragmentRegister_TextInputLayout_Email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -50,11 +60,11 @@
             app:boxCornerRadiusTopStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/insertUsername"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_username"
             app:startIconDrawable="@drawable/baseline_alternate_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email"
+                android:id="@+id/fragmentRegister_TextInputEditText_Email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
@@ -62,7 +72,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/insertPassword"
+            android:id="@+id/fragmentRegister_TextInputLayout_Password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -74,12 +84,12 @@
             app:boxCornerRadiusTopStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/insertEmail"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_Email"
             app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/baseline_key_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
+                android:id="@+id/fragmentRegister_TextInputEditText_Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
@@ -87,7 +97,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/confirmPassword"
+            android:id="@+id/fragmentRegister_TextInputLayout_ConfermaPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -99,59 +109,24 @@
             app:boxCornerRadiusTopStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/insertPassword"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_Password"
             app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/baseline_key_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/confirmPasswordId"
+                android:id="@+id/fragmentRegister_TextInputEditText_ConfermaPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/confirmPassword"
                 android:inputType="text|textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/fragmentLogin_button_PasswordDimenticata"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="@string/Register"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confirmPassword" />
-
-        <TextView
-            android:id="@+id/textBackToLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="15dp"
-            android:text="@string/doneLogin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonLogin"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentLogin_button_PasswordDimenticata" />
-
-        <Button
-            android:id="@+id/buttonLogin"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/buttonLogin"
-            android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textBackToLogin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/textBackToLogin" />
-
         <ImageView
             android:id="@+id/fragmentRegister_imageView_appLogo"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="75dp"
+            android:contentDescription="@string/logoApplicazione"
             android:src="@mipmap/ic_launcher_round"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
