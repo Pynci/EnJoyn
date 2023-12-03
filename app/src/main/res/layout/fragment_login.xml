@@ -27,9 +27,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragmentLogin_textInputLayout_Email"
-            android:layout_width="312dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="75dp"
+            android:layout_marginEnd="40dp"
             android:textColorHint="@color/material_dynamic_tertiary50"
             app:boxBackgroundColor="@android:color/transparent"
             app:boxCornerRadiusBottomEnd="30dp"
@@ -55,11 +57,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragmentLogin_textInputLayout_Password"
-            android:layout_width="312dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="40dp"
 
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
