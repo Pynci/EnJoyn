@@ -28,13 +28,6 @@ import it.unimib.enjoyn.util.SharedPreferencesUtil;
 
 public class LoginFragment extends Fragment {
 
-    Button buttonLoginToRegister;
-    Button buttonLogin;
-    TextInputLayout textInputLayoutEmail;
-    TextInputLayout textInputLayoutPassword;
-    EditText editTextMail;
-    EditText editTextPassword;
-
     private static final boolean USE_NAVIGATION_COMPONENT = true;
 
     public static LoginFragment newInstance() {
@@ -60,14 +53,14 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        buttonLoginToRegister = view.findViewById(R.id.fragmentLogin_button_toLoginPage);
-        buttonLogin = view.findViewById(R.id.buttonLogin);
+        Button buttonLoginToRegister = view.findViewById(R.id.fragmentLogin_button_toLoginPage);
+        Button buttonLogin = view.findViewById(R.id.buttonLogin);
 
-        textInputLayoutEmail = view.findViewById(R.id.fragmentLogin_textInputLayout_Email);
-        textInputLayoutPassword = view.findViewById(R.id.fragmentLogin_textInputLayout_Password);
+        TextInputLayout textInputLayoutEmail = view.findViewById(R.id.fragmentLogin_textInputLayout_Email);
+        TextInputLayout textInputLayoutPassword = view.findViewById(R.id.fragmentLogin_textInputLayout_Password);
 
-        editTextMail = view.findViewById(R.id.fragmentLogin_textInputEditText_Email);
-        editTextPassword = view.findViewById(R.id.fragmentLogin_textInputEditText_Password);
+        EditText editTextMail = view.findViewById(R.id.fragmentLogin_textInputEditText_Email);
+        EditText editTextPassword = view.findViewById(R.id.fragmentLogin_textInputEditText_Password);
 
         /*
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
@@ -84,9 +77,18 @@ public class LoginFragment extends Fragment {
         /*
         Serve a controllare che l'uente abbia inserito correttamente la mail.
          */
+
         editTextMail.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
-                checkEmail(this.editTextMail.getText().toString());
+
+                int result = checkEmail(editTextMail.getText().toString());
+
+                if (result == 1)
+                    textInputLayoutEmail.setError(getString(R.string.Stringnull));
+                else if (result == 2)
+                    textInputLayoutEmail.setError(getString(R.string.notValidEmail));
+                else
+                    textInputLayoutEmail.setError(null);
             }
             else {
                 textInputLayoutEmail.setError(null);
@@ -98,7 +100,10 @@ public class LoginFragment extends Fragment {
          */
         editTextPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
-                checkPassword(this.editTextPassword.getText().toString());
+                if(isPasswordOk(editTextPassword.getText().toString()))
+                    textInputLayoutPassword.setError(getString(R.string.Stringnull));
+                else
+                    textInputLayoutPassword.setError(null);
             }
             else {
                 textInputLayoutPassword.setError(null);
@@ -142,26 +147,16 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private boolean checkEmail(String email) {
-        if(email == null || email.length() == 0) {
-            textInputLayoutEmail.setError(getString(R.string.Stringnull));
-            return false;
-        }
-        if (!(EmailValidator.getInstance().isValid(email))) {
-            textInputLayoutEmail.setError(getString(R.string.notValidEmail));
-            return false;
-        } else {
-            textInputLayoutEmail.setError(null);
-            return true;
-        }
+    private int checkEmail(String email) {
+        if(email == null || email.length() == 0)
+            return 1;
+        if (!(EmailValidator.getInstance().isValid(email)))
+            return 2;
+        else
+            return 0;
     }
 
-    private boolean checkPassword(String password){
-        if(password == null || password.length() == 0){
-            textInputLayoutPassword.setError(getString(R.string.Stringnull));
-            return false;
-        }
-        textInputLayoutPassword.setError(null);
-        return true;
+    private boolean isPasswordOk(String password){
+        return password == null || password.length() == 0;
     }
 }
