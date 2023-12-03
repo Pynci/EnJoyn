@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/discover"
+        android:enabled="true"
+        android:icon="@drawable/baseline_explore_24"
+        android:title="@string/discoverButton" />
+    <item
+        android:id="@+id/todo"
+        android:enabled="true"
+        android:icon="@drawable/baseline_outlined_flag_24"
+        android:title="@string/todoButton" />
+    <item
+        android:id="@+id/newEventFragment"
+        android:enabled="true"
+        android:icon="@drawable/baseline_add_circle_outline_24"
+        android:title="@string/newEventButton" />
+    <item
+        android:id="@+id/friendsFragment"
+        android:enabled="true"
+        android:icon="@drawable/baseline_favorite_border_24"
+        android:title="@string/friendsButton" />
+    <item
+        android:id="@+id/profileFragment"
+        android:enabled="true"
+        android:icon="@drawable/baseline_person_outline_24"
+        android:title="@string/profileButton" />
+
+</menu>
