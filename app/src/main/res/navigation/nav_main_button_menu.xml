@@ -33,7 +33,11 @@
         android:id="@+id/todo"
         android:name="it.unimib.enjoyn.TodoFragment"
         android:label="fragment_todo"
-        tools:layout="@layout/fragment_todo" />
+        tools:layout="@layout/fragment_todo" >
+        <action
+            android:id="@+id/action_todo_to_discoverSingleEvent"
+            app:destination="@id/discoverSingleEvent" />
+    </fragment>
     <include app:graph="@navigation/nav_welcome" />
     <fragment
         android:id="@+id/discoverSingleEvent"

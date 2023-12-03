@@ -123,7 +123,7 @@ public class DiscoverFragment extends Fragment {
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
-                        Snackbar.make(view, event.getTitle(), Snackbar.LENGTH_SHORT).show();
+                        startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
                     }
 
                     @Override
