@@ -67,7 +67,6 @@ public class LoginFragment extends Fragment {
         /*
         Serve a controllare che l'uente abbia inserito correttamente la mail.
          */
-
         editTextMail.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
 
@@ -103,6 +102,8 @@ public class LoginFragment extends Fragment {
 
         buttonLoginToRegister.setOnClickListener(v -> startActivityBasedOnCondition(RegisterActivity.class,
                 R.id.action_loginFragment_to_registerActivity, true));
+
+
 
         /*
         buttonLogin.setOnClickListener(v -> {

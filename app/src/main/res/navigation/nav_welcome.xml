@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registerActivity"
             app:destination="@id/registerActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_passwordRecoverFragment"
+            app:destination="@id/passwordRecoverFragment" />
     </fragment>
     <activity
         android:id="@+id/mainButtonMenuActivity"
@@ -27,5 +30,10 @@
         android:name="it.unimib.enjoyn.RegisterActivity"
         android:label="activity_register"
         tools:layout="@layout/activity_register" />
+    <fragment
+        android:id="@+id/passwordRecoverFragment"
+        android:name="it.unimib.enjoyn.PasswordRecoverFragment"
+        android:label="fragment_password_recover"
+        tools:layout="@layout/fragment_password_recover" />
 
 </navigation>
