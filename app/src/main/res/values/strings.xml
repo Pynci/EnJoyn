@@ -42,7 +42,7 @@
     <string name="insertName">Nome</string>
     <string name="Register">Registrati</string>
     <string name="buttonLogin"><u>Login</u></string>
-    <string name="doneLogin">Hai gia fatto il login?</string>
+    <string name="doneLogin">Ti sei già registrato??</string>
     <string name="numberMissingPassword">inserisci almeno un numero</string>
     <string name="upperCaseMissingPassword">inserisci almeno una lettera maiuscola</string>
     <string name="specialCharacterMissingPassword">inserisci almeno un carattere speciale</string>
