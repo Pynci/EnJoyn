@@ -41,7 +41,7 @@
     <string name="phoneNumber">Telefono</string>
     <string name="insertName">Nome</string>
     <string name="Register">Registrati</string>
-    <string name="bottonLogin"><u>Login</u></string>
+    <string name="buttonLogin"><u>Login</u></string>
     <string name="doneLogin">Hai gia fatto il login?</string>
     <string name="numberMissingPassword">inserisci almeno un numero</string>
     <string name="upperCaseMissingPassword">inserisci almeno una lettera maiuscola</string>
