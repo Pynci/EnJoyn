@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +14,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Calendar;
+
+import it.unimib.enjoyn.util.DatePickerFragment;
+import it.unimib.enjoyn.util.TimePickerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +29,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class NewEventFragment extends Fragment {
+
+    Button date;
+
+    Button time;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,5 +96,25 @@ public class NewEventFragment extends Fragment {
                 return false;
             }
         });
+
+        date = view.findViewById(R.id.newEventFragment_button_datePicker);
+        FragmentManager fragmentManager = getParentFragmentManager();
+
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (new DatePickerFragment()).show(fragmentManager, "datePicker");
+            }
+        });
+
+        time = view.findViewById(R.id.pickTime);
+
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (new TimePickerFragment()).show(fragmentManager, "timePicker");
+            }
+        });
+
     }
 }
