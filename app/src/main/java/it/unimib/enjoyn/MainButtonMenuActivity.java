@@ -30,6 +30,7 @@ public class MainButtonMenuActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
+
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.discover,
                 R.id.todo,
