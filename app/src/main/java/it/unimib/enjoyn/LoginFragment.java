@@ -97,24 +97,24 @@ public class LoginFragment extends Fragment {
 
 
 
-        /*
+
         buttonLogin.setOnClickListener(v -> {
             String password = textInputLayoutPassword.getEditText().getText().toString();
             String email = textInputLayoutEmail.getEditText().getText().toString();
-            boolean checkedEmail = checkEmail(email);
-            boolean checkedPassword = checkPassword(password);
+          //  boolean checkedEmail = checkEmail(email);
+          //  boolean checkedPassword = checkPassword(password);
             startActivityBasedOnCondition(MainButtonMenuActivity.class,
                     R.id.action_loginFragment_to_mainButtonMenuActivity, true);
 
-             if(checkedEmail && checkedPassword){
+            // if(checkedEmail && checkedPassword){
              startActivityBasedOnCondition(MainButtonMenuActivity.class,
              R.id.action_loginFragment_to_mainButtonMenuActivity, true);
-             }
+           //  }
 
         }
 
         );
-         */
+
     }
 
     /*
