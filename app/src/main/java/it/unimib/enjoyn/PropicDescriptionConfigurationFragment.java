@@ -126,7 +126,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     /*
     Avvia un'activity utilizzando gli Intent oppure il NavigationComponent.
     Prende in input la classe dell'activity da avviare e l'id associato all'azione (passaggio da un'activity
-    all'altra) definita in nav_first_profile_configuration.xml.
+    all'altra) definita.
     */
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
         if (USE_NAVIGATION_COMPONENT) {
