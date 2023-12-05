@@ -2,6 +2,7 @@ package it.unimib.enjoyn;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,6 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -86,6 +89,17 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
 
         final Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
         final ImageButton imageButtonAddPropic = view.findViewById(R.id.propicDescriptionConfiguration_imageButton_addPropic);
+
+        /*
+
+       //per chiunque stia leggendo: se decommenti queste istruzioni crasha tutto e ti viene
+       //un gigantesco tumore ai polmoni (incurabile)
+
+        int themeColor = ContextCompat.getColor(requireContext(), requireContext().getTheme().getChangingConfigurations());
+        Drawable propic = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_account_circle_24);
+        Drawable addPropic = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_add_circle_24);
+        */
+
 
         //questi potrebbero in futuro servire come attributi del fragment
         EditText username = view.findViewById(R.id.propicDescriptionConfiguration_editText_cognome);

@@ -25,48 +25,34 @@ import org.apache.commons.validator.routines.EmailValidator;
  */
 public class RegisterFragment extends Fragment {
 
-    TextInputLayout Textpassword;
-    TextInputLayout TextEmail;
-    TextInputLayout TextConfirmpassword;
-    TextInputLayout TextName;
-    TextInputLayout TextSurname;
-    TextInputLayout TextPhoneNumber;
-    TextInputLayout TextUsername;
+    TextInputLayout textInputPassword;
+    TextInputLayout textInputEmail;
+    TextInputLayout textInputConfirmPassword;
+    TextInputLayout textInputUsername;
 
-    EditText Password;
+    EditText editTextPassword;
+    EditText editTextEmail;
+    EditText editTextConfirmPassword;
+    EditText editTextUsername;
 
-    EditText Email;
+    Button buttonRegister;
+    Button buttonRegisterToLogin;
 
-    EditText Name;
-
-    EditText Surname;
-
-    EditText ConfirmPassword;
-
-    EditText Username;
-
-
-    Button ButtonRegister;
-    Button ButtonRegisterToLogin;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
 
     public RegisterFragment() {
         // Required empty public constructor
     }
 
-    /*
     public static RegisterFragment newInstance() {
         RegisterFragment fragment = new RegisterFragment();
         Bundle args = new Bundle();
         return fragment;
     }
-    */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
     }
 
@@ -81,91 +67,61 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Textpassword = (view.findViewById(R.id.insertPassword));
-        ButtonRegister = view.findViewById(R.id.buttonForgottenPassword);
-        ButtonRegisterToLogin = view.findViewById(R.id.buttonLogin);
-        TextEmail = view.findViewById(R.id.insertEmail);
-        TextName = view.findViewById(R.id.insertName);
-        TextSurname = view.findViewById(R.id.insertSurname);
-        TextConfirmpassword = view.findViewById(R.id.confirmPassword);
-        TextPhoneNumber = view.findViewById(R.id.confirmPhoneNumber);
-        TextUsername = view.findViewById(R.id.insertUsername);
-        Password = view.findViewById(R.id.password);
-        Email = view.findViewById(R.id.email);
-        Name = view.findViewById(R.id.name);
-        Surname = view.findViewById(R.id.surname);
-        ConfirmPassword = view.findViewById(R.id.confirmPasswordId);
-        Username = view.findViewById(R.id.username);
+        textInputPassword = (view.findViewById(R.id.fragmentRegister_TextInputLayout_Password));
+        buttonRegister = view.findViewById(R.id.fragmentRegister_Button_RegisterButton);
+        buttonRegisterToLogin = view.findViewById(R.id.fragmentRegister_Button_buttonToLogin);
+        textInputEmail = view.findViewById(R.id.fragmentRegister_TextInputLayout_Email);
+        textInputConfirmPassword = view.findViewById(R.id.fragmentRegister_TextInputLayout_ConfermaPassword);
+        textInputUsername = view.findViewById(R.id.fragmentRegister_TextInputLayout_username);
+        editTextPassword = view.findViewById(R.id.fragmentRegister_TextInputEditText_Password);
+        editTextEmail = view.findViewById(R.id.fragmentRegister_TextInputEditText_Email);
+        editTextConfirmPassword = view.findViewById(R.id.fragmentRegister_TextInputEditText_ConfermaPassword);
+        editTextUsername = view.findViewById(R.id.fragmentRegister_TextInputEditText_Username);
 
-
-
-
-
-
-       Email.setOnFocusChangeListener((v, hasFocus) -> {
+       editTextEmail.setOnFocusChangeListener((v, hasFocus) -> {
            if(!hasFocus){
-               String email = Email.getText().toString();
+               String email = editTextEmail.getText().toString();
                checkEmail(email);
            }
            else {
-               TextEmail.setError(null);
+               textInputEmail.setError(null);
            }
        });
 
-        Password.setOnFocusChangeListener((v, hasFocus) -> {
+        editTextPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
-                String password = Password.getText().toString();
+                String password = editTextPassword.getText().toString();
                 checkPassword(password);
             }
             else {
-                Textpassword.setError(null);
+                textInputPassword.setError(null);
             }
         });
 
-        ConfirmPassword.setOnFocusChangeListener((v, hasFocus) -> {
+        editTextConfirmPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
-                String password = Password.getText().toString();
-                String confirmPassword = ConfirmPassword.getText().toString();
+                String password = editTextPassword.getText().toString();
+                String confirmPassword = editTextConfirmPassword.getText().toString();
                 checkConfirmPassword(password, confirmPassword);
             }
             else {
-                TextConfirmpassword.setError(null);
+                textInputConfirmPassword.setError(null);
             }
         });
 
-        Name.setOnFocusChangeListener((v, hasFocus) -> {
+        editTextUsername.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
-                String name = Name.getText().toString();
-                checkSurName(name, TextName);
-            }
-            else {
-                TextName.setError(null);
-            }
-        });
-
-        Surname.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                String surname = Surname.getText().toString();
-                checkSurName(surname, TextSurname);
-            }
-            else {
-                TextSurname.setError(null);
-            }
-        });
-
-        Username.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                String username = Username.getText().toString();
+                String username = editTextUsername.getText().toString();
                 checkUsername(username);
             }
             else {
-                TextUsername.setError(null);
+                textInputUsername.setError(null);
             }
         });
 
 
 
-        ButtonRegister.setOnClickListener(v -> {
+        buttonRegister.setOnClickListener(v -> {
 
             /*
 
@@ -195,21 +151,21 @@ public class RegisterFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
         });
 
-        ButtonRegisterToLogin.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
-                R.id.action_registerFragment_to_nav_welcome, true));
+        buttonRegisterToLogin.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
+                R.id.action_registerFragment_to_loginActivity, true));
     }
 
         private boolean checkPassword(String password) {
-        boolean passedP;
-        boolean number = false;
-        boolean specialChar = false;
-        boolean capLetter = false;
+            boolean passedP;
+            boolean number = false;
+            boolean specialChar = false;
+            boolean capLetter = false;
         if (password == null || password.length()==0) {
-            Textpassword.setError(getString(R.string.stringNull));
+            textInputPassword.setError(getString(R.string.stringNull));
             return false;
         }
         if(password.length() < 8) {
-            Textpassword.setError(getString(R.string.tooShortPassword));
+            textInputPassword.setError(getString(R.string.tooShortPassword));
             return false;
         }
 
@@ -228,47 +184,47 @@ public class RegisterFragment extends Fragment {
 
 
         if (!number) {
-            Textpassword.setError(getString(R.string.numberMissingPassword));
+            textInputPassword.setError(getString(R.string.numberMissingPassword));
         } else {
             if (!capLetter) {
-                Textpassword.setError(getString(R.string.upperCaseMissingPassword));
+                textInputPassword.setError(getString(R.string.upperCaseMissingPassword));
             } else {
                 if (!specialChar) {
-                    Textpassword.setError(getString(R.string.specialCharacterMissingPassword));
+                    textInputPassword.setError(getString(R.string.specialCharacterMissingPassword));
                 }
             }
 
         }
         passedP = (number && capLetter && specialChar);
         if (passedP) {
-            Textpassword.setError(null);
+            textInputPassword.setError(null);
         }
         return passedP;
     }
 
     private boolean checkEmail(String email) {
         if(email==null || email.length()==0) {
-            TextEmail.setError(getString(R.string.stringNull));
+            textInputEmail.setError(getString(R.string.stringNull));
             return false;
         }
         if (!(EmailValidator.getInstance().isValid(email))) {
-            TextEmail.setError(getString(R.string.notValidEmail));
+            textInputEmail.setError(getString(R.string.notValidEmail));
             return false;
         } else {
-            TextEmail.setError(null);
+            textInputEmail.setError(null);
             return true;
         }
     }
     private boolean checkConfirmPassword(String password, String confirmPassword) {
         if(confirmPassword==null || confirmPassword.length()==0) {
-            TextConfirmpassword.setError(getString(R.string.stringNull));
+            textInputConfirmPassword.setError(getString(R.string.stringNull));
             return false;
         }
         if (!(confirmPassword.equals(password))) {
-            TextConfirmpassword.setError(getString(R.string.passwordNotEqual));
+            textInputConfirmPassword.setError(getString(R.string.passwordNotEqual));
             return false;
         } else {
-            TextConfirmpassword.setError(null);
+            textInputConfirmPassword.setError(null);
             return true;
         }
     }
@@ -294,15 +250,15 @@ public class RegisterFragment extends Fragment {
 
     private boolean checkUsername(String username){
         if (username == null || username.length()==0) {
-            TextUsername.setError(getString(R.string.stringNull));
+            textInputUsername.setError(getString(R.string.stringNull));
             return false;}
         if(username.length()>=20) {
-            TextUsername.setError(getString(R.string.stringTooLong));
+            textInputUsername.setError(getString(R.string.stringTooLong));
             return false;
         }
         //aggiungere controllo di esistenza sul db
 
-        TextUsername.setError(null);
+        textInputUsername.setError(null);
         return true;
     }
 

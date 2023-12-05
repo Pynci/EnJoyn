@@ -11,13 +11,12 @@
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_nav_welcome"
-            app:destination="@id/nav_welcome" />
-        <action
             android:id="@+id/action_registerFragment_to_confirmRegistrationCode"
             app:destination="@id/confirmRegistrationCode" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginActivity"
+            app:destination="@id/loginActivity" />
     </fragment>
-    <include app:graph="@navigation/nav_welcome" />
     <fragment
         android:id="@+id/confirmRegistrationCode"
         android:name="it.unimib.enjoyn.ConfirmRegistrationCode"
@@ -32,4 +31,9 @@
         android:name="it.unimib.enjoyn.PropicDescriptionConfigurationFragment"
         android:label="fragment_propic_description_configuration"
         tools:layout="@layout/fragment_propic_description_configuration" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="it.unimib.enjoyn.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 </navigation>

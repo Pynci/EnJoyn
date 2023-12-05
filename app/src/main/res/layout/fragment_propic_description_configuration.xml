@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".PropicDescriptionConfigurationFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +34,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_account_circle_24" />
+            app:srcCompat="@drawable/baseline_account_circle_24"/>
 
         <ImageButton
             android:id="@+id/propicDescriptionConfiguration_imageButton_addPropic"
@@ -45,15 +46,18 @@
             android:paddingStart="20dp"
             android:paddingTop="20dp"
             android:src="@drawable/baseline_add_circle_24"
+            android:theme="@style/AppTheme"
             app:layout_constraintBottom_toBottomOf="@+id/propicDescriptionConfiguration_imageView_propic"
-            app:layout_constraintEnd_toEndOf="@+id/propicDescriptionConfiguration_imageView_propic" />
+            app:layout_constraintEnd_toEndOf="@+id/propicDescriptionConfiguration_imageView_propic"/>
 
 
         <EditText
             android:id="@+id/propicDescriptionConfiguration_editText_cognome"
-            android:layout_width="300dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:autofillHints="person-name-family"
             android:background="@null"
             android:ellipsize="start"
@@ -72,9 +76,11 @@
 
         <EditText
             android:id="@+id/propicDescriptionConfiguration_editText_nome"
-            android:layout_width="300dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:autofillHints="person-name-given"
             android:background="@null"
             android:ellipsize="start"
@@ -102,9 +108,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/propicDescriptionConfiguration_textInputLayout_description"
-            android:layout_width="300dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="50dp"
+            android:layout_marginEnd="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/propicDescriptionConfiguration_editText_cognome">
@@ -120,9 +128,11 @@
 
         <Button
             android:id="@+id/propicDescriptionConfiguration_button_next"
-            android:layout_width="300dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
             android:layout_marginBottom="20dp"
             android:text="@string/next"
             android:textSize="14sp"
