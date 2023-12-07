@@ -85,7 +85,7 @@ public class ProfileFragment extends Fragment {
                 return false;
             }
         });
-
+        /*
         //prova swicth di un cointener
 
         ViewSwitcher viewSwitcher = (ViewSwitcher) view.findViewById(R.id.viewSwitcher1);
@@ -103,5 +103,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
+         */
     }
 }

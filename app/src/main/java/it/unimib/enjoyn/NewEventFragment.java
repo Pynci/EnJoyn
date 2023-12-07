@@ -1,5 +1,6 @@
 package it.unimib.enjoyn;
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.util.Calendar;
 
@@ -33,6 +35,8 @@ public class NewEventFragment extends Fragment {
     Button date;
 
     Button time;
+
+    TextView selectedTime;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -108,11 +112,35 @@ public class NewEventFragment extends Fragment {
         });
 
         time = view.findViewById(R.id.pickTime);
+        selectedTime = view.findViewById(R.id.textViewdata);
 
+        // on below line we are adding click
+        // listener for our pick date button
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                (new TimePickerFragment()).show(fragmentManager, "timePicker");
+                // on below line we are getting the
+                // instance of our calendar.
+                final Calendar c = Calendar.getInstance();
+
+                // on below line we are getting our hour, minute.
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+
+                // on below line we are initializing our Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(time.getContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                // on below line we are setting selected time
+                                // in our text view.
+                                selectedTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, hour, minute, false);
+                // at last we are calling show to
+                // display our time picker dialog.
+                timePickerDialog.show();
             }
         });
 
