@@ -38,7 +38,7 @@
 
             <EditText
                 android:id="@+id/editTextTime"
-                android:layout_width="349dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="84dp"
                 android:ems="10"
@@ -51,7 +51,7 @@
 
             <EditText
                 android:id="@+id/editTextDate"
-                android:layout_width="349dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:ems="10"
@@ -65,15 +65,15 @@
             <Button
                 android:id="@+id/newEventFragment_button_datePicker"
                 android:layout_width="wrap_content"
-                android:layout_height="39dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:ellipsize="none"
                 android:text="@string/Select"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-                app:layout_constraintStart_toEndOf="@+id/textView2" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_date"
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_date" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/fragmentNewEvent_textView_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -85,25 +85,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
 
             <TextView
-                android:id="@+id/textViewdata"
+                android:id="@+id/fragmentNewEvent_textView_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:text="@string/Time"
                 android:textSize="18dp"
-                app:layout_constraintEnd_toStartOf="@+id/pickTime"
+                app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_button_pickTime"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_textView_date" />
 
             <Button
-                android:id="@+id/pickTime"
+                android:id="@+id/fragmentNewEvent_button_pickTime"
                 android:layout_width="wrap_content"
-                android:layout_height="39dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/Select"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textViewdata"
-                app:layout_constraintStart_toEndOf="@+id/textViewdata" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_time"
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_time" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
