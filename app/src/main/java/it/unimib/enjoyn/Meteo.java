@@ -8,41 +8,42 @@ import com.google.gson.annotations.SerializedName;
 public class Meteo implements Parcelable {
 
     @SerializedName("weather_code")
-    int[] weatherCode;
+    int weatherCode;
     @SerializedName("temperature_2m")
-    int[] temperature;
+    int temperature;
     @SerializedName("time")
-    String[] hour;
+    String hour;
 
-    public Meteo(int[] weterCode, int[] temperature, String[] hour) {
+    public Meteo(int weterCode, int temperature, String hour) {
         this.weatherCode = weterCode;
         this.temperature = temperature;
         this.hour = hour;
     }
 
-    public int[] getWeterCode() {
+    public int getWeatherCode(int i) {
         return weatherCode;
     }
 
-    public void setWeterCode(int[] weterCode) {
-        this.weatherCode = weterCode;
+    public void setWeatherCode(int weatherCode) {
+        this.weatherCode = weatherCode;
     }
 
-    public int[] getTemperature() {
+    public int getTemperature(int i) {
         return temperature;
     }
 
-    public void setTemperature(int[] temperature) {
+    public void setTemperature(int temperature) {
         this.temperature = temperature;
     }
 
-    public String[] getHour() {
+    public String getHour() {
         return hour;
     }
 
-    public void setHour(String[] hour) {
+    public void setHour(String hour) {
         this.hour = hour;
     }
+
 
     @Override
     public int describeContents() {
@@ -51,21 +52,21 @@ public class Meteo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeIntArray(this.weatherCode);
-        dest.writeIntArray(this.temperature);
-        dest.writeStringArray(this.hour);
+        dest.writeInt(this.weatherCode);
+        dest.writeInt(this.temperature);
+        dest.writeString(this.hour);
     }
 
     public void readFromParcel(Parcel source) {
-        this.weatherCode = source.createIntArray();
-        this.temperature = source.createIntArray();
-        this.hour = source.createStringArray();
+        this.weatherCode = source.readInt();
+        this.temperature = source.readInt();
+        this.hour = source.readString();
     }
 
     protected Meteo(Parcel in) {
-        this.weatherCode = in.createIntArray();
-        this.temperature = in.createIntArray();
-        this.hour = in.createStringArray();
+        this.weatherCode = in.readInt();
+        this.temperature = in.readInt();
+        this.hour = in.readString();
     }
 
     public static final Creator<Meteo> CREATOR = new Creator<Meteo>() {

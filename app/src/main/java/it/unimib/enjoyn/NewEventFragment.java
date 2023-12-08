@@ -2,6 +2,7 @@ package it.unimib.enjoyn;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,9 +22,15 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Calendar;
+import java.util.List;
 
 import it.unimib.enjoyn.util.DatePickerFragment;
+import it.unimib.enjoyn.util.JSONParserUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +44,14 @@ public class NewEventFragment extends Fragment {
 
     Button time;
     TextView selectedTime;
+
+
+    TextView meteo;
+    TextView temperatura;
+
+    String hourWeather;
+    int indexHour;
+    String dateWeather;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -101,6 +116,8 @@ public class NewEventFragment extends Fragment {
             }
         });
 
+        List<Meteo> meteoList = getMeteoListWithGSon();
+
         date = view.findViewById(R.id.newEventFragment_button_datePicker);
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
 
@@ -130,7 +147,7 @@ public class NewEventFragment extends Fragment {
                                                   int monthOfYear, int dayOfMonth) {
                                 // on below line we are setting date to our text view.
                                 selectedDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
+                                dateWeather = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                             }
                         },
                         // on below line we are passing year,
@@ -168,13 +185,47 @@ public class NewEventFragment extends Fragment {
                                 // on below line we are setting selected time
                                 // in our text view.
                                 selectedTime.setText(hourOfDay + ":" + minute);
+                                hourWeather = hourOfDay + ":" + minute;
+                                indexHour = hourOfDay;
+
+                                String dateHourWeather = dateWeather + "T" + hourWeather;
+
+
+                                meteo = view.findViewById(R.id.meteo);
+                                temperatura = view.findViewById(R.id.temperatura);
+
+                                assert meteoList != null;
+                                meteo.setText(meteoList.get(0).getWeatherCode(indexHour));
                             }
                         }, hour, minute, false);
                 // at last we are calling show to
                 // display our time picker dialog.
                 timePickerDialog.show();
             }
+
         });
 
+
+
+    }
+
+    private List<Meteo> getMeteoListWithGSon() {
+        JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
+        try {
+            /**TODO
+             * sistemare questa parte
+             * */
+
+            Context context = requireActivity().getApplication().getApplicationContext();
+            InputStream inputStream = context.getAssets().open("provameteo.json"); //apro file
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
+
+            assert jsonParserUtil.parseJSONMeteoFileWithGSon(bufferedReader) != null;
+
+            return jsonParserUtil.parseJSONMeteoFileWithGSon(bufferedReader).getMeteoList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
