@@ -30,6 +30,8 @@ public class Event implements Parcelable {
 
     private double distance;
 
+    private Meteo meteo;
+
     public Event(int id, String title, String description, String date, String time, boolean confidential,
                  String place, String placeName, Category category, int peopleNumber, double distance) {
         setId(id);

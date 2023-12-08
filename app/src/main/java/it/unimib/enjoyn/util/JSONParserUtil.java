@@ -8,7 +8,9 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import it.unimib.enjoyn.Meteo;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
+import it.unimib.enjoyn.model.MeteoDatabaseResponse;
 import it.unimib.enjoyn.model.UsersDatabaseResponse;
 
 public class JSONParserUtil {
@@ -27,5 +29,9 @@ public class JSONParserUtil {
 
     public UsersDatabaseResponse parseJSONUserFileWithGSon(BufferedReader bufferedReader) throws IOException{
         return new Gson().fromJson(bufferedReader, UsersDatabaseResponse.class);
+    }
+
+    public MeteoDatabaseResponse parseJSONMeteoFileWithGSon(BufferedReader bufferedReader) throws IOException{
+        return new Gson().fromJson(bufferedReader, MeteoDatabaseResponse.class);
     }
 }
