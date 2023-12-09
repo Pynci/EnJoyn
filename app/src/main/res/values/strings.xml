@@ -78,5 +78,6 @@
     <string name="insertMailPasswordReset">Per poter ripristinare la password, inserisci l\'email associata al tuo account</string>
     <string name="passwordReset">Ripristino password</string>
     <string name="alreadyHasAccount">Hai già un account?</string>
+    <string name="resetHere">Ripristinala qui</string>
 
 </resources>
