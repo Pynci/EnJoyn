@@ -105,21 +105,21 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_time"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_time" />
 
-            <TextView
+            <EditText
                 android:id="@+id/meteo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="TextView"
+                android:layout_marginTop="12dp"
+
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_textView_time" />
 
-            <TextView
+            <EditText
                 android:id="@+id/temperatura"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="TextView"
+
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/meteo" />
 

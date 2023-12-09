@@ -19,8 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +32,7 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.List;
 
+import it.unimib.enjoyn.model.MeteoDatabaseResponse;
 import it.unimib.enjoyn.util.DatePickerFragment;
 import it.unimib.enjoyn.util.JSONParserUtil;
 
@@ -46,8 +50,8 @@ public class NewEventFragment extends Fragment {
     TextView selectedTime;
 
 
-    TextView meteo;
-    TextView temperatura;
+   EditText meteo;
+    EditText temperatura;
 
     String hourWeather;
     int indexHour;
@@ -120,6 +124,8 @@ public class NewEventFragment extends Fragment {
 
         date = view.findViewById(R.id.newEventFragment_button_datePicker);
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
+        meteo = view.findViewById(R.id.meteo);
+        temperatura = view.findViewById(R.id.temperatura);
 
         FragmentManager fragmentManager = getParentFragmentManager();
 
@@ -191,11 +197,14 @@ public class NewEventFragment extends Fragment {
                                 String dateHourWeather = dateWeather + "T" + hourWeather;
 
 
-                                meteo = view.findViewById(R.id.meteo);
-                                temperatura = view.findViewById(R.id.temperatura);
+
+
 
                                 assert meteoList != null;
-                                meteo.setText(meteoList.get(0).getWeatherCode(indexHour));
+                                assert meteoList.get(0) != null;
+                                assert meteoList.get(0).getHour()[indexHour] != null;
+                                meteo.setText(meteoList.get(0).getWeather_codeString(indexHour));
+                                temperatura.setText( meteoList.get(0).getTemperatureString(indexHour));
                             }
                         }, hour, minute, false);
                 // at last we are calling show to
@@ -217,14 +226,18 @@ public class NewEventFragment extends Fragment {
              * */
 
             Context context = requireActivity().getApplication().getApplicationContext();
-            InputStream inputStream = context.getAssets().open("provameteo.json"); //apro file
+            InputStream inputStream = context.getAssets().open("meteo.json"); //apro file
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
 
             assert jsonParserUtil.parseJSONMeteoFileWithGSon(bufferedReader) != null;
 
-            return jsonParserUtil.parseJSONMeteoFileWithGSon(bufferedReader).getMeteoList();
+            List<Meteo> meteoList = jsonParserUtil.parseJSONFileWithJSONObjectArray("meteo.json").getMeteoList();
+
+            return meteoList;
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }

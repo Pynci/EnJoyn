@@ -14,7 +14,7 @@ public class MeteoDatabaseResponse implements Parcelable {
 
     private List<Meteo> meteoList;
 
-
+    public MeteoDatabaseResponse(){};
     public MeteoDatabaseResponse(List<Meteo> meteoList) {
         this.meteoList = meteoList;
     }
@@ -57,4 +57,6 @@ public class MeteoDatabaseResponse implements Parcelable {
     public void setMeteoList(List<Meteo> meteoList) {
         this.meteoList = meteoList;
     }
+
+
 }
