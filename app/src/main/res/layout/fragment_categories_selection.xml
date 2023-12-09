@@ -8,6 +8,7 @@
     tools:context=".CategoriesSelectionFragment">
 
     <ListView
+        android:id="@+id/fragmentCategoriesSelection_ListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
