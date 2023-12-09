@@ -25,7 +25,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@color/md_theme_dark_errorContainer" />
+                app:srcCompat="@drawable/the_rock_meme" />
 
             <TextView
                 android:id="@+id/NameCategoryCard1"
@@ -35,6 +35,7 @@
                 android:layout_marginTop="4dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="14sp"
+                android:text="Categoria 1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/headerImageCard1" />
@@ -61,7 +62,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@color/md_theme_dark_inversePrimary" />
+                app:srcCompat="@drawable/the_rock_meme" />
 
             <TextView
                 android:id="@+id/NameCategoryCard2"
@@ -71,6 +72,7 @@
                 android:layout_marginTop="4dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="14sp"
+                android:text="Categoria 2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/headerImageCard2" />
