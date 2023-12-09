@@ -50,9 +50,8 @@ public class NewEventFragment extends Fragment {
     TextView selectedTime;
 
 
-   EditText meteo;
-    EditText temperatura;
-
+   TextView meteo;
+    TextView temperatura;
     String hourWeather;
     int indexHour;
     String dateWeather;
