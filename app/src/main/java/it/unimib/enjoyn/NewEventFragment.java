@@ -54,6 +54,7 @@ public class NewEventFragment extends Fragment {
     TextView temperatura;
     String hourWeather;
     int indexHour;
+    int indexMinute;
     String dateWeather;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -191,7 +192,8 @@ public class NewEventFragment extends Fragment {
                                 // in our text view.
                                 selectedTime.setText(hourOfDay + ":" + minute);
                                 hourWeather = hourOfDay + ":" + minute;
-                                indexHour = hourOfDay;
+                                indexHour = hourOfDay*4;
+                                indexMinute = minute/15;
 
                                 String dateHourWeather = dateWeather + "T" + hourWeather;
 
@@ -202,8 +204,8 @@ public class NewEventFragment extends Fragment {
                                 assert meteoList != null;
                                 assert meteoList.get(0) != null;
                                 assert meteoList.get(0).getHour()[indexHour] != null;
-                                meteo.setText(meteoList.get(0).getWeather_codeString(indexHour));
-                                temperatura.setText( meteoList.get(0).getTemperatureString(indexHour));
+                                meteo.setText(meteoList.get(0).getWeather_codeString(indexHour+indexMinute));
+                                temperatura.setText( meteoList.get(0).getTemperatureString(indexHour+indexMinute));
                             }
                         }, hour, minute, false);
                 // at last we are calling show to

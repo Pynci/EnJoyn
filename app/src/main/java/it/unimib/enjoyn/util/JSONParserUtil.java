@@ -71,18 +71,18 @@ public class JSONParserUtil {
                 JSONArray weatherCodeJSONArray = meteoJSONObject.getJSONArray("weather_code");
 
                 meteo = new Meteo();
-                String[] meteoHour = new String[24];
-                for (int j = 0; j < 24; j++) {
+                String[] meteoHour = new String[timeJSONArray.length()];
+                for (int j = 0; j < meteoHour.length; j++) {
                     meteoHour[j] = timeJSONArray.getString(j);
                 }
                 meteo.setHour(meteoHour);
-                double[] meteoTemperature= new double[24];
-                for (int j = 0; j < 24; j++) {
+                double[] meteoTemperature= new double[temperatureJSONArray.length()];
+                for (int j = 0; j < meteoTemperature.length; j++) {
                     meteoTemperature[j] = temperatureJSONArray.getDouble(j);
                 }
                 meteo.setTemperature(meteoTemperature);
-                int[] meteoWeatherCode = new int[24];
-                for (int j = 0; j < 24; j++) {
+                int[] meteoWeatherCode = new int[weatherCodeJSONArray.length()];
+                for (int j = 0; j < meteoWeatherCode.length; j++) {
                     meteoWeatherCode[j] = weatherCodeJSONArray.getInt(j);
                 }
                 meteo.setWeather_code(meteoWeatherCode);
