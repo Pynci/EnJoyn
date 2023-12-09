@@ -68,8 +68,8 @@ public class RegisterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         textInputPassword = (view.findViewById(R.id.fragmentRegister_TextInputLayout_Password));
-        buttonRegister = view.findViewById(R.id.fragmentRegister_Button_RegisterButton);
-        buttonRegisterToLogin = view.findViewById(R.id.fragmentRegister_Button_buttonToLogin);
+        buttonRegister = view.findViewById(R.id.fragmentRegister_button_register);
+        buttonRegisterToLogin = view.findViewById(R.id.fragmentRegister_button_login);
         textInputEmail = view.findViewById(R.id.fragmentRegister_TextInputLayout_Email);
         textInputConfirmPassword = view.findViewById(R.id.fragmentRegister_TextInputLayout_ConfermaPassword);
         textInputUsername = view.findViewById(R.id.fragmentRegister_TextInputLayout_username);

@@ -47,6 +47,7 @@ public class LoginFragment extends Fragment {
 
         Button buttonLoginToRegister = view.findViewById(R.id.fragmentLogin_button_toLoginPage);
         Button buttonLogin = view.findViewById(R.id.fragmentLogin_button_ButtonLogin);
+        Button buttonForgotPassword = view.findViewById(R.id.fragmentLogin_button_PasswordDimenticata);
 
         TextInputLayout textInputLayoutEmail = view.findViewById(R.id.fragmentLogin_textInputLayout_Email);
         TextInputLayout textInputLayoutPassword = view.findViewById(R.id.fragmentLogin_textInputLayout_Password);
@@ -94,6 +95,10 @@ public class LoginFragment extends Fragment {
 
         buttonLoginToRegister.setOnClickListener(v -> startActivityBasedOnCondition(RegisterActivity.class,
                 R.id.action_loginFragment_to_registerActivity, true));
+
+        buttonForgotPassword.setOnClickListener(v -> {
+            startActivityBasedOnCondition(LoginActivity.class, R.id.action_loginFragment_to_passwordRecoverFragment, false);
+        });
 
 
 

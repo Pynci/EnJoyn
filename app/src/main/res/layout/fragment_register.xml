@@ -2,7 +2,7 @@
 
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:fillViewport="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="48dp"
             android:layout_marginEnd="40dp"
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
@@ -123,38 +123,38 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/fragmentRegister_Button_RegisterButton"
+            android:id="@+id/fragmentRegister_button_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="48dp"
             android:text="@string/register"
+            android:textAllCaps="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_ConfermaPassword" />
 
         <TextView
-            android:id="@+id/fragmentRegister_textView_alreadyRegisterd"
+            android:id="@+id/fragmentRegister_textView_alreadyHasAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/DoneLogin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.203"
+            android:layout_marginTop="32dp"
+            android:text="@string/alreadyHasAccount"
+            app:layout_constraintEnd_toStartOf="@+id/fragmentRegister_button_login"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_Button_RegisterButton" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_button_register" />
 
         <Button
-            android:id="@+id/fragmentRegister_Button_buttonToLogin"
+            android:id="@+id/fragmentRegister_button_login"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="80dp"
-            android:text="@string/Login"
+            android:text="@string/login"
+            app:layout_constraintBaseline_toBaselineOf="@+id/fragmentRegister_textView_alreadyHasAccount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragmentRegister_textView_alreadyRegisterd"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_Button_RegisterButton" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/fragmentRegister_textView_alreadyHasAccount" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
