@@ -30,10 +30,19 @@
         android:id="@+id/propicDescriptionConfigurationFragment"
         android:name="it.unimib.enjoyn.PropicDescriptionConfigurationFragment"
         android:label="fragment_propic_description_configuration"
-        tools:layout="@layout/fragment_propic_description_configuration" />
+        tools:layout="@layout/fragment_propic_description_configuration" >
+        <action
+            android:id="@+id/action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment"
+            app:destination="@id/categoriesSelectionFragment" />
+    </fragment>
     <activity
         android:id="@+id/loginActivity"
         android:name="it.unimib.enjoyn.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/categoriesSelectionFragment"
+        android:name="it.unimib.enjoyn.CategoriesSelectionFragment"
+        android:label="fragment_categories_selection"
+        tools:layout="@layout/fragment_categories_selection" />
 </navigation>
