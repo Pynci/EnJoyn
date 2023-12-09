@@ -110,8 +110,8 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         buttonNext.setOnClickListener(v -> {
 
             //TODO: inserire il controllo sull'username (dal DB)
+            Navigation.findNavController(v).navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
 
-            //TODO: capire come cazzo si passa da un fragment all'altro. Serve activity?
         });
 
         imageButtonAddPropic.setOnClickListener(v -> {
