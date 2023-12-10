@@ -123,6 +123,16 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/meteo" />
 
+            <ImageView
+                android:id="@+id/fragmentNewEvent_imageView_meteoIcon"
+                android:layout_width="71dp"
+                android:layout_height="68dp"
+                android:layout_marginStart="108dp"
+                android:layout_marginTop="72dp"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_button_pickTime"
+                tools:srcCompat="@drawable/baseline_account_circle_24" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -58,6 +59,8 @@ public class NewEventFragment extends Fragment {
 
     int indexDate=-1;
     String dateWeather;
+
+    ImageView weatherIcon;
 
 
 
@@ -131,6 +134,7 @@ public class NewEventFragment extends Fragment {
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         meteo = view.findViewById(R.id.meteo);
         temperatura = view.findViewById(R.id.temperatura);
+        weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
         FragmentManager fragmentManager = getParentFragmentManager();
 
@@ -233,8 +237,10 @@ public class NewEventFragment extends Fragment {
                                 assert meteoList.get(0).getHour()[indexHour] != null;
                                 if(indexDate>=0 && indexDate<dateArray.length){
                                double temp= temperatureArray[indexDate+indexHour+indexMinute];
-                                meteo.setText(meteoList.get(0).getWeather_codeString(indexDate+indexHour+indexMinute));
+                               String code = meteoList.get(0).getWeather_codeString(indexDate+indexHour+indexMinute);
+                                meteo.setText(code);
                                 temperatura.setText( meteoList.get(0).getTemperatureString(indexDate+indexHour+indexMinute));
+                                setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                 }
                             }
                         }, hour, minute, false);
@@ -249,6 +255,35 @@ public class NewEventFragment extends Fragment {
 
     }
 
+    public void setWeatherIcon(ImageView weatherIcon, int code){
+        if (code == 0){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_brightness_7_24);
+        } else if (code >= 1 && code <= 3){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_explore_24);
+        } else if (code == 45 || code == 48){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_cloud_24);
+        } else if (code == 51 || code == 53 || code == 55){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_alternate_email_24);
+        } else if (code == 56 || code == 57){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_local_phone_24);
+        } else if (code == 61 || code == 63 || code == 65){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_ios_share_24);
+        } else if (code == 66 || code == 67){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_check_24);
+        } else if (code == 71 || code == 73 || code == 75){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_add_circle_24);
+        } else if (code == 77){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_account_circle_24);
+        } else if (code == 80 || code == 81 || code == 82){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_connect_without_contact_24);
+        } else if (code == 85 || code == 86){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_check_24);
+        } else if (code == 95){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_account_circle_24);
+        } else if (code == 96 || code == 99){
+            weatherIcon.setBackgroundResource(R.drawable.baseline_brightness_7_24);
+        }
+    }
     private List<Meteo> getMeteoListWithGSon() {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
         try {
