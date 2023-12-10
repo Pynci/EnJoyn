@@ -53,9 +53,13 @@ public class NewEventFragment extends Fragment {
    TextView meteo;
     TextView temperatura;
     String hourWeather;
-    int indexHour;
-    int indexMinute;
+    int indexHour=-1;
+    int indexMinute=-1;
+
+    int indexDate=-1;
     String dateWeather;
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -121,7 +125,8 @@ public class NewEventFragment extends Fragment {
         });
 
         List<Meteo> meteoList = getMeteoListWithGSon();
-
+        String[] dateArray = meteoList.get(0).getHour();
+        double[] temperatureArray = meteoList.get(0).getTemperature();
         date = view.findViewById(R.id.newEventFragment_button_datePicker);
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         meteo = view.findViewById(R.id.meteo);
@@ -153,7 +158,23 @@ public class NewEventFragment extends Fragment {
                                                   int monthOfYear, int dayOfMonth) {
                                 // on below line we are setting date to our text view.
                                 selectedDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                if(dayOfMonth>9)
                                 dateWeather = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                                else
+                                    dateWeather = year + "-" + (monthOfYear + 1) + "-" + "0"+dayOfMonth;
+
+                               for( int i = 0;!(dateWeather.equals(dateArray[i].substring(0, 10)))&& i< dateArray.length ; i+=96){
+                                   boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
+                                  String prova= dateArray[i].substring(0, 10);
+                                   indexDate=i;
+                               }
+                               if(indexDate>0) {
+                                   indexDate += 96;
+                               }
+                               if(indexHour>0 && indexMinute>0){
+                                meteo.setText(meteoList.get(0).getWeather_codeString(indexDate+indexHour+indexMinute));
+                                temperatura.setText( meteoList.get(0).getTemperatureString(indexDate+indexHour+indexMinute));
+                               }
                             }
                         },
                         // on below line we are passing year,
@@ -204,8 +225,11 @@ public class NewEventFragment extends Fragment {
                                 assert meteoList != null;
                                 assert meteoList.get(0) != null;
                                 assert meteoList.get(0).getHour()[indexHour] != null;
-                                meteo.setText(meteoList.get(0).getWeather_codeString(indexHour+indexMinute));
-                                temperatura.setText( meteoList.get(0).getTemperatureString(indexHour+indexMinute));
+                                if(indexDate>=0){
+                               double temp= temperatureArray[indexDate+indexHour+indexMinute];
+                                meteo.setText(meteoList.get(0).getWeather_codeString(indexDate+indexHour+indexMinute));
+                                temperatura.setText( meteoList.get(0).getTemperatureString(indexDate+indexHour+indexMinute));
+                                }
                             }
                         }, hour, minute, false);
                 // at last we are calling show to
