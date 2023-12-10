@@ -56,8 +56,9 @@ public class NewEventFragment extends Fragment {
     String hourWeather;
     int indexHour=-1;
     int indexMinute=-1;
+    int indexDate =-1;
+    boolean equals = false;
 
-    int indexDate=-1;
     String dateWeather;
 
     ImageView weatherIcon;
@@ -130,6 +131,7 @@ public class NewEventFragment extends Fragment {
         List<Meteo> meteoList = getMeteoListWithGSon();
         String[] dateArray = meteoList.get(0).getHour();
         double[] temperatureArray = meteoList.get(0).getTemperature();
+
         date = view.findViewById(R.id.newEventFragment_button_datePicker);
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         meteo = view.findViewById(R.id.meteo);
@@ -166,7 +168,7 @@ public class NewEventFragment extends Fragment {
                                 dateWeather = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                                 else
                                     dateWeather = year + "-" + (monthOfYear + 1) + "-" + "0"+dayOfMonth;
-                                boolean equals = false;
+                                equals = false;
                                for( int i = 0;i < dateArray.length && !equals ; i+=96){
                                    boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
                                   String prova= dateArray[i].substring(0, 10);
@@ -178,9 +180,10 @@ public class NewEventFragment extends Fragment {
                               /* if(indexDate>0) {
                                    indexDate += 96;
                                }*/
-                               if(indexDate >= dateArray.length){
+                               if(!equals){
                                    meteo.setText("meteo non disponibile, troppo lontano , accuratezza di 16 giorni");
                                    temperatura.setText("");
+                                   weatherIcon.setBackgroundResource(0);
                                }
                                else {
                                    if (indexHour >= 0 && indexMinute >= 0) {
@@ -238,7 +241,7 @@ public class NewEventFragment extends Fragment {
                                 assert meteoList != null;
                                 assert meteoList.get(0) != null;
                                 assert meteoList.get(0).getHour()[indexHour] != null;
-                                if(indexDate>=0 && indexDate<dateArray.length){
+                                if(equals){
                                double temp= temperatureArray[indexDate+indexHour+indexMinute];
                                String code = meteoList.get(0).getWeather_codeString(indexDate+indexHour+indexMinute);
                                 meteo.setText(code);
