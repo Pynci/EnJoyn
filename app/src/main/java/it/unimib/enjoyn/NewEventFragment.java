@@ -166,21 +166,24 @@ public class NewEventFragment extends Fragment {
                                 dateWeather = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
                                 else
                                     dateWeather = year + "-" + (monthOfYear + 1) + "-" + "0"+dayOfMonth;
-
-                               for( int i = 0;i < dateArray.length && !(dateWeather.equals(dateArray[i].substring(0, 10))) ; i+=96){
+                                boolean equals = false;
+                               for( int i = 0;i < dateArray.length && !equals ; i+=96){
                                    boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
                                   String prova= dateArray[i].substring(0, 10);
-                                   indexDate=i;
+                                  if(dateWeather.equals(dateArray[i].substring(0, 10))) {
+                                      indexDate = i;
+                                      equals = true;
+                                  }
                                }
-                               if(indexDate>0) {
+                              /* if(indexDate>0) {
                                    indexDate += 96;
-                               }
+                               }*/
                                if(indexDate >= dateArray.length){
                                    meteo.setText("meteo non disponibile, troppo lontano , accuratezza di 16 giorni");
                                    temperatura.setText("");
                                }
                                else {
-                                   if (indexHour > 0 && indexMinute > 0) {
+                                   if (indexHour >= 0 && indexMinute >= 0) {
                                        meteo.setText(meteoList.get(0).getWeather_codeString(indexDate + indexHour + indexMinute));
                                        temperatura.setText(meteoList.get(0).getTemperatureString(indexDate + indexHour + indexMinute));
                                    }
