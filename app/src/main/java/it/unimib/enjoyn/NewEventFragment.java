@@ -163,7 +163,7 @@ public class NewEventFragment extends Fragment {
                                 else
                                     dateWeather = year + "-" + (monthOfYear + 1) + "-" + "0"+dayOfMonth;
 
-                               for( int i = 0;!(dateWeather.equals(dateArray[i].substring(0, 10)))&& i< dateArray.length ; i+=96){
+                               for( int i = 0;i < dateArray.length && !(dateWeather.equals(dateArray[i].substring(0, 10))) ; i+=96){
                                    boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
                                   String prova= dateArray[i].substring(0, 10);
                                    indexDate=i;
@@ -171,9 +171,15 @@ public class NewEventFragment extends Fragment {
                                if(indexDate>0) {
                                    indexDate += 96;
                                }
-                               if(indexHour>0 && indexMinute>0){
-                                meteo.setText(meteoList.get(0).getWeather_codeString(indexDate+indexHour+indexMinute));
-                                temperatura.setText( meteoList.get(0).getTemperatureString(indexDate+indexHour+indexMinute));
+                               if(indexDate >= dateArray.length){
+                                   meteo.setText("meteo non disponibile, troppo lontano , accuratezza di 16 giorni");
+                                   temperatura.setText("");
+                               }
+                               else {
+                                   if (indexHour > 0 && indexMinute > 0) {
+                                       meteo.setText(meteoList.get(0).getWeather_codeString(indexDate + indexHour + indexMinute));
+                                       temperatura.setText(meteoList.get(0).getTemperatureString(indexDate + indexHour + indexMinute));
+                                   }
                                }
                             }
                         },
@@ -225,7 +231,7 @@ public class NewEventFragment extends Fragment {
                                 assert meteoList != null;
                                 assert meteoList.get(0) != null;
                                 assert meteoList.get(0).getHour()[indexHour] != null;
-                                if(indexDate>=0){
+                                if(indexDate>=0 && indexDate<dateArray.length){
                                double temp= temperatureArray[indexDate+indexHour+indexMinute];
                                 meteo.setText(meteoList.get(0).getWeather_codeString(indexDate+indexHour+indexMinute));
                                 temperatura.setText( meteoList.get(0).getTemperatureString(indexDate+indexHour+indexMinute));
