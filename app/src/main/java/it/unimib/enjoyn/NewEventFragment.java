@@ -263,31 +263,21 @@ public class NewEventFragment extends Fragment {
 
     public void setWeatherIcon(ImageView weatherIcon, int code){
         if (code == 0){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_brightness_7_24);
+            weatherIcon.setBackgroundResource(R.drawable.drawable_sun);
         } else if (code >= 1 && code <= 3){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_explore_24);
+            weatherIcon.setBackgroundResource(R.drawable.drawable_partlycloudy);
         } else if (code == 45 || code == 48){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_cloud_24);
-        } else if (code == 51 || code == 53 || code == 55){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_alternate_email_24);
-        } else if (code == 56 || code == 57){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_local_phone_24);
-        } else if (code == 61 || code == 63 || code == 65){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_ios_share_24);
-        } else if (code == 66 || code == 67){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_check_24);
-        } else if (code == 71 || code == 73 || code == 75){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_add_circle_24);
-        } else if (code == 77){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_account_circle_24);
-        } else if (code == 80 || code == 81 || code == 82){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_connect_without_contact_24);
+            weatherIcon.setBackgroundResource(R.drawable.drawable_fog);
+        } else if (code == 51 || code == 53 || code == 55 || code == 56 || code == 57) {
+            weatherIcon.setBackgroundResource(R.drawable.drawable_drizzle);
+        } else if (code == 61 || code == 63 || code == 65 || code == 66 || code == 67 || code == 80 || code == 81 || code == 82){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_rain);
+        } else if (code == 71 || code == 73 || code == 75 || code == 77){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_snowlight);
         } else if (code == 85 || code == 86){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_check_24);
-        } else if (code == 95){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_account_circle_24);
-        } else if (code == 96 || code == 99){
-            weatherIcon.setBackgroundResource(R.drawable.baseline_brightness_7_24);
+            weatherIcon.setBackgroundResource(R.drawable.drawable_snow);
+        } else if (code == 95 || code == 96 || code == 99){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
         }
     }
     private List<Meteo> getMeteoListWithGSon() {

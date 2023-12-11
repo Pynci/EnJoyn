@@ -66,7 +66,7 @@
                 android:id="@+id/newEventFragment_button_datePicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="32dp"
                 android:ellipsize="none"
                 android:text="@string/Select"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_date"
@@ -127,11 +127,11 @@
                 android:id="@+id/fragmentNewEvent_imageView_meteoIcon"
                 android:layout_width="71dp"
                 android:layout_height="68dp"
-                android:layout_marginStart="108dp"
-                android:layout_marginTop="72dp"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_button_pickTime"
-                tools:srcCompat="@drawable/baseline_account_circle_24" />
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintStart_toEndOf="@+id/newEventFragment_button_datePicker"
+                app:layout_constraintTop_toBottomOf="@+id/editTextDate"
+                tools:srcCompat="@drawable/drawable_sun" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
