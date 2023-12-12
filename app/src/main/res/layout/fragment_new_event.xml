@@ -64,6 +64,7 @@
 
             <Button
                 android:id="@+id/newEventFragment_button_datePicker"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -98,6 +99,7 @@
 
             <Button
                 android:id="@+id/fragmentNewEvent_button_pickTime"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -127,11 +129,20 @@
                 android:id="@+id/fragmentNewEvent_imageView_meteoIcon"
                 android:layout_width="71dp"
                 android:layout_height="68dp"
-                android:layout_marginStart="48dp"
                 android:layout_marginTop="40dp"
-                app:layout_constraintStart_toEndOf="@+id/newEventFragment_button_datePicker"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toBottomOf="@+id/editTextDate"
                 tools:srcCompat="@drawable/drawable_sun" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@drawable/baseline_calendar_month_24"
+                tools:layout_editor_absoluteX="197dp"
+                tools:layout_editor_absoluteY="216dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

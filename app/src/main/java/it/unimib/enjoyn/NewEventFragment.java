@@ -187,8 +187,10 @@ public class NewEventFragment extends Fragment {
                                }
                                else {
                                    if (indexHour >= 0 && indexMinute >= 0) {
-                                       meteo.setText(meteoList.get(0).getWeather_codeString(indexDate + indexHour + indexMinute));
+                                       String code = meteoList.get(0).getWeather_codeString(indexDate + indexHour + indexMinute);
+                                       meteo.setText(code);
                                        temperatura.setText(meteoList.get(0).getTemperatureString(indexDate + indexHour + indexMinute));
+                                       setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                    }
                                }
                             }
