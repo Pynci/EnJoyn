@@ -86,6 +86,7 @@ public class EventReclyclerViewAdapter extends
             itemView.setOnClickListener(this);
             joinButton.setOnClickListener(this);
 
+
         }
 
         @Override
