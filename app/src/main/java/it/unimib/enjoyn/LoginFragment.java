@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -55,7 +58,15 @@ public class LoginFragment extends Fragment {
         EditText editTextMail = view.findViewById(R.id.fragmentLogin_textInputEditText_Email);
         EditText editTextPassword = view.findViewById(R.id.fragmentLogin_textInputEditText_Password);
 
+        /*
+        //codice di prova per firebase
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://enjoyn-9adca-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference ref = db.getReference();
+        ref.setValue("Mi piaci se ti muovi, e allora: MUOVI!");
 
+        FirebaseAnalytics firebase = FirebaseAnalytics.getInstance(getContext());
+        firebase.logEvent("MI_PIACI_SE_TI_MUOVI", null);
+        */
 
         /*
         Serve a controllare che l'uente abbia inserito correttamente la mail.
@@ -97,6 +108,7 @@ public class LoginFragment extends Fragment {
                 R.id.action_loginFragment_to_registerActivity, true));
 
         buttonForgotPassword.setOnClickListener(v -> {
+
             startActivityBasedOnCondition(LoginActivity.class, R.id.action_loginFragment_to_passwordRecoverFragment, false);
         });
 
