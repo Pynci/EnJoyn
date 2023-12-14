@@ -23,17 +23,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
+import it.unimib.enjoyn.repository.EventMockRepository;
+import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.util.JSONParserUtil;
+import it.unimib.enjoyn.util.ResponseCallback;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TodoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TodoFragment extends Fragment {
+public class TodoFragment extends Fragment implements ResponseCallback {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,6 +47,10 @@ public class TodoFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private IEventRepository iEventRepository;
+
+    private List<Event> eventList;
 
     public TodoFragment() {
         // Required empty public constructor
@@ -73,6 +81,10 @@ public class TodoFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        iEventRepository =
+                new EventMockRepository(requireActivity().getApplication(), this);
+        eventList = new ArrayList<>();
     }
 
     @Override
@@ -103,7 +115,8 @@ public class TodoFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-        List<Event> eventList = getEventListWithGSon();
+        iEventRepository.getTODOEvents();
+
 
         //List<Event> eventList = new ArrayList<Event>() ;
         //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
@@ -154,5 +167,25 @@ public class TodoFragment extends Fragment {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void onSuccess(List<Event> newsList, long lastUpdate) {
+
+    }
+
+    @Override
+    public void onFailure(String errorMessage) {
+
+    }
+
+    @Override
+    public void onEventFavoriteStatusChanged(Event event) {
+
+    }
+
+    @Override
+    public void onEventTodoStatusChanged(Event event) {
+
     }
 }

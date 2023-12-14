@@ -39,12 +39,16 @@ public interface EventsDao {
     @Query("DELETE FROM event WHERE isFavorite = 0")
     void deleteNotFavoriteNews();
 
+
     @Delete
     void deleteAllWithoutQuery(Event... event);
 
     @Update
-    void updateSingleFavoriteNews(Event event);
+    void updateSingleFavoriteEvent(Event event);
 
     @Update
-    void updateListFavoriteNews(List<Event> events);
+    void updateSingleTodoEvent(Event event);
+
+    @Update
+    void updateListFavoriteEvents(List<Event> events);
 }

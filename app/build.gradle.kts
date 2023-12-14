@@ -46,6 +46,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("androidx.room:room-runtime:2.6.0")
     annotationProcessor("androidx.room:room-compiler:2.6.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0") /**TODO va messo?*/
 
     //Dipendenza per Pinview
     implementation("io.github.chaosleung:pinview:1.4.4")
