@@ -36,76 +36,78 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="32dp" />
 
+            <ImageView
+                android:id="@+id/fragmentNewEvent_imageView_imageEvent"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="36dp"
+                android:contentDescription="@string/propic"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_account_circle_24" />
+
+                <ImageButton
+                android:id="@+id/fragmentNewEvent_imageButton_addImageEvent"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:visibility="invisible"
+                android:contentDescription="@string/editPropic"
+                android:src="@drawable/baseline_add_circle_24"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_imageView_imageEvent"
+                app:layout_constraintEnd_toEndOf="@+id/fragmentNewEvent_imageView_imageEvent" />
+
+
             <EditText
                 android:id="@+id/editTextTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="84dp"
+                android:layout_marginStart="4dp"
                 android:ems="10"
                 android:inputType="time"
                 android:text="@string/Title"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_imageView_imageEvent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageView_imageEvent"
+                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageView_imageEvent" />
 
             <EditText
                 android:id="@+id/editTextDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:ems="10"
                 android:inputType="date"
                 android:text="@string/Description"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageView_imageEvent" />
 
-            <Button
-                android:id="@+id/newEventFragment_button_datePicker"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:ellipsize="none"
-                android:text="@string/Select"
-                app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_date"
-                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_date" />
 
             <TextView
                 android:id="@+id/fragmentNewEvent_textView_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="8dp"
+
                 android:text="@string/Date"
-                android:textSize="18dp"
-                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_button_datePicker"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_imageButton_datePicker"
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageButton_datePicker"
+                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageButton_datePicker" />
 
             <TextView
                 android:id="@+id/fragmentNewEvent_textView_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginStart="8dp"
                 android:text="@string/Time"
                 android:textSize="18dp"
-                app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_button_pickTime"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_textView_date" />
-
-            <Button
-                android:id="@+id/fragmentNewEvent_button_pickTime"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="@string/Select"
-                app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_time"
-                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_time" />
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_imageButton_pickTime"
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageButton_pickTime"
+                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageButton_pickTime" />
 
             <TextView
                 android:id="@+id/meteo"
@@ -132,17 +134,37 @@
                 android:layout_marginTop="40dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toBottomOf="@+id/editTextDate"
-                tools:srcCompat="@drawable/drawable_sun" />
+                tools:srcCompat="@drawable/drawable_sun"
+
+                />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/fragmentNewEvent_imageButton_datePicker"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:background="@null"
+                android:contentDescription="buttonDate"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
                 android:src="@drawable/baseline_calendar_month_24"
-                tools:layout_editor_absoluteX="197dp"
-                tools:layout_editor_absoluteY="216dp" />
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+
+            <ImageButton
+                android:id="@+id/fragmentNewEvent_imageButton_pickTime"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@null"
+                android:contentDescription="buttonTime"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:src="@drawable/baseline_access_time_24"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_datePicker" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

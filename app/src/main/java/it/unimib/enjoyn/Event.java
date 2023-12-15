@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -26,7 +27,7 @@ public class Event implements Parcelable {
     private String place;
 
     private String placeName;
-
+    @Embedded(prefix = "category_")
     private Category category;
 
     private int peopleNumber;
@@ -36,7 +37,7 @@ public class Event implements Parcelable {
     private boolean isTODO;
 
     private boolean isFavorite;
-
+    @Embedded(prefix = "meteo_")
     private Meteo meteo;
 
     public Event(long id, String title, String description, String date, String time, boolean confidential,

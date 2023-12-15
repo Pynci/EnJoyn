@@ -17,9 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -33,8 +32,6 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.List;
 
-import it.unimib.enjoyn.model.MeteoDatabaseResponse;
-import it.unimib.enjoyn.util.DatePickerFragment;
 import it.unimib.enjoyn.util.JSONParserUtil;
 
 /**
@@ -44,10 +41,10 @@ import it.unimib.enjoyn.util.JSONParserUtil;
  */
 public class NewEventFragment extends Fragment {
 
-    Button date;
+    ImageButton date;
     TextView selectedDate;
 
-    Button time;
+    ImageButton time;
     TextView selectedTime;
 
 
@@ -132,7 +129,7 @@ public class NewEventFragment extends Fragment {
         String[] dateArray = meteoList.get(0).getHour();
         double[] temperatureArray = meteoList.get(0).getTemperature();
 
-        date = view.findViewById(R.id.newEventFragment_button_datePicker);
+        date = view.findViewById(R.id.fragmentNewEvent_imageButton_datePicker);
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         meteo = view.findViewById(R.id.meteo);
         temperatura = view.findViewById(R.id.temperatura);
@@ -205,7 +202,7 @@ public class NewEventFragment extends Fragment {
         });
 
 
-        time = view.findViewById(R.id.fragmentNewEvent_button_pickTime);
+        time = view.findViewById(R.id.fragmentNewEvent_imageButton_pickTime);
         selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
 
         // on below line we are adding click

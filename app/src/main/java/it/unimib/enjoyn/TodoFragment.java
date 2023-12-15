@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,10 +48,14 @@ public class TodoFragment extends Fragment implements ResponseCallback {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ProgressBar progressBar;
+
 
     private IEventRepository iEventRepository;
 
     private List<Event> eventList;
+
+    private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
     public TodoFragment() {
         // Required empty public constructor
@@ -122,7 +127,7 @@ public class TodoFragment extends Fragment implements ResponseCallback {
         //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
 
 
-        EventReclyclerViewAdapter eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
+         eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
@@ -162,7 +167,7 @@ public class TodoFragment extends Fragment implements ResponseCallback {
             InputStream inputStream = context.getAssets().open("prova.json"); //apro file
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
 
-            return jsonParserUtil.parseJSONEventFileWithGSon(bufferedReader).getEvents();
+            return jsonParserUtil.parseJSONEventFileWithGSon("prova.json").getEvents();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,8 +175,15 @@ public class TodoFragment extends Fragment implements ResponseCallback {
     }
 
     @Override
-    public void onSuccess(List<Event> newsList, long lastUpdate) {
-
+    public void onSuccess(List<Event> eventList, long lastUpdate) {
+        if (eventList != null) {
+            this.eventList.clear();
+            this.eventList.addAll(eventList);
+            requireActivity().runOnUiThread(() -> {
+                eventsRecyclerViewAdapter.notifyDataSetChanged();
+                //progressBar.setVisibility(View.GONE);
+            });
+        }
     }
 
     @Override

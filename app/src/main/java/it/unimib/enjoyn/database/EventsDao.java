@@ -1,15 +1,20 @@
 package it.unimib.enjoyn.database;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverter;
 import androidx.room.Update;
 
 import java.util.List;
 
 import it.unimib.enjoyn.Event;
+import it.unimib.enjoyn.Meteo;
+import it.unimib.enjoyn.util.StringConverter;
 
+@Dao
 public interface EventsDao {
 
     @Query("SELECT * FROM event ORDER BY date, time DESC")
@@ -51,4 +56,6 @@ public interface EventsDao {
 
     @Update
     void updateListFavoriteEvents(List<Event> events);
+
+
 }

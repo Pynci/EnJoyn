@@ -5,16 +5,18 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Meteo implements Parcelable {
+import it.unimib.enjoyn.util.StringConverter;
 
+public class Meteo implements Parcelable {
+    //StringConverter converter = new StringConverter();
     @SerializedName("weather_code")
+    //@TypeConverter(StringConverter.IntArrayToString(weather_code))
     int[] weather_code;
     @SerializedName("temperature_2m")
     double[] temperature;
     @SerializedName("time")
     String[] hour;
 
-    private Meteo meteo;
 
     public Meteo(int[] weterCode, double[] temperature, String[] hour) {
         this.weather_code = weterCode;
@@ -40,7 +42,7 @@ public class Meteo implements Parcelable {
     public String getTemperatureString(int i) {
         return Double.toString(temperature[i]);
     }
-    public void setTemperature(double[] temperature) {
+    public void setTemperature(Double[] temperature) {
         this.temperature = temperature;
     }
 

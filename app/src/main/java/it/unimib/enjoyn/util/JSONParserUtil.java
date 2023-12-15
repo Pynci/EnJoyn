@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,9 @@ public class JSONParserUtil {
         this.context = application.getApplicationContext();
     }
 
-    public EventsDatabaseResponse parseJSONEventFileWithGSon(BufferedReader bufferedReader) throws IOException{
+    public EventsDatabaseResponse parseJSONEventFileWithGSon(String fileName) throws IOException{
+        InputStream inputStream = context.getAssets().open(fileName);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         return new Gson().fromJson(bufferedReader, EventsDatabaseResponse.class);
     }
@@ -76,7 +79,7 @@ public class JSONParserUtil {
                     meteoHour[j] = timeJSONArray.getString(j);
                 }
                 meteo.setHour(meteoHour);
-                double[] meteoTemperature= new double[temperatureJSONArray.length()];
+                Double[] meteoTemperature= new Double[temperatureJSONArray.length()];
                 for (int j = 0; j < meteoTemperature.length; j++) {
                     meteoTemperature[j] = temperatureJSONArray.getDouble(j);
                 }
