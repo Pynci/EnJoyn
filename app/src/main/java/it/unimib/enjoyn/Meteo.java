@@ -42,7 +42,7 @@ public class Meteo implements Parcelable {
     public String getTemperatureString(int i) {
         return Double.toString(temperature[i]);
     }
-    public void setTemperature(Double[] temperature) {
+    public void setTemperature(double[] temperature) {
         this.temperature = temperature;
     }
 

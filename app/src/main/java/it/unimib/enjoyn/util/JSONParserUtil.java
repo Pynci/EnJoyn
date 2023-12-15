@@ -79,7 +79,7 @@ public class JSONParserUtil {
                     meteoHour[j] = timeJSONArray.getString(j);
                 }
                 meteo.setHour(meteoHour);
-                Double[] meteoTemperature= new Double[temperatureJSONArray.length()];
+                double[] meteoTemperature= new double[temperatureJSONArray.length()];
                 for (int j = 0; j < meteoTemperature.length; j++) {
                     meteoTemperature[j] = temperatureJSONArray.getDouble(j);
                 }
