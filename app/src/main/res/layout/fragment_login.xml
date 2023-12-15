@@ -18,7 +18,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="75dp"
-            android:contentDescription="@string/logoApplicazione"
+            android:contentDescription="@string/appLogo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
             app:srcCompat="@mipmap/ic_launcher" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragmentLogin_textInputLayout_Email"
+            android:id="@+id/fragmentLogin_textInputLayout_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -39,14 +39,14 @@
             app:boxCornerRadiusTopEnd="30dp"
             app:boxCornerRadiusTopStart="30dp"
             app:helperTextTextColor="@color/material_dynamic_neutral0"
-            app:layout_constraintBottom_toTopOf="@id/fragmentLogin_textInputLayout_Password"
+            app:layout_constraintBottom_toTopOf="@id/fragmentLogin_textInputLayout_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragmentLogin_imageView_appIcon"
             app:startIconDrawable="@drawable/baseline_alternate_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragmentLogin_textInputEditText_Email"
+                android:id="@+id/fragmentLogin_textInputEditText_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="email"
@@ -56,7 +56,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragmentLogin_textInputLayout_Password"
+            android:id="@+id/fragmentLogin_textInputLayout_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -69,12 +69,12 @@
             app:boxCornerRadiusTopStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentLogin_textInputLayout_Email"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentLogin_textInputLayout_email"
             app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/baseline_key_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragmentLogin_textInputEditText_Password"
+                android:id="@+id/fragmentLogin_textInputEditText_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
@@ -83,7 +83,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/fragmentLogin_button_PasswordDimenticata"
+            android:id="@+id/fragmentLogin_button_forgottenPassword"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,14 +99,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/forgotPassword"
-            app:layout_constraintEnd_toStartOf="@+id/fragmentLogin_button_PasswordDimenticata"
+            app:layout_constraintEnd_toStartOf="@+id/fragmentLogin_button_forgottenPassword"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentLogin_textInputLayout_Password" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentLogin_textInputLayout_password" />
 
         <Button
-            android:id="@+id/fragmentLogin_button_ButtonLogin"
+            android:id="@+id/fragmentLogin_button_login"
             style="@style/Widget.Material3.Button"
             android:layout_width="120dp"
             android:layout_height="56dp"
@@ -118,30 +118,30 @@
             app:layout_constraintTop_toBottomOf="@+id/fragmentLogin_textView_forgottenPassword" />
 
         <Button
-            android:id="@+id/fragmentLogin_button_toLoginPage"
+            android:id="@+id/fragmentLogin_button_register"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="25dp"
             android:text="@string/register"
-            app:layout_constraintBaseline_toBaselineOf="@+id/fragmentLogin_textView_notAlreadyregisterd"
+            app:layout_constraintBaseline_toBaselineOf="@+id/fragmentLogin_textView_notAlreadyRegistered"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/fragmentLogin_textView_notAlreadyregisterd" />
+            app:layout_constraintStart_toEndOf="@+id/fragmentLogin_textView_notAlreadyRegistered" />
 
         <TextView
-            android:id="@+id/fragmentLogin_textView_notAlreadyregisterd"
+            android:id="@+id/fragmentLogin_textView_notAlreadyRegistered"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="32dp"
             android:text="@string/notRegister"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/fragmentLogin_button_toLoginPage"
+            app:layout_constraintEnd_toStartOf="@+id/fragmentLogin_button_register"
             app:layout_constraintHorizontal_bias="0.48"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentLogin_button_ButtonLogin"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentLogin_button_login"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -74,7 +74,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="helloBlankFragment">Hello blank fragment</string>
-    <string name="logoApplicazione">Immagine rappresentante il logo dell\'applicazione</string>
+    <string name="appLogo">Immagine rappresentante il logo dell\'applicazione</string>
     <string name="insertMailPasswordReset">Per poter ripristinare la password, inserisci l\'email associata al tuo account</string>
     <string name="passwordReset">Ripristino password</string>
     <string name="alreadyHasAccount">Hai già un account?</string>

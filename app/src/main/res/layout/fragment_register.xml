@@ -18,14 +18,14 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="75dp"
-            android:contentDescription="@string/logoApplicazione"
+            android:contentDescription="@string/appLogo"
             android:src="@mipmap/ic_launcher_round"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragmentRegister_TextInputLayout_username"
+            android:id="@+id/fragmentRegister_textInputLayout_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -41,7 +41,7 @@
             app:startIconDrawable="@drawable/baseline_person_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragmentRegister_TextInputEditText_Username"
+                android:id="@+id/fragmentRegister_textInputEditText_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
@@ -49,7 +49,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragmentRegister_TextInputLayout_Email"
+            android:id="@+id/fragmentRegister_textInputLayout_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -61,11 +61,11 @@
             app:boxCornerRadiusTopStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_username"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_textInputLayout_username"
             app:startIconDrawable="@drawable/baseline_alternate_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragmentRegister_TextInputEditText_Email"
+                android:id="@+id/fragmentRegister_textInputEditText_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
@@ -73,7 +73,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragmentRegister_TextInputLayout_Password"
+            android:id="@+id/fragmentRegister_textInputLayout_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -85,12 +85,12 @@
             app:boxCornerRadiusTopStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_Email"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_textInputLayout_email"
             app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/baseline_key_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragmentRegister_TextInputEditText_Password"
+                android:id="@+id/fragmentRegister_textInputEditText_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
@@ -98,7 +98,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragmentRegister_TextInputLayout_ConfermaPassword"
+            android:id="@+id/fragmentRegister_textInputLayout_confirmPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -110,12 +110,12 @@
             app:boxCornerRadiusTopStart="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_Password"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_textInputLayout_password"
             app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/baseline_key_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fragmentRegister_TextInputEditText_ConfermaPassword"
+                android:id="@+id/fragmentRegister_textInputEditText_confirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/confirmPassword"
@@ -131,7 +131,7 @@
             android:textAllCaps="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_TextInputLayout_ConfermaPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentRegister_textInputLayout_confirmPassword" />
 
         <TextView
             android:id="@+id/fragmentRegister_textView_alreadyHasAccount"

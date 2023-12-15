@@ -12,12 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -38,7 +32,6 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -48,29 +41,21 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button buttonLoginToRegister = view.findViewById(R.id.fragmentLogin_button_toLoginPage);
-        Button buttonLogin = view.findViewById(R.id.fragmentLogin_button_ButtonLogin);
-        Button buttonForgotPassword = view.findViewById(R.id.fragmentLogin_button_PasswordDimenticata);
-
-        TextInputLayout textInputLayoutEmail = view.findViewById(R.id.fragmentLogin_textInputLayout_Email);
-        TextInputLayout textInputLayoutPassword = view.findViewById(R.id.fragmentLogin_textInputLayout_Password);
-
-        EditText editTextMail = view.findViewById(R.id.fragmentLogin_textInputEditText_Email);
-        EditText editTextPassword = view.findViewById(R.id.fragmentLogin_textInputEditText_Password);
+        Button buttonRegister = view.findViewById(R.id.fragmentLogin_button_register);
+        Button buttonLogin = view.findViewById(R.id.fragmentLogin_button_login);
+        Button buttonForgottenPassword = view.findViewById(R.id.fragmentLogin_button_forgottenPassword);
 
         /*
-        //codice di prova per firebase
-        FirebaseDatabase db = FirebaseDatabase.getInstance("https://enjoyn-9adca-default-rtdb.europe-west1.firebasedatabase.app");
-        DatabaseReference ref = db.getReference();
-        ref.setValue("Mi piaci se ti muovi, e allora: MUOVI!");
 
-        FirebaseAnalytics firebase = FirebaseAnalytics.getInstance(getContext());
-        firebase.logEvent("MI_PIACI_SE_TI_MUOVI", null);
-        */
+        //logica da spostare altrove
 
-        /*
-        Serve a controllare che l'uente abbia inserito correttamente la mail.
-         */
+        TextInputLayout textInputLayoutEmail = view.findViewById(R.id.fragmentLogin_textInputLayout_email);
+        TextInputLayout textInputLayoutPassword = view.findViewById(R.id.fragmentLogin_textInputLayout_password);
+
+        EditText editTextMail = view.findViewById(R.id.fragmentLogin_textInputEditText_email);
+        EditText editTextPassword = view.findViewById(R.id.fragmentLogin_textInputEditText_password);
+
+        //Serve a controllare che l'uente abbia inserito correttamente la mail.
         editTextMail.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
 
@@ -88,9 +73,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        /*
-        Serve a controllare che l'uente abbia inserito correttamente la password.
-         */
+        //Serve a controllare che l'uente abbia inserito correttamente la password.
         editTextPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 if(isPasswordOk(editTextPassword.getText().toString()))
@@ -102,19 +85,22 @@ public class LoginFragment extends Fragment {
                 textInputLayoutPassword.setError(null);
             }
         });
+         */
 
 
-        buttonLoginToRegister.setOnClickListener(v -> startActivityBasedOnCondition(RegisterActivity.class,
+        buttonRegister.setOnClickListener(v -> startActivityBasedOnCondition(RegisterActivity.class,
                 R.id.action_loginFragment_to_registerActivity, true));
 
-        buttonForgotPassword.setOnClickListener(v -> {
-
+        buttonForgottenPassword.setOnClickListener(v -> {
             startActivityBasedOnCondition(LoginActivity.class, R.id.action_loginFragment_to_passwordRecoverFragment, false);
         });
 
 
 
         /*
+
+                //logica da spostare altrove
+
         buttonLogin.setOnClickListener(v -> {
             String password = textInputLayoutPassword.getEditText().getText().toString();
             String email = textInputLayoutEmail.getEditText().getText().toString();
@@ -158,6 +144,7 @@ public class LoginFragment extends Fragment {
         }
     }
 
+    /*
     private int checkEmail(String email) {
         if(email == null || email.length() == 0)
             return 1;
@@ -170,4 +157,5 @@ public class LoginFragment extends Fragment {
     private boolean isPasswordOk(String password){
         return password == null || password.length() == 0;
     }
+     */
 }
