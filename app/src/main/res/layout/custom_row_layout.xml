@@ -11,6 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,10 +21,11 @@
             android:layout_height="match_parent"
             android:padding="4dp">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/headerImageCard1"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -29,13 +33,14 @@
 
             <TextView
                 android:id="@+id/NameCategoryCard1"
-                style="@style/TextAppearance.MaterialComponents.Headline3"
+                style="@style/Widget.AppCompat.TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:gravity="bottom|center"
+                android:text="Categoria 1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="14sp"
-                android:text="Categoria 1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/headerImageCard1" />
@@ -48,17 +53,21 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:layout_weight="1"
-        app:cardCornerRadius="10dp">
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        app:cardCornerRadius="10dp"
+        android:focusable="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="4dp">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/headerImageCard2"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -66,13 +75,14 @@
 
             <TextView
                 android:id="@+id/NameCategoryCard2"
-                style="@style/TextAppearance.MaterialComponents.Headline3"
+                style="@style/Widget.AppCompat.TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:gravity="bottom|center"
+                android:text="Categoria 2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="14sp"
-                android:text="Categoria 2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/headerImageCard2" />
