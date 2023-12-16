@@ -24,7 +24,7 @@ import it.unimib.enjoyn.util.StringConverter;
 
 @TypeConverters({StringConverter.class})
 public abstract class EventsRoomDatabase extends RoomDatabase {
-
+    @TypeConverters({StringConverter.class})
     public abstract EventsDao eventDao();
 
     private static volatile EventsRoomDatabase INSTANCE;
