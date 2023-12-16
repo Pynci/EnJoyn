@@ -40,6 +40,26 @@ public class Event implements Parcelable {
     @Embedded(prefix = "meteo_")
     private Meteo meteo;
 
+
+
+    public Event(long id, String title, String description, String date, String time, boolean confidential, String place, String placeName, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Meteo meteo) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.time = time;
+        this.confidential = confidential;
+        this.place = place;
+        this.placeName = placeName;
+        this.category = category;
+        this.peopleNumber = peopleNumber;
+        this.distance = distance;
+        this.isTODO = isTODO;
+        this.isFavorite = isFavorite;
+        this.meteo = meteo;
+    }
+
+    /* da errore POJOs
     public Event(long id, String title, String description, String date, String time, boolean confidential,
                  String place, String placeName, Category category, int peopleNumber, double distance, boolean todo, boolean favorite, Meteo meteo) {
         setId(id);
@@ -57,6 +77,7 @@ public class Event implements Parcelable {
         setTODO(todo);
         setMeteo(meteo);
     }
+     */
 
     public long getId() {
         return id;
@@ -246,4 +267,5 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
 }
