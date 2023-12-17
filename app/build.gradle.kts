@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -44,4 +45,14 @@ dependencies {
 
     //Dipendenza per Pinview
     implementation("io.github.chaosleung:pinview:1.4.4")
+
+    //Dipendenza per cardview
+    implementation("androidx.cardview:cardview:1.0.0")
+
+    //Dipendenze legate a FireBase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-database")
+
 }

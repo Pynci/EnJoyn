@@ -25,6 +25,10 @@ import org.apache.commons.validator.routines.EmailValidator;
  */
 public class RegisterFragment extends Fragment {
 
+    /*
+
+    //questi fanno parte della logica che va spostata altrove
+
     TextInputLayout textInputPassword;
     TextInputLayout textInputEmail;
     TextInputLayout textInputConfirmPassword;
@@ -34,49 +38,50 @@ public class RegisterFragment extends Fragment {
     EditText editTextEmail;
     EditText editTextConfirmPassword;
     EditText editTextUsername;
-
+     */
     Button buttonRegister;
     Button buttonRegisterToLogin;
 
     private static final boolean USE_NAVIGATION_COMPONENT = true;
 
     public RegisterFragment() {
-        // Required empty public constructor
+
     }
 
     public static RegisterFragment newInstance() {
-        RegisterFragment fragment = new RegisterFragment();
-        Bundle args = new Bundle();
-        return fragment;
+        return new RegisterFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        textInputPassword = (view.findViewById(R.id.fragmentRegister_TextInputLayout_Password));
-        buttonRegister = view.findViewById(R.id.fragmentRegister_Button_RegisterButton);
-        buttonRegisterToLogin = view.findViewById(R.id.fragmentRegister_Button_buttonToLogin);
-        textInputEmail = view.findViewById(R.id.fragmentRegister_TextInputLayout_Email);
-        textInputConfirmPassword = view.findViewById(R.id.fragmentRegister_TextInputLayout_ConfermaPassword);
-        textInputUsername = view.findViewById(R.id.fragmentRegister_TextInputLayout_username);
-        editTextPassword = view.findViewById(R.id.fragmentRegister_TextInputEditText_Password);
-        editTextEmail = view.findViewById(R.id.fragmentRegister_TextInputEditText_Email);
-        editTextConfirmPassword = view.findViewById(R.id.fragmentRegister_TextInputEditText_ConfermaPassword);
-        editTextUsername = view.findViewById(R.id.fragmentRegister_TextInputEditText_Username);
+        buttonRegister = view.findViewById(R.id.fragmentRegister_button_register);
+        buttonRegisterToLogin = view.findViewById(R.id.fragmentRegister_button_login);
+
+        /*
+
+        //questa logica va spostata altrove
+
+        textInputPassword = (view.findViewById(R.id.fragmentRegister_textInputLayout_password));
+        textInputEmail = view.findViewById(R.id.fragmentRegister_textInputLayout_email);
+        textInputConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputLayout_confirmPassword);
+        textInputUsername = view.findViewById(R.id.fragmentRegister_textInputLayout_username);
+        editTextPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_password);
+        editTextEmail = view.findViewById(R.id.fragmentRegister_textInputEditText_email);
+        editTextConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_confirmPassword);
+        editTextUsername = view.findViewById(R.id.fragmentRegister_textInputEditText_username);
 
        editTextEmail.setOnFocusChangeListener((v, hasFocus) -> {
            if(!hasFocus){
@@ -119,41 +124,21 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+         */
 
-
+        //passaggio flat, va implementata la logica
         buttonRegister.setOnClickListener(v -> {
-
-            /*
-
-            String name = TextName.getEditText().getText().toString();
-            String surname = TextSurname.getEditText().getText().toString();
-            String password = Textpassword.getEditText().getText().toString();
-            String email = TextEmail.getEditText().getText().toString();
-            String confirmPassword = TextConfirmpassword.getEditText().getText().toString();
-            String username = TextUsername.getEditText().getText().toString();
-            String phoneNumber = TextPhoneNumber.getEditText().getText().toString();
-            boolean checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);;
-            boolean checkedName = checkSurName(name, TextName);
-            boolean checkedSurname = checkSurName(surname, TextSurname);
-            boolean checkedPassword = checkPassword(password);
-            boolean checkedUsername = checkUsername(username);
-            boolean checkedPhoneNumber = checkPhoneNumber(phoneNumber);
-
-            if(checkedPassword){
-                checkedConfirmPassword = checkConfirmPassword(password, confirmPassword);
-            }
-
-
-
-            boolean checkedEmail = checkEmail(email);
-
-            */
             Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
         });
 
+        //passaggio flat, va implementata la logica per i controlli
         buttonRegisterToLogin.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
                 R.id.action_registerFragment_to_loginActivity, true));
     }
+
+    /*
+
+    //questa logica va spostata altrove
 
         private boolean checkPassword(String password) {
             boolean passedP;
@@ -261,6 +246,8 @@ public class RegisterFragment extends Fragment {
         textInputUsername.setError(null);
         return true;
     }
+
+     */
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
         if (USE_NAVIGATION_COMPONENT) {

@@ -32,8 +32,8 @@
         tools:layout="@layout/activity_register" />
     <fragment
         android:id="@+id/passwordRecoverFragment"
-        android:name="it.unimib.enjoyn.PasswordRecoverFragment"
+        android:name="it.unimib.enjoyn.PasswordResetFragment"
         android:label="fragment_password_recover"
-        tools:layout="@layout/fragment_password_recover" />
+        tools:layout="@layout/fragment_password_reset" />
 
 </navigation>

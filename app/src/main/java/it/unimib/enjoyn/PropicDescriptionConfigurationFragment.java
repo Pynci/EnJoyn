@@ -41,28 +41,24 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     public static final String TAG = PropicDescriptionConfigurationFragment.class.getSimpleName();
     private static final boolean USE_NAVIGATION_COMPONENT = true;
 
+
     //callback settata per ricevere la foto selezionata dalla galleria (minuto 23 esercitazione Intent)
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri uri) {
-
-                    if(uri != null){
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                            ((ImageView) getView().findViewById(R.id.propicDescriptionConfiguration_imageView_propic)).setImageBitmap(bitmap);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+            uri -> {
+                if(uri != null){
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
+                        ((ImageView) getView().findViewById(R.id.propicDescriptionConfiguration_imageView_propic)).setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-
                 }
             });
 
 
 
     public PropicDescriptionConfigurationFragment() {
-        // Required empty public constructor
+
     }
 
     //factory method per ottenere istanze del fragment
@@ -78,7 +74,6 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_propic_description_configuration, container, false);
     }
 
@@ -110,8 +105,8 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         buttonNext.setOnClickListener(v -> {
 
             //TODO: inserire il controllo sull'username (dal DB)
+            Navigation.findNavController(v).navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
 
-            //TODO: capire come cazzo si passa da un fragment all'altro. Serve activity?
         });
 
         imageButtonAddPropic.setOnClickListener(v -> {
@@ -126,7 +121,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     /*
     Avvia un'activity utilizzando gli Intent oppure il NavigationComponent.
     Prende in input la classe dell'activity da avviare e l'id associato all'azione (passaggio da un'activity
-    all'altra) definita in nav_first_profile_configuration.xml.
+    all'altra) definita.
     */
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
         if (USE_NAVIGATION_COMPONENT) {
