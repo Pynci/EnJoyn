@@ -1,4 +1,4 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.ui.auth.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
-import com.google.android.material.textfield.TextInputLayout;
-
-import org.apache.commons.validator.routines.EmailValidator;
+import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.ui.auth.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.

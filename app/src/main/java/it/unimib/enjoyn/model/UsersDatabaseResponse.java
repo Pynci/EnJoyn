@@ -7,9 +7,6 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import it.unimib.enjoyn.Event;
-import it.unimib.enjoyn.User;
-
 public class UsersDatabaseResponse implements Parcelable {
 
     private List<User> users;

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.User;
+import it.unimib.enjoyn.model.User;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.NewViewHolder>{
 

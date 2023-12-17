@@ -1,4 +1,4 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.ui.auth.registration;
 
 import android.os.Bundle;
 
@@ -15,15 +15,17 @@ import androidx.navigation.Navigation;
 
 import com.chaos.view.PinView;
 
-public class ConfirmRegistrationCode extends Fragment {
+import it.unimib.enjoyn.R;
+
+public class ConfirmRegistrationCodeFragment extends Fragment {
 
 
-    public ConfirmRegistrationCode() {
+    public ConfirmRegistrationCodeFragment() {
         // Required empty public constructor
     }
 
-    public static ConfirmRegistrationCode newInstance() {
-        return new ConfirmRegistrationCode();
+    public static ConfirmRegistrationCodeFragment newInstance() {
+        return new ConfirmRegistrationCodeFragment();
     }
 
     @Override

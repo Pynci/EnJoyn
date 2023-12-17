@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unimib.enjoyn.Meteo;
+import it.unimib.enjoyn.model.Meteo;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
 import it.unimib.enjoyn.model.MeteoDatabaseResponse;
 import it.unimib.enjoyn.model.UsersDatabaseResponse;

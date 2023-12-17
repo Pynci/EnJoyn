@@ -1,4 +1,4 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.ui.auth.registration;
 
 import android.os.Bundle;
 
@@ -13,6 +13,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
+import it.unimib.enjoyn.R;
 
 public class CategoriesSelectionFragment extends Fragment {
 
@@ -46,7 +49,7 @@ public class CategoriesSelectionFragment extends Fragment {
         yourData.add("Prova");
         yourData.add("test");
 
-        AdapterCategoriesSelection customAdapter = new AdapterCategoriesSelection(this.getContext(), yourData);
+        CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(), yourData);
         listView.setAdapter(customAdapter);
     }
 }

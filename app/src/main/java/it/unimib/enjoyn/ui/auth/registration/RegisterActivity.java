@@ -1,4 +1,4 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.ui.auth.registration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,8 @@ import android.widget.Button;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.apache.commons.validator.routines.EmailValidator;
+
+import it.unimib.enjoyn.R;
 
 public class RegisterActivity extends AppCompatActivity {
 

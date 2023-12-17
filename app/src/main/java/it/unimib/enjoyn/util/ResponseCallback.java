@@ -2,7 +2,7 @@ package it.unimib.enjoyn.util;
 
 import java.util.List;
 
-import it.unimib.enjoyn.Event;
+import it.unimib.enjoyn.model.Event;
 
 public interface ResponseCallback {
 

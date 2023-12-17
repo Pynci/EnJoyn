@@ -1,20 +1,21 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import java.util.List;
 
-public class AdapterCategoriesSelection extends BaseAdapter {
+import it.unimib.enjoyn.R;
+
+public class CategoriesSelectionAdapter extends BaseAdapter {
 
     private List<String> data; // Cambia il tipo di dati in base ai tuoi requisiti
     private Context context;
 
-    public AdapterCategoriesSelection(Context context, List<String> data) {
+    public CategoriesSelectionAdapter(Context context, List<String> data) {
         this.context = context;
         this.data = data;
     }

@@ -9,10 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Calendar;
 import java.util.List;
 
-import it.unimib.enjoyn.Event;
+import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
 
 public class EventReclyclerViewAdapter extends

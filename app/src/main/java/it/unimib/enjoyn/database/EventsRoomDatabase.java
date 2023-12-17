@@ -4,20 +4,15 @@ import static it.unimib.enjoyn.util.Costants.EVENTS_DATABASE_NAME;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
-import androidx.room.DatabaseConfiguration;
-import androidx.room.InvalidationTracker;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.unimib.enjoyn.Event;
+import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.util.StringConverter;
 
 @Database(entities = {Event.class}, version = 1)

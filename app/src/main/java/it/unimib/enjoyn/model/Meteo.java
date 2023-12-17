@@ -1,13 +1,9 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.TypeConverter;
-
 import com.google.gson.annotations.SerializedName;
-
-import it.unimib.enjoyn.util.StringConverter;
 
 public class Meteo implements Parcelable {
     //StringConverter converter = new StringConverter();

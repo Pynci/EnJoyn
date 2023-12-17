@@ -1,4 +1,4 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.ui.main;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -32,6 +32,8 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.List;
 
+import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Meteo;
 import it.unimib.enjoyn.util.JSONParserUtil;
 
 /**

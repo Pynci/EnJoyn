@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="it.unimib.enjoyn.RegisterFragment"
+        android:name="it.unimib.enjoyn.ui.auth.registration.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/confirmRegistrationCode"
-        android:name="it.unimib.enjoyn.ConfirmRegistrationCode"
+        android:name="it.unimib.enjoyn.ui.auth.registration.ConfirmRegistrationCodeFragment"
         android:label="fragment_confirm_registration_code"
         tools:layout="@layout/fragment_confirm_registration_code" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/propicDescriptionConfigurationFragment"
-        android:name="it.unimib.enjoyn.PropicDescriptionConfigurationFragment"
+        android:name="it.unimib.enjoyn.ui.auth.registration.PropicDescriptionConfigurationFragment"
         android:label="fragment_propic_description_configuration"
         tools:layout="@layout/fragment_propic_description_configuration" >
         <action
@@ -37,12 +37,12 @@
     </fragment>
     <activity
         android:id="@+id/loginActivity"
-        android:name="it.unimib.enjoyn.LoginActivity"
+        android:name="it.unimib.enjoyn.ui.auth.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
     <fragment
         android:id="@+id/categoriesSelectionFragment"
-        android:name="it.unimib.enjoyn.CategoriesSelectionFragment"
+        android:name="it.unimib.enjoyn.ui.auth.registration.CategoriesSelectionFragment"
         android:label="fragment_categories_selection"
         tools:layout="@layout/fragment_categories_selection" />
 </navigation>

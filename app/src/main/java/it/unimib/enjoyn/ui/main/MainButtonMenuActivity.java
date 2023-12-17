@@ -1,4 +1,4 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -11,6 +11,8 @@ import android.os.Bundle;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import it.unimib.enjoyn.R;
 
 public class MainButtonMenuActivity extends AppCompatActivity {
 

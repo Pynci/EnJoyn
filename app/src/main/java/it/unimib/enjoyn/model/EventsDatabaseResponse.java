@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import it.unimib.enjoyn.Event;
-
 public class EventsDatabaseResponse implements Parcelable {
 
     private List<Event> events;

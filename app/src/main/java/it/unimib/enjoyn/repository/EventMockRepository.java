@@ -5,8 +5,8 @@ import android.app.Application;
 import java.io.IOException;
 import java.util.List;
 
-import it.unimib.enjoyn.Category;
-import it.unimib.enjoyn.Event;
+import it.unimib.enjoyn.model.Category;
+import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.database.EventsDao;
 import it.unimib.enjoyn.database.EventsRoomDatabase;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;

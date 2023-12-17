@@ -17,14 +17,14 @@
         android:tint="?attr/colorControlNormal"
         tools:targetApi="31">
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ui.main.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainButtonMenuActivity"
+            android:name=".ui.main.MainButtonMenuActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.auth.registration.RegisterActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,11 +32,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true" />
 
     </application>

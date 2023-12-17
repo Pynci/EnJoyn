@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CategoriesSelectionFragment">
+    tools:context=".ui.auth.registration.CategoriesSelectionFragment">
 
     <ListView
         android:id="@+id/fragmentCategoriesSelection_ListView"

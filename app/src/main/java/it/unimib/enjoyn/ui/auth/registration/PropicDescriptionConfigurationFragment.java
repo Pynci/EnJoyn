@@ -1,20 +1,15 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.ui.auth.registration;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 //classi per la gestione del caricamento immagine
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -30,6 +25,8 @@ import android.widget.ImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
+
+import it.unimib.enjoyn.R;
 
 /**
  * A simple {@link Fragment} subclass.

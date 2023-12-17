@@ -1,4 +1,4 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

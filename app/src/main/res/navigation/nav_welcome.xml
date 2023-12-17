@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="it.unimib.enjoyn.LoginFragment"
+        android:name="it.unimib.enjoyn.ui.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -22,17 +22,17 @@
     </fragment>
     <activity
         android:id="@+id/mainButtonMenuActivity"
-        android:name="it.unimib.enjoyn.MainButtonMenuActivity"
+        android:name="it.unimib.enjoyn.ui.main.MainButtonMenuActivity"
         android:label="activity_main_button_menu"
         tools:layout="@layout/activity_main_button_menu" />
     <activity
         android:id="@+id/registerActivity"
-        android:name="it.unimib.enjoyn.RegisterActivity"
+        android:name="it.unimib.enjoyn.ui.auth.registration.RegisterActivity"
         android:label="activity_register"
         tools:layout="@layout/activity_register" />
     <fragment
         android:id="@+id/passwordRecoverFragment"
-        android:name="it.unimib.enjoyn.PasswordResetFragment"
+        android:name="it.unimib.enjoyn.ui.auth.PasswordResetFragment"
         android:label="fragment_password_recover"
         tools:layout="@layout/fragment_password_reset" />
 

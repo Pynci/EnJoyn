@@ -5,14 +5,11 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.TypeConverter;
 import androidx.room.Update;
 
 import java.util.List;
 
-import it.unimib.enjoyn.Event;
-import it.unimib.enjoyn.Meteo;
-import it.unimib.enjoyn.util.StringConverter;
+import it.unimib.enjoyn.model.Event;
 
 @Dao
 public interface EventsDao {

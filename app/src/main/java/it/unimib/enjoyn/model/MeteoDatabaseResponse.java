@@ -7,9 +7,6 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import it.unimib.enjoyn.Meteo;
-import it.unimib.enjoyn.User;
-
 public class MeteoDatabaseResponse implements Parcelable {
 
     private List<Meteo> meteoList;

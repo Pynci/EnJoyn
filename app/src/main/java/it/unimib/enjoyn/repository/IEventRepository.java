@@ -2,8 +2,8 @@ package it.unimib.enjoyn.repository;
 
 import java.io.IOException;
 
-import it.unimib.enjoyn.Category;
-import it.unimib.enjoyn.Event;
+import it.unimib.enjoyn.model.Category;
+import it.unimib.enjoyn.model.Event;
 
 public interface IEventRepository {
 

@@ -1,4 +1,4 @@
-package it.unimib.enjoyn;
+package it.unimib.enjoyn.ui.main;
 
 import android.os.Bundle;
 
@@ -13,8 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ViewSwitcher;
+
+import it.unimib.enjoyn.R;
 
 /**
  * A simple {@link Fragment} subclass.

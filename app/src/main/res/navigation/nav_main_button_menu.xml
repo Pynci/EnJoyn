@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/discover"
-        android:name="it.unimib.enjoyn.DiscoverFragment"
+        android:name="it.unimib.enjoyn.ui.main.DiscoverFragment"
         android:label="fragment_discover"
         tools:layout="@layout/fragment_discover" >
         <action
@@ -16,22 +16,22 @@
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
-        android:name="it.unimib.enjoyn.FriendsFragment"
+        android:name="it.unimib.enjoyn.ui.main.FriendsFragment"
         android:label="fragment_friends"
         tools:layout="@layout/fragment_friends" />
     <fragment
         android:id="@+id/newEventFragment"
-        android:name="it.unimib.enjoyn.NewEventFragment"
+        android:name="it.unimib.enjoyn.ui.main.NewEventFragment"
         android:label="fragment_new_event"
         tools:layout="@layout/fragment_new_event" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="it.unimib.enjoyn.ProfileFragment"
+        android:name="it.unimib.enjoyn.ui.main.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/todo"
-        android:name="it.unimib.enjoyn.TodoFragment"
+        android:name="it.unimib.enjoyn.ui.main.TodoFragment"
         android:label="fragment_todo"
         tools:layout="@layout/fragment_todo" >
         <action
@@ -41,7 +41,7 @@
     <include app:graph="@navigation/nav_welcome" />
     <fragment
         android:id="@+id/discoverSingleEvent"
-        android:name="it.unimib.enjoyn.DiscoverSingleEvent"
+        android:name="it.unimib.enjoyn.ui.main.DiscoverSingleEvent"
         android:label="fragment_discover_single_event"
         tools:layout="@layout/fragment_discover_single_event" />
 </navigation>
