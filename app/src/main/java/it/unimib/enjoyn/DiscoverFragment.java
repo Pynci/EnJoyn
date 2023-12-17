@@ -1,5 +1,6 @@
 package it.unimib.enjoyn;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,14 +31,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
+import it.unimib.enjoyn.repository.EventMockRepository;
+import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.util.JSONParserUtil;
+import it.unimib.enjoyn.util.ResponseCallback;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DiscoverFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DiscoverFragment extends Fragment {
+public class DiscoverFragment extends Fragment implements ResponseCallback {
+
+    private IEventRepository iEventRepository;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,6 +85,8 @@ public class DiscoverFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        iEventRepository = new EventMockRepository(requireActivity().getApplication(), this);
     }
 
     @Override
@@ -87,6 +95,8 @@ public class DiscoverFragment extends Fragment {
             // Use getViewLifecycleOwner() to avoid that the listener
             // associated with a menu icon is called twice
              getViewLifecycleOwner();
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_discover, container, false);
 
@@ -128,6 +138,8 @@ public class DiscoverFragment extends Fragment {
 
                     @Override
                     public void onJoinButtonPressed(int position) {
+                        eventList.get(position).setTODO(!eventList.get(position).isTODO());
+                        iEventRepository.updateTodo(eventList.get(position));
 
                     }
                 });
@@ -159,10 +171,30 @@ public class DiscoverFragment extends Fragment {
             InputStream inputStream = context.getAssets().open("prova.json"); //apro file
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
 
-            return jsonParserUtil.parseJSONEventFileWithGSon(bufferedReader).getEvents();
+            return jsonParserUtil.parseJSONEventFileWithGSon("prova.json").getEvents();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void onSuccess(List<Event> newsList, long lastUpdate) {
+
+    }
+
+    @Override
+    public void onFailure(String errorMessage) {
+
+    }
+
+    @Override
+    public void onEventFavoriteStatusChanged(Event event) {
+
+    }
+
+    @Override
+    public void onEventTodoStatusChanged(Event event) {
+
     }
 }
