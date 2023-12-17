@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ViewSwitcher;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,6 +83,24 @@ public class ProfileFragment extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 return false;
+            }
+        });
+
+        //prova swicth di un cointener
+
+        ViewSwitcher viewSwitcher = (ViewSwitcher) view.findViewById(R.id.viewSwitcher1);
+        View myFirstView = view.findViewById(R.id.view1);
+        View mySecondView = view.findViewById(R.id.view2);
+        Button button1 = (Button) view.findViewById(R.id.fragmentProfile_textButton_editProfile);
+        button1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                if (viewSwitcher.getCurrentView() != myFirstView) {
+                    viewSwitcher.showPrevious();
+                } else if (viewSwitcher.getCurrentView() != mySecondView) {
+                    viewSwitcher.showNext();
+                }
             }
         });
     }
