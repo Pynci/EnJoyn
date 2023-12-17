@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_discover_to_discoverSingleEvent"
             app:destination="@id/discoverSingleEvent" />
+        <action
+            android:id="@+id/action_discover_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
@@ -44,4 +47,9 @@
         android:name="it.unimib.enjoyn.ui.main.DiscoverSingleEvent"
         android:label="fragment_discover_single_event"
         tools:layout="@layout/fragment_discover_single_event" />
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="it.unimib.enjoyn.ui.main.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" />
 </navigation>
