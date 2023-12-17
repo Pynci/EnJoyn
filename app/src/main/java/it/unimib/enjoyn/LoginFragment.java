@@ -36,7 +36,6 @@ public class LoginFragment extends Fragment {
     }
 
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -94,6 +93,7 @@ public class LoginFragment extends Fragment {
         buttonForgottenPassword.setOnClickListener(v -> {
             startActivityBasedOnCondition(LoginActivity.class, R.id.action_loginFragment_to_passwordRecoverFragment, false);
         });
+    }
 
 
 
@@ -120,6 +120,8 @@ public class LoginFragment extends Fragment {
 
     }
 
+         */
+
     /*
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
         try {
@@ -131,7 +133,8 @@ public class LoginFragment extends Fragment {
         }
          */
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination,
+                                               boolean finishActivity) {
         if (USE_NAVIGATION_COMPONENT) {
             Navigation.findNavController(requireView()).navigate(destination);
         } else {
@@ -139,7 +142,7 @@ public class LoginFragment extends Fragment {
             startActivity(intent);
         }
         //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
+        if (finishActivity) {
             requireActivity().finish();
         }
     }
