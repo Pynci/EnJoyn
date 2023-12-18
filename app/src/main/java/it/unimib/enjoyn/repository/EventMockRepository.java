@@ -47,7 +47,10 @@ public class EventMockRepository implements IEventRepository{
     @Override
     public void updateEvent(Event event) {
         /**TODO aggiornamento distanza, meteo*/
-
+        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            eventsDao.updateSingleTodoEvent(event);
+            responseCallback.onEventTodoStatusChanged(event);
+        });
     }
 
     public void updateTodo(Event event){

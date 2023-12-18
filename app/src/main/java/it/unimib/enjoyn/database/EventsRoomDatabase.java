@@ -16,7 +16,6 @@ import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.util.StringConverter;
 
 @Database(entities = {Event.class}, version = 1)
-
 @TypeConverters({StringConverter.class})
 public abstract class EventsRoomDatabase extends RoomDatabase {
     @TypeConverters({StringConverter.class})

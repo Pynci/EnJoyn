@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +44,8 @@ import it.unimib.enjoyn.util.ResponseCallback;
 public class DiscoverFragment extends Fragment implements ResponseCallback {
 
     private IEventRepository iEventRepository;
+
+    private List<Event> eventList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -125,7 +129,7 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-        List<Event> eventList = getEventListWithGSon();
+         eventList = getEventListWithGSon();
 
         //List<Event> eventList = new ArrayList<Event>() ;
         //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
@@ -141,7 +145,7 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
                     @Override
                     public void onJoinButtonPressed(int position) {
                         eventList.get(position).setTODO(!eventList.get(position).isTODO());
-                        iEventRepository.updateTodo(eventList.get(position));
+                        iEventRepository.updateEvent(eventList.get(position));
 
                     }
                 });
@@ -187,8 +191,11 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
     }
 
     @Override
-    public void onSuccess(List<Event> newsList, long lastUpdate) {
-
+    public void onSuccess(List<Event> eventList, long lastUpdate) {
+        if (eventList != null) {
+            this.eventList.clear();
+            this.eventList.addAll(eventList);
+        }
     }
 
     @Override
@@ -203,6 +210,14 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
 
     @Override
     public void onEventTodoStatusChanged(Event event) {
-
+        if (event.isTODO()) {
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.StringTooLong),
+                    Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.alreadyHasAccount),
+                    Snackbar.LENGTH_LONG).show();
+        }
     }
 }
