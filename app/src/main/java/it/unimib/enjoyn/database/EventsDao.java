@@ -14,7 +14,7 @@ import it.unimib.enjoyn.model.Event;
 @Dao
 public interface EventsDao {
 
-    @Query("SELECT * FROM event ORDER BY distance, date, time DESC")
+    @Query("SELECT * FROM event")
     List<Event> getAll();
 
     @Query("SELECT * FROM event WHERE id = :id")
