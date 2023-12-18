@@ -51,5 +51,9 @@
         android:id="@+id/favoritesFragment"
         android:name="it.unimib.enjoyn.ui.main.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_discoverSingleEvent"
+            app:destination="@id/discoverSingleEvent" />
+    </fragment>
 </navigation>
