@@ -6,14 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.google.android.material.card.MaterialCardView;
+
 import java.util.List;
 
 import it.unimib.enjoyn.R;
 
 public class CategoriesSelectionAdapter extends BaseAdapter {
 
-    private List<String> data; // Cambia il tipo di dati in base ai tuoi requisiti
-    private Context context;
+    private final List<String> data; // Cambia il tipo di dati in base ai tuoi requisiti
+    private final Context context;
 
     public CategoriesSelectionAdapter(Context context, List<String> data) {
         this.context = context;
@@ -42,6 +44,12 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             rowView = inflater.inflate(R.layout.custom_row_layout, parent, false);
         }
+
+        MaterialCardView palle = rowView.findViewById(R.id.scroto);
+
+        palle.setOnClickListener(v -> {
+            palle.setChecked(!palle.isChecked());
+        });
 
         return rowView;
     }

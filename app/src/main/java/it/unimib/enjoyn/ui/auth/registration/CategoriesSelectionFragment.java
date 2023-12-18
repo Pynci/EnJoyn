@@ -48,6 +48,12 @@ public class CategoriesSelectionFragment extends Fragment {
 
         yourData.add("Prova");
         yourData.add("test");
+        yourData.add("TAH");
+        yourData.add("origano");
+        yourData.add("Prova");
+        yourData.add("test");
+        yourData.add("TAH");
+        yourData.add("origano");
 
         CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(), yourData);
         listView.setAdapter(customAdapter);

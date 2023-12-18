@@ -7,11 +7,15 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/scroto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="7dp"
         android:layout_weight="1"
+        android:checkable="true"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
@@ -26,11 +30,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
+                android:tintMode="src_atop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/circleImageView"
-                app:srcCompat="@drawable/the_rock_meme" />
+                app:srcCompat="@drawable/the_rock_meme"
+                app:tint="#6F000000" />
 
             <TextView
                 android:id="@+id/NameCategoryCard1"
@@ -40,24 +46,29 @@
                 android:gravity="bottom|center"
                 android:text="Categoria 1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@android:color/white"
                 android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/headerImageCard1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="20dp"
         android:layout_weight="1"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:checkable="true"
         android:clickable="true"
-        app:cardCornerRadius="10dp"
-        android:focusable="true">
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -72,7 +83,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/circleImageView"
-                app:srcCompat="@drawable/the_rock_meme" />
+                app:srcCompat="@drawable/the_rock_meme"
+                android:tintMode="src_atop"
+                app:tint="#6F000000"/>
 
             <TextView
                 android:id="@+id/NameCategoryCard2"
@@ -82,12 +95,14 @@
                 android:gravity="bottom|center"
                 android:text="Categoria 2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@android:color/white"
                 android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/headerImageCard2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/headerImageCard2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
