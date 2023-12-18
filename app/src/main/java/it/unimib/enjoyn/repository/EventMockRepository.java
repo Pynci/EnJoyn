@@ -16,6 +16,7 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class EventMockRepository implements IEventRepository{
 
+
     private final Application application;
     private final ResponseCallback responseCallback;
     private final EventsDao eventsDao;
@@ -27,13 +28,14 @@ public class EventMockRepository implements IEventRepository{
         this.eventsDao = eventsRoomDatabase.eventDao();
     }
 
-    @Override
-    public void fetchEvents(Category category) throws IOException {
+    public void fetchAllEvents() throws IOException {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 
         EventsDatabaseResponse eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");;
         saveDataInDatabase(eventsDatabaseResponse.getEvents());
     }
+
+
 
     @Override
     public void getTODOEvents() {

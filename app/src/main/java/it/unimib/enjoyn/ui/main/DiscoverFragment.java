@@ -147,6 +147,12 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
+
+        try {
+            iEventRepository.fetchAllEvents();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
