@@ -48,6 +48,8 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
 
     private List<Event> eventList;
 
+    private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -137,7 +139,7 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
         //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
 
 
-        EventReclyclerViewAdapter eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
+        eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
@@ -147,6 +149,7 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
                     @Override
                     public void onJoinButtonPressed(int position) {
                         eventList.get(position).setTODO(!eventList.get(position).isTODO());
+
                         iEventRepository.updateEvent(eventList.get(position));
 
                     }
@@ -212,11 +215,15 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
 
     @Override
     public void onEventTodoStatusChanged(Event event) {
+
         if (event.isTODO()) {
+            event.incrementPeopleNumber();
+            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
             Snackbar.make(requireActivity().findViewById(android.R.id.content),
                     getString(R.string.StringTooLong),
                     Snackbar.LENGTH_LONG).show();
         } else {
+            //TODO decrementPeopleNumber()
             Snackbar.make(requireActivity().findViewById(android.R.id.content),
                     getString(R.string.alreadyHasAccount),
                     Snackbar.LENGTH_LONG).show();

@@ -200,6 +200,23 @@ public class Event implements Parcelable {
         this.meteo = meteo;
     }
 
+    public void incrementPeopleNumber(){
+        if(peopleNumber>0){
+            peopleNumber++;
+        }
+        this.peopleNumber=peopleNumber;
+    }
+
+    public void decrementPeopleNumber(){
+        if(peopleNumber>1){
+            peopleNumber--;
+            this.peopleNumber=peopleNumber;
+        }
+        else{
+
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -269,16 +286,18 @@ public class Event implements Parcelable {
         }
     };
 
+    /*TODO
+    quando prendiamo da db Firebase aggiungere peopleNumber*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Event)) return false;
         Event event = (Event) o;
-        return  confidential == event.confidential && peopleNumber == event.peopleNumber && Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title) && Objects.equals(description, event.description) && Objects.equals(date, event.date) && Objects.equals(time, event.time) && Objects.equals(place, event.place) && Objects.equals(placeName, event.placeName) && Objects.equals(category, event.category);
+        return  confidential == event.confidential && Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title) && Objects.equals(description, event.description) && Objects.equals(date, event.date) && Objects.equals(time, event.time) && Objects.equals(place, event.place) && Objects.equals(placeName, event.placeName) && Objects.equals(category, event.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( title, description, date, time, confidential, place, placeName, category, peopleNumber, distance);
+        return Objects.hash( title, description, date, time, confidential, place, placeName, category, distance);
     }
 }

@@ -19,7 +19,6 @@ public class EventReclyclerViewAdapter extends
 
 
     public interface OnItemClickListener{
-
         void onEventItemClick(Event event);
 
         void onJoinButtonPressed(int position);
@@ -92,7 +91,6 @@ public class EventReclyclerViewAdapter extends
 
             if(v.getId() == R.id.joinButton){
                  onItemClickListener.onJoinButtonPressed(getAdapterPosition());
-                // notify();
 
             }else{
                 onItemClickListener.onEventItemClick(eventList.get(getAdapterPosition()));
