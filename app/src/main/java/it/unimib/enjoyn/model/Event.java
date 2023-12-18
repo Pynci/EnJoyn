@@ -186,7 +186,7 @@ public class Event implements Parcelable {
     }
 
     public void setTODO(boolean TODO) {
-        this.isTODO = TODO;
+        isTODO = TODO;
     }
 
     public void setFavorite(boolean favorite) {

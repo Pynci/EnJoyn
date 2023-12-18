@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,6 +94,7 @@ public class TodoFragment extends Fragment implements ResponseCallback {
         iEventRepository =
                 new EventMockRepository(requireActivity().getApplication(), this);
         eventList = new ArrayList<>();
+        iEventRepository.getTODOEvents();
     }
 
     @Override
@@ -138,7 +141,8 @@ public class TodoFragment extends Fragment implements ResponseCallback {
 
                     @Override
                     public void onJoinButtonPressed(int position) {
-
+                        eventList.get(position).setTODO(!eventList.get(position).isTODO());
+                        iEventRepository.updateEvent(eventList.get(position));
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
@@ -200,6 +204,10 @@ public class TodoFragment extends Fragment implements ResponseCallback {
 
     @Override
     public void onEventTodoStatusChanged(Event event) {
-
+        eventList.remove(event);
+        requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
+        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                getString(R.string.alreadyHasAccount),
+                Snackbar.LENGTH_LONG).show();
     }
 }
