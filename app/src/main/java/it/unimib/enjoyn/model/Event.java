@@ -201,20 +201,16 @@ public class Event implements Parcelable {
     }
 
     public void incrementPeopleNumber(){
-        if(peopleNumber>0){
+
             peopleNumber++;
-        }
+
         this.peopleNumber=peopleNumber;
     }
 
     public void decrementPeopleNumber(){
-        if(peopleNumber>1){
+
             peopleNumber--;
             this.peopleNumber=peopleNumber;
-        }
-        else{
-
-        }
     }
 
     @Override

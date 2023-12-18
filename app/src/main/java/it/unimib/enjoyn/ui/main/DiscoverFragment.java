@@ -149,7 +149,13 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
                     @Override
                     public void onJoinButtonPressed(int position) {
                         eventList.get(position).setTODO(!eventList.get(position).isTODO());
-
+                        boolean istodo= eventList.get(position).isTODO();
+                        if(eventList.get(position).isTODO()) {
+                            eventList.get(position).incrementPeopleNumber();
+                        }
+                        else{
+                            eventList.get(position).decrementPeopleNumber();
+                        }
                         iEventRepository.updateEvent(eventList.get(position));
 
                     }
@@ -217,13 +223,13 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
     public void onEventTodoStatusChanged(Event event) {
 
         if (event.isTODO()) {
-            event.incrementPeopleNumber();
             requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
             Snackbar.make(requireActivity().findViewById(android.R.id.content),
                     getString(R.string.StringTooLong),
                     Snackbar.LENGTH_LONG).show();
         } else {
-            //TODO decrementPeopleNumber()
+
+            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
             Snackbar.make(requireActivity().findViewById(android.R.id.content),
                     getString(R.string.alreadyHasAccount),
                     Snackbar.LENGTH_LONG).show();
