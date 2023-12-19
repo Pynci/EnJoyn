@@ -10,7 +10,7 @@ import it.unimib.enjoyn.model.Event;
  */
 public interface EventCallback {
     //void onSuccessFromRemote(EventApiResponse eventApiResponse, long lastUpdate);
-    void onFailureFromRemote(Exception exception);
+    //void onFailureFromRemote(Exception exception);
     void onSuccessFromLocal(List<Event> eventList);
     void onFailureFromLocal(Exception exception);
     void onEventToDoStatusChanged(Event event, List<Event> eventToDo);

@@ -27,7 +27,7 @@ public interface EventsDao {
     List<Event> getTodoEvents();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insertNewsList(List<Event> eventList);
+    List<Long> insertEventList(List<Event> eventList);
 
     @Insert
     void insertAll(Event... event);
@@ -49,7 +49,7 @@ public interface EventsDao {
     void updateSingleFavoriteEvent(Event event);
 
     @Update
-    void updateSingleTodoEvent(Event event);
+    int updateSingleTodoEvent(Event event);
 
     @Update
     void updateListFavoriteEvents(List<Event> events);

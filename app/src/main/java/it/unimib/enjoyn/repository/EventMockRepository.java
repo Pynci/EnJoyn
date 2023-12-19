@@ -95,7 +95,7 @@ public class EventMockRepository implements IEventRepository{
             }
 
             // Writes the news in the database and gets the associated primary keys
-            List<Long> insertedNewsIds = eventsDao.insertNewsList(eventList);
+            List<Long> insertedNewsIds = eventsDao.insertEventList(eventList);
             for (int i = 0; i < eventList.size(); i++) {
                 // Adds the primary key to the corresponding object News just downloaded so that
                 // if the user marks the news as favorite (and vice-versa), we can use its id
