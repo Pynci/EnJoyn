@@ -211,9 +211,16 @@ public class TodoFragment extends Fragment implements ResponseCallback {
     @Override
     public void onEventTodoStatusChanged(Event event) {
         eventList.remove(event);
-        requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
-        Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                getString(R.string.alreadyHasAccount),
-                Snackbar.LENGTH_LONG).show();
+        if (event.isTODO()) {
+            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.eventAddToDo),
+                    Snackbar.LENGTH_LONG).show();
+        } else {
+            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.eventRemoveToDo),
+                    Snackbar.LENGTH_LONG).show();
+        }
     }
 }

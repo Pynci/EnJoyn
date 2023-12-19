@@ -73,8 +73,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/categoryImage" />
 
             <Button
-                android:id="@+id/joinButton"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:id="@+id/eventListItem_button_joinButton"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Unisciti"
@@ -87,9 +87,9 @@
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/baseline_people_outline_24"
                 android:text="3"
-                app:layout_constraintBottom_toTopOf="@+id/joinButton"
-                app:layout_constraintEnd_toEndOf="@+id/joinButton"
-                app:layout_constraintStart_toStartOf="@+id/joinButton" />
+                app:layout_constraintBottom_toTopOf="@+id/eventListItem_button_joinButton"
+                app:layout_constraintEnd_toEndOf="@+id/eventListItem_button_joinButton"
+                app:layout_constraintStart_toStartOf="@+id/eventListItem_button_joinButton" />
 
             <ImageView
                 android:id="@+id/categoryImage"
@@ -98,7 +98,7 @@
                 android:contentDescription="Immagine scelta dall'utente da API"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/img_0410" />
+                app:srcCompat="@drawable/the_rock_meme" />
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -106,8 +106,9 @@
                 android:layout_width="44dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:contentDescription="@string/bottonAddToFavorites"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/joinButton"
+                app:layout_constraintEnd_toStartOf="@+id/eventListItem_button_joinButton"
                 app:srcCompat="@drawable/baseline_favorite_border_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
