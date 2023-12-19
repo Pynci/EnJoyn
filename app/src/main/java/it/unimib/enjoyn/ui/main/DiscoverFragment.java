@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,6 +45,10 @@ import it.unimib.enjoyn.util.ResponseCallback;
 public class DiscoverFragment extends Fragment implements ResponseCallback {
 
     private IEventRepository iEventRepository;
+
+    private List<Event> eventList;
+
+    private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -104,14 +111,19 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menu.clear();
+                menuInflater.inflate(R.menu.menu_toolbar, menu);
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
+                    startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_favoritesFragment, false);
+                }
                 return false;
             }
         });
@@ -121,13 +133,13 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-        List<Event> eventList = getEventListWithGSon();
+         eventList = getEventListWithGSon();
 
         //List<Event> eventList = new ArrayList<Event>() ;
         //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
 
 
-        EventReclyclerViewAdapter eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
+        eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
@@ -137,12 +149,25 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
                     @Override
                     public void onJoinButtonPressed(int position) {
                         eventList.get(position).setTODO(!eventList.get(position).isTODO());
-                        iEventRepository.updateTodo(eventList.get(position));
+
+                        if(eventList.get(position).isTODO()) {
+                            eventList.get(position).incrementPeopleNumber();
+                        }
+                        else{
+                            eventList.get(position).decrementPeopleNumber();
+                        }
+                        iEventRepository.updateEvent(eventList.get(position));
 
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
+
+        try {
+            iEventRepository.fetchAllEvents();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
@@ -177,8 +202,11 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
     }
 
     @Override
-    public void onSuccess(List<Event> newsList, long lastUpdate) {
-
+    public void onSuccess(List<Event> eventList, long lastUpdate) {
+        if (eventList != null) {
+            this.eventList.clear();
+            this.eventList.addAll(eventList);
+        }
     }
 
     @Override
@@ -194,5 +222,17 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
     @Override
     public void onEventTodoStatusChanged(Event event) {
 
+        if (event.isTODO()) {
+            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.eventAddToDo),
+                    Snackbar.LENGTH_LONG).show();
+        } else {
+
+            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.eventRemoveToDo),
+                    Snackbar.LENGTH_LONG).show();
+        }
     }
 }

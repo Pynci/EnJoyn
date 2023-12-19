@@ -19,7 +19,6 @@ public class EventReclyclerViewAdapter extends
 
 
     public interface OnItemClickListener{
-
         void onEventItemClick(Event event);
 
         void onJoinButtonPressed(int position);
@@ -60,16 +59,12 @@ public class EventReclyclerViewAdapter extends
     public class NewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView textViewTitle;
-
         private final TextView textViewData;
-
         private final TextView textViewTime;
-
         private final TextView textViewPlace;
-
         private final TextView textViewPeopleNumber;
-
         private final TextView textViewDistance;
+        private final Button joinButton;
 
 
         public NewViewHolder(@NonNull View itemView) {
@@ -81,7 +76,7 @@ public class EventReclyclerViewAdapter extends
             textViewPeopleNumber = itemView.findViewById(R.id.peopleNumber);
             textViewDistance = itemView.findViewById(R.id.distance);
 
-            Button joinButton = itemView.findViewById(R.id.joinButton);
+            joinButton = itemView.findViewById(R.id.eventListItem_button_joinButton);
             itemView.setOnClickListener(this);
             joinButton.setOnClickListener(this);
 
@@ -90,14 +85,9 @@ public class EventReclyclerViewAdapter extends
         @Override
         public void onClick(View v) {
 
-            if(v.getId() == R.id.joinButton){
-
-                /**TODO
-                 *
-                 * eventList.joinEvent(getAdapterPosition());
-                 *
-                 * notify()
-                 */
+            if(v.getId() == R.id.eventListItem_button_joinButton){
+                setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
+                onItemClickListener.onJoinButtonPressed(getAdapterPosition());
 
             }else{
                 onItemClickListener.onEventItemClick(eventList.get(getAdapterPosition()));
@@ -112,8 +102,21 @@ public class EventReclyclerViewAdapter extends
             textViewPlace.setText(event.getPlace());
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
-
+            setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
         }
+
+
+        private void setTextButtonTodoEvent(boolean isTodo){
+            if(isTodo){
+                joinButton.setText(R.string.Join);
+            }
+            else{
+                joinButton.setText(R.string.remove);
+            }
+        }
+
+
     }
+
 
 }

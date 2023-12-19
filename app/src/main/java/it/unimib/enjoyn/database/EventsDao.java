@@ -14,7 +14,7 @@ import it.unimib.enjoyn.model.Event;
 @Dao
 public interface EventsDao {
 
-    @Query("SELECT * FROM event ORDER BY date, time DESC")
+    @Query("SELECT * FROM event ORDER BY date, time DESC, distance ASC")
     List<Event> getAll();
 
     @Query("SELECT * FROM event WHERE id = :id")
@@ -23,7 +23,7 @@ public interface EventsDao {
     @Query("SELECT * FROM event WHERE isFavorite = 1 ORDER BY date, time DESC")
     List<Event> getFavoriteEvents();
 
-    @Query("SELECT * FROM event WHERE isTODO = 1 ORDER BY date, time DESC")
+    @Query("SELECT * FROM event WHERE isTODO = 1 ORDER BY date, time ASC")
     List<Event> getTodoEvents();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

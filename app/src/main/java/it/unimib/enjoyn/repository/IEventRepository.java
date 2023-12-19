@@ -8,7 +8,7 @@ import it.unimib.enjoyn.model.Event;
 public interface IEventRepository {
 
 
-    void fetchEvents(Category category) throws IOException;
+    void fetchAllEvents() throws IOException;
 
     void getTODOEvents();
 

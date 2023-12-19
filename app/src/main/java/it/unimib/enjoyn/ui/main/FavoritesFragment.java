@@ -18,31 +18,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
-import it.unimib.enjoyn.repository.EventMockRepository;
-import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.util.JSONParserUtil;
-import it.unimib.enjoyn.util.ResponseCallback;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TodoFragment#newInstance} factory method to
+ * Use the {@link FavoritesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TodoFragment extends Fragment implements ResponseCallback {
+public class FavoritesFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,16 +45,8 @@ public class TodoFragment extends Fragment implements ResponseCallback {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ProgressBar progressBar;
 
-
-    private IEventRepository iEventRepository;
-
-    private List<Event> eventList;
-
-    private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
-
-    public TodoFragment() {
+    public FavoritesFragment() {
         // Required empty public constructor
     }
 
@@ -71,11 +56,11 @@ public class TodoFragment extends Fragment implements ResponseCallback {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Todo.
+     * @return A new instance of fragment FavoritesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static TodoFragment newInstance(String param1, String param2) {
-        TodoFragment fragment = new TodoFragment();
+    public static FavoritesFragment newInstance(String param1, String param2) {
+        FavoritesFragment fragment = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -90,24 +75,19 @@ public class TodoFragment extends Fragment implements ResponseCallback {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        iEventRepository =
-                new EventMockRepository(requireActivity().getApplication(), this);
-        eventList = new ArrayList<>();
-        iEventRepository.getTODOEvents();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getViewLifecycleOwner();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_todo, container, false);
+        return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -120,35 +100,28 @@ public class TodoFragment extends Fragment implements ResponseCallback {
             }
         });
 
-        RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.fragmentTODO_recyclerView);
+        RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.favoritesFragment_recyclerView);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-        iEventRepository.getTODOEvents();
-
+        List<Event> eventList = getEventListWithGSon();
 
         //List<Event> eventList = new ArrayList<Event>() ;
         //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
 
 
-         eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
+        EventReclyclerViewAdapter eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
-                        startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_todo_to_discoverSingleEvent, false);
+                        startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_favoritesFragment_to_discoverSingleEvent, false);
                     }
 
                     @Override
                     public void onJoinButtonPressed(int position) {
-                        eventList.get(position).setTODO(!eventList.get(position).isTODO());
-                        if(eventList.get(position).isTODO()) {
-                            eventList.get(position).incrementPeopleNumber();
-                        }
-                        else{
-                            eventList.get(position).decrementPeopleNumber();
-                        }
-                        iEventRepository.updateEvent(eventList.get(position));
+
+
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
@@ -184,43 +157,5 @@ public class TodoFragment extends Fragment implements ResponseCallback {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public void onSuccess(List<Event> eventList, long lastUpdate) {
-        if (eventList != null) {
-            this.eventList.clear();
-            this.eventList.addAll(eventList);
-            requireActivity().runOnUiThread(() -> {
-                eventsRecyclerViewAdapter.notifyDataSetChanged();
-                //progressBar.setVisibility(View.GONE);
-            });
-        }
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-
-    }
-
-    @Override
-    public void onEventFavoriteStatusChanged(Event event) {
-
-    }
-
-    @Override
-    public void onEventTodoStatusChanged(Event event) {
-        eventList.remove(event);
-        if (event.isTODO()) {
-            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
-            Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.eventAddToDo),
-                    Snackbar.LENGTH_LONG).show();
-        } else {
-            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
-            Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.eventRemoveToDo),
-                    Snackbar.LENGTH_LONG).show();
-        }
     }
 }

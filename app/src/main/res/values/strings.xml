@@ -80,5 +80,10 @@
     <string name="passwordReset">Ripristino password</string>
     <string name="alreadyHasAccount">Hai già un account?</string>
     <string name="resetHere">Ripristinala qui</string>
+    <string name="favorites">Preferiti</string>
+    <string name="bottonAddToFavorites">Bottone aggiungi ai preferiti</string>
+    <string name="remove">Rimuovi</string>
+    <string name="eventAddToDo">Evento aggiunto al ToDo</string>
+    <string name="eventRemoveToDo">Evento rimosso dal ToDo</string>
 
 </resources>

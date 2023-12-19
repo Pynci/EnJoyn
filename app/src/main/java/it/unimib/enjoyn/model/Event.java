@@ -7,6 +7,8 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 @Entity
 public class Event implements Parcelable {
 
@@ -56,6 +58,7 @@ public class Event implements Parcelable {
         this.isFavorite = isFavorite;
         this.meteo = meteo;
     }
+
 
     /* da errore POJOs
     public Event(long id, String title, String description, String date, String time, boolean confidential,
@@ -197,6 +200,19 @@ public class Event implements Parcelable {
         this.meteo = meteo;
     }
 
+    public void incrementPeopleNumber(){
+
+            peopleNumber++;
+
+        this.peopleNumber=peopleNumber;
+    }
+
+    public void decrementPeopleNumber(){
+
+            peopleNumber--;
+            this.peopleNumber=peopleNumber;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -266,4 +282,18 @@ public class Event implements Parcelable {
         }
     };
 
+    /*TODO
+    quando prendiamo da db Firebase aggiungere peopleNumber*/
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event)) return false;
+        Event event = (Event) o;
+        return  confidential == event.confidential && Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title) && Objects.equals(description, event.description) && Objects.equals(date, event.date) && Objects.equals(time, event.time) && Objects.equals(place, event.place) && Objects.equals(placeName, event.placeName) && Objects.equals(category, event.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( title, description, date, time, confidential, place, placeName, category, distance);
+    }
 }
