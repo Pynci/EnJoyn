@@ -15,5 +15,7 @@ public interface EventCallback {
     void onFailureFromLocal(Exception exception);
     void onEventToDoStatusChanged(Event event, List<Event> eventToDo);
     void onEventToDoStatusChanged(List<Event> event);
+    void onEventFavoriteStatusChanged(List<Event> event);
+
     void onDeleteToDoEventSuccess(List<Event> eventToDo);
 }
