@@ -30,14 +30,10 @@ public class EventMockRepository implements IEventRepository{
     public void fetchAllEvents() throws IOException {
 
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
-        EventsDatabaseResponse eventsDatabaseResponse =null;
-         eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
+        EventsDatabaseResponse eventsDatabaseResponse;
+        eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
         saveDataInDatabase(eventsDatabaseResponse.getEventList());
-
-
     }
-
-
 
     @Override
     public void getTODOEvents() {
