@@ -16,6 +16,7 @@ public interface EventCallback {
     void onEventToDoStatusChanged(Event event, List<Event> eventToDo);
     void onEventToDoStatusChanged(List<Event> event);
     void onEventFavoriteStatusChanged(List<Event> event);
+    void onEventFavoriteStatusChanged(Event event, List<Event> eventFavorite);
 
-    void onDeleteToDoEventSuccess(List<Event> eventToDo);
+    //void onDeleteToDoEventSuccess(List<Event> eventToDo);
 }

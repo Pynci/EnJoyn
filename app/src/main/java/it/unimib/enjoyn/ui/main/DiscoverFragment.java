@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -194,7 +193,7 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
             InputStream inputStream = context.getAssets().open("prova.json"); //apro file
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
 
-            return jsonParserUtil.parseJSONEventFileWithGSon("prova.json").getEvents();
+            return jsonParserUtil.parseJSONEventFileWithGSon("prova.json").getEventList();
         } catch (IOException e) {
             e.printStackTrace();
         }

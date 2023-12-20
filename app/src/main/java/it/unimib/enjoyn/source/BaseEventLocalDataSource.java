@@ -13,9 +13,10 @@ public abstract class BaseEventLocalDataSource {
     }
 
     public abstract void getEvent();
-    public abstract void getEventToDo();
+    public abstract void getToDoEvent();
+    public abstract void getFavoriteEvent();
     public abstract void updateEvent(Event event);
     public abstract void insertEvent(List<Event> eventList);
-    public abstract void getFavoriteEvents();
+
 
 }

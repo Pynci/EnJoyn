@@ -179,7 +179,7 @@ public class TodoFragment extends Fragment implements ResponseCallback {
             InputStream inputStream = context.getAssets().open("prova.json"); //apro file
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
 
-            return jsonParserUtil.parseJSONEventFileWithGSon("prova.json").getEvents();
+            return jsonParserUtil.parseJSONEventFileWithGSon("prova.json").getEventList();
         } catch (IOException e) {
             e.printStackTrace();
         }

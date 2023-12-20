@@ -29,7 +29,7 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
     }
 
     @Override
-    public void getEventToDo() {
+    public void getToDoEvent() {
         EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Event> todoEvent = eventDao.getTodoEvents();
             eventCallback.onEventToDoStatusChanged(todoEvent);
@@ -37,7 +37,7 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
     }
 
     @Override
-    public void getFavoriteEvents() {
+    public void getFavoriteEvent() {
         EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
             eventCallback.onEventFavoriteStatusChanged(eventDao.getFavoriteEvents());
         });

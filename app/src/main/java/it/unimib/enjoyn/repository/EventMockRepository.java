@@ -5,7 +5,6 @@ import android.app.Application;
 import java.io.IOException;
 import java.util.List;
 
-import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.database.EventsDao;
 import it.unimib.enjoyn.database.EventsRoomDatabase;
@@ -33,7 +32,7 @@ public class EventMockRepository implements IEventRepository{
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
         EventsDatabaseResponse eventsDatabaseResponse =null;
          eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
-        saveDataInDatabase(eventsDatabaseResponse.getEvents());
+        saveDataInDatabase(eventsDatabaseResponse.getEventList());
 
 
     }

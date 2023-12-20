@@ -7,7 +7,7 @@ import it.unimib.enjoyn.model.Result;
 
 
 public interface IEventRepositoryWithLiveData {
-    //MutableLiveData<Result> fetchNews(String country, int page, long lastUpdate);
+    MutableLiveData<Result> fetchNews(String category, int page, long lastUpdate);
 
     MutableLiveData<Result> getFavoriteEvent();
 
@@ -15,5 +15,4 @@ public interface IEventRepositoryWithLiveData {
 
     void updateEvent(Event event);
 
-    void deleteFavoriteEvent();
 }

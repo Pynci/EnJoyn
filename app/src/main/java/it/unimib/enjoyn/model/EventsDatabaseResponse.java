@@ -33,7 +33,7 @@ public class EventsDatabaseResponse implements Parcelable {
 
 
 
-    public List<Event> getEvents(){
+    public List<Event> getEventList(){
         return events;
     }
 

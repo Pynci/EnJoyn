@@ -4,7 +4,7 @@ package it.unimib.enjoyn.source;
 public abstract class BaseEventRemoteDataSource {
     protected EventCallback eventCallback;
 
-    public void setNewsCallback(EventCallback eventCallback) {
+    public void setEventCallback(EventCallback eventCallback) {
         this.eventCallback = eventCallback;
     }
 
