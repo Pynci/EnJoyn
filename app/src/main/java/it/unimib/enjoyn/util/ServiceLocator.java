@@ -2,6 +2,9 @@ package it.unimib.enjoyn.util;
 
 import android.app.Application;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import it.unimib.enjoyn.database.EventsRoomDatabase;
 
 public class ServiceLocator {
@@ -38,8 +41,9 @@ public class ServiceLocator {
     }
 
     /*
-    TODO: Qui ci va un sistema per restituire l'istanza per l'accesso al DB di Firebase (? Forse serve o forse no ?)
-    Il DB di firebase è un servizio esterno, quindi andrebbe restituito da il Service Locator
-    Implementare il metodo corretto.
+    Restituisce un'istanza di FirebaseDatabase, che serve per ottenere l'accesso al DB
      */
+    public DatabaseReference getDatanaseReference(){
+        return FirebaseDatabase.getInstance().getReference();
+    }
 }

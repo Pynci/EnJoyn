@@ -5,7 +5,12 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.database.Exclude;
+
 public class User implements Parcelable {
+
+    @Exclude
+    private String id;
 
     private String email;
     private String password;
@@ -14,7 +19,7 @@ public class User implements Parcelable {
     private String surname;
     private String description;
 
-    /**TODO ggiungere immagine*/
+    /**TODO aggiungere immagine*/
 
     public User(String email, String password, String username, String name, String surname, String description) {
         this.email = email;
@@ -46,6 +51,24 @@ public class User implements Parcelable {
         }
     };
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(email);
+        dest.writeString(password);
+        dest.writeString(username);
+        dest.writeString(name);
+        dest.writeString(surname);
+        dest.writeString(description);
+    }
+
+    /*
+    Metodi get e set
+     */
     public String getEmail() {
         return email;
     }
@@ -94,18 +117,11 @@ public class User implements Parcelable {
         this.description = description;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getId() {
+        return id;
     }
 
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(email);
-        dest.writeString(password);
-        dest.writeString(username);
-        dest.writeString(name);
-        dest.writeString(surname);
-        dest.writeString(description);
+    public void setId(String id) {
+        this.id = id;
     }
 }
