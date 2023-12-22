@@ -61,5 +61,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
+    implementation("androidx.annotation:annotation:1.7.1")
 
 }

@@ -6,12 +6,12 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
+@IgnoreExtraProperties
 public class User implements Parcelable {
 
-    @Exclude
     private String id;
-
     private String email;
     private String password;
     private String username;
@@ -117,6 +117,7 @@ public class User implements Parcelable {
         this.description = description;
     }
 
+    @Exclude
     public String getId() {
         return id;
     }

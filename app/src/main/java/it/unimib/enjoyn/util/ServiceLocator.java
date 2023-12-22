@@ -6,6 +6,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import it.unimib.enjoyn.database.EventsRoomDatabase;
+import it.unimib.enjoyn.repository.user.UserRepository;
+import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
 public class ServiceLocator {
 
@@ -43,7 +45,11 @@ public class ServiceLocator {
     /*
     Restituisce un'istanza di FirebaseDatabase, che serve per ottenere l'accesso al DB
      */
-    public DatabaseReference getDatanaseReference(){
+    public DatabaseReference getDatabaseReference(){
         return FirebaseDatabase.getInstance().getReference();
+    }
+
+    public UserRepository getUserRepository(){
+        return new UserRepository(new UserRemoteDataSource());
     }
 }
