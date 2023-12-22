@@ -14,16 +14,8 @@ public class UserRemoteDataSource implements BaseUserRemoteDataSource{
     }
 
     @Override
-    public void addUser() {
-
-    }
-
-    /*
-    @Override
     public void addUser(User user) {
 
-        user.setId(dbReference.child("Users"));
+        //user.setId(dbReference.child("Users"));
     }
-
-     */
 }
