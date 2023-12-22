@@ -33,4 +33,12 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                     }
                 });
     }
+
+    public void getUser(String email) {
+
+        //Cerca l'utente nel DB sulla base dell'email
+
+        //Se va a buon fine chiama il metodo onGetSuccess(User user)
+        //Se non va a buon fine chiama il metodo onGetFailure
+    }
 }

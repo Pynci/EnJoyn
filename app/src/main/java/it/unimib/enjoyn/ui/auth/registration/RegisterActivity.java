@@ -12,6 +12,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.source.user.UserRemoteDataSource;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 public class RegisterActivity extends AppCompatActivity {
 
