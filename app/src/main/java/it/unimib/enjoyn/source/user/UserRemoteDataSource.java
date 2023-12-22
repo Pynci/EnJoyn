@@ -25,17 +25,12 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .setValue(user)
                 .addOnCompleteListener( result -> {
 
-                    /*
-                    TODO: Controllare se l'operazione va a buon fine o meno
-                     */
-
                     if(result.isSuccessful()){
-
+                        userCallback.onAddSuccess();
                     }
                     else{
-
+                        userCallback.onAddFailure();
                     }
-
                 });
     }
 }
