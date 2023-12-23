@@ -26,17 +26,12 @@ public class RegisterFragment extends Fragment {
 
 
     TextInputLayout textInputPassword;
-    TextInputLayout textInputEmail;
     TextInputLayout textInputConfirmPassword;
     TextInputLayout textInputUsername;
 
     EditText editTextPassword;
-    EditText editTextEmail;
     EditText editTextConfirmPassword;
     EditText editTextUsername;
-
-    Button buttonRegister;
-    Button buttonRegisterToLogin;
 
     private UserViewModel userViewModel;
 
@@ -66,29 +61,42 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        buttonRegister = view.findViewById(R.id.fragmentRegister_button_register);
-        buttonRegisterToLogin = view.findViewById(R.id.fragmentRegister_button_login);
+        Button buttonRegister = view.findViewById(R.id.fragmentRegister_button_register);
+        Button buttonRegisterToLogin = view.findViewById(R.id.fragmentRegister_button_login);
+
+        TextInputLayout textInputEmail = view.findViewById(R.id.fragmentRegister_textInputLayout_email);
+        EditText editTextEmail = view.findViewById(R.id.fragmentRegister_textInputEditText_email);
+
+        editTextEmail.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                String email = editTextEmail.getText().toString();
+                int result = userViewModel.checkEmail(email);
+
+                switch (result){
+                    case 0:
+                        textInputEmail.setError(null);
+                        break;
+                    case 1:
+                        textInputEmail.setError(getString(R.string.informationRequiredError));
+                        break;
+                    case 2:
+                        textInputEmail.setError(getString(R.string.notValidEmail));
+                        break;
+                }
+            }
+            else {
+                textInputEmail.setError(null);
+            }
+        });
 
         /*
 
         textInputPassword = (view.findViewById(R.id.fragmentRegister_textInputLayout_password));
-        textInputEmail = view.findViewById(R.id.fragmentRegister_textInputLayout_email);
         textInputConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputLayout_confirmPassword);
         textInputUsername = view.findViewById(R.id.fragmentRegister_textInputLayout_username);
         editTextPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_password);
-        editTextEmail = view.findViewById(R.id.fragmentRegister_textInputEditText_email);
         editTextConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_confirmPassword);
         editTextUsername = view.findViewById(R.id.fragmentRegister_textInputEditText_username);
-
-       editTextEmail.setOnFocusChangeListener((v, hasFocus) -> {
-           if(!hasFocus){
-               String email = editTextEmail.getText().toString();
-               checkEmail(email);
-           }
-           else {
-               textInputEmail.setError(null);
-           }
-       });
 
         editTextPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
@@ -182,19 +190,7 @@ public class RegisterFragment extends Fragment {
         return passedP;
     }
 
-    private boolean checkEmail(String email) {
-        if(email==null || email.length()==0) {
-            textInputEmail.setError(getString(R.string.stringNull));
-            return false;
-        }
-        if (!(EmailValidator.getInstance().isValid(email))) {
-            textInputEmail.setError(getString(R.string.notValidEmail));
-            return false;
-        } else {
-            textInputEmail.setError(null);
-            return true;
-        }
-    }
+
     private boolean checkConfirmPassword(String password, String confirmPassword) {
         if(confirmPassword==null || confirmPassword.length()==0) {
             textInputConfirmPassword.setError(getString(R.string.stringNull));

@@ -138,19 +138,4 @@ public class LoginFragment extends Fragment {
             requireActivity().finish();
         }
     }
-
-    /*
-    private int checkEmail(String email) {
-        if(email == null || email.length() == 0)
-            return 1;
-        if (!(EmailValidator.getInstance().isValid(email)))
-            return 2;
-        else
-            return 0;
-    }
-
-    private boolean isPasswordOk(String password){
-        return password == null || password.length() == 0;
-    }
-     */
 }

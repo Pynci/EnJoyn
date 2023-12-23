@@ -48,7 +48,6 @@
     <string name="upperCaseMissingPassword">inserisci almeno una lettera maiuscola</string>
     <string name="specialCharacterMissingPassword">inserisci almeno un carattere speciale</string>
     <string name="tooShortPassword">Password troppo corta, almeno di 8 caratteri</string>
-    <string name="notValidEmail">Email non valida</string>
     <string name="passwordNotEqual">Password non uguali</string>
     <string name="stringTooLong">Troppo lungo</string>
     <string name="stringNull">Campo obbligatorio</string>
@@ -80,5 +79,10 @@
     <string name="passwordReset">Ripristino password</string>
     <string name="alreadyHasAccount">Hai già un account?</string>
     <string name="resetHere">Ripristinala qui</string>
+
+
+    <!-- Qui ci sono le stringhe che sono state ricontrollate e sono corrette-->
+    <string name="informationRequiredError">Questo campo è obbligatorio</string>
+    <string name="notValidEmail">Email non valida</string>
 
 </resources>
