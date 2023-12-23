@@ -31,6 +31,13 @@ public class EventViewModel extends ViewModel {
         return eventLiveData;
     }
 
+    public MutableLiveData<Result> getEvent(long lastUpdate) {
+        if (eventLiveData == null) {
+            fetchEvent(lastUpdate);
+        }
+        return eventLiveData;
+    }
+
     /**
      * Returns the LiveData object associated with the
      * list of favorite event to the Fragment/Activity.
@@ -62,8 +69,13 @@ public class EventViewModel extends ViewModel {
      * It uses the Repository to download the event list
      * and to associate it with the LiveData object.
      */
+    private void fetchEvent(long lastUpdate) {
+        eventLiveData = eventRepositoryWithLiveData.fetchEvent(lastUpdate);
+    }
+
+    //TODO fare metodo con category effettive
     private void fetchEvent(String category, long lastUpdate) {
-        eventLiveData = eventRepositoryWithLiveData.fetchNews(category, page, lastUpdate);
+        eventLiveData = eventRepositoryWithLiveData.fetchEvent(lastUpdate);
     }
 
     /**
@@ -79,7 +91,7 @@ public class EventViewModel extends ViewModel {
     }
 
     /**
-     * Removes the news from the list of favorite event.
+     * Removes the event from the list of favorite event.
      * @param event The event to be removed from the list of favorite event.
      */
     public void removeFromFavorite(Event event) {

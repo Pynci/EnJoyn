@@ -3,6 +3,13 @@ package it.unimib.enjoyn.util;
 import android.app.Application;
 
 import it.unimib.enjoyn.database.EventsRoomDatabase;
+import it.unimib.enjoyn.repository.EventRepositoryWithLiveData;
+import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
+import it.unimib.enjoyn.source.BaseEventLocalDataSource;
+import it.unimib.enjoyn.source.BaseEventRemoteDataSource;
+import it.unimib.enjoyn.source.EventLocalDataSource;
+import it.unimib.enjoyn.source.EventMockRemoteDataSource;
+import it.unimib.enjoyn.source.EventRemoteDataSource;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -36,5 +43,14 @@ public class ServiceLocator {
 
     public EventsRoomDatabase getEventDao(Application application) { //istanza di news room database
         return EventsRoomDatabase.getDatabase(application);
+    }
+
+    public IEventRepositoryWithLiveData getEventRepository(Application application){
+        BaseEventLocalDataSource eventLocalDataSource;
+        JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
+        BaseEventRemoteDataSource eventRemoteDataSource = new EventMockRemoteDataSource(jsonParserUtil);
+        eventLocalDataSource = new EventLocalDataSource(getEventDao(application));
+
+        return new EventRepositoryWithLiveData(eventLocalDataSource, eventRemoteDataSource);
     }
 }

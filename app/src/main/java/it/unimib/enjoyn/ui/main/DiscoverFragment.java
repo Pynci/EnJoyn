@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,10 +32,13 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.EventMockRepository;
 import it.unimib.enjoyn.repository.IEventRepository;
+import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.ResponseCallback;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +48,8 @@ import it.unimib.enjoyn.util.ResponseCallback;
 public class DiscoverFragment extends Fragment implements ResponseCallback {
 
     private IEventRepository iEventRepository;
-
+    private IEventRepositoryWithLiveData eventRepositoryWithLiveData;
+    private EventViewModel eventViewModel;
     private List<Event> eventList;
 
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
@@ -90,7 +95,12 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        iEventRepository = new EventMockRepository(requireActivity().getApplication(), this);
+        eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
+                requireActivity().getApplication());
+
+        eventViewModel = new ViewModelProvider(
+                requireActivity(),
+                new EventViewModelFactory(eventRepositoryWithLiveData)).get(EventViewModel.class);
     }
 
     @Override
@@ -155,18 +165,32 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
                         else{
                             eventList.get(position).decrementPeopleNumber();
                         }
-                        iEventRepository.updateEvent(eventList.get(position));
+                        eventViewModel.updateEvent(eventList.get(position));
 
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
 
-        try {
-            iEventRepository.fetchAllEvents();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(),
+                result -> {
+                    if (result.isSuccess()) {
+                        int initialSize = this.eventList.size();
+                        this.eventList.clear();
+                        this.eventList.addAll(((Result.Success) result).getData().getEventList());
+                        eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
+                        //progressBar.setVisibility(View.GONE);
+                    } else {
+                        /*
+                        ErrorMessagesUtil errorMessagesUtil =
+                                new ErrorMessagesUtil(requireActivity().getApplication());
+                        Snackbar.make(view, errorMessagesUtil.
+                                        getErrorMessage(((Result.Error) result).getMessage()),
+                                Snackbar.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        */
+                    }
+                });
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {

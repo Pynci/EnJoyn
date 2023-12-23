@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -91,6 +92,7 @@ public class EventReclyclerViewAdapter extends
 
             }else{
                 onItemClickListener.onEventItemClick(eventList.get(getAdapterPosition()));
+                //Navigation.findNavController(v).navigate(R.id.action_discover_to_discoverSingleEvent);
             }
         }
 

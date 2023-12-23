@@ -8,7 +8,7 @@ public abstract class BaseEventLocalDataSource {
 
     protected EventCallback eventCallback;
 
-    public void setEventCallback(EventCallback EventCallback) {
+    public void setEventCallback(EventCallback eventCallback) {
         this.eventCallback = eventCallback;
     }
 

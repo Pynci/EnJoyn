@@ -8,5 +8,7 @@ public abstract class BaseEventRemoteDataSource {
         this.eventCallback = eventCallback;
     }
 
-    public abstract void getEvent(String country);
+    public abstract void getEvent(String category);
+
+    public abstract void getEvent();
 }

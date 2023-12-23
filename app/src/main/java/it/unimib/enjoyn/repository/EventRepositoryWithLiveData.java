@@ -29,13 +29,18 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
     }
 
     @Override
-    public MutableLiveData<Result> fetchNews(String category, int page, long lastUpdate) {
+    public MutableLiveData<Result> fetchEvent(String category, int page, long lastUpdate) {
+        return null;
+    }
+
+    @Override
+    public MutableLiveData<Result> fetchEvent(long lastUpdate) {
         long currentTime = System.currentTimeMillis();
 
         // It gets the event from the Web Service if the last download
         // of the news has been performed more than 1000 value ago
         if (/* TODO da aggiungere con dati remoti --> currentTime - lastUpdate > 1000*/ false) {
-            eventRemoteDataSource.getEvent(category);
+            eventRemoteDataSource.getEvent("category");
         } else {
             eventLocalDataSource.getEvent();
         }
@@ -59,6 +64,17 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
         eventLocalDataSource.updateEvent(event);
     }
 
+
+    @Override
+    public void onSuccessFromRemote(EventsDatabaseResponse eventDBResponse, long lastUpdate) {
+        eventLocalDataSource.insertEvent(eventDBResponse.getEventList());
+    }
+
+    @Override
+    public void onFailureFromRemote(Exception exception) {
+        Result.Error result = new Result.Error(exception.getMessage());
+        allEventMutableLiveData.postValue(result);
+    }
 
     @Override
     public void onSuccessFromLocal(List<Event> eventList) {
