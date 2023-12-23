@@ -40,7 +40,7 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
         // It gets the event from the Web Service if the last download
         // of the news has been performed more than 1000 value ago
         if (/* TODO da aggiungere con dati remoti --> currentTime - lastUpdate > 1000*/ false) {
-            eventRemoteDataSource.getEvent("category");
+            eventRemoteDataSource.getEvent();
         } else {
             eventLocalDataSource.getEvent();
         }
@@ -75,7 +75,7 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
         Result.Error result = new Result.Error(exception.getMessage());
         allEventMutableLiveData.postValue(result);
     }
-
+//TODO da fixare perché risulta  eventList.size = 0
     @Override
     public void onSuccessFromLocal(List<Event> eventList) {
         Result.Success result = new Result.Success(new EventsDatabaseResponse(eventList));

@@ -41,14 +41,16 @@ public class ServiceLocator {
         //passo il convertitore e ritorno l'istanza creata del client retrofit, passando il nome dell'interfaccia
     }*/
 
-    public EventsRoomDatabase getEventDao(Application application) { //istanza di news room database
+    public EventsRoomDatabase getEventDao(Application application) { //istanza di event room database
         return EventsRoomDatabase.getDatabase(application);
     }
 
     public IEventRepositoryWithLiveData getEventRepository(Application application){
         BaseEventLocalDataSource eventLocalDataSource;
+        BaseEventRemoteDataSource eventRemoteDataSource;
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
-        BaseEventRemoteDataSource eventRemoteDataSource = new EventMockRemoteDataSource(jsonParserUtil);
+
+        eventRemoteDataSource = new EventMockRemoteDataSource(jsonParserUtil);
         eventLocalDataSource = new EventLocalDataSource(getEventDao(application));
 
         return new EventRepositoryWithLiveData(eventLocalDataSource, eventRemoteDataSource);
