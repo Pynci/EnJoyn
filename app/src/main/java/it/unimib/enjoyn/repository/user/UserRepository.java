@@ -8,18 +8,20 @@ import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
 public class UserRepository implements IUserRepository, UserCallback{
 
-    //Si deve istanziare un oggetto di tipo mutable live data
-
+    //Serve a contenere l'eccezione che si potrebbe verificare nel caso dell'aggiunta di un utente
+    private final MutableLiveData<Exception> addResultException;
     private final UserRemoteDataSource userRemoteDataSource;
 
     public UserRepository(UserRemoteDataSource userRemoteDataSource){
         this.userRemoteDataSource = userRemoteDataSource;
         userRemoteDataSource.setUserCallback(this);
+        addResultException = new MutableLiveData<>();
     }
 
     @Override
-    public void addUser(User user) {
+    public MutableLiveData<Exception> addUser(User user) {
         userRemoteDataSource.addUser(user);
+        return addResultException;
     }
 
     @Override
@@ -30,13 +32,8 @@ public class UserRepository implements IUserRepository, UserCallback{
     }
 
     @Override
-    public void onAddFailure() {
-
-    }
-
-    @Override
-    public void onAddSuccess() {
-
+    public void onAddFailure(Exception exception) {
+        addResultException.postValue(exception);
     }
 
     @Override

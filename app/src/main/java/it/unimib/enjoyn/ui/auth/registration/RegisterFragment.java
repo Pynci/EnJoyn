@@ -6,26 +6,24 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.ui.auth.LoginActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the factory method to
- * create an instance of this fragment.
- */
+
 public class RegisterFragment extends Fragment {
 
-    /*
-
-    //questi fanno parte della logica che va spostata altrove
 
     TextInputLayout textInputPassword;
     TextInputLayout textInputEmail;
@@ -36,9 +34,11 @@ public class RegisterFragment extends Fragment {
     EditText editTextEmail;
     EditText editTextConfirmPassword;
     EditText editTextUsername;
-     */
+
     Button buttonRegister;
     Button buttonRegisterToLogin;
+
+    private UserViewModel userViewModel;
 
     private static final boolean USE_NAVIGATION_COMPONENT = true;
 
@@ -53,6 +53,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
     }
 
     @Override
@@ -69,8 +70,6 @@ public class RegisterFragment extends Fragment {
         buttonRegisterToLogin = view.findViewById(R.id.fragmentRegister_button_login);
 
         /*
-
-        //questa logica va spostata altrove
 
         textInputPassword = (view.findViewById(R.id.fragmentRegister_textInputLayout_password));
         textInputEmail = view.findViewById(R.id.fragmentRegister_textInputLayout_email);
@@ -135,8 +134,6 @@ public class RegisterFragment extends Fragment {
     }
 
     /*
-
-    //questa logica va spostata altrove
 
         private boolean checkPassword(String password) {
             boolean passedP;

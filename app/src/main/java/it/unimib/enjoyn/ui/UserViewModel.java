@@ -14,6 +14,6 @@ public class UserViewModel extends ViewModel {
 
     public UserViewModel() {
         user = new MutableLiveData<>();
-        userRepository = ServiceLocator.getInstance().getUserRepository();
+        userRepository = ServiceLocator.getInstance().getUserRepository(false);
     }
 }

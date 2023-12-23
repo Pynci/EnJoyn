@@ -6,7 +6,7 @@ import it.unimib.enjoyn.model.User;
 
 public interface IUserRepository {
 
-    public abstract void addUser(User user);
+    MutableLiveData<Exception> addUser(User user);
 
-    public abstract MutableLiveData<User> getUser(String email);
+    MutableLiveData<User> getUser(String email);
 }
