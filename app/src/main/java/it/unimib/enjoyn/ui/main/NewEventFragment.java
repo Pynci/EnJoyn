@@ -34,6 +34,7 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Meteo;
+import it.unimib.enjoyn.repository.IMeteoRepository;
 import it.unimib.enjoyn.util.JSONParserUtil;
 
 /**
@@ -61,6 +62,8 @@ public class NewEventFragment extends Fragment {
     String dateWeather;
 
     ImageView weatherIcon;
+
+    private IMeteoRepository iMeteoRepository;
 
 
 
@@ -130,6 +133,8 @@ public class NewEventFragment extends Fragment {
         List<Meteo> meteoList = getMeteoListWithGSon();
         String[] dateArray = meteoList.get(0).getHour();
         double[] temperatureArray = meteoList.get(0).getTemperature();
+
+        iMeteoRepository.fetchMeteo("52.52", "13.41");
 
         date = view.findViewById(R.id.fragmentNewEvent_imageButton_datePicker);
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
