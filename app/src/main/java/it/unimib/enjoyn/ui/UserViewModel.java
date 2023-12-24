@@ -13,14 +13,20 @@ import it.unimib.enjoyn.util.ServiceLocator;
 public class UserViewModel extends ViewModel {
 
     private final MutableLiveData<User> user;
+    private final MutableLiveData<Exception> resultAddUser;
     private final IUserRepository userRepository;
 
 
     public UserViewModel() {
         user = new MutableLiveData<>();
+        resultAddUser = new MutableLiveData<>();
         userRepository = ServiceLocator.getInstance().getUserRepository(false);
     }
 
+    public MutableLiveData<Exception> addUser(User user){
+        resultAddUser.postValue(userRepository.addUser(user).getValue());
+        return resultAddUser;
+    }
 
     public String checkEmail(String email) {
         if(email == null || email.length() == 0)

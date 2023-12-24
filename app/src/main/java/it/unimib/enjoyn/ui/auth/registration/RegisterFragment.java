@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.ui.auth.registration;
 
+import static android.app.ProgressDialog.show;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,9 +17,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.ui.auth.LoginActivity;
 
@@ -169,12 +173,34 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-        //passaggio flat, va implementata la logica
         buttonRegister.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
+
+            if(textInputEmail.getError() == null && textInputPassword.getError() == null
+                && textInputConfirmPassword.getError() == null && textInputUsername.getError() == null){
+
+                String email = String.valueOf(editTextEmail.getText());
+                String psw = String.valueOf(editTextPassword.getText());
+                String username = String.valueOf(editTextUsername.getText());
+
+                User user = new User(email, psw, username);
+
+                userViewModel.addUser(user).observe(getViewLifecycleOwner(), result -> {
+                    if(result == null){
+                        Navigation
+                                .findNavController(v)
+                                .navigate(R.id.action_registerFragment_to_propicDescriptionConfigurationFragment);
+
+                        Snackbar.make(view, "Registrazione avvenuta correttamente", Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                    else{
+                        Snackbar.make(view, "Errore nella registrazione",
+                                Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
 
-        //passaggio flat, va implementata la logica per i controlli
         buttonLogin.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
                 R.id.action_registerFragment_to_loginActivity, true));
     }
