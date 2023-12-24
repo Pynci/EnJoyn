@@ -83,6 +83,7 @@
 
     <!-- Qui ci sono le stringhe che sono state ricontrollate e sono corrette-->
     <string name="informationRequiredError">Questo campo è obbligatorio</string>
-    <string name="notValidEmail">Email non valida</string>
+    <string name="invalidEmail">Email non valida</string>
+    <string name="whitespaceNotAllowed">Gli spazi non sono ammessi</string>
 
 </resources>
