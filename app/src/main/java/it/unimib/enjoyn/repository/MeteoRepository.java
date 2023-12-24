@@ -11,6 +11,7 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Meteo;
 import it.unimib.enjoyn.model.MeteoApiResponse;
 import it.unimib.enjoyn.service.MeteoApiService;
+import it.unimib.enjoyn.util.MeteoCallback;
 import it.unimib.enjoyn.util.ResponseCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 import retrofit2.Call;
@@ -21,12 +22,12 @@ public class MeteoRepository implements IMeteoRepository{
 
     private final Application application;
     private final MeteoApiService meteoApiService;
-    private final ResponseCallback responseCallback;
+    private final MeteoCallback meteoCallback;
 
-    public MeteoRepository(Application application, MeteoApiService meteoApiService, ResponseCallback responseCallback) {
+    public MeteoRepository(Application application, MeteoCallback meteoCallback) {
         this.application = application;
         this.meteoApiService = ServiceLocator.getInstance().getMeteoApiService();
-        this.responseCallback = responseCallback;
+        this.meteoCallback = meteoCallback;
     }
 
     @Override
@@ -40,13 +41,13 @@ public class MeteoRepository implements IMeteoRepository{
                 if (response.body()!=null && response.isSuccessful()){
                     List<Meteo> meteoList = response.body().getMeteo();
                 } else {
-                    responseCallback.onFailure(application.getString(R.string.error_retriving_weather));
+                    meteoCallback.onFailure(application.getString(R.string.error_retriving_weather));
                 }
             }
 
             @Override
             public void onFailure(Call<MeteoApiResponse> call, Throwable t) {
-                responseCallback.onFailure(t.getMessage());
+                meteoCallback.onFailure(t.getMessage());
             }
         });
     }
