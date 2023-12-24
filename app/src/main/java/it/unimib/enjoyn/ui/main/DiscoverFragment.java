@@ -158,6 +158,13 @@ public class DiscoverFragment extends Fragment {
                         this.eventList.clear();
                         this.eventList.addAll(((Result.Success) result).getData().getEventList());
                         eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                eventsRecyclerViewAdapter.notifyDataSetChanged();
+
+                            }
+                        });
                         //progressBar.setVisibility(View.GONE);
                     } else {
                         /*

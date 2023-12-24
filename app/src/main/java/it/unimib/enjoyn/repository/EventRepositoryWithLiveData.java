@@ -36,11 +36,12 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
     @Override
     public MutableLiveData<Result> fetchEvent(long lastUpdate) {
         long currentTime = System.currentTimeMillis();
-
+        boolean  getDB = true;
         // It gets the event from the Web Service if the last download
         // of the news has been performed more than 1000 value ago
-        if (/* TODO da aggiungere con dati remoti --> currentTime - lastUpdate > 1000*/ false) {
+        if (getDB) {
             eventRemoteDataSource.getEvent();
+            getDB = false;
         } else {
             eventLocalDataSource.getEvent();
         }
