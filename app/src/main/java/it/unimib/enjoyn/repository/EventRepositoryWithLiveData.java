@@ -103,6 +103,7 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
             }
         }
         toDoEventMutableLiveData.postValue(new Result.Success(new EventsDatabaseResponse(eventToDo)));
+
     }
     @Override
     public void onEventToDoStatusChanged(List<Event> event) {
@@ -120,7 +121,7 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
                 allEventMutableLiveData.postValue(allEventResult);
             }
         }
-        favoriteEventMutableLiveData.postValue(new Result.Success(new EventsDatabaseResponse(eventFavorite)));
+        toDoEventMutableLiveData.postValue(new Result.Success(new EventsDatabaseResponse(eventFavorite)));
     }
     @Override
     public void onEventFavoriteStatusChanged(List<Event> event) {

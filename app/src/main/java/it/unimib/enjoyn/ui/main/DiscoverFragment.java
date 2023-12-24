@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
@@ -80,6 +81,7 @@ public class DiscoverFragment extends Fragment {
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
                 new EventViewModelFactory(eventRepositoryWithLiveData)).get(EventViewModel.class);
+        eventList = new ArrayList<>();
     }
 
     @Override
@@ -121,7 +123,7 @@ public class DiscoverFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-         eventList = getEventListWithGSon();
+         //eventList = getEventListWithGSon();
 
         //List<Event> eventList = new ArrayList<Event>() ;
         //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
@@ -158,14 +160,8 @@ public class DiscoverFragment extends Fragment {
                         this.eventList.clear();
                         this.eventList.addAll(((Result.Success) result).getData().getEventList());
                         eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
-                        requireActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                eventsRecyclerViewAdapter.notifyDataSetChanged();
+                        eventsRecyclerViewAdapter.notifyDataSetChanged();
 
-                            }
-                        });
-                        //progressBar.setVisibility(View.GONE);
                     } else {
                         /*
                         ErrorMessagesUtil errorMessagesUtil =
@@ -192,23 +188,7 @@ public class DiscoverFragment extends Fragment {
         }
     }
 
-    private List<Event> getEventListWithGSon() {
-        JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
-        try {
-            /**TODO
-             * sistemare questa parte
-             * */
 
-            Context context = requireActivity().getApplication().getApplicationContext();
-            InputStream inputStream = context.getAssets().open("prova.json"); //apro file
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
-
-            return jsonParserUtil.parseJSONEventFileWithGSon("prova.json").getEventList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     /*
     @Override
