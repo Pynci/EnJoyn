@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,37 +27,31 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.EventMockRepository;
 import it.unimib.enjoyn.repository.IEventRepository;
+import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.ResponseCallback;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DiscoverFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DiscoverFragment extends Fragment implements ResponseCallback {
+public class DiscoverFragment extends Fragment {
 
-    private IEventRepository iEventRepository;
 
+    private EventViewModel eventViewModel;
     private List<Event> eventList;
-
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     Button EventButton;
 
@@ -69,29 +63,25 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment Discover.
      */
     // TODO: Rename and change types and number of parameters
-    public static DiscoverFragment newInstance(String param1, String param2) {
-        DiscoverFragment fragment = new DiscoverFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static DiscoverFragment newInstance() {
+
+        return new DiscoverFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
-        iEventRepository = new EventMockRepository(requireActivity().getApplication(), this);
+        IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
+                requireActivity().getApplication());
+
+        eventViewModel = new ViewModelProvider(
+                requireActivity(),
+                new EventViewModelFactory(eventRepositoryWithLiveData)).get(EventViewModel.class);
+        eventList = new ArrayList<>();
     }
 
     @Override
@@ -133,7 +123,7 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-         eventList = getEventListWithGSon();
+         //eventList = getEventListWithGSon();
 
         //List<Event> eventList = new ArrayList<Event>() ;
         //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
@@ -143,7 +133,10 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
-                        startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
+                        DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action =
+                                DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
+                       // startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
+                        Navigation.findNavController(view).navigate(action);
                     }
 
                     @Override
@@ -156,18 +149,33 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
                         else{
                             eventList.get(position).decrementPeopleNumber();
                         }
-                        iEventRepository.updateEvent(eventList.get(position));
+                        eventViewModel.updateEvent(eventList.get(position));
 
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
 
-        try {
-            iEventRepository.fetchAllEvents();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(),
+                result -> {
+                    if (result.isSuccess()) {
+                        int initialSize = this.eventList.size();
+                        this.eventList.clear();
+                        this.eventList.addAll(((Result.Success) result).getData().getEventList());
+                        eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
+                        eventsRecyclerViewAdapter.notifyDataSetChanged();
+
+                    } else {
+                        /*
+                        ErrorMessagesUtil errorMessagesUtil =
+                                new ErrorMessagesUtil(requireActivity().getApplication());
+                        Snackbar.make(view, errorMessagesUtil.
+                                        getErrorMessage(((Result.Error) result).getMessage()),
+                                Snackbar.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        */
+                    }
+                });
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
@@ -183,42 +191,9 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
         }
     }
 
-    private List<Event> getEventListWithGSon() {
-        JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
-        try {
-            /**TODO
-             * sistemare questa parte
-             * */
 
-            Context context = requireActivity().getApplication().getApplicationContext();
-            InputStream inputStream = context.getAssets().open("prova.json"); //apro file
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
 
-            return jsonParserUtil.parseJSONEventFileWithGSon("prova.json").getEvents();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public void onSuccess(List<Event> eventList, long lastUpdate) {
-        if (eventList != null) {
-            this.eventList.clear();
-            this.eventList.addAll(eventList);
-        }
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-
-    }
-
-    @Override
-    public void onEventFavoriteStatusChanged(Event event) {
-
-    }
-
+    /*
     @Override
     public void onEventTodoStatusChanged(Event event) {
 
@@ -235,4 +210,5 @@ public class DiscoverFragment extends Fragment implements ResponseCallback {
                     Snackbar.LENGTH_LONG).show();
         }
     }
+     */
 }

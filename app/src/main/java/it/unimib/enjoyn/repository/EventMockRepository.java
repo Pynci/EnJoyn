@@ -5,7 +5,6 @@ import android.app.Application;
 import java.io.IOException;
 import java.util.List;
 
-import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.database.EventsDao;
 import it.unimib.enjoyn.database.EventsRoomDatabase;
@@ -31,14 +30,10 @@ public class EventMockRepository implements IEventRepository{
     public void fetchAllEvents() throws IOException {
 
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
-        EventsDatabaseResponse eventsDatabaseResponse =null;
-         eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
-        saveDataInDatabase(eventsDatabaseResponse.getEvents());
-
-
+        EventsDatabaseResponse eventsDatabaseResponse;
+        eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
+        saveDataInDatabase(eventsDatabaseResponse.getEventList());
     }
-
-
 
     @Override
     public void getTODOEvents() {
@@ -95,7 +90,7 @@ public class EventMockRepository implements IEventRepository{
             }
 
             // Writes the news in the database and gets the associated primary keys
-            List<Long> insertedNewsIds = eventsDao.insertNewsList(eventList);
+            List<Long> insertedNewsIds = eventsDao.insertEventList(eventList);
             for (int i = 0; i < eventList.size(); i++) {
                 // Adds the primary key to the corresponding object News just downloaded so that
                 // if the user marks the news as favorite (and vice-versa), we can use its id

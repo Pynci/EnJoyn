@@ -46,7 +46,11 @@
         android:id="@+id/discoverSingleEvent"
         android:name="it.unimib.enjoyn.ui.main.DiscoverSingleEvent"
         android:label="fragment_discover_single_event"
-        tools:layout="@layout/fragment_discover_single_event" />
+        tools:layout="@layout/fragment_discover_single_event" >
+        <argument
+            android:name="event"
+            app:argType="it.unimib.enjoyn.model.Event" />
+    </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="it.unimib.enjoyn.ui.main.FavoritesFragment"
