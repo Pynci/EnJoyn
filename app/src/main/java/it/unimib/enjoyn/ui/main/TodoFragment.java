@@ -46,6 +46,7 @@ import it.unimib.enjoyn.util.ResponseCallback;
  */
 public class TodoFragment extends Fragment implements ResponseCallback {
 
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -139,7 +140,11 @@ public class TodoFragment extends Fragment implements ResponseCallback {
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
-                        startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_todo_to_discoverSingleEvent, false);
+                        TodoFragmentDirections.ActionTodoToDiscoverSingleEvent action =
+                                TodoFragmentDirections.actionTodoToDiscoverSingleEvent(event);
+                        // startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
+                        Navigation.findNavController(view).navigate(action);
+
                     }
 
                     @Override
