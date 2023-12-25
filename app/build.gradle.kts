@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -27,7 +28,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
+
 
 dependencies {
 
@@ -49,6 +55,7 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.6.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") /**TODO va messo?*/
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     //Dipendenza per Pinview
     implementation("io.github.chaosleung:pinview:1.4.4")

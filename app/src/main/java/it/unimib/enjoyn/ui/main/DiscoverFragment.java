@@ -133,7 +133,10 @@ public class DiscoverFragment extends Fragment {
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
-                        startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
+                        DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action =
+                                DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
+                       // startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
+                        Navigation.findNavController(view).navigate(action);
                     }
 
                     @Override

@@ -2,13 +2,24 @@ package it.unimib.enjoyn.ui.main;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
+import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
+import it.unimib.enjoyn.model.Event;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +27,8 @@ import it.unimib.enjoyn.R;
  * create an instance of this fragment.
  */
 public class DiscoverSingleEvent extends Fragment {
+
+    private FragmentDiscoverSingleEventBinding fragmentDiscoverSingleEventBinding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +74,44 @@ public class DiscoverSingleEvent extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover_single_event, container, false);
+        fragmentDiscoverSingleEventBinding = FragmentDiscoverSingleEventBinding.inflate(inflater, container, false);
+        return fragmentDiscoverSingleEventBinding.getRoot();
+     //   return inflater.inflate(R.layout.fragment_discover_single_event, container, false);
+    }
+
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == android.R.id.home) {
+                    Navigation.findNavController(requireView()).navigateUp();
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+        Event event = DiscoverSingleEventArgs.fromBundle(getArguments()).getEvent();
+
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewNumberOfParticipants.setText(event.getPeopleNumberString());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDate.setText(event.getDate());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDescription.setText(event.getDescription());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewHour.setText(event.getTime());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getPlace());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewTitle.setText(event.getTitle());
+        boolean isTodo = event.isTODO();
+        if(isTodo){
+            fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.remove);
+        }else{
+            fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.Join);
+        }
+
+
     }
 }
