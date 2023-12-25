@@ -129,7 +129,7 @@ public class Event implements Parcelable {
     }
 
     public String getDistanceString(){
-        return Double.toString(distance);
+        return Double.toString(distance)+" km";
     }
 
     public boolean isTODO() {

@@ -211,6 +211,26 @@ public class TodoFragment extends Fragment implements ResponseCallback {
     }
 
     @Override
+    public void onSuccess(List<Event> newsList, long lastUpdate) {
+
+    }
+
+    @Override
+    public void onFailure(String errorMessage) {
+
+    }
+
+    @Override
+    public void onEventFavoriteStatusChanged(Event event) {
+
+    }
+
+    @Override
+    public void onEventTodoStatusChanged(Event event) {
+
+    }
+
+    /*@Override
     public void onSuccess(List<Event> eventList, long lastUpdate) {
         if (eventList != null) {
             this.eventList.clear();
@@ -246,5 +266,5 @@ public class TodoFragment extends Fragment implements ResponseCallback {
                     getString(R.string.eventRemoveToDo),
                     Snackbar.LENGTH_LONG).show();
         }
-    }
+    }*/
 }
