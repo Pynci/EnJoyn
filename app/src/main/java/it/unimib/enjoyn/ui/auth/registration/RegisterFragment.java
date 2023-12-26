@@ -221,9 +221,4 @@ public class RegisterFragment extends Fragment {
             requireActivity().finish();
         }
     }
-
-    /*
-    nella documentazione questo metodo è messo in un'activity, bisogna eventualmente
-    capire come spostarlo nel ViewModel (dove forse ha più senso)
-     */
 }
