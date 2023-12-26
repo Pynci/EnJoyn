@@ -1,5 +1,6 @@
 package it.unimib.enjoyn.ui.auth.registration;
 
+// TODO: capire se è giusto che venga fuori questa caterva di dipendenze
 import static android.app.ProgressDialog.show;
 
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -14,13 +16,14 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-
 import it.unimib.enjoyn.R;
+
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.ui.auth.LoginActivity;
@@ -28,11 +31,8 @@ import it.unimib.enjoyn.ui.auth.LoginActivity;
 
 public class RegisterFragment extends Fragment {
 
-
-    TextInputLayout textInputUsername;
-
+    public static final String TAG = RegisterFragment.class.getSimpleName();
     private UserViewModel userViewModel;
-
     private static final boolean USE_NAVIGATION_COMPONENT = true;
 
     public RegisterFragment() {
@@ -184,6 +184,8 @@ public class RegisterFragment extends Fragment {
 
                 User user = new User(email, psw, username);
 
+                //questa parte credo vada implementata con firebase authentication
+
                 userViewModel.addUser(user).observe(getViewLifecycleOwner(), result -> {
                     if(result == null){
                         Navigation
@@ -198,7 +200,9 @@ public class RegisterFragment extends Fragment {
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });
+
             }
+
         });
 
         buttonLogin.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
@@ -217,4 +221,9 @@ public class RegisterFragment extends Fragment {
             requireActivity().finish();
         }
     }
+
+    /*
+    nella documentazione questo metodo è messo in un'activity, bisogna eventualmente
+    capire come spostarlo nel ViewModel (dove forse ha più senso)
+     */
 }

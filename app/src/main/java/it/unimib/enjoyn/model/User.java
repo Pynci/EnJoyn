@@ -19,7 +19,7 @@ public class User implements Parcelable {
     private String surname;
     private String description;
 
-    /**TODO aggiungere immagine*/
+    /*TODO aggiungere immagine*/
 
     public User(String email, String password, String username) {
         this.email = email;

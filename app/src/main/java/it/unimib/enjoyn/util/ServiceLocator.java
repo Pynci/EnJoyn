@@ -2,6 +2,7 @@ package it.unimib.enjoyn.util;
 
 import android.app.Application;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,35 +29,24 @@ public class ServiceLocator {
         return INSTANCE;
     }
 
-    /**
-     * It creates an instance of NewsApiService using Retrofit.
-     * @return an instance of NewsApiService.
-     */
-
-    /**public NewsApiService getNewsApiService() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.NEWS_API_BASE_URL).
-                addConverterFactory(GsonConverterFactory.create()).build();
-        return retrofit.create(NewsApiService.class); //creo l'oggetto retrofit, passando il baseUrl,
-        //passo il convertitore e ritorno l'istanza creata del client retrofit, passando il nome dell'interfaccia
-    }*/
-
     public EventsRoomDatabase getEventDao(Application application) { //istanza di news room database
         return EventsRoomDatabase.getDatabase(application);
     }
 
-    /*
-    Restituisce un'istanza di FirebaseDatabase, che serve per ottenere l'accesso al DB
-     */
+    //non sono sicuro serva davvero questo metodo -Pinci
     public DatabaseReference getDatabaseReference(){
         return FirebaseDatabase.getInstance().getReference();
     }
 
-    /*
-    Restituisce un'istanza del UserRepository
-     */
+    //non sono sicuro serva davvero questo metodo -Pinci
+    public FirebaseAuth getFirebaseAuth(){
+        return FirebaseAuth.getInstance();
+    }
+
     public IUserRepository getUserRepository(boolean debugMode){
 
         UserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
+        //TODO: aggiungere eventuale istanza locale (da passare anch'essa al repository)
 
         if(debugMode){
             return new UserMockRepository();

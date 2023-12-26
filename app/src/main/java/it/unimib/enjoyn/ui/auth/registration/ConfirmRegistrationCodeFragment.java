@@ -66,7 +66,7 @@ public class ConfirmRegistrationCodeFragment extends Fragment {
                  */
 
                 if (s.toString().length() == 6){
-                    Navigation.findNavController(view).navigate(R.id.action_confirmRegistrationCode_to_propicDescriptionConfigurationFragment);
+                    //Navigation.findNavController(view).navigate(R.id.action_confirmRegistrationCode_to_propicDescriptionConfigurationFragment);
                 }
             }
 
