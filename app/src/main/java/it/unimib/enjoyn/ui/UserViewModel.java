@@ -3,13 +3,10 @@ package it.unimib.enjoyn.ui;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.ui.auth.registration.RegisterFragment;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserViewModel extends ViewModel {
@@ -17,14 +14,12 @@ public class UserViewModel extends ViewModel {
     private final MutableLiveData<User> user;
     private final MutableLiveData<Exception> resultAddUser;
     private final IUserRepository userRepository;
-    private FirebaseAuth auth;
 
 
     public UserViewModel() {
         user = new MutableLiveData<>();
         resultAddUser = new MutableLiveData<>();
         userRepository = ServiceLocator.getInstance().getUserRepository(false);
-        auth = ServiceLocator.getInstance().getFirebaseAuth();
     }
 
     public MutableLiveData<Exception> addUser(User user){

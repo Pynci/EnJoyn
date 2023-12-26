@@ -1,19 +1,12 @@
 package it.unimib.enjoyn.source.user;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-
-import java.util.concurrent.Executor;
+import com.google.firebase.database.FirebaseDatabase;
 
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.util.Costants;
-import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
@@ -22,8 +15,8 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     private FirebaseUser fbUser;
 
     public UserRemoteDataSource() {
-        dbReference = ServiceLocator.getInstance().getDatabaseReference();
-        auth = ServiceLocator.getInstance().getFirebaseAuth();
+        dbReference = FirebaseDatabase.getInstance().getReference();
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
