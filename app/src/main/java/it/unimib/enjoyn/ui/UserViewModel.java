@@ -11,8 +11,8 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserViewModel extends ViewModel {
 
-    private final MutableLiveData<User> user;
-    private final MutableLiveData<Exception> resultAddUser;
+    private MutableLiveData<User> user;
+    private MutableLiveData<Exception> resultAddUser;
     private final IUserRepository userRepository;
 
 
@@ -23,7 +23,8 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Exception> addUser(User user){
-        resultAddUser.postValue(userRepository.addUser(user).getValue());
+
+        resultAddUser = userRepository.addUser(user);
         return resultAddUser;
     }
 

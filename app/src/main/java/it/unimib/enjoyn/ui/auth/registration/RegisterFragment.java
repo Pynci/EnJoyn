@@ -196,7 +196,7 @@ public class RegisterFragment extends Fragment {
                                 .show();
                     }
                     else{
-                        Snackbar.make(view, "Errore nella registrazione",
+                        Snackbar.make(view, "Errore nella registrazione: " + result.getMessage(),
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });
