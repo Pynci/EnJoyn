@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.mapbox.maps.MapboxMap;
+
 import it.unimib.enjoyn.R;
 
 public class ProfileActivity extends AppCompatActivity {

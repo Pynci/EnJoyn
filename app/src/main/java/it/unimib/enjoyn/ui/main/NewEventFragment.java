@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,6 +48,7 @@ public class NewEventFragment extends Fragment {
     TextView selectedDate;
 
     ImageButton time;
+    ImageButton place;
     TextView selectedTime;
 
 
@@ -207,6 +209,7 @@ public class NewEventFragment extends Fragment {
         time = view.findViewById(R.id.fragmentNewEvent_imageButton_pickTime);
         selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
 
+
         // on below line we are adding click
         // listener for our pick date button
         time.setOnClickListener(new View.OnClickListener() {
@@ -257,7 +260,13 @@ public class NewEventFragment extends Fragment {
             }
 
         });
-
+        place = view.findViewById(R.id.fragmentNewEvent_imageButton_pickPlace);
+        place.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
+            }
+        });
 
 
     }

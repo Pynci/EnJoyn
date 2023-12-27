@@ -57,6 +57,9 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") /**TODO va messo?*/
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    implementation("com.mapbox.maps:android:11.0.0")
+
+
     //Dipendenza per Pinview
     implementation("io.github.chaosleung:pinview:1.4.4")
 
