@@ -18,12 +18,11 @@ public class UserViewModel extends ViewModel {
 
     public UserViewModel() {
         user = new MutableLiveData<>();
-        resultAddUser = new MutableLiveData<>();
         userRepository = ServiceLocator.getInstance().getUserRepository(false);
+        //resultAddUser = new MutableLiveData<>();
     }
 
     public MutableLiveData<Exception> addUser(User user){
-
         resultAddUser = userRepository.addUser(user);
         return resultAddUser;
     }

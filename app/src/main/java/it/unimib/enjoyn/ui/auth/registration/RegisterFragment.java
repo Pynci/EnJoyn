@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -34,6 +35,7 @@ public class RegisterFragment extends Fragment {
     public static final String TAG = RegisterFragment.class.getSimpleName();
     private UserViewModel userViewModel;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
+    private Observer<Exception> addUserObserver;
 
     public RegisterFragment() {
 
@@ -74,6 +76,20 @@ public class RegisterFragment extends Fragment {
         TextInputLayout textInputUsername = view.findViewById(R.id.fragmentRegister_textInputLayout_username);
         EditText editTextUsername = view.findViewById(R.id.fragmentRegister_textInputEditText_username);
 
+        addUserObserver = e -> {
+            if(e == null){
+                Navigation
+                        .findNavController(view)
+                        .navigate(R.id.action_registerFragment_to_propicDescriptionConfigurationFragment);
+
+                Snackbar.make(view, "Registrazione avvenuta correttamente", Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+            else{
+                Snackbar.make(view, "Errore nella registrazione: " + e.getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        };
 
         editTextUsername.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
@@ -184,22 +200,7 @@ public class RegisterFragment extends Fragment {
 
                 User user = new User(email, psw, username);
 
-                //questa parte credo vada implementata con firebase authentication
-
-                userViewModel.addUser(user).observe(getViewLifecycleOwner(), result -> {
-                    if(result == null){
-                        Navigation
-                                .findNavController(v)
-                                .navigate(R.id.action_registerFragment_to_propicDescriptionConfigurationFragment);
-
-                        Snackbar.make(view, "Registrazione avvenuta correttamente", Snackbar.LENGTH_SHORT)
-                                .show();
-                    }
-                    else{
-                        Snackbar.make(view, "Errore nella registrazione: " + result.getMessage(),
-                                Snackbar.LENGTH_SHORT).show();
-                    }
-                });
+                userViewModel.addUser(user).observe(getViewLifecycleOwner(), addUserObserver);
 
             }
 
