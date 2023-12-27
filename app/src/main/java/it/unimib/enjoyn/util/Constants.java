@@ -27,6 +27,9 @@ public class Constants {
     public static final int METEO_FORECAST_DAYS_VALUE = 16;
 
     public static final String METEO_INTERVAL_VALUE = "temperature_2m,weather_code";
+
+    public static final String API_ERROR = "error on API fetching";
+    public static final String RETROFIT_ERROR = "retrofit_error";
     // Constants for encrypted files
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.enjoyn.encrypted_file.txt";
 }

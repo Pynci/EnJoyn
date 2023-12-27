@@ -1,59 +1,59 @@
 package it.unimib.enjoyn.repository;
 
+import static it.unimib.enjoyn.util.Constants.METEO_FORECAST_DAYS_PARAMETER;
 import static it.unimib.enjoyn.util.Constants.METEO_FORECAST_DAYS_VALUE;
 import static it.unimib.enjoyn.util.Constants.METEO_INTERVAL_VALUE;
 
 import android.app.Application;
+
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Meteo;
 import it.unimib.enjoyn.model.MeteoApiResponse;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.service.MeteoApiService;
+import it.unimib.enjoyn.source.BaseWeatherRemoteDataSource;
 import it.unimib.enjoyn.util.MeteoCallback;
-import it.unimib.enjoyn.util.ResponseCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MeteoRepository implements IMeteoRepository{
+public class MeteoRepository implements IMeteoRepository, MeteoCallback{
 
-    private final Application application;
-    private final MeteoApiService meteoApiService;
-    private final MeteoCallback meteoCallback;
+    private final MutableLiveData<Result> weatherMutableLiveData;
 
-    public MeteoRepository(Application application, MeteoCallback meteoCallback) {
-        this.application = application;
-        this.meteoApiService = ServiceLocator.getInstance().getMeteoApiService();
-        this.meteoCallback = meteoCallback;
+    private final BaseWeatherRemoteDataSource weatherRemoteDataSource;
+
+    public MeteoRepository(BaseWeatherRemoteDataSource weatherRemoteDataSource){
+        this.weatherMutableLiveData = new MutableLiveData<>();
+        this.weatherRemoteDataSource = weatherRemoteDataSource;
+        weatherRemoteDataSource.setMeteoCallback(this);
     }
 
+
     @Override
-    public void fetchMeteo(String latitude, String longitude) {
-        Call<MeteoApiResponse> meteoApiResponseCall = meteoApiService.getEvents(latitude, longitude, METEO_INTERVAL_VALUE, METEO_FORECAST_DAYS_VALUE);
+    public MutableLiveData<Result> fetchMeteo(String latitude, String longitude) {
+        weatherRemoteDataSource.getWeather(latitude, longitude, METEO_FORECAST_DAYS_VALUE, METEO_INTERVAL_VALUE);
 
-        meteoApiResponseCall.enqueue(new Callback<MeteoApiResponse>() {
-            @Override
-            public void onResponse(Call<MeteoApiResponse> call, Response<MeteoApiResponse> response) {
-
-                if (response.body()!=null && response.isSuccessful()){
-                    List<Meteo> meteoList = response.body().getMeteo();
-                } else {
-                    meteoCallback.onFailure(application.getString(R.string.error_retriving_weather));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MeteoApiResponse> call, Throwable t) {
-                meteoCallback.onFailure(t.getMessage());
-            }
-        });
+        return weatherMutableLiveData;
     }
 
     @Override
     public void updateMeteo(Meteo meteo) {
+
+    }
+
+    @Override
+    public void onSuccessFromRemote(MeteoApiResponse weatherApiResponse) {
+
+    }
+
+    @Override
+    public void onFailureFromRemote(Exception exception) {
 
     }
 }

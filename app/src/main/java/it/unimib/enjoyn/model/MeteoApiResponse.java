@@ -2,13 +2,14 @@ package it.unimib.enjoyn.model;
 
 import java.util.List;
 
-public class MeteoApiResponse {
+public class MeteoApiResponse extends MeteoResponse{
 
     private List<Meteo> meteo;
 
-    public MeteoApiResponse(List<Meteo> meteo) {
-        this.meteo = meteo;
+    public MeteoApiResponse(List<Meteo> meteoList) {
+        super(meteoList);
     }
+
 
     public List<Meteo> getMeteo() {
         return meteo;

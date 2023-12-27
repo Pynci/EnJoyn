@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,11 +37,14 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Meteo;
+import it.unimib.enjoyn.model.MeteoApiResponse;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IMeteoRepository;
 import it.unimib.enjoyn.repository.MeteoRepository;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.MeteoCallback;
 import it.unimib.enjoyn.util.ResponseCallback;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,8 +72,7 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
 
     ImageView weatherIcon;
 
-    private IMeteoRepository iMeteoRepository;
-
+    private EventViewModel eventViewModel;
     private List<Meteo> meteoList;
 
 
@@ -109,8 +112,9 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        iMeteoRepository = new MeteoRepository(requireActivity().getApplication(), this);
+        IMeteoRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
         meteoList = new ArrayList<>();
+        eventViewModel = new ViewModelProvider(requireActivity(), new EventViewModelFactory(meteoRepository)).get(EventViewModel.class);
     }
 
     @Override
@@ -133,6 +137,15 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 return false;
+            }
+        });
+
+        eventViewModel.getWeather("52.52", "13.41").observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccessful()){
+                this.meteoList.clear();
+                this.meteoList.addAll(((Result.Success) result).getData().getMeteoList());
+            } else {
+                //TODO definire errore
             }
         });
 
@@ -319,21 +332,12 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
 
 
     @Override
-    public void onSuccess(List<Meteo> meteoList, long lastUpdate) {
-        if(meteoList != null){
-            this.meteoList.clear();
-            this.meteoList.addAll(meteoList);
-        }
-        requireActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+    public void onSuccessFromRemote(MeteoApiResponse weatherApiResponse) {
 
-            }
-        });
     }
 
     @Override
-    public void onFailure(String errorMessage) {
+    public void onFailureFromRemote(Exception exception) {
 
     }
 }
