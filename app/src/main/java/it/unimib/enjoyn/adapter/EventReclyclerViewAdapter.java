@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -70,12 +69,12 @@ public class EventReclyclerViewAdapter extends
 
         public NewViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewTitle = itemView.findViewById(R.id.eventTitle);
-            textViewData = itemView.findViewById(R.id.date);
-            textViewTime = itemView.findViewById(R.id.time);
-            textViewPlace = itemView.findViewById(R.id.place);
-            textViewPeopleNumber = itemView.findViewById(R.id.peopleNumber);
-            textViewDistance = itemView.findViewById(R.id.distance);
+            textViewTitle = itemView.findViewById(R.id.eventListItem_textView_eventTitle);
+            textViewData = itemView.findViewById(R.id.eventListItem_textView_date);
+            textViewTime = itemView.findViewById(R.id.eventListItem_textView_time);
+            textViewPlace = itemView.findViewById(R.id.eventListItem_textView_place);
+            textViewPeopleNumber = itemView.findViewById(R.id.eventListItem_textView_peopleNumber);
+            textViewDistance = itemView.findViewById(R.id.eventListItem_textView_distance);
 
             joinButton = itemView.findViewById(R.id.eventListItem_button_joinButton);
             itemView.setOnClickListener(this);
