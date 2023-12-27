@@ -11,7 +11,7 @@ import it.unimib.enjoyn.util.Costants;
 public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     private final DatabaseReference dbReference;
-    FirebaseAuth auth;
+    private final FirebaseAuth auth;
     private FirebaseUser fbUser;
 
     public UserRemoteDataSource() {
@@ -39,7 +39,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         user.setId(fbUser.getUid());
         dbReference
                 .child(Costants.PATH_FOR_USERS)
-                .child(user.getId())
+                .child(fbUser.getUid())
                 .setValue(user)
                 .addOnCompleteListener( result -> {
                     if(!result.isSuccessful()){
@@ -51,7 +51,8 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     public void getUser(String email) {
 
 
-        //Cerca l'utente nel DB sulla base dell'email
+        dbReference
+                .child(Costants.PATH_FOR_USERS);
 
         //Se va a buon fine chiama il metodo onGetSuccess(User user)
         //Se non va a buon fine chiama il metodo onGetFailure
