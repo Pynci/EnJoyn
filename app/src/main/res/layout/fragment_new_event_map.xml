@@ -19,4 +19,28 @@
         app:mapbox_cameraPitch="0.0"
         app:mapbox_cameraBearing="0.0" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+        android:id="@+id/newEventMap_floatingButton_resetInCurrentPosition"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/Select"
+        android:src="@drawable/baseline_place_24"
+        android:layout_marginStart="340sp"
+        android:layout_marginTop="460sp"
+        android:layout_above="@id/newEventMap_materialButton_eventLocation"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/newEventMap_materialButton_eventLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0sp"
+        android:layout_marginEnd="0sp"
+        android:layout_marginBottom="20sp"
+        android:layout_marginTop="520sp"
+        tools:text="Posiziona L'evento"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
 </FrameLayout>

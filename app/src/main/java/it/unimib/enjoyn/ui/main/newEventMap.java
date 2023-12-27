@@ -1,36 +1,55 @@
 package it.unimib.enjoyn.ui.main;
 
+import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
+import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.android.gestures.MoveGestureDetector;
+import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
+import com.mapbox.maps.plugin.gestures.GesturesUtils;
+import com.mapbox.maps.plugin.gestures.OnMapClickListener;
 import com.mapbox.common.Cancelable;
 import com.mapbox.geojson.Point;
 
 import com.mapbox.maps.AnnotatedFeature;
 import com.mapbox.maps.CameraOptions;
+import com.mapbox.maps.ImageHolder;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
 import com.mapbox.maps.ViewAnnotationOptions;
-import com.mapbox.maps.plugin.PuckBearing;
+import com.mapbox.maps.plugin.LocationPuck2D;
 import com.mapbox.maps.plugin.animation.CameraAnimationsPlugin;
 import com.mapbox.maps.plugin.animation.CameraAnimationsUtils;
 import com.mapbox.maps.plugin.animation.MapAnimationOptions;
-import com.mapbox.maps.plugin.gestures.OnMapClickListener;
 
+import com.mapbox.maps.plugin.gestures.OnMoveListener;
+import com.mapbox.maps.plugin.locationcomponent.LocationComponentPlugin;
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener;
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener;
 import com.mapbox.maps.viewannotation.ViewAnnotationManager;
 
 import java.util.List;
@@ -48,13 +67,60 @@ public class newEventMap extends Fragment implements  PermissionsListener {
     private FragmentNewEventMapBinding fragmentNewEventMapBinding;
     private FragmentNewEventBinding fragmentNewEventBinding;
     MapView mapView;
-
-    MapboxMap mapboxMap;
+    EventLocation location;
 
     Point point;
+    FloatingActionButton positionButton;
+    MapboxMap mapboxMap;
+
+
     private PermissionsManager permissionsManager;
 
+    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+        @Override
+        public void onActivityResult(Boolean result) {
+            if(result){
+                Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                        getString(R.string.eventRemoveToDo),
+                        Snackbar.LENGTH_LONG).show();
+            }
+        }
+    });
 
+private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListener = new OnIndicatorBearingChangedListener() {
+    @Override
+    public void onIndicatorBearingChanged(double v) {
+        mapView.getMapboxMap().setCamera(new CameraOptions.Builder().bearing(v).build());
+    }
+};
+private final OnIndicatorPositionChangedListener onIndicatorPositionChangedListener = new OnIndicatorPositionChangedListener() {
+    @Override
+    public void onIndicatorPositionChanged(@NonNull Point point) {
+        mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(20.0).build());
+        getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
+        newEventMap.this.point = point;
+
+    }
+};
+private final OnMoveListener onMoveListener = new OnMoveListener() {
+    @Override
+    public void onMoveBegin(@NonNull MoveGestureDetector moveGestureDetector) {
+        getLocationComponent(mapView).removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
+        getLocationComponent(mapView).removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
+        getGestures(mapView).removeOnMoveListener(onMoveListener);
+        positionButton.show();
+    }
+
+    @Override
+    public boolean onMove(@NonNull MoveGestureDetector moveGestureDetector) {
+        return false;
+    }
+
+    @Override
+    public void onMoveEnd(@NonNull MoveGestureDetector moveGestureDetector) {
+
+    }
+};
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -116,41 +182,85 @@ public class newEventMap extends Fragment implements  PermissionsListener {
         }
         point = null;
         mapView = view.findViewById(R.id.mapView);
-        mapView.getMapboxMap().loadStyle(Style.MAPBOX_STREETS);
-        //TODO con current position per resettare il posizionamento (aggiungere bottone)
-        //TODO con spostamento a ricerca
+        positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
+        MaterialButton newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
 
-        if (false)
-            flyToCameraPosition();
-        prova(com.mapbox.geojson.Point.fromLngLat(8.191926, 45.464098));
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION );
+        }
 
-        addOnMapClickListener(new OnMapClickListener() {
+        mapView.getMapboxMap().loadStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
-            public boolean onMapClick(@NonNull Point point) {
-                point = point;
-                return false;
+            public void onStyleLoaded(@NonNull Style style) {
+                mapView.getMapboxMap().setCamera(new CameraOptions.Builder().zoom(20.0).build());
+                LocationComponentPlugin locationComponentPlugin = getLocationComponent(mapView);
+                locationComponentPlugin.setEnabled(true);
+                LocationPuck2D locationPuck2D = new LocationPuck2D();
+                locationPuck2D.setBearingImage(ImageHolder.from(R.drawable.baseline_place_24));
+                locationComponentPlugin.setLocationPuck(locationPuck2D);
+                locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
+                locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
+                getGestures(mapView).addOnMoveListener(onMoveListener);
+
+                positionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
+                        locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
+                        getGestures(mapView).addOnMoveListener(onMoveListener);
+                        positionButton.hide();
+
+                    }
+                });
+                location = new EventLocation();
+                newEventButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        location.setLatitude(point.latitude());
+                        location.setLongitude(point.longitude());
+                        newEventButton.setText(location.getLatitudeToString());
+                    }
+                });
+
+               GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
+                   @Override
+                   public boolean onMapClick(@NonNull Point point) {
+                       location.setLatitude(point.latitude());
+                       location.setLongitude(point.longitude());
+                       newEventButton.setText(location.getLatitudeToString());
+                       prova(point);
+                       return false;
+                   }
+               });
             }
         });
+
+        //TODO con spostamento a ricerca
+
+
+
+
 
 
     }
 
-    private void flyToCameraPosition() {
+    private void flyToCameraPosition(Point point) {
         Point cameraCenterCoordinates = com.mapbox.geojson.Point.fromLngLat(8.191926, 45.464098);
         final CameraAnimationsPlugin camera = CameraAnimationsUtils.getCamera(mapView);
         final Cancelable cancelable = camera.easeTo(
                 new CameraOptions.Builder()
-                        .center(cameraCenterCoordinates)
+                        .center(point)
                         .bearing(0.0)
                         .pitch(0.0)
-                        .zoom(13.0)
+                        .zoom(20.0)
                         .build(),
                 new MapAnimationOptions.Builder().duration(1500).build(), null);
         CameraOptions cameraOptions = new CameraOptions.Builder()
                 .center(cameraCenterCoordinates)
                 .bearing(130.0)
                 .pitch(75.0)
-                .zoom(13.0)
+                .zoom(20.0)
                 .build();
 
 
