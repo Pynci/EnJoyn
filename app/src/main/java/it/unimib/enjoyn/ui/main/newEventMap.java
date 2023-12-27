@@ -96,7 +96,7 @@ private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListene
 private final OnIndicatorPositionChangedListener onIndicatorPositionChangedListener = new OnIndicatorPositionChangedListener() {
     @Override
     public void onIndicatorPositionChanged(@NonNull Point point) {
-        mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(20.0).build());
+        mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
         getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
         newEventMap.this.point = point;
 
@@ -192,7 +192,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
         mapView.getMapboxMap().loadStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
-                mapView.getMapboxMap().setCamera(new CameraOptions.Builder().zoom(20.0).build());
+                mapView.getMapboxMap().setCamera(new CameraOptions.Builder().zoom(16.0).build());
                 LocationComponentPlugin locationComponentPlugin = getLocationComponent(mapView);
                 locationComponentPlugin.setEnabled(true);
                 LocationPuck2D locationPuck2D = new LocationPuck2D();
@@ -205,23 +205,17 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                 positionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        flyToCameraPosition(point);
                         locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                         locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                         getGestures(mapView).addOnMoveListener(onMoveListener);
+
                         positionButton.hide();
 
                     }
                 });
                 location = new EventLocation();
-                newEventButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                        location.setLatitude(point.latitude());
-                        location.setLongitude(point.longitude());
-                        newEventButton.setText(location.getLatitudeToString());
-                    }
-                });
 
                GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
                    @Override
@@ -253,18 +247,10 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                         .center(point)
                         .bearing(0.0)
                         .pitch(0.0)
-                        .zoom(20.0)
+                        .zoom(13.0)
                         .build(),
-                new MapAnimationOptions.Builder().duration(1500).build(), null);
-        CameraOptions cameraOptions = new CameraOptions.Builder()
-                .center(cameraCenterCoordinates)
-                .bearing(130.0)
-                .pitch(75.0)
-                .zoom(20.0)
-                .build();
+                new MapAnimationOptions.Builder().duration(800).build(), null);
 
-
-        new MapAnimationOptions.Builder().duration(1500).build();
 
     }
 
