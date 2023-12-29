@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -23,6 +24,8 @@ import android.view.ViewGroup;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.android.gestures.MoveGestureDetector;
@@ -34,9 +37,9 @@ import com.mapbox.maps.plugin.gestures.OnMapClickListener;
 import com.mapbox.common.Cancelable;
 import com.mapbox.geojson.Point;
 
-import com.mapbox.maps.AnnotatedFeature;
+
 import com.mapbox.maps.CameraOptions;
-import com.mapbox.maps.ImageHolder;
+
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
@@ -51,6 +54,9 @@ import com.mapbox.maps.plugin.locationcomponent.LocationComponentPlugin;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener;
 import com.mapbox.maps.viewannotation.ViewAnnotationManager;
+import com.mapbox.search.autocomplete.PlaceAutocomplete;
+import com.mapbox.search.ui.adapter.autocomplete.PlaceAutocompleteUiAdapter;
+import com.mapbox.search.ui.view.SearchResultsView;
 
 import java.util.List;
 
@@ -73,7 +79,13 @@ public class newEventMap extends Fragment implements  PermissionsListener {
     FloatingActionButton positionButton;
     MapboxMap mapboxMap;
 
+    private PlaceAutocomplete placeAutocomplete;
 
+    private SearchResultsView searchResultsView;
+
+    private PlaceAutocompleteUiAdapter placeAutocompleteUiAdapter;
+    private TextInputEditText searchBar;
+    private boolean ignoreNextQueryUpdate = false;
     private PermissionsManager permissionsManager;
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -185,18 +197,20 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
         MaterialButton newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
 
+
+
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION );
         }
 
-        mapView.getMapboxMap().loadStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
                 mapView.getMapboxMap().setCamera(new CameraOptions.Builder().zoom(16.0).build());
                 LocationComponentPlugin locationComponentPlugin = getLocationComponent(mapView);
                 locationComponentPlugin.setEnabled(true);
                 LocationPuck2D locationPuck2D = new LocationPuck2D();
-                locationPuck2D.setBearingImage(ImageHolder.from(R.drawable.baseline_place_24));
+                locationPuck2D.setBearingImage(AppCompatResources.getDrawable(getContext(), R.drawable.baseline_place_24));
                 locationComponentPlugin.setLocationPuck(locationPuck2D);
                 locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
@@ -205,7 +219,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                 positionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        flyToCameraPosition(point);
+                       // flyToCameraPosition(point);
                         locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                         locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                         getGestures(mapView).addOnMoveListener(onMoveListener);
@@ -223,7 +237,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                        location.setLatitude(point.latitude());
                        location.setLongitude(point.longitude());
                        newEventButton.setText(location.getLatitudeToString());
-                       prova(point);
+                       //prova(point);
                        return false;
                    }
                });
@@ -242,20 +256,20 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
     private void flyToCameraPosition(Point point) {
         Point cameraCenterCoordinates = com.mapbox.geojson.Point.fromLngLat(8.191926, 45.464098);
         final CameraAnimationsPlugin camera = CameraAnimationsUtils.getCamera(mapView);
-        final Cancelable cancelable = camera.easeTo(
+        final Cancelable cancelable = (Cancelable) camera.easeTo(
                 new CameraOptions.Builder()
                         .center(point)
                         .bearing(0.0)
                         .pitch(0.0)
                         .zoom(13.0)
                         .build(),
-                new MapAnimationOptions.Builder().duration(800).build(), null);
+                new MapAnimationOptions.Builder().duration(800).build());
 
 
     }
 
 
-    private void prova(Point point) {
+  /*  private void prova(Point point) {
         ViewAnnotationManager viewAnnotationManager = fragmentNewEventMapBinding.mapView.getViewAnnotationManager();
         AnnotatedFeature annotatedFeature = new AnnotatedFeature(point);
         ViewAnnotationOptions viewAnnotationOptions = new ViewAnnotationOptions.Builder().annotatedFeature(annotatedFeature)
@@ -267,7 +281,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                 // Set any view annotation options
                 viewAnnotationOptions
         );
-    }
+    }*/
 
     @Override
     public void onExplanationNeeded(@NonNull List<String> list) {
