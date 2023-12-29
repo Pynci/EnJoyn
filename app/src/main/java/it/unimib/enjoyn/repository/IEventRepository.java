@@ -5,6 +5,7 @@ import java.io.IOException;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 
+//TODO da eliminare interfaccia
 public interface IEventRepository {
 
 
