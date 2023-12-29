@@ -34,17 +34,17 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.EventMockRepository;
-import it.unimib.enjoyn.repository.IEventRepository;
+import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.ResponseCallback;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TodoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TodoFragment extends Fragment implements ResponseCallback {
+public class TodoFragment extends Fragment {
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -58,10 +58,7 @@ public class TodoFragment extends Fragment implements ResponseCallback {
     private ProgressBar progressBar;
 
     private EventViewModel eventViewModel;
-    private IEventRepository iEventRepository;
-
     private List<Event> eventList;
-
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
     public TodoFragment() {
@@ -94,11 +91,13 @@ public class TodoFragment extends Fragment implements ResponseCallback {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        iEventRepository =
-                new EventMockRepository(requireActivity().getApplication(), this);
+        IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
+                requireActivity().getApplication());
         eventList = new ArrayList<>();
-        iEventRepository.getTODOEvents();
-        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+
+        eventViewModel = new ViewModelProvider(
+                requireActivity(),
+                new EventViewModelFactory(eventRepositoryWithLiveData)).get(EventViewModel.class);
     }
 
     @Override
@@ -129,13 +128,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-        iEventRepository.getTODOEvents();
-
-
-        //List<Event> eventList = new ArrayList<Event>() ;
-        //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
-
-
          eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
@@ -144,7 +136,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
                                 TodoFragmentDirections.actionTodoToDiscoverSingleEvent(event);
                         // startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
                         Navigation.findNavController(view).navigate(action);
-
                     }
 
                     @Override
@@ -210,25 +201,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
         return null;
     }
 
-    @Override
-    public void onSuccess(List<Event> newsList, long lastUpdate) {
-
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-
-    }
-
-    @Override
-    public void onEventFavoriteStatusChanged(Event event) {
-
-    }
-
-    @Override
-    public void onEventTodoStatusChanged(Event event) {
-
-    }
 
     /*@Override
     public void onSuccess(List<Event> eventList, long lastUpdate) {

@@ -13,8 +13,8 @@ import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.ResponseCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 
+//TODO da eliminare
 public class EventMockRepository implements IEventRepository{
-
 
     private final Application application;
     private final ResponseCallback responseCallback;
