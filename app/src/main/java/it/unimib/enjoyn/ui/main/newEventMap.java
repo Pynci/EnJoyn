@@ -306,45 +306,46 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                        return false;
                    }
                });*/
-            }
-        });
+                placeAutocompleteUiAdapter.addSearchListener(new PlaceAutocompleteUiAdapter.SearchListener() {
+                    @Override
+                    public void onSuggestionsShown(@NonNull List<PlaceAutocompleteSuggestion> list) {
 
-        //TODO con spostamento a ricerca
-        placeAutocompleteUiAdapter.addSearchListener(new PlaceAutocompleteUiAdapter.SearchListener() {
-            @Override
-            public void onSuggestionsShown(@NonNull List<PlaceAutocompleteSuggestion> list) {
+                    }
 
-            }
-
-            @Override
-            public void onSuggestionSelected(@NonNull PlaceAutocompleteSuggestion placeAutocompleteSuggestion) {
-                ignoreNextQueryUpdate = true;
-                searchBar.setText(placeAutocompleteSuggestion.getName());
-                searchResultsView.setVisibility(View.GONE);
-                //todo PIN sulla mappa
-             //   PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap).withPoint(placeAutocompleteSuggestion.getCoordinate())
-                location.setLongitude(placeAutocompleteSuggestion.getCoordinate().longitude());
-                location.setLatitude(placeAutocompleteSuggestion.getCoordinate().latitude());
-                location.setName(placeAutocompleteSuggestion.getName());
+                    @Override
+                    public void onSuggestionSelected(@NonNull PlaceAutocompleteSuggestion placeAutocompleteSuggestion) {
+                        ignoreNextQueryUpdate = true;
+                        searchBar.setText(placeAutocompleteSuggestion.getName());
+                        searchResultsView.setVisibility(View.GONE);
+                        //todo PIN sulla mappa
                 pointAnnotationManager.deleteAll();
                 PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(String.valueOf(R.drawable.baseline_add_location_24))
                         .withPoint(placeAutocompleteSuggestion.getCoordinate());
                 pointAnnotationManager.create(pointAnnotationOptions);
-                updateCamera(placeAutocompleteSuggestion.getCoordinate(), 0.0);
-                newEventButton.setText(location.getName());
-            }
+                        location.setLongitude(placeAutocompleteSuggestion.getCoordinate().longitude());
+                        location.setLatitude(placeAutocompleteSuggestion.getCoordinate().latitude());
+                        location.setName(placeAutocompleteSuggestion.getName());
 
-            @Override
-            public void onPopulateQueryClick(@NonNull PlaceAutocompleteSuggestion placeAutocompleteSuggestion) {
+                        updateCamera(placeAutocompleteSuggestion.getCoordinate(), 0.0);
+                        newEventButton.setText(location.getName());
+                    }
 
-            }
+                    @Override
+                    public void onPopulateQueryClick(@NonNull PlaceAutocompleteSuggestion placeAutocompleteSuggestion) {
 
-            @Override
-            public void onError(@NonNull Exception e) {
+                    }
+
+                    @Override
+                    public void onError(@NonNull Exception e) {
+
+                    }
+                });
+
 
             }
         });
 
+        //TODO con spostamento a ricerca
 
 
 
@@ -358,6 +359,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
 
         getCamera(mapView).easeTo(cameraOptions, animationOptions);
     }
+
 
     private void flyToCameraPosition(Point point) {
         Point cameraCenterCoordinates = com.mapbox.geojson.Point.fromLngLat(8.191926, 45.464098);
