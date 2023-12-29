@@ -1,10 +1,13 @@
 package it.unimib.enjoyn.ui.main;
 
+import static com.mapbox.maps.plugin.animation.CameraAnimationsUtils.getCamera;
 import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
 import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -17,6 +20,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +31,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.android.gestures.MoveGestureDetector;
+import com.mapbox.maps.EdgeInsets;
+import com.mapbox.maps.extension.style.layers.properties.generated.TextAnchor;
 import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
+import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 import com.mapbox.maps.plugin.gestures.GesturesUtils;
 import com.mapbox.maps.plugin.gestures.OnMapClickListener;
 import com.mapbox.common.Cancelable;
@@ -55,7 +65,9 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListene
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener;
 import com.mapbox.maps.viewannotation.ViewAnnotationManager;
 import com.mapbox.search.autocomplete.PlaceAutocomplete;
+import com.mapbox.search.autocomplete.PlaceAutocompleteSuggestion;
 import com.mapbox.search.ui.adapter.autocomplete.PlaceAutocompleteUiAdapter;
+import com.mapbox.search.ui.view.CommonSearchViewConfiguration;
 import com.mapbox.search.ui.view.SearchResultsView;
 
 import java.util.List;
@@ -63,6 +75,10 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.EmptyCoroutineContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -197,6 +213,54 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
         MaterialButton newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
 
+        placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
+
+        searchBar = view.findViewById(R.id.newEventMap_textInputEditText_textSearchBar);
+        AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
+        PointAnnotationManager pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
+
+        searchResultsView = view.findViewById(R.id.search_results_view);
+        searchResultsView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
+        placeAutocompleteUiAdapter = new PlaceAutocompleteUiAdapter(searchResultsView, placeAutocomplete, LocationEngineProvider.getBestLocationEngine(getContext()));
+       // Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (ignoreNextQueryUpdate) {
+                    ignoreNextQueryUpdate = false;
+                } else {
+                    placeAutocompleteUiAdapter.search(s.toString(), new Continuation<Unit>() {
+                        @NonNull
+                        @Override
+                        public CoroutineContext getContext() {
+                            return EmptyCoroutineContext.INSTANCE;
+                        }
+
+                        @Override
+                        public void resumeWith(@NonNull Object o) {
+                           requireActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    searchResultsView.setVisibility(View.VISIBLE);
+                                }
+                        });
+                        }
+                    });
+
+                }
+            }
+
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
@@ -220,6 +284,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                     @Override
                     public void onClick(View v) {
                        // flyToCameraPosition(point);
+                        updateCamera(point, 0.0);
                         locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                         locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                         getGestures(mapView).addOnMoveListener(onMoveListener);
@@ -231,7 +296,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                 location = new EventLocation();
 
 
-               GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
+             /*  GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
                    @Override
                    public boolean onMapClick(@NonNull Point point) {
                        location.setLatitude(point.latitude());
@@ -240,11 +305,45 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                        //prova(point);
                        return false;
                    }
-               });
+               });*/
             }
         });
 
         //TODO con spostamento a ricerca
+        placeAutocompleteUiAdapter.addSearchListener(new PlaceAutocompleteUiAdapter.SearchListener() {
+            @Override
+            public void onSuggestionsShown(@NonNull List<PlaceAutocompleteSuggestion> list) {
+
+            }
+
+            @Override
+            public void onSuggestionSelected(@NonNull PlaceAutocompleteSuggestion placeAutocompleteSuggestion) {
+                ignoreNextQueryUpdate = true;
+                searchBar.setText(placeAutocompleteSuggestion.getName());
+                searchResultsView.setVisibility(View.GONE);
+                //todo PIN sulla mappa
+             //   PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap).withPoint(placeAutocompleteSuggestion.getCoordinate())
+                location.setLongitude(placeAutocompleteSuggestion.getCoordinate().longitude());
+                location.setLatitude(placeAutocompleteSuggestion.getCoordinate().latitude());
+                location.setName(placeAutocompleteSuggestion.getName());
+                pointAnnotationManager.deleteAll();
+                PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(String.valueOf(R.drawable.baseline_add_location_24))
+                        .withPoint(placeAutocompleteSuggestion.getCoordinate());
+                pointAnnotationManager.create(pointAnnotationOptions);
+                updateCamera(placeAutocompleteSuggestion.getCoordinate(), 0.0);
+                newEventButton.setText(location.getName());
+            }
+
+            @Override
+            public void onPopulateQueryClick(@NonNull PlaceAutocompleteSuggestion placeAutocompleteSuggestion) {
+
+            }
+
+            @Override
+            public void onError(@NonNull Exception e) {
+
+            }
+        });
 
 
 
@@ -252,10 +351,17 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
 
 
     }
+    private void updateCamera(Point point, Double bearing) {
+        MapAnimationOptions animationOptions = new MapAnimationOptions.Builder().duration(1000L).build();
+        CameraOptions cameraOptions = new CameraOptions.Builder().center(point).zoom(18.0).bearing(bearing).pitch(45.0)
+                .padding(new EdgeInsets(1000.0, 0.0, 0.0, 0.0)).build();
+
+        getCamera(mapView).easeTo(cameraOptions, animationOptions);
+    }
 
     private void flyToCameraPosition(Point point) {
         Point cameraCenterCoordinates = com.mapbox.geojson.Point.fromLngLat(8.191926, 45.464098);
-        final CameraAnimationsPlugin camera = CameraAnimationsUtils.getCamera(mapView);
+        final CameraAnimationsPlugin camera = getCamera(mapView);
         final Cancelable cancelable = (Cancelable) camera.easeTo(
                 new CameraOptions.Builder()
                         .center(point)

@@ -13,8 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:mapbox_cameraTargetLat="45.464098"
-        app:mapbox_cameraTargetLng="9.191926"
-        app:mapbox_locationComponentEnabled="true"
         app:mapbox_cameraZoom="13.0"
         app:mapbox_cameraPitch="0.0"
         app:mapbox_cameraBearing="0.0" />
@@ -29,7 +27,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/Select"
-        android:src="@drawable/baseline_place_24" />
+        android:src="@drawable/baseline_my_location_24" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/newEventMap_materialButton_eventLocation"
