@@ -346,7 +346,7 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
 
     @Override
     public void onSuccessFromRemote(MeteoApiResponse weatherApiResponse) {
-
+        Log.d("API meteo", "Entra in OnSuccessEV");
     }
 
     @Override

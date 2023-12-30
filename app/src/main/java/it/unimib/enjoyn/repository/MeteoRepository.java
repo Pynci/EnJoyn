@@ -51,7 +51,15 @@ public class MeteoRepository implements IMeteoRepository, MeteoCallback{
 
     @Override
     public void onSuccessFromRemote(MeteoApiResponse weatherApiResponse) {
+        if (weatherMutableLiveData.getValue() != null && weatherMutableLiveData.getValue().isSuccess()) {
+            Meteo meteo = ((Result.Success)weatherMutableLiveData.getValue()).getData().getWeather();
 
+            Result.Success result = new Result.Success(weatherApiResponse);
+            weatherMutableLiveData.postValue(result);
+        } else {
+            Result.Success result = new Result.Success(weatherApiResponse);
+            weatherMutableLiveData.postValue(result);
+        }
     }
 
     @Override

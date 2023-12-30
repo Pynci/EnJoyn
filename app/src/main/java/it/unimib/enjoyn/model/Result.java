@@ -11,6 +11,10 @@ public abstract class Result {
         return this instanceof Success;
     }
 
+    public boolean isSuccess() {
+        return this instanceof Success;
+    }
+
     public static final class Success extends Result{
 
         private final MeteoResponse meteoResponse;

@@ -32,6 +32,7 @@ public class WeatherRemoteDataSource extends BaseWeatherRemoteDataSource{
             public void onResponse(Call<MeteoApiResponse> call, Response<MeteoApiResponse> response) {
                 Log.d("API meteo", "dentro getWeather su data source, dentro OnResponse");
                 if(response.body() != null && response.isSuccessful()){
+                    Log.d("API meteo", "andata a buon fine su DataSource");
                     meteoCallback.onSuccessFromRemote(response.body());
                     Log.d("API meteo", "andata a buon fine su DataSource");
                 } else {
@@ -42,7 +43,7 @@ public class WeatherRemoteDataSource extends BaseWeatherRemoteDataSource{
 
             @Override
             public void onFailure(Call<MeteoApiResponse> call, Throwable t) {
-                Log.d("API meteo", "dentro getWeather su data source, dentro onFailure");
+                Log.d("ERRORE",  t.getLocalizedMessage(), t);
                 meteoCallback.onFailureFromRemote(new Exception(RETROFIT_ERROR));
             }
         });
