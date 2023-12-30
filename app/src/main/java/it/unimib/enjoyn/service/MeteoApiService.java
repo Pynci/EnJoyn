@@ -17,7 +17,8 @@ public interface MeteoApiService {
     Call<MeteoApiResponse> getWeather(
                 @Query(METEO_LATITUDE_PARAMETER) String latitude,
                 @Query(METEO_LONGITUDE_PARAMETER) String longitude,
-                @Query(METEO_FORECAST_DAYS_PARAMETER) int forecastDays,
-                @Query(METEO_INTERVAL_PARAMETER) String interval);
+                @Query(METEO_INTERVAL_PARAMETER) String interval,
+                @Query(METEO_INTERVAL_PARAMETER) String interval2,
+                @Query(METEO_FORECAST_DAYS_PARAMETER) int forecastDays);
 
 }

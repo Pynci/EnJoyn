@@ -5,6 +5,7 @@ import static it.unimib.enjoyn.util.Constants.METEO_FORECAST_DAYS_VALUE;
 import static it.unimib.enjoyn.util.Constants.METEO_INTERVAL_VALUE;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -37,7 +38,8 @@ public class MeteoRepository implements IMeteoRepository, MeteoCallback{
 
     @Override
     public MutableLiveData<Result> fetchMeteo(String latitude, String longitude) {
-        weatherRemoteDataSource.getWeather(latitude, longitude, METEO_FORECAST_DAYS_VALUE, METEO_INTERVAL_VALUE);
+        Log.d("API meteo", "dentro fetchMeteo su repository");
+        weatherRemoteDataSource.getWeather(latitude, longitude);
 
         return weatherMutableLiveData;
     }

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -73,7 +74,7 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
     ImageView weatherIcon;
 
     private EventViewModel eventViewModel;
-    private List<Meteo> meteoList;
+    private Meteo weatherAPIdata;
 
 
 
@@ -111,10 +112,11 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("API meteo", "su OnCreate");
         IMeteoRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
-        meteoList = new ArrayList<>();
+        weatherAPIdata = new Meteo();
         eventViewModel = new ViewModelProvider(requireActivity(), new EventViewModelFactory(meteoRepository)).get(EventViewModel.class);
+        Log.d("API meteo", "su OnCreate dopo tutto");
     }
 
     @Override
@@ -140,25 +142,33 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
             }
         });
 
+        Log.d("API meteo", "su onViewCreated prima chiamata");
         eventViewModel.getWeather("52.52", "13.41").observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccessful()){
-                this.meteoList.clear();
-                this.meteoList.addAll(((Result.Success) result).getData().getMeteoList());
+                Log.d("API meteo", "entro su if");
+                weatherAPIdata = ((Result.Success) result).getData().getWeather();
+                //this.meteoList.clear();
+                //this.meteoList.addAll(((Result.Success) result).getData().getMeteoList());
+                showWeatherOnNewEvent(requireView());
+                Log.d("API meteo", "andata a buon fine");
             } else {
                 //TODO definire errore
+                Log.d("API meteo", "errore view model get weather");
             }
         });
+        Log.d("API meteo", "su onViewCreated dopo chiamata");
+
 
         //iMeteoRepository.fetchMeteo("52.52", "13.41");
-        List<Meteo> meteoList = getMeteoListWithGSon();
+        //weatherAPIdata = getMeteoListWithGSon();
+        //showWeatherOnNewEvent(requireView());
 
-        showMeteoOnNewEvent(meteoList, requireView());
     }
 
-    public void showMeteoOnNewEvent(List<Meteo> meteoList, View view){
-        String[] dateArray = meteoList.get(0).getHour();
-        double[] temperatureArray = meteoList.get(0).getTemperature();
-
+    public void showWeatherOnNewEvent(View view){
+        String[] dateArray = weatherAPIdata.getHour();
+        double[] temperatureArray = weatherAPIdata.getTemperature();
+        Log.d("API meteo", "errore show");
         date = view.findViewById(R.id.fragmentNewEvent_imageButton_datePicker);
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         meteo = view.findViewById(R.id.meteo);
@@ -214,9 +224,9 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
                                 }
                                 else {
                                     if (indexHour >= 0 && indexMinute >= 0) {
-                                        String code = meteoList.get(0).getWeather_codeString(indexDate + indexHour + indexMinute);
+                                        String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
                                         meteo.setText(code);
-                                        temperatura.setText(meteoList.get(0).getTemperatureString(indexDate + indexHour + indexMinute));
+                                        temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute));
                                         setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                     }
                                 }
@@ -267,14 +277,14 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
 
 
 
-                                assert meteoList != null;
-                                assert meteoList.get(0) != null;
-                                assert meteoList.get(0).getHour()[indexHour] != null;
+                                assert weatherAPIdata != null;
+                                //assert meteoList.get(0) != null;
+                                assert weatherAPIdata.getHour()[indexHour] != null;
                                 if(equals){
                                     double temp= temperatureArray[indexDate+indexHour+indexMinute];
-                                    String code = meteoList.get(0).getWeather_codeString(indexDate+indexHour+indexMinute);
+                                    String code = weatherAPIdata.getWeather_codeString(indexDate+indexHour+indexMinute);
                                     meteo.setText(code);
-                                    temperatura.setText( meteoList.get(0).getTemperatureString(indexDate+indexHour+indexMinute));
+                                    temperatura.setText(weatherAPIdata.getTemperatureString(indexDate+indexHour+indexMinute));
                                     setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                 }
                             }
@@ -306,13 +316,13 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
             weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
         }
     }
-    private List<Meteo> getMeteoListWithGSon() {
+    private Meteo getMeteoListWithGSon() {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
         try {
             /**TODO
              * sistemare questa parte
              * */
-
+            /*
             Context context = requireActivity().getApplication().getApplicationContext();
             InputStream inputStream = context.getAssets().open("meteo.json"); //apro file
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
@@ -322,10 +332,13 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
             List<Meteo> meteoList = jsonParserUtil.parseJSONFileWithJSONObjectArray("meteo.json").getMeteoList();
 
             return meteoList;
+
+             */
+            MeteoApiResponse  response = jsonParserUtil.parseJSONFileAPIMeteo("meteoCompleto.json");
+
+            return response.getWeather();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
         }
         return null;
     }

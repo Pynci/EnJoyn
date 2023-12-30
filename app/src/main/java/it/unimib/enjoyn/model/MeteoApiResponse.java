@@ -12,10 +12,9 @@ public class MeteoApiResponse extends MeteoResponse{
     String timezone_abbreviation;
     double elevation;
     Object minutely_15_units;
-    private List<Meteo> meteo;
 
-    public MeteoApiResponse(List<Meteo> meteoList, double latitude, double longitude, double generationtime_ms, double utc_offset_seconds, String timezone, String timezone_abbreviation, double elevation, Object minutely_15_units, List<Meteo> meteo) {
-        super(meteoList);
+    public MeteoApiResponse(Meteo meteo, double latitude, double longitude, double generationtime_ms, double utc_offset_seconds, String timezone, String timezone_abbreviation, double elevation, Object minutely_15_units) {
+        super(meteo);
         this.latitude = latitude;
         this.longitude = longitude;
         this.generationtime_ms = generationtime_ms;
@@ -24,15 +23,7 @@ public class MeteoApiResponse extends MeteoResponse{
         this.timezone_abbreviation = timezone_abbreviation;
         this.elevation = elevation;
         this.minutely_15_units = minutely_15_units;
-        this.meteo = meteo;
     }
 
 
-    public List<Meteo> getMeteo() {
-        return meteo;
-    }
-
-    public void setMeteo(List<Meteo> meteo) {
-        this.meteo = meteo;
-    }
 }

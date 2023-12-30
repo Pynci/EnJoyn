@@ -1,10 +1,13 @@
 package it.unimib.enjoyn.model;
 
+import android.util.Log;
+
 public abstract class Result {
 
     private Result() {}
 
     public boolean isSuccessful(){
+        Log.d("API meteo", "dentro isSuccessful su Result");
         return this instanceof Success;
     }
 

@@ -10,5 +10,5 @@ public abstract class BaseWeatherRemoteDataSource {
         this.meteoCallback = meteoCallback;
     }
 
-    public abstract void getWeather(String latitude, String longitude, int forecastDays, String interval);
+    public abstract void getWeather(String latitude, String longitude);
 }

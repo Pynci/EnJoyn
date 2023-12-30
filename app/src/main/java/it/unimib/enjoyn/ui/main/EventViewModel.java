@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.ui.main;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -17,6 +19,7 @@ public class EventViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> getWeather(String latitude, String logitude){
+        Log.d("API meteo", "dentro getWeather su viewModel");
         if (weatherListLiveData == null){
             fetchWeather(latitude, logitude);
         }
@@ -24,6 +27,7 @@ public class EventViewModel extends ViewModel {
     }
 
     private void fetchWeather(String latitude, String longitude){
+        Log.d("API meteo", "dentro fetchWeather su viewModel");
         weatherListLiveData = weatherRepository.fetchMeteo(latitude, longitude);
     }
 }

@@ -14,6 +14,7 @@ public class Constants {
 
     public static final String METEO_API_BASE_URL = "https://api.open-meteo.com/v1/";
 
+    //https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&minutely_15=temperature_2m,weather_code&forecast_days=16
     public static final String METEO_ENDPOINT = "forecast";
 
     public static final String METEO_LATITUDE_PARAMETER = "latitude";

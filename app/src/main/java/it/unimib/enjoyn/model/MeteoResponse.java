@@ -13,14 +13,24 @@ import java.util.List;
 
 public class MeteoResponse implements Parcelable {
     @SerializedName(METEO_INTERVAL_PARAMETER)
-    List<Meteo> meteoList;
+    Meteo weather;
 
-    public MeteoResponse(List<Meteo> meteoList) {
-        this.meteoList = meteoList;
+    public MeteoResponse(Meteo weather) {
+        this.weather = weather;
     }
 
     protected MeteoResponse(Parcel in) {
-        meteoList = in.createTypedArrayList(Meteo.CREATOR);
+        weather = in.readParcelable(Meteo.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(weather, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<MeteoResponse> CREATOR = new Creator<MeteoResponse>() {
@@ -35,21 +45,11 @@ public class MeteoResponse implements Parcelable {
         }
     };
 
-    public List<Meteo> getMeteoList() {
-        return meteoList;
+    public Meteo getWeather() {
+        return weather;
     }
 
-    public void setMeteoList(List<Meteo> meteoList) {
-        this.meteoList = meteoList;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeTypedList(meteoList);
+    public void setWeather(Meteo weather) {
+        this.weather = weather;
     }
 }
