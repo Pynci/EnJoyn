@@ -212,8 +212,8 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
         mapView = view.findViewById(R.id.mapView);
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
         MaterialButton newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
-
-        placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
+        //TOLTO per barra di ricerca
+       // placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
 
         searchBar = view.findViewById(R.id.newEventMap_textInputEditText_textSearchBar);
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
@@ -221,7 +221,9 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
 
         searchResultsView = view.findViewById(R.id.search_results_view);
         searchResultsView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
-        placeAutocompleteUiAdapter = new PlaceAutocompleteUiAdapter(searchResultsView, placeAutocomplete, LocationEngineProvider.getBestLocationEngine(getContext()));
+        //TOLTO per barra di ricerca
+        //placeAutocompleteUiAdapter = new PlaceAutocompleteUiAdapter(searchResultsView, placeAutocomplete, LocationEngineProvider.getBestLocationEngine(getContext()));
+        //TODO mettere immagine 3d scaricata, da usare per creare pin sulla mappa
        // Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -296,17 +298,24 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                 location = new EventLocation();
 
 
-             /*  GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
+              GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
                    @Override
                    public boolean onMapClick(@NonNull Point point) {
                        location.setLatitude(point.latitude());
                        location.setLongitude(point.longitude());
                        newEventButton.setText(location.getLatitudeToString());
+                       updateCamera(point, 0.0);
+                       //todo mettere logica per pin sulla mappa da testare (riga 325)
+                       PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(String.valueOf(R.drawable.baseline_add_location_24))
+                               .withPoint(point);
+                       pointAnnotationManager.create(pointAnnotationOptions);
                        //prova(point);
                        return false;
                    }
-               });*/
-                placeAutocompleteUiAdapter.addSearchListener(new PlaceAutocompleteUiAdapter.SearchListener() {
+               });
+           /*     //TODO FUNZIONA MA NON USARE LA BARRA DI RICERCA PERCHé FA TANTE CHIAMATE API, usare metodo sopra per testare movimento camera e pin
+                    // TODO    SE SI VUOLE TESTARE CREARE NUOVO TOKEN DI MAPBOX da mettere nel GRADLE.PROPRETIES(PROJECT PROPERTIES) nella variabile MAPBOX_DOWNLOADS_TOKEN
+           placeAutocompleteUiAdapter.addSearchListener(new PlaceAutocompleteUiAdapter.SearchListener() {
                     @Override
                     public void onSuggestionsShown(@NonNull List<PlaceAutocompleteSuggestion> list) {
 
@@ -318,10 +327,13 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                         searchBar.setText(placeAutocompleteSuggestion.getName());
                         searchResultsView.setVisibility(View.GONE);
                         //todo PIN sulla mappa
+                        //TODO Logica per creare pin sulla mappa da testare [modificare immagine : bisogna mettere un immagine BitMap ]
                 pointAnnotationManager.deleteAll();
                 PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(String.valueOf(R.drawable.baseline_add_location_24))
                         .withPoint(placeAutocompleteSuggestion.getCoordinate());
                 pointAnnotationManager.create(pointAnnotationOptions);
+
+
                         location.setLongitude(placeAutocompleteSuggestion.getCoordinate().longitude());
                         location.setLatitude(placeAutocompleteSuggestion.getCoordinate().latitude());
                         location.setName(placeAutocompleteSuggestion.getName());
@@ -340,12 +352,12 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
 
                     }
                 });
-
+*/
 
             }
         });
 
-        //TODO con spostamento a ricerca
+
 
 
 
@@ -354,7 +366,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
     }
     private void updateCamera(Point point, Double bearing) {
         MapAnimationOptions animationOptions = new MapAnimationOptions.Builder().duration(1000L).build();
-        CameraOptions cameraOptions = new CameraOptions.Builder().center(point).zoom(18.0).bearing(bearing).pitch(45.0)
+        CameraOptions cameraOptions = new CameraOptions.Builder().center(point).zoom(16.0).bearing(bearing).pitch(0.0)
                 .padding(new EdgeInsets(1000.0, 0.0, 0.0, 0.0)).build();
 
         getCamera(mapView).easeTo(cameraOptions, animationOptions);
