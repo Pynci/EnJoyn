@@ -200,11 +200,14 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 // on below line we are setting date to our text view.
-                                selectedDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                                if(dayOfMonth>9)
-                                    dateWeather = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                                else
-                                    dateWeather = year + "-" + (monthOfYear + 1) + "-" + "0"+dayOfMonth;
+                                String dayOfMonthString = Integer.toString(dayOfMonth) ;
+                                String monthOfYearString = Integer.toString(monthOfYear+1) ;
+                                if(dayOfMonth<=9)
+                                    dayOfMonthString= "0" + dayOfMonthString;
+                                if(dayOfMonth+1<=9)
+                                    monthOfYearString= "0" + monthOfYearString;
+                                dateWeather = year + "-" + monthOfYearString + "-" +dayOfMonthString ;
+                                selectedDate.setText(dateWeather);
                                 equals = false;
                                 for( int i = 0;i < dateArray.length && !equals ; i+=96){
                                     boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
