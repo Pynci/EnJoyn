@@ -15,7 +15,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     private FirebaseUser fbUser;
 
     public UserRemoteDataSource() {
-        dbReference = FirebaseDatabase.getInstance().getReference();
+        dbReference = FirebaseDatabase.getInstance().getReference(Costants.DATABASE_PATH);
         auth = FirebaseAuth.getInstance();
     }
 
