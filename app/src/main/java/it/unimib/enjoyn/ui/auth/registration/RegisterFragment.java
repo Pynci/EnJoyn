@@ -191,6 +191,8 @@ public class RegisterFragment extends Fragment {
 
         buttonRegister.setOnClickListener(v -> {
 
+            view.clearFocus();
+
             if(textInputEmail.getError() == null && textInputPassword.getError() == null
                 && textInputConfirmPassword.getError() == null && textInputUsername.getError() == null){
 
