@@ -6,6 +6,8 @@ public interface UserCallback {
 
     public void onAddFailure(Exception exception);
 
+    void onAddSuccess();
+
     public void onGetSuccess(User user);
 
     public void onGetFailure();

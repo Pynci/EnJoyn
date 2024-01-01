@@ -44,6 +44,9 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                     if(!result.isSuccessful()){
                         userCallback.onAddFailure(result.getException());
                     }
+                    else{
+                        userCallback.onAddSuccess();
+                    }
                 });
     }
 

@@ -37,6 +37,11 @@ public class UserRepository implements IUserRepository, UserCallback{
     }
 
     @Override
+    public void onAddSuccess(){
+        addResultException.postValue(null);
+    }
+
+    @Override
     public void onGetSuccess(User user) {
         //Deve popolare il mutable live data con il risultato
     }

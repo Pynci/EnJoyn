@@ -50,7 +50,6 @@ public class UserViewModel extends ViewModel {
             return "empty";
         }
         if(password.length() < 8) {
-            //textInputPassword.setError(getString(R.string.tooShortPassword));
             return "short";
         }
 
