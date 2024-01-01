@@ -5,7 +5,7 @@ import it.unimib.enjoyn.model.User;
 public class UserMockRemoteDataSource extends BaseUserRemoteDataSource{
 
     @Override
-    public void addUser(User user) {
+    public void addUser(String email, String password, String username) {
 
     }
 }

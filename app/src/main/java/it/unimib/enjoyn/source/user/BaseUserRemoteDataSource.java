@@ -10,5 +10,5 @@ public abstract class BaseUserRemoteDataSource {
         this.userCallback = userCallback;
     }
 
-    public abstract void addUser(User user);
+    public abstract void addUser(String email, String password, String username);
 }

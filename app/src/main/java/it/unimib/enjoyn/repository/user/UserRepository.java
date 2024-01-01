@@ -19,8 +19,8 @@ public class UserRepository implements IUserRepository, UserCallback{
     }
 
     @Override
-    public MutableLiveData<Exception> addUser(User user) {
-        userRemoteDataSource.addUser(user);
+    public MutableLiveData<Exception> addUser(String email, String password, String username) {
+        userRemoteDataSource.addUser(email, password, username);
         return addResultException;
     }
 

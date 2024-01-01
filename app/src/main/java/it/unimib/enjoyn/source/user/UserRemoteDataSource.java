@@ -20,14 +20,14 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void addUser(User user) {
+    public void addUser(String email, String password, String username) {
 
-        auth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+        auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
 
                         fbUser = auth.getCurrentUser();
-                        storeUser(user, fbUser);
+                        storeUser(new User(username), fbUser);
 
                     } else {
                         userCallback.onAddFailure(task.getException());
@@ -36,7 +36,6 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     public void storeUser(User user, FirebaseUser fbUser){
-        user.setId(fbUser.getUid());
         dbReference
                 .child(Costants.PATH_FOR_USERS)
                 .child(fbUser.getUid())
@@ -48,9 +47,12 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 });
     }
 
+    // https://firebase.google.com/docs/auth/android/manage-users?hl=it#update_a_users_profile
+    public void updateUser(){
+
+    }
+
     public void getUser(String email) {
-
-
         dbReference
                 .child(Costants.PATH_FOR_USERS);
 

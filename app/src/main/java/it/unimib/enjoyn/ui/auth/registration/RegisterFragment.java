@@ -197,12 +197,10 @@ public class RegisterFragment extends Fragment {
                 && textInputConfirmPassword.getError() == null && textInputUsername.getError() == null){
 
                 String email = String.valueOf(editTextEmail.getText());
-                String psw = String.valueOf(editTextPassword.getText());
+                String password = String.valueOf(editTextPassword.getText());
                 String username = String.valueOf(editTextUsername.getText());
 
-                User user = new User(email, psw, username);
-
-                userViewModel.addUser(user).observe(getViewLifecycleOwner(), addUserObserver);
+                userViewModel.addUser(email, password, username).observe(getViewLifecycleOwner(), addUserObserver);
 
             }
 

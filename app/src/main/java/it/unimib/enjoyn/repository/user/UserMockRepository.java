@@ -7,7 +7,7 @@ import it.unimib.enjoyn.model.User;
 public class UserMockRepository implements IUserRepository{
 
     @Override
-    public MutableLiveData<Exception> addUser(User user) {
+    public MutableLiveData<Exception> addUser(String email, String password, String username) {
         return null;
     }
 

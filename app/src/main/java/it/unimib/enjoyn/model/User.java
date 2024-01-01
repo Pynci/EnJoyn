@@ -11,9 +11,6 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class User implements Parcelable {
 
-    private String id;
-    private String email;
-    private String password;
     private String username;
     private String name;
     private String surname;
@@ -21,15 +18,11 @@ public class User implements Parcelable {
 
     /*TODO aggiungere immagine*/
 
-    public User(String email, String password, String username) {
-        this.email = email;
-        this.password = password;
+    public User(String username) {
         this.username = username;
     }
 
-    public User(String email, String password, String username, String name, String surname, String description) {
-        this.email = email;
-        this.password = password;
+    public User(String username, String name, String surname, String description) {
         this.username = username;
         this.name = name;
         this.surname = surname;
@@ -37,8 +30,6 @@ public class User implements Parcelable {
     }
 
     protected User(Parcel in) {
-        email = in.readString();
-        password = in.readString();
         username = in.readString();
         name = in.readString();
         surname = in.readString();
@@ -64,8 +55,6 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(email);
-        dest.writeString(password);
         dest.writeString(username);
         dest.writeString(name);
         dest.writeString(surname);
@@ -75,13 +64,6 @@ public class User implements Parcelable {
     /*
     Metodi get e set
      */
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 
     public String getUsername() {
         return username;
@@ -99,14 +81,6 @@ public class User implements Parcelable {
         return description;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -121,14 +95,5 @@ public class User implements Parcelable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Exclude
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }
