@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.Ignore;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -12,17 +13,22 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class User implements Parcelable {
 
     private String username;
+    private String email;
     private String name;
     private String surname;
     private String description;
 
-    /*TODO aggiungere immagine*/
+    /* TODO aggiungere immagine*/
 
     public User(String username) {
         this.username = username;
     }
+    public User(String username, String email){
+        this.username = username;
+        this.email = email;
+    }
 
-    public User(String username, String name, String surname, String description) {
+    public User(String username, String email, String name, String surname, String description) {
         this.username = username;
         this.name = name;
         this.surname = surname;
@@ -61,12 +67,12 @@ public class User implements Parcelable {
         dest.writeString(description);
     }
 
-    /*
-    Metodi get e set
-     */
-
     public String getUsername() {
         return username;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getName() {
@@ -85,6 +91,10 @@ public class User implements Parcelable {
         this.username = username;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -96,4 +106,8 @@ public class User implements Parcelable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+
+
 }

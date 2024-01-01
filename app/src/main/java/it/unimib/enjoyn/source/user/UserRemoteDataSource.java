@@ -27,7 +27,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                     if (task.isSuccessful()) {
 
                         fbUser = auth.getCurrentUser();
-                        storeUser(new User(username), fbUser);
+                        storeUser(new User(username, email), fbUser);
 
                     } else {
                         userCallback.onAddFailure(task.getException());
