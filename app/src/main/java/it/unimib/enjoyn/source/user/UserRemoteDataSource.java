@@ -5,7 +5,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import it.unimib.enjoyn.model.User;
+import java.util.HashMap;
+import java.util.Map;
+
 import it.unimib.enjoyn.util.Costants;
 
 public class UserRemoteDataSource extends BaseUserRemoteDataSource{
@@ -36,10 +38,16 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     public void storeUser(String email, String username, FirebaseUser fbUser){
+
+        Map<String, String> userMap = new HashMap<>();
+
+        userMap.put("email", email);
+        userMap.put("username", username);
+
         dbReference
                 .child(Costants.PATH_FOR_USERS)
                 .child(fbUser.getUid())
-                .setValue(email, username)
+                .setValue(userMap)
                 .addOnCompleteListener( result -> {
                     if(!result.isSuccessful()){
                         userCallback.onAddFailure(result.getException());
