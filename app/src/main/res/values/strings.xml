@@ -67,9 +67,9 @@
     <string name="skip">Salta</string>
     <string name="next">Avanti</string>
     <string name="confirmEmail">CONFERMA MAIL</string>
-    <string name="textRegistrationCodeSubtitles">Per confermare il tuo profilo, inserisci il codice di sei cifre che hai ricevuto tramite mail</string>
+    <string name="textRegistrationCodeSubtitles">Per confermare il tuo profilo, premi il link che hai ricevuto tramite mail</string>
     <string name="pinviewDescription">Prova</string>
-    <string name="newConfirmationCode">"Non hai ricevuto nessuna mail? Per generare un nuovo codice "</string>
+    <string name="emailNotReceived">"Non hai ricevuto nessuna mail?"</string>
     <string name="tapHere">premi qui</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -85,5 +85,6 @@
     <string name="informationRequiredError">Questo campo è obbligatorio</string>
     <string name="invalidEmail">Email non valida</string>
     <string name="whitespaceNotAllowed">Gli spazi non sono ammessi</string>
+    <string name="newCode">Per generare un nuovo codice</string>
 
 </resources>
