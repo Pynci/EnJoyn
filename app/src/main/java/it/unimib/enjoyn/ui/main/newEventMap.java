@@ -8,6 +8,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Picture;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -25,6 +27,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -94,6 +97,7 @@ public class newEventMap extends Fragment implements  PermissionsListener {
     Point point;
     FloatingActionButton positionButton;
     MapboxMap mapboxMap;
+    Bitmap bitmap;
 
     private PlaceAutocomplete placeAutocomplete;
 
@@ -224,7 +228,9 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
         //TOLTO per barra di ricerca
         //placeAutocompleteUiAdapter = new PlaceAutocompleteUiAdapter(searchResultsView, placeAutocomplete, LocationEngineProvider.getBestLocationEngine(getContext()));
         //TODO mettere immagine 3d scaricata, da usare per creare pin sulla mappa
-       // Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable);
+
+        bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
+
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -282,6 +288,8 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
 
+
+
                 positionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -290,6 +298,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                         locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                         locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                         getGestures(mapView).addOnMoveListener(onMoveListener);
+
 
                         positionButton.hide();
 
@@ -306,7 +315,9 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                        newEventButton.setText(location.getLatitudeToString());
                        updateCamera(point, 0.0);
                        //todo mettere logica per pin sulla mappa da testare (riga 325)
-                       PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(String.valueOf(R.drawable.baseline_add_location_24))
+
+                       pointAnnotationManager.deleteAll();
+                       PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
                                .withPoint(point);
                        pointAnnotationManager.create(pointAnnotationOptions);
                        //prova(point);
