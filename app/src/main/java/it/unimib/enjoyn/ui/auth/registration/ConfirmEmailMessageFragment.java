@@ -11,21 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
 
 import com.chaos.view.PinView;
 
 import it.unimib.enjoyn.R;
 
-public class ConfirmRegistrationCodeFragment extends Fragment {
+public class ConfirmEmailMessageFragment extends Fragment {
 
 
-    public ConfirmRegistrationCodeFragment() {
+    public ConfirmEmailMessageFragment() {
         // Required empty public constructor
     }
 
-    public static ConfirmRegistrationCodeFragment newInstance() {
-        return new ConfirmRegistrationCodeFragment();
+    public static ConfirmEmailMessageFragment newInstance() {
+        return new ConfirmEmailMessageFragment();
     }
 
     @Override
@@ -37,7 +36,7 @@ public class ConfirmRegistrationCodeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_confirm_registration_code, container, false);
+        return inflater.inflate(R.layout.fragment_confirm_email_message, container, false);
     }
 
     @Override

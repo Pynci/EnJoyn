@@ -81,7 +81,7 @@ public class RegisterFragment extends Fragment {
             if(e == null){
                 Navigation
                         .findNavController(view)
-                        .navigate(R.id.action_registerFragment_to_propicDescriptionConfigurationFragment);
+                        .navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
 
                 Snackbar.make(view, "Registrazione avvenuta correttamente", Snackbar.LENGTH_SHORT)
                         .show();
