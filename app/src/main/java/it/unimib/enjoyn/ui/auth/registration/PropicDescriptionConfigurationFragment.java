@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 //classi per la gestione del caricamento immagine
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
@@ -28,11 +29,6 @@ import java.io.IOException;
 
 import it.unimib.enjoyn.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PropicDescriptionConfigurationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PropicDescriptionConfigurationFragment extends Fragment {
 
     public static final String TAG = PropicDescriptionConfigurationFragment.class.getSimpleName();
@@ -58,7 +54,6 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
 
     }
 
-    //factory method per ottenere istanze del fragment
     public static PropicDescriptionConfigurationFragment newInstance() {
         return new PropicDescriptionConfigurationFragment();
     }
@@ -66,6 +61,14 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // disabilita il tasto back affinché l'utente non possa tornare indietro
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // logica personalizzata per il tasto back (in questo caso non deve fare niente)
+            }
+        });
     }
 
     @Override

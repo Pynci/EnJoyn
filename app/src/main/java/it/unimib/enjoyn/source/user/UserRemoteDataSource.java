@@ -27,7 +27,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                     if (task.isSuccessful()) {
 
                         fbUser = auth.getCurrentUser();
-                        storeUser(new User(username, email), fbUser);
+                        storeUser(email, username, fbUser);
 
                     } else {
                         userCallback.onAddFailure(task.getException());
@@ -35,11 +35,11 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 });
     }
 
-    public void storeUser(User user, FirebaseUser fbUser){
+    public void storeUser(String email, String username, FirebaseUser fbUser){
         dbReference
                 .child(Costants.PATH_FOR_USERS)
                 .child(fbUser.getUid())
-                .setValue(user)
+                .setValue(email, username)
                 .addOnCompleteListener( result -> {
                     if(!result.isSuccessful()){
                         userCallback.onAddFailure(result.getException());
