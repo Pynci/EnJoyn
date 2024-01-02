@@ -8,7 +8,10 @@ public interface UserCallback {
 
     void onAddSuccess();
 
-    public void onGetSuccess(User user);
+    void onGetUserByUsernameSuccess(User userByUsername);
 
-    public void onGetFailure();
+    void onGetUserByUsernameFailure(Exception exception);
+
+    void onGetUserByEmailSuccess(User userByEmail);
+    void onGetUserByEmailFailure(Exception exception);
 }

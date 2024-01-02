@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,10 @@ public class RegisterFragment extends Fragment {
     private UserViewModel userViewModel;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
     private Observer<Exception> addUserObserver;
+    private Observer<User> usernameCheckObserver;
+    private Observer<User> emailCheckObserver;
+    private boolean isUsernameOK = false;
+    private boolean isEmailOK = false;
 
     public RegisterFragment() {
 
@@ -62,6 +67,8 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Widgets
+
         Button buttonRegister = view.findViewById(R.id.fragmentRegister_button_register);
         Button buttonLogin = view.findViewById(R.id.fragmentRegister_button_login);
 
@@ -77,6 +84,10 @@ public class RegisterFragment extends Fragment {
         TextInputLayout textInputUsername = view.findViewById(R.id.fragmentRegister_textInputLayout_username);
         EditText editTextUsername = view.findViewById(R.id.fragmentRegister_textInputEditText_username);
 
+
+
+        //Observers
+
         addUserObserver = e -> {
             if(e == null){
                 Navigation
@@ -91,6 +102,28 @@ public class RegisterFragment extends Fragment {
                         Snackbar.LENGTH_SHORT).show();
             }
         };
+
+        usernameCheckObserver = u -> {
+            if(u == null){
+                isUsernameOK = true;
+            }
+            else{
+                textInputUsername.setError("username già in uso");
+            }
+        };
+
+        emailCheckObserver = e -> {
+            if(e == null){
+                isEmailOK = true;
+            }
+            else{
+                textInputEmail.setError("email già in uso");
+            }
+        };
+
+
+
+        //Listeners
 
         editTextUsername.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
@@ -111,6 +144,8 @@ public class RegisterFragment extends Fragment {
                         textInputUsername.setError(getString(R.string.whitespaceNotAllowed));
                         break;
                 }
+
+                userViewModel.getUserByUsername(username).observe(getViewLifecycleOwner(), usernameCheckObserver);
             }
             else{
                 textInputUsername.setError(null);
@@ -133,6 +168,8 @@ public class RegisterFragment extends Fragment {
                         textInputEmail.setError(getString(R.string.invalidEmail));
                         break;
                 }
+
+                userViewModel.getUserByEmail(email).observe(getViewLifecycleOwner(), emailCheckObserver);
             }
             else {
                 textInputEmail.setError(null);
@@ -201,8 +238,18 @@ public class RegisterFragment extends Fragment {
                 String password = String.valueOf(editTextPassword.getText());
                 String username = String.valueOf(editTextUsername.getText());
 
-                userViewModel.addUser(email, password, username).observe(getViewLifecycleOwner(), addUserObserver);
-
+                if(isUsernameOK && isEmailOK){
+                    Log.d(this.getClass().getSimpleName(), "dentro all'if");
+                    userViewModel.addUser(email, password, username).observe(getViewLifecycleOwner(), addUserObserver);
+                }
+                else if(!isUsernameOK){
+                    Snackbar.make(view, "Errore nella registrazione: nome utente già in uso",
+                            Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    Snackbar.make(view, "Errore nella registrazione: email già in uso",
+                            Snackbar.LENGTH_SHORT).show();
+                }
             }
 
         });

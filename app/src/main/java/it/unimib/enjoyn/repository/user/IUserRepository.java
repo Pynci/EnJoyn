@@ -8,5 +8,6 @@ public interface IUserRepository {
 
     MutableLiveData<Exception> addUser(String email, String password, String username);
 
-    MutableLiveData<User> getUser(String email);
+    MutableLiveData<User> getUserByUsername(String username);
+    MutableLiveData<User> getUserByEmail(String email);
 }

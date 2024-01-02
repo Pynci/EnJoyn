@@ -11,20 +11,32 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserViewModel extends ViewModel {
 
-    private MutableLiveData<User> user;
+    private MutableLiveData<User> userByUsername;
+    private MutableLiveData<User> userByEmail;
     private MutableLiveData<Exception> resultAddUser;
     private final IUserRepository userRepository;
 
 
     public UserViewModel() {
-        user = new MutableLiveData<>();
         userRepository = ServiceLocator.getInstance().getUserRepository(false);
+        userByUsername = new MutableLiveData<>();
+        userByEmail = new MutableLiveData<>();
         //resultAddUser = new MutableLiveData<>();
     }
 
     public MutableLiveData<Exception> addUser(String email, String password, String username){
         resultAddUser = userRepository.addUser(email, password, username);
         return resultAddUser;
+    }
+
+    public MutableLiveData<User> getUserByUsername(String username){
+        userByUsername = userRepository.getUserByUsername(username);
+        return userByUsername;
+    }
+
+    public MutableLiveData<User> getUserByEmail(String email){
+        userByEmail = userRepository.getUserByEmail(email);
+        return userByEmail;
     }
 
     public String checkEmail(String email) {
@@ -105,8 +117,6 @@ public class UserViewModel extends ViewModel {
                 return "has_whitespace";
             }
         }
-
-        //TODO: aggiungere controllo di esistenza sul db
 
         return "ok";
     }

@@ -8,14 +8,21 @@ import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
 public class UserRepository implements IUserRepository, UserCallback{
 
-    //Serve a contenere l'eccezione che si potrebbe verificare nel caso dell'aggiunta di un utente
     private final MutableLiveData<Exception> addResultException;
+    private final MutableLiveData<Exception> userByUsernameException;
+    private final MutableLiveData<Exception> userByEmailException;
+    private final MutableLiveData<User> userByUsername;
+    private final MutableLiveData<User> userByEmail;
     private final UserRemoteDataSource userRemoteDataSource;
 
     public UserRepository(UserRemoteDataSource userRemoteDataSource){
         this.userRemoteDataSource = userRemoteDataSource;
         userRemoteDataSource.setUserCallback(this);
         addResultException = new MutableLiveData<>();
+        userByUsername = new MutableLiveData<>();
+        userByEmail = new MutableLiveData<>();
+        userByUsernameException = new MutableLiveData<>();
+        userByEmailException = new MutableLiveData<>();
     }
 
     @Override
@@ -25,10 +32,15 @@ public class UserRepository implements IUserRepository, UserCallback{
     }
 
     @Override
-    public MutableLiveData<User> getUser(String email) {
-        //Deve chiamare il getUser() del UserRemoteDataSource
-        //Deve restituire il risultato contenuto nel mutable live data
-        return null;
+    public MutableLiveData<User> getUserByUsername(String username){
+        userRemoteDataSource.getUserByUsername(username);
+        return userByUsername;
+    }
+
+    @Override
+    public MutableLiveData<User> getUserByEmail(String email) {
+        userRemoteDataSource.getUserByEmail(email);
+        return userByEmail;
     }
 
     @Override
@@ -42,12 +54,27 @@ public class UserRepository implements IUserRepository, UserCallback{
     }
 
     @Override
-    public void onGetSuccess(User user) {
-        //Deve popolare il mutable live data con il risultato
+    public void onGetUserByUsernameSuccess(User user){
+        userByUsername.postValue(user);
+        userByUsernameException.postValue(null);
     }
 
     @Override
-    public void onGetFailure() {
-
+    public void onGetUserByUsernameFailure(Exception exception){
+        userByUsername.postValue(null);
+        userByUsernameException.postValue(exception);
     }
+
+    @Override
+    public void onGetUserByEmailSuccess(User user) {
+        userByEmail.postValue(user);
+        userByUsernameException.postValue(null);
+    }
+
+    @Override
+    public void onGetUserByEmailFailure(Exception exception) {
+        userByEmail.postValue(null);
+        userByEmailException.postValue(exception);
+    }
+
 }
