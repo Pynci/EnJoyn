@@ -14,18 +14,14 @@
             android:id="@+id/action_registerFragment_to_loginActivity"
             app:destination="@id/loginActivity" />
         <action
-            android:id="@+id/action_registerFragment_to_confirmRegistrationCode"
-            app:destination="@id/confirmRegistrationCode" />
+            android:id="@+id/action_registerFragment_to_propicDescriptionConfigurationFragment"
+            app:destination="@id/propicDescriptionConfigurationFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmRegistrationCode"
         android:name="it.unimib.enjoyn.ui.auth.registration.ConfirmRegistrationCodeFragment"
         android:label="fragment_confirm_registration_code"
-        tools:layout="@layout/fragment_confirm_registration_code" >
-        <action
-            android:id="@+id/action_confirmRegistrationCode_to_propicDescriptionConfigurationFragment"
-            app:destination="@id/propicDescriptionConfigurationFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_confirm_registration_code" />
     <fragment
         android:id="@+id/propicDescriptionConfigurationFragment"
         android:name="it.unimib.enjoyn.ui.auth.registration.PropicDescriptionConfigurationFragment"
