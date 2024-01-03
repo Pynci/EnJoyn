@@ -41,7 +41,7 @@
             android:id="@+id/fragmentConfirmEmailMessage_textView_emailNotReceived"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:paddingStart="30dp"
             android:paddingEnd="30dp"
@@ -50,7 +50,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmEmailMessage_textView_subtitle" />
+            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmEmailMessage_button_buttonToLogin" />
 
         <TextView
             android:id="@+id/fragmentConfirmEmailMessage_textView_newEmail"
@@ -60,7 +60,7 @@
             android:text="@string/newCode"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintHorizontal_bias="0.169"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmEmailMessage_textView_emailNotReceived" />
 
@@ -75,6 +75,16 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/fragmentConfirmEmailMessage_textView_newEmail"
             app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmEmailMessage_textView_emailNotReceived" />
+
+        <Button
+            android:id="@+id/fragmentConfirmEmailMessage_button_buttonToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/torna_al_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmEmailMessage_textView_subtitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

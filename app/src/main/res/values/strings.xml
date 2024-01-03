@@ -85,6 +85,7 @@
     <string name="informationRequiredError">Questo campo è obbligatorio</string>
     <string name="invalidEmail">Email non valida</string>
     <string name="whitespaceNotAllowed">Gli spazi non sono ammessi</string>
-    <string name="newCode">Per generare un nuovo codice</string>
+    <string name="newCode">Per generare un nuova nuova mail</string>
+    <string name="torna_al_login">Torna al login</string>
 
 </resources>
