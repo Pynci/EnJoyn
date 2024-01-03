@@ -9,7 +9,6 @@
     <string name="DiscoverButton">Scopri</string>
     <string name="FriendsButton">Amici</string>
     <string name="ProfileButton">Profilo</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit">Modifica</string>
     <string name="Description">Descrizione</string>
@@ -72,7 +71,6 @@
     <string name="emailNotReceived">"Non hai ricevuto nessuna mail?"</string>
     <string name="tapHere">premi qui</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="helloBlankFragment">Hello blank fragment</string>
     <string name="appLogo">Immagine rappresentante il logo dell\'applicazione</string>
     <string name="insertMailPasswordReset">Per poter ripristinare la password, inserisci l\'email associata al tuo account</string>
@@ -86,6 +84,8 @@
     <string name="invalidEmail">Email non valida</string>
     <string name="whitespaceNotAllowed">Gli spazi non sono ammessi</string>
     <string name="newCode">Per generare un nuova nuova mail</string>
-    <string name="torna_al_login">Torna al login</string>
+    <string name="backToLogin">Torna al login</string>
+    <string name="usernameAlreadyInUse">Username già in uso</string>
+    <string name="emailAlreadyInUse">Email già in uso</string>
 
 </resources>

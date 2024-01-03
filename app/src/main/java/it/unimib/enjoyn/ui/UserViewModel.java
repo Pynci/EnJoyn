@@ -5,14 +5,15 @@ import androidx.lifecycle.ViewModel;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserViewModel extends ViewModel {
 
-    private MutableLiveData<User> userByUsername;
-    private MutableLiveData<User> userByEmail;
+    private MutableLiveData<Result> userByUsername;
+    private MutableLiveData<Result> userByEmail;
     private MutableLiveData<Exception> resultAddUser;
     private final IUserRepository userRepository;
 
@@ -29,12 +30,12 @@ public class UserViewModel extends ViewModel {
         return resultAddUser;
     }
 
-    public MutableLiveData<User> getUserByUsername(String username){
+    public MutableLiveData<Result> getUserByUsername(String username){
         userByUsername = userRepository.getUserByUsername(username);
         return userByUsername;
     }
 
-    public MutableLiveData<User> getUserByEmail(String email){
+    public MutableLiveData<Result> getUserByEmail(String email){
         userByEmail = userRepository.getUserByEmail(email);
         return userByEmail;
     }

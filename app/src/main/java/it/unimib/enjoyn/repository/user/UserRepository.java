@@ -2,6 +2,7 @@ package it.unimib.enjoyn.repository.user;
 
 import androidx.lifecycle.MutableLiveData;
 
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.source.user.UserCallback;
 import it.unimib.enjoyn.source.user.UserRemoteDataSource;
@@ -9,10 +10,8 @@ import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 public class UserRepository implements IUserRepository, UserCallback{
 
     private final MutableLiveData<Exception> addResultException;
-    private final MutableLiveData<Exception> userByUsernameException;
-    private final MutableLiveData<Exception> userByEmailException;
-    private final MutableLiveData<User> userByUsername;
-    private final MutableLiveData<User> userByEmail;
+    private final MutableLiveData<Result> userByUsername;
+    private final MutableLiveData<Result> userByEmail;
     private final UserRemoteDataSource userRemoteDataSource;
 
     public UserRepository(UserRemoteDataSource userRemoteDataSource){
@@ -21,8 +20,6 @@ public class UserRepository implements IUserRepository, UserCallback{
         addResultException = new MutableLiveData<>();
         userByUsername = new MutableLiveData<>();
         userByEmail = new MutableLiveData<>();
-        userByUsernameException = new MutableLiveData<>();
-        userByEmailException = new MutableLiveData<>();
     }
 
     @Override
@@ -32,13 +29,13 @@ public class UserRepository implements IUserRepository, UserCallback{
     }
 
     @Override
-    public MutableLiveData<User> getUserByUsername(String username){
+    public MutableLiveData<Result> getUserByUsername(String username){
         userRemoteDataSource.getUserByUsername(username);
         return userByUsername;
     }
 
     @Override
-    public MutableLiveData<User> getUserByEmail(String email) {
+    public MutableLiveData<Result> getUserByEmail(String email) {
         userRemoteDataSource.getUserByEmail(email);
         return userByEmail;
     }
@@ -55,26 +52,22 @@ public class UserRepository implements IUserRepository, UserCallback{
 
     @Override
     public void onGetUserByUsernameSuccess(User user){
-        userByUsername.postValue(user);
-        userByUsernameException.postValue(null);
+        userByUsername.postValue(new Result.UserResponseSuccess(user));
     }
 
     @Override
     public void onGetUserByUsernameFailure(Exception exception){
-        userByUsername.postValue(null);
-        userByUsernameException.postValue(exception);
+        userByUsername.postValue(new Result.Error(exception.getMessage()));
     }
 
     @Override
     public void onGetUserByEmailSuccess(User user) {
-        userByEmail.postValue(user);
-        userByUsernameException.postValue(null);
+        userByEmail.postValue(new Result.UserResponseSuccess(user));
     }
 
     @Override
     public void onGetUserByEmailFailure(Exception exception) {
-        userByEmail.postValue(null);
-        userByEmailException.postValue(exception);
+        userByEmail.postValue(new Result.Error(exception.getMessage()));
     }
 
 }

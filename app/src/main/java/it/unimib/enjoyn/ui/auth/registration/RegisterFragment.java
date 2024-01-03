@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import it.unimib.enjoyn.R;
 
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.ui.auth.LoginActivity;
@@ -41,8 +42,8 @@ public class RegisterFragment extends Fragment {
     private UserViewModel userViewModel;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
     private Observer<Exception> addUserObserver;
-    private Observer<User> usernameCheckObserver;
-    private Observer<User> emailCheckObserver;
+    private Observer<Result> usernameCheckObserver;
+    private Observer<Result> emailCheckObserver;
     private boolean isUsernameOK = false;
     private boolean isEmailOK = false;
 
@@ -120,21 +121,35 @@ public class RegisterFragment extends Fragment {
             }
         };
 
-        usernameCheckObserver = u -> {
-            if(u == null){
-                isUsernameOK = true;
+        usernameCheckObserver = result -> {
+            if(result.isSuccess()){
+                User user = ((Result.UserResponseSuccess) result).getData();
+                if(user == null){
+                    isUsernameOK = true;
+                }
+                else{
+                    textInputUsername.setError(getString(R.string.usernameAlreadyInUse));
+                }
             }
             else{
-                textInputUsername.setError("username già in uso");
+                Snackbar.make(view, "Si è verificato un errore: " + ((Result.Error) result).getMessage(), Snackbar.LENGTH_SHORT)
+                        .show();
             }
         };
 
-        emailCheckObserver = e -> {
-            if(e == null){
-                isEmailOK = true;
+        emailCheckObserver = result -> {
+            if(result.isSuccess()){
+                User user = ((Result.UserResponseSuccess) result).getData();
+                if(user == null){
+                    isEmailOK = true;
+                }
+                else{
+                    textInputEmail.setError(getString(R.string.emailAlreadyInUse));
+                }
             }
             else{
-                textInputEmail.setError("email già in uso");
+                Snackbar.make(view, "Si è verificato un errore: " + ((Result.Error) result).getMessage(), Snackbar.LENGTH_SHORT)
+                        .show();
             }
         };
 
