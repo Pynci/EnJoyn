@@ -282,7 +282,6 @@ public class RegisterFragment extends Fragment {
             Intent intent = new Intent(requireContext(), destinationActivity);
             startActivity(intent);
         }
-        //da utilizzare solo se si passa ad un'altra activity
         if (finishActivity){
             requireActivity().finish();
         }
