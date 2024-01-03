@@ -102,7 +102,7 @@ public class RegisterFragment extends Fragment {
                     if(task.isSuccessful()) {
                         Navigation
                                 .findNavController(view)
-                                .navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
+                                .navigate(R.id.action_registerFragment_to_confirmEmailMessageFragment2);
 
                         Snackbar.make(view, "Registrazione avvenuta correttamente", Snackbar.LENGTH_SHORT)
                                 .show();

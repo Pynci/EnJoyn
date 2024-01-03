@@ -40,9 +40,6 @@
             android:id="@+id/action_categoriesSelectionFragment_to_mainButtonMenuActivity"
             app:destination="@id/mainButtonMenuActivity" />
     </fragment>
-    <action
-        android:id="@+id/action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment"
-        app:destination="@id/categoriesSelectionFragment" />
     <fragment
         android:id="@+id/propicDescriptionConfigurationFragment"
         android:name="it.unimib.enjoyn.ui.auth.registration.PropicDescriptionConfigurationFragment"
