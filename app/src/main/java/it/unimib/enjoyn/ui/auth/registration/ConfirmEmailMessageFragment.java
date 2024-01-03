@@ -54,8 +54,8 @@ public class ConfirmEmailMessageFragment extends Fragment {
 
         buttonToLogin.setOnClickListener(v -> {
             Navigation
-                    .findNavController(view)
-                    .navigate(R.id.action_registerFragment_to_confirmEmailMessageFragment2);
+                    .findNavController(v)
+                    .navigate(R.id.action_confirmEmailMessageFragment2_to_loginActivity);
         });
     }
 }
