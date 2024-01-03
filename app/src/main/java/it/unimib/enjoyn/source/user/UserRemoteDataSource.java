@@ -1,9 +1,5 @@
 package it.unimib.enjoyn.source.user;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,7 +35,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         storeUser(email, username, fbUser);
 
                     } else {
-                        userCallback.onAddFailure(task.getException());
+                        userCallback.onAddUserFailure(task.getException());
                     }
                 });
     }
@@ -57,10 +53,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .setValue(userMap)
                 .addOnCompleteListener( result -> {
                     if(result.isSuccessful()){
-                        userCallback.onAddSuccess();
+                        userCallback.onAddUserSuccess();
                     }
                     else{
-                        userCallback.onAddFailure(result.getException());
+                        userCallback.onAddUserFailure(result.getException());
                     }
                 });
     }

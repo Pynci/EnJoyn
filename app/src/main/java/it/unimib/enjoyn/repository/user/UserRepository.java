@@ -9,7 +9,7 @@ import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
 public class UserRepository implements IUserRepository, UserCallback{
 
-    private final MutableLiveData<Exception> addResultException;
+    private final MutableLiveData<Result> addResultException;
     private final MutableLiveData<Result> userByUsername;
     private final MutableLiveData<Result> userByEmail;
     private final UserRemoteDataSource userRemoteDataSource;
@@ -23,7 +23,7 @@ public class UserRepository implements IUserRepository, UserCallback{
     }
 
     @Override
-    public MutableLiveData<Exception> addUser(String email, String password, String username) {
+    public MutableLiveData<Result> addUser(String email, String password, String username) {
         userRemoteDataSource.addUser(email, password, username);
         return addResultException;
     }
@@ -40,14 +40,15 @@ public class UserRepository implements IUserRepository, UserCallback{
         return userByEmail;
     }
 
+
     @Override
-    public void onAddFailure(Exception exception) {
-        addResultException.postValue(exception);
+    public void onAddUserSuccess(){
+        addResultException.postValue(null);
     }
 
     @Override
-    public void onAddSuccess(){
-        addResultException.postValue(null);
+    public void onAddUserFailure(Exception exception) {
+        addResultException.postValue(new Result.Error(exception.getMessage()));
     }
 
     @Override

@@ -4,9 +4,9 @@ import it.unimib.enjoyn.model.User;
 
 public interface UserCallback {
 
-    public void onAddFailure(Exception exception);
+    public void onAddUserFailure(Exception exception);
 
-    void onAddSuccess();
+    void onAddUserSuccess();
 
     void onGetUserByUsernameSuccess(User userByUsername);
 

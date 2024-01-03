@@ -41,7 +41,7 @@ public class RegisterFragment extends Fragment {
     public static final String TAG = RegisterFragment.class.getSimpleName();
     private UserViewModel userViewModel;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
-    private Observer<Exception> addUserObserver;
+    private Observer<Result> addUserObserver;
     private Observer<Result> usernameCheckObserver;
     private Observer<Result> emailCheckObserver;
     private boolean isUsernameOK = false;
@@ -92,8 +92,8 @@ public class RegisterFragment extends Fragment {
 
         //Observers
 
-        addUserObserver = e -> {
-            if(e == null){
+        addUserObserver = error -> {
+            if(error == null){
 
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -116,7 +116,7 @@ public class RegisterFragment extends Fragment {
 
             }
             else{
-                Snackbar.make(view, "Errore nella registrazione: " + e.getMessage(),
+                Snackbar.make(view, "Errore nella registrazione: " + ((Result.Error) error).getMessage(),
                         Snackbar.LENGTH_SHORT).show();
             }
         };

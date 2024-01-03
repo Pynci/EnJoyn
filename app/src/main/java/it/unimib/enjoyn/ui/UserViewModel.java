@@ -14,7 +14,7 @@ public class UserViewModel extends ViewModel {
 
     private MutableLiveData<Result> userByUsername;
     private MutableLiveData<Result> userByEmail;
-    private MutableLiveData<Exception> resultAddUser;
+    private MutableLiveData<Result> resultAddUser;
     private final IUserRepository userRepository;
 
 
@@ -25,7 +25,7 @@ public class UserViewModel extends ViewModel {
         //resultAddUser = new MutableLiveData<>();
     }
 
-    public MutableLiveData<Exception> addUser(String email, String password, String username){
+    public MutableLiveData<Result> addUser(String email, String password, String username){
         resultAddUser = userRepository.addUser(email, password, username);
         return resultAddUser;
     }
