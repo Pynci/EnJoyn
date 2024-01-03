@@ -1,12 +1,10 @@
 package it.unimib.enjoyn.ui.auth.registration;
 
 // TODO: capire se è giusto che venga fuori questa caterva di dipendenze
-import static android.app.ProgressDialog.show;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -23,8 +21,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import it.unimib.enjoyn.R;
 
 import it.unimib.enjoyn.model.User;
@@ -90,12 +93,26 @@ public class RegisterFragment extends Fragment {
 
         addUserObserver = e -> {
             if(e == null){
-                Navigation
-                        .findNavController(view)
-                        .navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
 
-                Snackbar.make(view, "Registrazione avvenuta correttamente", Snackbar.LENGTH_SHORT)
-                        .show();
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+                firebaseUser.sendEmailVerification().addOnCompleteListener(task -> {
+
+                    if(task.isSuccessful()) {
+                        Navigation
+                                .findNavController(view)
+                                .navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
+
+                        Snackbar.make(view, "Registrazione avvenuta correttamente", Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                    else{
+                        Snackbar.make(view, "Errore nell'invio della mail di conferma", Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+
             }
             else{
                 Snackbar.make(view, "Errore nella registrazione: " + e.getMessage(),

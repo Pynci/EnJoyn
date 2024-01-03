@@ -50,9 +50,6 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0") /**TODO va messo?*/
 
-    //Dipendenza per Pinview
-    implementation("io.github.chaosleung:pinview:1.4.4")
-
     //Dipendenza per cardview
     implementation("androidx.cardview:cardview:1.0.0")
 
