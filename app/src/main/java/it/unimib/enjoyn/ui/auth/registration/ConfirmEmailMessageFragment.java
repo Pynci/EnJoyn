@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -21,6 +22,7 @@ import it.unimib.enjoyn.R;
 
 public class ConfirmEmailMessageFragment extends Fragment {
 
+    public static final String TAG = RegisterFragment.class.getSimpleName();
 
     public ConfirmEmailMessageFragment() {
         // Required empty public constructor
@@ -49,6 +51,24 @@ public class ConfirmEmailMessageFragment extends Fragment {
         Button buttonToLogin = view.findViewById(R.id.fragmentConfirmEmailMessage_button_buttonToLogin);
 
         buttonForNewEmail.setOnClickListener(v -> {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+            firebaseUser.sendEmailVerification().addOnCompleteListener(task -> {
+
+                if(task.isSuccessful()) {
+                    Snackbar.make(view, "È stata inviata una nuova mail di conferma a " +
+                                    firebaseUser.getEmail(), Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+                else{
+
+                    Snackbar.make(view, "Si è verificato un errore nell'invio della mail di conferma." +
+                                            "Riprovare tra qualche minuto",
+                                    Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+            });
 
         });
 
