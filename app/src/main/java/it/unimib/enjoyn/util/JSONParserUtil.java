@@ -22,7 +22,9 @@ import java.util.List;
 
 import it.unimib.enjoyn.model.Meteo;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
+import it.unimib.enjoyn.model.MeteoApiResponse;
 import it.unimib.enjoyn.model.MeteoDatabaseResponse;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.UsersDatabaseResponse;
 
 public class JSONParserUtil {
@@ -47,6 +49,17 @@ public class JSONParserUtil {
 
     public MeteoDatabaseResponse parseJSONMeteoFileWithGSon(BufferedReader bufferedReader) throws IOException{
         return new Gson().fromJson(bufferedReader, MeteoDatabaseResponse.class);
+    }
+
+    /*public MeteoDatabaseResponse parseJSONAPIResultWithJSONObjectArray(Result result){
+
+    }*/
+
+    public MeteoApiResponse parseJSONFileAPIMeteo(String fileName) throws IOException {
+        InputStream inputStream = context.getAssets().open(fileName);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+        return new Gson().fromJson(bufferedReader, MeteoApiResponse.class);
     }
     public MeteoDatabaseResponse parseJSONFileWithJSONObjectArray(String fileName)
             throws IOException, JSONException {

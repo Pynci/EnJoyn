@@ -6,6 +6,13 @@ import androidx.lifecycle.ViewModel;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
+import android.util.Log;
+
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.repository.IMeteoRepository;
 
 public class EventViewModel extends ViewModel {
     private final IEventRepositoryWithLiveData eventRepositoryWithLiveData;
@@ -22,6 +29,7 @@ public class EventViewModel extends ViewModel {
     /**
      * Returns the LiveData object associated with the
      * event list to the Fragment/Activity.
+     *
      * @return The LiveData object associated with the event list.
      */
     public MutableLiveData<Result> getEvent(String category, long lastUpdate) {
@@ -41,6 +49,7 @@ public class EventViewModel extends ViewModel {
     /**
      * Returns the LiveData object associated with the
      * list of favorite event to the Fragment/Activity.
+     *
      * @return The LiveData object associated with the list of favorite event.
      */
     public MutableLiveData<Result> getFavoriteEventLiveData() {
@@ -59,6 +68,7 @@ public class EventViewModel extends ViewModel {
 
     /**
      * Updates the event status.
+     *
      * @param event The event to be updated.
      */
     public void updateEvent(Event event) {
@@ -92,6 +102,7 @@ public class EventViewModel extends ViewModel {
 
     /**
      * Removes the event from the list of favorite event.
+     *
      * @param event The event to be removed from the list of favorite event.
      */
     public void removeFromFavorite(Event event) {
@@ -102,4 +113,24 @@ public class EventViewModel extends ViewModel {
         eventRepositoryWithLiveData.updateEvent(event);
     }
 
+    private final IMeteoRepository weatherRepository;
+
+    private MutableLiveData<Result> weatherListLiveData;
+
+    public EventViewModel(IMeteoRepository iWeatherRepository) {
+        this.weatherRepository = iWeatherRepository;
+    }
+
+    public MutableLiveData<Result> getWeather(String latitude, String logitude){
+        Log.d("API meteo", "dentro getWeather su viewModel");
+        if (weatherListLiveData == null){
+            fetchWeather(latitude, logitude);
+        }
+        return weatherListLiveData;
+    }
+
+    private void fetchWeather(String latitude, String longitude){
+        Log.d("API meteo", "dentro fetchWeather su viewModel");
+        weatherListLiveData = weatherRepository.fetchMeteo(latitude, longitude);
+    }
 }

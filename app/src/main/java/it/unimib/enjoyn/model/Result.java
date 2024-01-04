@@ -1,7 +1,8 @@
 package it.unimib.enjoyn.model;
 
 public class Result {
-    private Result() {}
+    private Result() {
+    }
 
     public boolean isSuccess() {
         return this instanceof Success;
@@ -13,9 +14,11 @@ public class Result {
      */
     public static final class Success extends Result {
         private final EventsDatabaseResponse eventResponse;
+
         public Success(EventsDatabaseResponse eventResponse) {
             this.eventResponse = eventResponse;
         }
+
         public EventsDatabaseResponse getData() {
             return eventResponse;
         }
@@ -27,11 +30,37 @@ public class Result {
      */
     public static final class Error extends Result {
         private final String message;
+
         public Error(String message) {
             this.message = message;
         }
+
         public String getMessage() {
             return message;
         }
+
+//    public static final class Success extends Result{
+//
+//        private final MeteoResponse meteoResponse;
+//
+//        public Success(MeteoResponse meteoResponse) {
+//            this.meteoResponse = meteoResponse;
+//        }
+//        public MeteoResponse getData(){
+//            return meteoResponse;
+//        }
+//    }
+//
+//    public static final class Error extends Result{
+//        private final String message;
+//
+//        public Error(String message) {
+//            this.message = message;
+//        }
+//
+//        public String getMessage(){
+//            return message;
+//        }
+//    }
     }
 }
