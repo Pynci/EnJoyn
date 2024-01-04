@@ -32,6 +32,11 @@ public class EventViewModel extends ViewModel {
         eventRepositoryWithLiveData = null;
     }
 
+    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IMeteoRepository iWeatherRepository) {
+        this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
+        this.weatherRepository = iWeatherRepository;
+    }
+
     /**
      * Returns the LiveData object associated with the
      * event list to the Fragment/Activity.

@@ -100,7 +100,7 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
         Log.d("API meteo", "su OnCreate");
         IMeteoRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
         weatherAPIdata = new Meteo();
-        eventViewModel = new ViewModelProvider(requireActivity(), new EventViewModelFactory(meteoRepository)).get(EventViewModel.class);
+        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         Log.d("API meteo", "su OnCreate dopo tutto");
     }
 
