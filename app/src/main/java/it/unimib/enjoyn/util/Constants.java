@@ -33,4 +33,6 @@ public class Constants {
     public static final String RETROFIT_ERROR = "retrofit_error";
     // Constants for encrypted files
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.enjoyn.encrypted_file.txt";
+
+    public static final String UNEXPECTED_ERROR = "unexpected error";
 }

@@ -21,8 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -165,7 +163,7 @@ public class TodoFragment extends Fragment implements ResponseCallback {
             if (result != null) {
                 if (result.isSuccess()) {
                     eventList.clear();
-                    eventList.addAll(((Result.Success)result).getData().getEventList());
+                    eventList.addAll(((Result.EventSuccess)result).getData().getEventList());
                     eventsRecyclerViewAdapter.notifyDataSetChanged();
                 } else {
                   /*  ErrorMessagesUtil errorMessagesUtil =

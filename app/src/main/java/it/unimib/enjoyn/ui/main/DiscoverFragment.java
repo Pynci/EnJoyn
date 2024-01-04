@@ -1,6 +1,5 @@
 package it.unimib.enjoyn.ui.main;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,12 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,11 +27,7 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.EventMockRepository;
-import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
-import it.unimib.enjoyn.util.JSONParserUtil;
-import it.unimib.enjoyn.util.ResponseCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
@@ -161,7 +150,7 @@ public class DiscoverFragment extends Fragment {
                     if (result.isSuccess()) {
                         int initialSize = this.eventList.size();
                         this.eventList.clear();
-                        this.eventList.addAll(((Result.Success) result).getData().getEventList());
+                        this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
                         eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
                         eventsRecyclerViewAdapter.notifyDataSetChanged();
 

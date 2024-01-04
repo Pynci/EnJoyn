@@ -2,7 +2,6 @@ package it.unimib.enjoyn.ui.main;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,26 +24,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import org.json.JSONException;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Meteo;
 import it.unimib.enjoyn.model.MeteoApiResponse;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IMeteoRepository;
-import it.unimib.enjoyn.repository.MeteoRepository;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.MeteoCallback;
-import it.unimib.enjoyn.util.ResponseCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
@@ -140,9 +129,9 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
 
         Log.d("API meteo", "su onViewCreated prima chiamata");
         eventViewModel.getWeather("52.52", "13.41").observe(getViewLifecycleOwner(), result -> {
-            if (result.isSuccessful()){
+            if (result.isSuccess()){
                 Log.d("API meteo", "entro su if");
-                weatherAPIdata = ((Result.Success) result).getData().getWeather();
+                weatherAPIdata = ((Result.WeatherSuccess) result).getData().getWeather();
                 //this.meteoList.clear();
                 //this.meteoList.addAll(((Result.Success) result).getData().getMeteoList());
                 showWeatherOnNewEvent(requireView());

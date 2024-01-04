@@ -16,14 +16,20 @@ import it.unimib.enjoyn.repository.IMeteoRepository;
 
 public class EventViewModel extends ViewModel {
     private final IEventRepositoryWithLiveData eventRepositoryWithLiveData;
-    private final int page;
     private MutableLiveData<Result> eventLiveData;
     private MutableLiveData<Result> toDoEventListLiveData;
     private MutableLiveData<Result> favoriteEventListLiveData;
+    private final IMeteoRepository weatherRepository;
+    private MutableLiveData<Result> weatherListLiveData;
 
     public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData) {
         this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
-        this.page = 1;
+        weatherRepository = null;
+    }
+
+    public EventViewModel(IMeteoRepository iWeatherRepository) {
+        this.weatherRepository = iWeatherRepository;
+        eventRepositoryWithLiveData = null;
     }
 
     /**
@@ -111,14 +117,6 @@ public class EventViewModel extends ViewModel {
 
     public void removeFromToDo(Event event) {
         eventRepositoryWithLiveData.updateEvent(event);
-    }
-
-    private final IMeteoRepository weatherRepository;
-
-    private MutableLiveData<Result> weatherListLiveData;
-
-    public EventViewModel(IMeteoRepository iWeatherRepository) {
-        this.weatherRepository = iWeatherRepository;
     }
 
     public MutableLiveData<Result> getWeather(String latitude, String logitude){

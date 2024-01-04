@@ -13,10 +13,12 @@ public class EventViewModelFactory implements ViewModelProvider.Factory {
 
     public EventViewModelFactory(IEventRepositoryWithLiveData iEventRepositoryWithLiveData) {
         this.iEventRepositoryWithLiveData = iEventRepositoryWithLiveData;
+        iWeatherRepository = null;
     }
 
     public EventViewModelFactory(IMeteoRepository iWeatherRepository) {
         this.iWeatherRepository = iWeatherRepository;
+        iEventRepositoryWithLiveData = null;
     }
 
     @NonNull

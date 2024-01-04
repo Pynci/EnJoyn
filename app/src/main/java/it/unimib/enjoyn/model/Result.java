@@ -5,17 +5,17 @@ public class Result {
     }
 
     public boolean isSuccess() {
-        return this instanceof Success;
+        return (this instanceof EventSuccess || this instanceof WeatherSuccess);
     }
 
     /**
      * Class that represents a successful action during the interaction
      * with a Web Service or a local database.
      */
-    public static final class Success extends Result {
+    public static final class EventSuccess extends Result {
         private final EventsDatabaseResponse eventResponse;
 
-        public Success(EventsDatabaseResponse eventResponse) {
+        public EventSuccess(EventsDatabaseResponse eventResponse) {
             this.eventResponse = eventResponse;
         }
 
@@ -28,39 +28,39 @@ public class Result {
      * Class that represents an error occurred during the interaction
      * with a Web Service or a local database.
      */
-    public static final class Error extends Result {
+    public static final class EventError extends Result {
         private final String message;
 
-        public Error(String message) {
+        public EventError(String message) {
             this.message = message;
         }
 
         public String getMessage() {
             return message;
         }
+    }
 
-//    public static final class Success extends Result{
-//
-//        private final MeteoResponse meteoResponse;
-//
-//        public Success(MeteoResponse meteoResponse) {
-//            this.meteoResponse = meteoResponse;
-//        }
-//        public MeteoResponse getData(){
-//            return meteoResponse;
-//        }
-//    }
-//
-//    public static final class Error extends Result{
-//        private final String message;
-//
-//        public Error(String message) {
-//            this.message = message;
-//        }
-//
-//        public String getMessage(){
-//            return message;
-//        }
-//    }
+    public static final class WeatherSuccess extends Result{
+
+        private final MeteoResponse meteoResponse;
+
+        public WeatherSuccess(MeteoResponse meteoResponse) {
+            this.meteoResponse = meteoResponse;
+        }
+        public MeteoResponse getData(){
+            return meteoResponse;
+        }
+    }
+
+    public static final class WeatherError extends Result{
+        private final String message;
+
+        public WeatherError(String message) {
+            this.message = message;
+        }
+
+        public String getMessage(){
+            return message;
+        }
     }
 }
