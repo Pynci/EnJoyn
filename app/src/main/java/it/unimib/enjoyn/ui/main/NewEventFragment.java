@@ -60,22 +60,18 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
     ImageButton time;
     TextView selectedTime;
 
-
-   TextView meteo;
+    TextView meteo;
     TextView temperatura;
     String hourWeather;
     int indexHour=-1;
     int indexMinute=-1;
     int indexDate =-1;
     boolean equals = false;
-
     String dateWeather;
-
     ImageView weatherIcon;
 
     private EventViewModel eventViewModel;
     private Meteo weatherAPIdata;
-
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -204,7 +200,7 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
                                 String monthOfYearString = Integer.toString(monthOfYear+1) ;
                                 if(dayOfMonth<=9)
                                     dayOfMonthString= "0" + dayOfMonthString;
-                                if(dayOfMonth+1<=9)
+                                if(monthOfYear<=9)
                                     monthOfYearString= "0" + monthOfYearString;
                                 dateWeather = year + "-" + monthOfYearString + "-" +dayOfMonthString ;
                                 selectedDate.setText(dateWeather);
@@ -275,9 +271,6 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
                                 indexMinute = minute/15;
 
                                 String dateHourWeather = dateWeather + "T" + hourWeather;
-
-
-
 
 
                                 assert weatherAPIdata != null;
