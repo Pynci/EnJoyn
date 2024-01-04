@@ -39,7 +39,7 @@ public class RegisterFragment extends Fragment {
     public static final String TAG = RegisterFragment.class.getSimpleName();
     private UserViewModel userViewModel;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
-    private Observer<Result> addUserObserver;
+    private Observer<Result> signUpObserver;
     private Observer<Result> usernameCheckObserver;
     private Observer<Result> emailCheckObserver;
     private boolean isUsernameOK = false;
@@ -90,7 +90,7 @@ public class RegisterFragment extends Fragment {
 
         //Observers
 
-        addUserObserver = error -> {
+        signUpObserver = error -> {
             if(error == null){
 
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -270,7 +270,7 @@ public class RegisterFragment extends Fragment {
 
                 if(isUsernameOK && isEmailOK){
                     Log.d(this.getClass().getSimpleName(), "dentro all'if");
-                    userViewModel.addUser(email, password, username).observe(getViewLifecycleOwner(), addUserObserver);
+                    userViewModel.signUp(email, password, username).observe(getViewLifecycleOwner(), signUpObserver);
                 }
                 else if(!isUsernameOK){
                     Snackbar.make(view, "Errore nella registrazione: nome utente già in uso",

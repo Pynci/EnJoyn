@@ -87,5 +87,6 @@
     <string name="backToLogin">Torna al login</string>
     <string name="usernameAlreadyInUse">Username già in uso</string>
     <string name="emailAlreadyInUse">Email già in uso</string>
+    <string name="authenticationFailed">Autenticazione fallita</string>
 
 </resources>

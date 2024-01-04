@@ -1,34 +1,62 @@
 package it.unimib.enjoyn.ui;
 
+import static it.unimib.enjoyn.util.Costants.AUTHENTICATION_ERROR;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserViewModel extends ViewModel {
 
+    private FirebaseAuth auth;
+
     private MutableLiveData<Result> userByUsername;
     private MutableLiveData<Result> userByEmail;
-    private MutableLiveData<Result> resultAddUser;
+    private MutableLiveData<Result> signUpResult;
+    private MutableLiveData<Result> signInResult;
+
     private final IUserRepository userRepository;
 
 
     public UserViewModel() {
+        auth = FirebaseAuth.getInstance();
         userRepository = ServiceLocator.getInstance().getUserRepository(false);
         userByUsername = new MutableLiveData<>();
         userByEmail = new MutableLiveData<>();
+        signUpResult = new MutableLiveData<>();
+        signInResult = new MutableLiveData<>();
         //resultAddUser = new MutableLiveData<>();
     }
 
-    public MutableLiveData<Result> addUser(String email, String password, String username){
-        resultAddUser = userRepository.addUser(email, password, username);
-        return resultAddUser;
+    public MutableLiveData<Result> signUp(String email, String password, String username){
+        signUpResult = userRepository.addUser(email, password, username);
+        return signUpResult;
     }
+
+
+    public MutableLiveData<Result> signIn(String email, String password){
+
+
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                   if(task.isSuccessful()){
+                        signInResult.postValue(new Result.Success());
+                   }
+                   else{
+                       signInResult.postValue(new Result.Error(AUTHENTICATION_ERROR));
+                   }
+                });
+
+        return signInResult;
+    }
+
 
     public MutableLiveData<Result> getUserByUsername(String username){
         userByUsername = userRepository.getUserByUsername(username);
@@ -40,6 +68,7 @@ public class UserViewModel extends ViewModel {
         return userByEmail;
     }
 
+
     public String checkEmail(String email) {
         if(email == null || email.length() == 0)
             return "empty";
@@ -48,12 +77,6 @@ public class UserViewModel extends ViewModel {
         else
             return "ok";
     }
-
-
-    public boolean isPasswordOkForLogin(String password){
-        return password == null || password.length() == 0;
-    }
-
 
     public String checkPassword(String password) {
         boolean number = false;

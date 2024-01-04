@@ -6,7 +6,7 @@ public abstract class Result {
     }
 
     public boolean isSuccess() {
-        if (this instanceof UserResponseSuccess) {
+        if (this instanceof UserResponseSuccess || this instanceof Success) {
             return true;
         } else {
             return false;
@@ -23,6 +23,10 @@ public abstract class Result {
         public User getData(){
             return user;
         }
+    }
+
+    public static final class Success extends Result{
+        //class representing a generic Success of an operation
     }
 
     public static final class Error extends Result {
