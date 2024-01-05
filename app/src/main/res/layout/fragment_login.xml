@@ -51,7 +51,7 @@
                 android:autoLink="email"
                 android:hint="@string/email"
                 android:imeOptions="actionNext"
-                android:inputType="text" />
+                android:inputType="text|textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
