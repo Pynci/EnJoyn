@@ -19,8 +19,6 @@ import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.UserViewModel;
@@ -73,11 +71,12 @@ public class LoginFragment extends Fragment {
 
         signInObserver = result -> {
             if(result.isSuccess()){
-                FirebaseAuth auth = FirebaseAuth.getInstance();
 
                 startActivityBasedOnCondition(MainButtonMenuActivity.class,
                         R.id.action_loginFragment_to_mainButtonMenuActivity, true);
-                Snackbar.make(view, "(TEST) Login effettuato, mail: " + auth.getCurrentUser().getEmail(), Snackbar.LENGTH_SHORT)
+                Snackbar.make(view, "(TEST) Login effettuato, mail: "
+                                        + ((Result.SignInSuccess) result).getData().getEmail(),
+                                Snackbar.LENGTH_SHORT)
                         .show();
 
 //                // da includere dopo aver sistemato la configurazione del profilo

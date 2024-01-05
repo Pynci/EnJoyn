@@ -47,7 +47,7 @@ public class UserViewModel extends ViewModel {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                    if(task.isSuccessful()){
-                        signInResult.postValue(new Result.Success());
+                        signInResult.postValue(new Result.SignInSuccess(auth.getCurrentUser()));
                    }
                    else{
                        signInResult.postValue(new Result.Error(AUTHENTICATION_ERROR));
