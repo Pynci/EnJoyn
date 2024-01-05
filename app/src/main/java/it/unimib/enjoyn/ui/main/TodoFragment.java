@@ -1,7 +1,6 @@
 package it.unimib.enjoyn.ui.main;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,17 +31,14 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import it.unimib.enjoyn.util.JSONParserUtil;
-import it.unimib.enjoyn.util.ResponseCallback;
-import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TodoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TodoFragment extends Fragment implements ResponseCallback {
+public class TodoFragment extends Fragment {
 
 
     private ProgressBar progressBar;
@@ -58,17 +54,14 @@ public class TodoFragment extends Fragment implements ResponseCallback {
 
 
     public static TodoFragment newInstance() {
-        TodoFragment fragment = new TodoFragment();
 
-        return fragment;
+        return new TodoFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
-                requireActivity().getApplication());
         eventList = new ArrayList<>();
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
@@ -109,7 +102,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
                     public void onEventItemClick(Event event) {
                         TodoFragmentDirections.ActionTodoToDiscoverSingleEvent action =
                                 TodoFragmentDirections.actionTodoToDiscoverSingleEvent(event);
-                        // startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
                         Navigation.findNavController(view).navigate(action);
 
                     }
@@ -146,18 +138,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
         });
     }
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
-        if (true) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
-        //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
-            requireActivity().finish();
-        }
-    }
 
     private List<Event> getEventListWithGSon() {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
@@ -177,25 +157,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
         return null;
     }
 
-    @Override
-    public void onSuccess(List<Event> newsList, long lastUpdate) {
-
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-
-    }
-
-    @Override
-    public void onEventFavoriteStatusChanged(Event event) {
-
-    }
-
-    @Override
-    public void onEventTodoStatusChanged(Event event) {
-
-    }
 
     /*@Override
     public void onSuccess(List<Event> eventList, long lastUpdate) {

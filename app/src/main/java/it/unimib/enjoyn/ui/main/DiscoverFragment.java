@@ -1,6 +1,5 @@
 package it.unimib.enjoyn.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -43,7 +42,6 @@ public class DiscoverFragment extends Fragment {
     private List<Event> eventList;
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
-    Button EventButton;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -103,7 +101,7 @@ public class DiscoverFragment extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
-                    startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_favoritesFragment, false);
+                    startActivityBasedOnCondition(R.id.action_discover_to_favoritesFragment, false);
                 }
                 return false;
             }
@@ -164,7 +162,7 @@ public class DiscoverFragment extends Fragment {
                 });
     }
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
+    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
         Navigation.findNavController(requireView()).navigate(destination);
 
         //da utilizzare solo se si passa ad un'altra activity
