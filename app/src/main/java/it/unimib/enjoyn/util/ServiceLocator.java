@@ -2,6 +2,9 @@ package it.unimib.enjoyn.util;
 
 import android.app.Application;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import it.unimib.enjoyn.database.EventsRoomDatabase;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -36,5 +39,13 @@ public class ServiceLocator {
         //TODO: singleton?
 
         return new UserRepository(userRemoteDataSource);
+    }
+
+    public FirebaseAuth getFirebaseAuth(){
+        return FirebaseAuth.getInstance();
+    }
+
+    public FirebaseUser getFirebaseUser(){
+        return FirebaseAuth.getInstance().getCurrentUser();
     }
 }

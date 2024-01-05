@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import it.unimib.enjoyn.model.User;
-import it.unimib.enjoyn.util.Costants;
+import it.unimib.enjoyn.util.Constants;
 
 public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
@@ -20,7 +20,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     private FirebaseUser fbUser;
 
     public UserRemoteDataSource() {
-        dbReference = FirebaseDatabase.getInstance(Costants.DATABASE_PATH).getReference();
+        dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
         auth = FirebaseAuth.getInstance();
     }
 
@@ -48,7 +48,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         userMap.put("username", username);
 
         dbReference
-                .child(Costants.PATH_FOR_USERS)
+                .child(Constants.PATH_FOR_USERS)
                 .child(fbUser.getUid())
                 .setValue(userMap)
                 .addOnCompleteListener( result -> {
@@ -68,7 +68,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     public void getUserByUsername(String username){
         dbReference
-                .child(Costants.PATH_FOR_USERS)
+                .child(Constants.PATH_FOR_USERS)
                 .orderByChild("username")
                 .equalTo(username)
                 .get().addOnCompleteListener(task -> {
@@ -90,7 +90,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     public void getUserByEmail(String email){
         dbReference
-                .child(Costants.PATH_FOR_USERS)
+                .child(Constants.PATH_FOR_USERS)
                 .orderByChild("email")
                 .equalTo(email)
                 .get().addOnCompleteListener(task -> {

@@ -1,6 +1,6 @@
 package it.unimib.enjoyn.util;
 
-public class Costants {
+public class Constants {
 
     public static final String SHARED_PREFERENCES_FILE_NAME = "it.unimib.enjoyn.preferences";
     public static final String SHARED_PREFERENCES_TAGS_OF_INTEREST = "tags_of_interest";
@@ -18,5 +18,5 @@ public class Costants {
     //Costants for paths in the firebase DB
     public static final String DATABASE_PATH = "https://enjoyn-9adca-default-rtdb.europe-west1.firebasedatabase.app/";
     public static final String PATH_FOR_USERS = "users";
-    public static final String AUTHENTICATION_ERROR = "authentication failed";
+    public static final String AUTHENTICATION_ERROR = "authentication_failed";
 }

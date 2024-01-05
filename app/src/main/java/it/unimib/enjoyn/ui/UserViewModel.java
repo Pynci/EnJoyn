@@ -1,6 +1,6 @@
 package it.unimib.enjoyn.ui;
 
-import static it.unimib.enjoyn.util.Costants.AUTHENTICATION_ERROR;
+import static it.unimib.enjoyn.util.Constants.AUTHENTICATION_ERROR;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -42,8 +42,6 @@ public class UserViewModel extends ViewModel {
 
 
     public MutableLiveData<Result> signIn(String email, String password){
-
-
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                    if(task.isSuccessful()){
