@@ -68,7 +68,6 @@ public class DiscoverFragment extends Fragment {
         IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
                 requireActivity().getApplication());
         IMeteoRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
-        //eventViewModel = new ViewModelProvider(requireActivity(), new EventViewModelFactory(meteoRepository)).get(EventViewModel.class);
 
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
@@ -114,11 +113,6 @@ public class DiscoverFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
-
-         //eventList = getEventListWithGSon();
-
-        //List<Event> eventList = new ArrayList<Event>() ;
-        //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
 
 
         eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
@@ -171,12 +165,8 @@ public class DiscoverFragment extends Fragment {
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
-        if (true) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
+        Navigation.findNavController(requireView()).navigate(destination);
+
         //da utilizzare solo se si passa ad un'altra activity
         if (finishActivity){
             requireActivity().finish();

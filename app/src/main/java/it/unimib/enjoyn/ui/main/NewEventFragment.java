@@ -52,9 +52,9 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
     TextView meteo;
     TextView temperatura;
     String hourWeather;
-    int indexHour=-1;
-    int indexMinute=-1;
-    int indexDate =-1;
+    int indexHour = -1;
+    int indexMinute = -1;
+    int indexDate = -1;
     boolean equals = false;
     String dateWeather;
     ImageView weatherIcon;

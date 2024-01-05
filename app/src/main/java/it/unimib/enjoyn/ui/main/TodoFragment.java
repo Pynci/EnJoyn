@@ -32,10 +32,10 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.EventMockRepository;
-import it.unimib.enjoyn.repository.IEventRepository;
+import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.ResponseCallback;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,57 +45,32 @@ import it.unimib.enjoyn.util.ResponseCallback;
 public class TodoFragment extends Fragment implements ResponseCallback {
 
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private ProgressBar progressBar;
 
     private EventViewModel eventViewModel;
-    private IEventRepository iEventRepository;
 
     private List<Event> eventList;
-
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
     public TodoFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Todo.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TodoFragment newInstance(String param1, String param2) {
+
+    public static TodoFragment newInstance() {
         TodoFragment fragment = new TodoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
-        iEventRepository =
-                new EventMockRepository(requireActivity().getApplication(), this);
+        IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
+                requireActivity().getApplication());
         eventList = new ArrayList<>();
-        iEventRepository.getTODOEvents();
+
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
     }
 
@@ -126,12 +101,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
-
-        iEventRepository.getTODOEvents();
-
-
-        //List<Event> eventList = new ArrayList<Event>() ;
-        //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
 
 
          eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
