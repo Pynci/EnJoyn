@@ -111,7 +111,4 @@ public class User implements Parcelable {
         this.description = description;
     }
 
-
-
-
 }

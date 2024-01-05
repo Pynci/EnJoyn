@@ -72,8 +72,9 @@ public class LoginFragment extends Fragment {
         signInObserver = result -> {
             if(result.isSuccess()){
 
-                startActivityBasedOnCondition(MainButtonMenuActivity.class,
-                        R.id.action_loginFragment_to_mainButtonMenuActivity, true);
+                Navigation
+                        .findNavController(view)
+                        .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
                 Snackbar.make(view, "(TEST) Login effettuato, mail: "
                                         + ((Result.SignInSuccess) result).getData().getEmail(),
                                 Snackbar.LENGTH_SHORT)

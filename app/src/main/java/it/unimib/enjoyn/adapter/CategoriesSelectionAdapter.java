@@ -45,7 +45,7 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
             rowView = inflater.inflate(R.layout.custom_row_layout, parent, false);
         }
 
-        MaterialCardView palle = rowView.findViewById(R.id.scroto);
+        MaterialCardView palle = rowView.findViewById(R.id.customRawLayout_cardview);
 
         palle.setOnClickListener(v -> {
             palle.setChecked(!palle.isChecked());

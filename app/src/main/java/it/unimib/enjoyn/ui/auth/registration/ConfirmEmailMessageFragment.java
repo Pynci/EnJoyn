@@ -2,6 +2,7 @@ package it.unimib.enjoyn.ui.auth.registration;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -34,6 +35,14 @@ public class ConfirmEmailMessageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // disabilita il tasto back affinché l'utente non possa tornare indietro
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // logica personalizzata per il tasto back (in questo caso non deve fare niente)
+            }
+        });
     }
 
     @Override
