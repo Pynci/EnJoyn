@@ -6,6 +6,8 @@ import static it.unimib.enjoyn.util.Constants.RETROFIT_ERROR;
 
 import android.util.Log;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import it.unimib.enjoyn.model.MeteoApiResponse;
 import it.unimib.enjoyn.service.MeteoApiService;
 import it.unimib.enjoyn.util.ServiceLocator;
@@ -24,25 +26,19 @@ public class WeatherRemoteDataSource extends BaseWeatherRemoteDataSource{
 
     @Override
     public void getWeather(String latitude, String longitude) {
-        Log.d("API meteo", "dentro getWeather su data source, prima chiamata");
         Call<MeteoApiResponse> weatherResponseCall = weatherApiService.getWeather(latitude, longitude, "temperature_2m", "weather_code", METEO_FORECAST_DAYS_VALUE);
-        Log.d("API meteo", "dentro getWeather su data source, dopo chiamata");
         weatherResponseCall.enqueue(new Callback<MeteoApiResponse>() {
             @Override
             public void onResponse(Call<MeteoApiResponse> call, Response<MeteoApiResponse> response) {
-                Log.d("API meteo", "dentro getWeather su data source, dentro OnResponse");
                 if(response.body() != null && response.isSuccessful()){
-                    Log.d("API meteo", "andata a buon fine su DataSource");
                     meteoCallback.onSuccessFromRemote(response.body());
-                    Log.d("API meteo", "andata a buon fine su DataSource");
                 } else {
                     meteoCallback.onFailureFromRemote(new Exception(API_ERROR));
-                    Log.d("API meteo", "errore su dataSource");
                 }
             }
 
             @Override
-            public void onFailure(Call<MeteoApiResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<MeteoApiResponse> call, @NonNull Throwable t) {
                 Log.d("ERRORE",  t.getLocalizedMessage(), t);
                 meteoCallback.onFailureFromRemote(new Exception(RETROFIT_ERROR));
             }

@@ -1,6 +1,6 @@
 package it.unimib.enjoyn.model;
 
-public class Result {
+public abstract class Result {
     private Result() {
     }
 

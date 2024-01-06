@@ -25,7 +25,6 @@ public class MeteoRepository implements IMeteoRepository, MeteoCallback{
 
     @Override
     public MutableLiveData<Result> fetchMeteo(String latitude, String longitude) {
-        Log.d("API meteo", "dentro fetchMeteo su repository");
         weatherRemoteDataSource.getWeather(latitude, longitude);
 
         return weatherMutableLiveData;
@@ -51,6 +50,7 @@ public class MeteoRepository implements IMeteoRepository, MeteoCallback{
 
     @Override
     public void onFailureFromRemote(Exception exception) {
-
+        Result.WeatherError result= new Result.WeatherError(exception.getMessage());
+        weatherMutableLiveData.postValue(result);
     }
 }

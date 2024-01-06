@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -32,6 +34,7 @@ import it.unimib.enjoyn.model.Meteo;
 import it.unimib.enjoyn.model.MeteoApiResponse;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IMeteoRepository;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.MeteoCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
@@ -127,21 +130,17 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
             }
         });
 
-        Log.d("API meteo", "su onViewCreated prima chiamata");
         eventViewModel.getWeather("52.52", "13.41").observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
-                Log.d("API meteo", "entro su if");
                 weatherAPIdata = ((Result.WeatherSuccess) result).getData().getWeather();
                 //this.meteoList.clear();
                 //this.meteoList.addAll(((Result.Success) result).getData().getMeteoList());
                 showWeatherOnNewEvent(requireView());
-                Log.d("API meteo", "andata a buon fine");
             } else {
-                //TODO definire errore
-                Log.d("API meteo", "errore view model get weather");
+                ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
+                Snackbar.make(view, errorMessagesUtil.getErrorMessage(((Result.WeatherError) result).getMessage()), Snackbar.LENGTH_LONG).show();
             }
         });
-        Log.d("API meteo", "su onViewCreated dopo chiamata");
 
 
         //iMeteoRepository.fetchMeteo("52.52", "13.41");
