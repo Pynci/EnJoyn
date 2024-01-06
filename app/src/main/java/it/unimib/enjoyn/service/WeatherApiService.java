@@ -18,7 +18,6 @@ public interface WeatherApiService {
                 @Query(WEATHER_LATITUDE_PARAMETER) String latitude,
                 @Query(WEATHER_LONGITUDE_PARAMETER) String longitude,
                 @Query(WEATHER_INTERVAL_PARAMETER) String interval,
-                @Query(WEATHER_INTERVAL_PARAMETER) String interval2,
                 @Query(WEATHER_FORECAST_DAYS_PARAMETER) int forecastDays);
 
 }

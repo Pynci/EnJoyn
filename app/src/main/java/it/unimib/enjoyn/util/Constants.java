@@ -27,7 +27,7 @@ public class Constants {
 
     public static final int WEATHER_FORECAST_DAYS_VALUE = 16;
 
-    public static final String METEO_INTERVAL_VALUE = "temperature_2m,weather_code";
+    public static final String WEATHER_INTERVAL_VALUE = "temperature_2m,weather_code";
 
     public static final String API_ERROR = "error on API fetching";
     public static final String RETROFIT_ERROR = "retrofit_error";

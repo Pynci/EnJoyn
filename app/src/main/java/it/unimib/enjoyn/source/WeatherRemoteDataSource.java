@@ -3,6 +3,7 @@ package it.unimib.enjoyn.source;
 import static it.unimib.enjoyn.util.Constants.API_ERROR;
 import static it.unimib.enjoyn.util.Constants.WEATHER_FORECAST_DAYS_VALUE;
 import static it.unimib.enjoyn.util.Constants.RETROFIT_ERROR;
+import static it.unimib.enjoyn.util.Constants.WEATHER_INTERVAL_VALUE;
 
 import android.util.Log;
 
@@ -26,7 +27,7 @@ public class WeatherRemoteDataSource extends BaseWeatherRemoteDataSource{
 
     @Override
     public void getWeather(String latitude, String longitude) {
-        Call<WeatherApiResponse> weatherResponseCall = weatherApiService.getWeather(latitude, longitude, "temperature_2m", "weather_code", WEATHER_FORECAST_DAYS_VALUE);
+        Call<WeatherApiResponse> weatherResponseCall = weatherApiService.getWeather(latitude, longitude, WEATHER_INTERVAL_VALUE, WEATHER_FORECAST_DAYS_VALUE);
         weatherResponseCall.enqueue(new Callback<WeatherApiResponse>() {
             @Override
             public void onResponse(Call<WeatherApiResponse> call, Response<WeatherApiResponse> response) {
