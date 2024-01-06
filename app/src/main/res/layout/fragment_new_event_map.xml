@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.main.newEventMap">
+
+
+
+    <com.mapbox.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:mapbox_cameraTargetLat="45.464098"
+        app:mapbox_cameraZoom="13.0"
+        app:mapbox_cameraPitch="0.0"
+        app:mapbox_cameraBearing="0.0" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+        android:id="@+id/newEventMap_floatingButton_resetInCurrentPosition"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/newEventMap_materialButton_eventLocation"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/Select"
+        android:src="@drawable/baseline_my_location_24" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/newEventMap_materialButton_eventLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        tools:text="Posiziona L'evento"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/newEventMap_textInputLayout_searchBar"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="4dp"
+        android:hint="Cerca"
+        app:boxCornerRadiusBottomEnd="20sp"
+        app:boxCornerRadiusBottomStart="20sp"
+        app:boxCornerRadiusTopEnd="20sp"
+        app:boxCornerRadiusTopStart="20sp"
+        app:boxStrokeWidth="0sp"
+        app:boxStrokeWidthFocused="0sp"
+        app:startIconDrawable="@drawable/baseline_moving_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newEventMap_textInputEditText_textSearchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.mapbox.search.ui.view.SearchResultsView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_results_view"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:elevation="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="22dp"
+        android:layout_below="@id/newEventMap_textInputLayout_searchBar" />
+
+</RelativeLayout>

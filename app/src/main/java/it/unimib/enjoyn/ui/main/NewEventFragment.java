@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -24,10 +25,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.json.JSONException;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Calendar;
+import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Weather;
@@ -50,6 +56,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     TextView selectedDate;
 
     ImageButton time;
+    ImageButton place;
     TextView selectedTime;
 
     TextView weather;
@@ -232,6 +239,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         time = view.findViewById(R.id.fragmentNewEvent_imageButton_pickTime);
         selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
 
+
         // on below line we are adding click
         // listener for our pick date button
         time.setOnClickListener(new View.OnClickListener() {
@@ -279,6 +287,15 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             }
 
         });
+        place = view.findViewById(R.id.fragmentNewEvent_imageButton_pickPlace);
+        place.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
+            }
+        });
+
+
     }
 
     public void setWeatherIcon(ImageView weatherIcon, int code){

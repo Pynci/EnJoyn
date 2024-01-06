@@ -73,7 +73,7 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
                     // retrieved from the database, and not in the News objects downloaded from the
                     // Web Service. If the same news was already downloaded earlier, the following
                     // line of code replaces the the News object in newsList with the corresponding
-                    // News object saved in the database, so that it has the primary key and the
+                    // Event object saved in the database, so that it has the primary key and the
                     // favorite status.
                     eventList.set(eventList.indexOf(event), event);
                 }

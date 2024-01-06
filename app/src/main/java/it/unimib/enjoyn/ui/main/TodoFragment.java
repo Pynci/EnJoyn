@@ -31,7 +31,10 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import it.unimib.enjoyn.util.JSONParserUtil;
+import it.unimib.enjoyn.util.ResponseCallback;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,9 +65,15 @@ public class TodoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
+                requireActivity().getApplication());
         eventList = new ArrayList<>();
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+
+        eventViewModel = new ViewModelProvider(
+                requireActivity(),
+                new EventViewModelFactory(eventRepositoryWithLiveData)).get(EventViewModel.class);
     }
 
     @Override
@@ -95,7 +104,6 @@ public class TodoFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-
          eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
@@ -103,7 +111,6 @@ public class TodoFragment extends Fragment {
                         TodoFragmentDirections.ActionTodoToDiscoverSingleEvent action =
                                 TodoFragmentDirections.actionTodoToDiscoverSingleEvent(event);
                         Navigation.findNavController(view).navigate(action);
-
                     }
 
                     @Override
