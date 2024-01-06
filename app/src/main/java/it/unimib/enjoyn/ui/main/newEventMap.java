@@ -217,7 +217,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
         MaterialButton newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
         //TOLTO per barra di ricerca
-       // placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
+        placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
 
         searchBar = view.findViewById(R.id.newEventMap_textInputEditText_textSearchBar);
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
@@ -226,9 +226,9 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
         searchResultsView = view.findViewById(R.id.search_results_view);
         searchResultsView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
         //TOLTO per barra di ricerca
-        //placeAutocompleteUiAdapter = new PlaceAutocompleteUiAdapter(searchResultsView, placeAutocomplete, LocationEngineProvider.getBestLocationEngine(getContext()));
-        //TODO mettere immagine 3d scaricata, da usare per creare pin sulla mappa
+        placeAutocompleteUiAdapter = new PlaceAutocompleteUiAdapter(searchResultsView, placeAutocomplete, LocationEngineProvider.getBestLocationEngine(getContext()));
 
+        // immagine 3d scaricata, da usare per creare pin sulla mappa
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
 
         searchBar.addTextChangedListener(new TextWatcher() {
@@ -324,7 +324,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                        return false;
                    }
                });
-           /*     //TODO FUNZIONA MA NON USARE LA BARRA DI RICERCA PERCHé FA TANTE CHIAMATE API, usare metodo sopra per testare movimento camera e pin
+                //TODO FUNZIONA MA NON USARE LA BARRA DI RICERCA PERCHé FA TANTE CHIAMATE API, usare metodo sopra per testare movimento camera e pin
                     // TODO    SE SI VUOLE TESTARE CREARE NUOVO TOKEN DI MAPBOX da mettere nel GRADLE.PROPRETIES(PROJECT PROPERTIES) nella variabile MAPBOX_DOWNLOADS_TOKEN
            placeAutocompleteUiAdapter.addSearchListener(new PlaceAutocompleteUiAdapter.SearchListener() {
                     @Override
@@ -340,7 +340,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                         //todo PIN sulla mappa
                         //TODO Logica per creare pin sulla mappa da testare [modificare immagine : bisogna mettere un immagine BitMap ]
                 pointAnnotationManager.deleteAll();
-                PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(String.valueOf(R.drawable.baseline_add_location_24))
+                PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
                         .withPoint(placeAutocompleteSuggestion.getCoordinate());
                 pointAnnotationManager.create(pointAnnotationOptions);
 
@@ -363,7 +363,7 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
 
                     }
                 });
-*/
+
 
             }
         });
