@@ -72,7 +72,7 @@
     <string name="pinviewDescription">Prova</string>
     <string name="newConfirmationCode">"Non hai ricevuto nessuna mail? Per generare un nuovo codice "</string>
     <string name="tapHere">premi qui</string>
-    <string name="error_retriving_weather"> errore nel caricamento del meteo</string>
+    <string name="error_retriving_weather"> errore nel caricamento del weather</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="helloBlankFragment">Hello blank fragment</string>

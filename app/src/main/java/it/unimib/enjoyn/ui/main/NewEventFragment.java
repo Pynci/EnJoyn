@@ -30,13 +30,13 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.model.Meteo;
-import it.unimib.enjoyn.model.MeteoApiResponse;
+import it.unimib.enjoyn.model.Weather;
+import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.IMeteoRepository;
+import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
-import it.unimib.enjoyn.util.MeteoCallback;
+import it.unimib.enjoyn.util.WeatherCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
@@ -44,7 +44,7 @@ import it.unimib.enjoyn.util.ServiceLocator;
  * Use the {@link NewEventFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewEventFragment extends Fragment implements MeteoCallback {
+public class NewEventFragment extends Fragment implements WeatherCallback {
 
     ImageButton date;
     TextView selectedDate;
@@ -52,7 +52,7 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
     ImageButton time;
     TextView selectedTime;
 
-    TextView meteo;
+    TextView weather;
     TextView temperatura;
     String hourWeather;
     int indexHour = -1;
@@ -63,7 +63,7 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
     ImageView weatherIcon;
 
     private EventViewModel eventViewModel;
-    private Meteo weatherAPIdata;
+    private Weather weatherAPIdata;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -100,11 +100,11 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("API meteo", "su OnCreate");
-        IMeteoRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
-        weatherAPIdata = new Meteo();
+        Log.d("API weather", "su OnCreate");
+        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
+        weatherAPIdata = new Weather();
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
-        Log.d("API meteo", "su OnCreate dopo tutto");
+        Log.d("API weather", "su OnCreate dopo tutto");
     }
 
     @Override
@@ -152,10 +152,10 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
     public void showWeatherOnNewEvent(View view){
         String[] dateArray = weatherAPIdata.getHour();
         double[] temperatureArray = weatherAPIdata.getTemperature();
-        Log.d("API meteo", "errore show");
+        Log.d("API weather", "errore show");
         date = view.findViewById(R.id.fragmentNewEvent_imageButton_datePicker);
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
-        meteo = view.findViewById(R.id.meteo);
+        weather = view.findViewById(R.id.weather);
         temperatura = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
@@ -205,14 +205,14 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
                                    indexDate += 96;
                                }*/
                                 if(!equals){
-                                    meteo.setText("meteo non disponibile, troppo lontano , accuratezza di 16 giorni");
+                                    weather.setText("weather non disponibile, troppo lontano , accuratezza di 16 giorni");
                                     temperatura.setText("");
                                     weatherIcon.setBackgroundResource(0);
                                 }
                                 else {
                                     if (indexHour >= 0 && indexMinute >= 0) {
                                         String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
-                                        meteo.setText(code);
+                                        weather.setText(code);
                                         temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute));
                                         setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                     }
@@ -267,7 +267,7 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
                                 if(equals){
                                     double temp= temperatureArray[indexDate+indexHour+indexMinute];
                                     String code = weatherAPIdata.getWeather_codeString(indexDate+indexHour+indexMinute);
-                                    meteo.setText(code);
+                                    weather.setText(code);
                                     temperatura.setText(weatherAPIdata.getTemperatureString(indexDate+indexHour+indexMinute));
                                     setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                 }
@@ -300,7 +300,7 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
             weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
         }
     }
-    private Meteo getMeteoListWithGSon() {
+    private Weather getMeteoListWithGSon() {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
         try {
             /**TODO
@@ -308,17 +308,17 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
              * */
             /*
             Context context = requireActivity().getApplication().getApplicationContext();
-            InputStream inputStream = context.getAssets().open("meteo.json"); //apro file
+            InputStream inputStream = context.getAssets().open("weather.json"); //apro file
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
 
             assert jsonParserUtil.parseJSONMeteoFileWithGSon(bufferedReader) != null;
 
-            List<Meteo> meteoList = jsonParserUtil.parseJSONFileWithJSONObjectArray("meteo.json").getMeteoList();
+            List<Weather> meteoList = jsonParserUtil.parseJSONFileWithJSONObjectArray("weather.json").getMeteoList();
 
             return meteoList;
 
              */
-            MeteoApiResponse  response = jsonParserUtil.parseJSONFileAPIMeteo("meteoCompleto.json");
+            WeatherApiResponse response = jsonParserUtil.parseJSONFileAPIMeteo("meteoCompleto.json");
 
             return response.getWeather();
         } catch (IOException e) {
@@ -329,8 +329,8 @@ public class NewEventFragment extends Fragment implements MeteoCallback {
 
 
     @Override
-    public void onSuccessFromRemote(MeteoApiResponse weatherApiResponse) {
-        Log.d("API meteo", "Entra in OnSuccessEV");
+    public void onSuccessFromRemote(WeatherApiResponse weatherApiResponse) {
+        Log.d("API weather", "Entra in OnSuccessEV");
     }
 
     @Override

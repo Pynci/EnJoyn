@@ -17,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
-import it.unimib.enjoyn.repository.IMeteoRepository;
+import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
@@ -65,7 +64,7 @@ public class DiscoverFragment extends Fragment {
 
         IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
                 requireActivity().getApplication());
-        IMeteoRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
+        IWeatherRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
 
         eventViewModel = new ViewModelProvider(
                 requireActivity(),

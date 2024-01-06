@@ -37,12 +37,12 @@ public class Event implements Parcelable {
     private boolean isTODO;
 
     private boolean isFavorite;
-    @Embedded(prefix = "meteo_")
-    private Meteo meteo;
+    @Embedded(prefix = "weather_")
+    private Weather weather;
 
 
 
-    public Event(long id, String title, String description, String date, String time, boolean confidential, String place, String placeName, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Meteo meteo) {
+    public Event(long id, String title, String description, String date, String time, boolean confidential, String place, String placeName, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Weather weather) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -56,13 +56,13 @@ public class Event implements Parcelable {
         this.distance = distance;
         this.isTODO = isTODO;
         this.isFavorite = isFavorite;
-        this.meteo = meteo;
+        this.weather = weather;
     }
 
 
     /* da errore POJOs
     public Event(long id, String title, String description, String date, String time, boolean confidential,
-                 String place, String placeName, Category category, int peopleNumber, double distance, boolean todo, boolean favorite, Meteo meteo) {
+                 String place, String placeName, Category category, int peopleNumber, double distance, boolean todo, boolean favorite, Weather weather) {
         setId(id);
         setTitle(title);
         setDescription(description);
@@ -76,7 +76,7 @@ public class Event implements Parcelable {
         setDistance(distance);
         setFavorite(favorite);
         setTODO(todo);
-        setMeteo(meteo);
+        setMeteo(weather);
     }
      */
 
@@ -140,8 +140,9 @@ public class Event implements Parcelable {
         return isFavorite;
     }
 
-    public Meteo getMeteo() {
-        return meteo;
+
+    public Weather getWeather() {
+        return weather;
     }
 
     public void setId(long id) {
@@ -196,8 +197,8 @@ public class Event implements Parcelable {
         isFavorite = favorite;
     }
 
-    public void setMeteo(Meteo meteo) {
-        this.meteo = meteo;
+    public void setWeather(Weather weather) {
+        this.weather = weather;
     }
 
     public void incrementPeopleNumber(){
@@ -233,7 +234,7 @@ public class Event implements Parcelable {
         dest.writeDouble(this.distance);
         dest.writeByte(this.isTODO ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isFavorite ? (byte) 1 : (byte) 0);
-        dest.writeParcelable(this.meteo, flags);
+        dest.writeParcelable(this.weather, flags);
     }
 
     public void readFromParcel(Parcel source) {
@@ -250,7 +251,7 @@ public class Event implements Parcelable {
         this.distance = source.readDouble();
         this.isTODO = source.readByte() != 0;
         this.isFavorite = source.readByte() != 0;
-        this.meteo = source.readParcelable(Meteo.class.getClassLoader());
+        this.weather = source.readParcelable(Weather.class.getClassLoader());
     }
 
     protected Event(Parcel in) {
@@ -267,7 +268,7 @@ public class Event implements Parcelable {
         this.distance = in.readDouble();
         this.isTODO = in.readByte() != 0;
         this.isFavorite = in.readByte() != 0;
-        this.meteo = in.readParcelable(Meteo.class.getClassLoader());
+        this.weather = in.readParcelable(Weather.class.getClassLoader());
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {

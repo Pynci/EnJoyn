@@ -42,13 +42,13 @@ public abstract class Result {
 
     public static final class WeatherSuccess extends Result{
 
-        private final MeteoResponse meteoResponse;
+        private final WeatherResponse weatherResponse;
 
-        public WeatherSuccess(MeteoResponse meteoResponse) {
-            this.meteoResponse = meteoResponse;
+        public WeatherSuccess(WeatherResponse weatherResponse) {
+            this.weatherResponse = weatherResponse;
         }
-        public MeteoResponse getData(){
-            return meteoResponse;
+        public WeatherResponse getData(){
+            return weatherResponse;
         }
     }
 

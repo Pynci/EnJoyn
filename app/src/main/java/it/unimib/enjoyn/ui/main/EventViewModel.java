@@ -8,18 +8,14 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
-import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.IMeteoRepository;
+import it.unimib.enjoyn.repository.IWeatherRepository;
 
 public class EventViewModel extends ViewModel {
     private final IEventRepositoryWithLiveData eventRepositoryWithLiveData;
     private MutableLiveData<Result> eventLiveData;
     private MutableLiveData<Result> toDoEventListLiveData;
     private MutableLiveData<Result> favoriteEventListLiveData;
-    private final IMeteoRepository weatherRepository;
+    private final IWeatherRepository weatherRepository;
     private MutableLiveData<Result> weatherListLiveData;
 
     public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData) {
@@ -27,12 +23,12 @@ public class EventViewModel extends ViewModel {
         weatherRepository = null;
     }
 
-    public EventViewModel(IMeteoRepository iWeatherRepository) {
+    public EventViewModel(IWeatherRepository iWeatherRepository) {
         this.weatherRepository = iWeatherRepository;
         eventRepositoryWithLiveData = null;
     }
 
-    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IMeteoRepository iWeatherRepository) {
+    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository) {
         this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
         this.weatherRepository = iWeatherRepository;
     }
@@ -125,7 +121,7 @@ public class EventViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> getWeather(String latitude, String logitude){
-        Log.d("API meteo", "dentro getWeather su viewModel");
+        Log.d("API weather", "dentro getWeather su viewModel");
         if (weatherListLiveData == null){
             fetchWeather(latitude, logitude);
         }
@@ -133,7 +129,7 @@ public class EventViewModel extends ViewModel {
     }
 
     private void fetchWeather(String latitude, String longitude){
-        Log.d("API meteo", "dentro fetchWeather su viewModel");
-        weatherListLiveData = weatherRepository.fetchMeteo(latitude, longitude);
+        Log.d("API weather", "dentro fetchWeather su viewModel");
+        weatherListLiveData = weatherRepository.fetchWeather(latitude, longitude);
     }
 }

@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Meteo implements Parcelable {
+public class Weather implements Parcelable {
     //StringConverter converter = new StringConverter();
     @SerializedName("weather_code")
     int[] weather_code;
@@ -15,8 +15,8 @@ public class Meteo implements Parcelable {
     String[] hour;
 
 
-    public Meteo(int[] weterCode, double[] temperature, String[] hour) {
-        this.weather_code = weterCode;
+    public Weather(int[] weatherCode, double[] temperature, String[] hour) {
+        this.weather_code = weatherCode;
         this.temperature = temperature;
         this.hour = hour;
     }
@@ -71,23 +71,23 @@ public class Meteo implements Parcelable {
         this.hour = source.createStringArray();
     }
 
-    public Meteo() {
+    public Weather() {
     }
 
-    protected Meteo(Parcel in) {
+    protected Weather(Parcel in) {
         this.weather_code = in.createIntArray();
         this.temperature = in.createDoubleArray();
         this.hour = in.createStringArray();
     }
-    public static final Creator<Meteo> CREATOR = new Creator<Meteo>() {
+    public static final Creator<Weather> CREATOR = new Creator<Weather>() {
         @Override
-        public Meteo createFromParcel(Parcel source) {
-            return new Meteo(source);
+        public Weather createFromParcel(Parcel source) {
+            return new Weather(source);
         }
 
         @Override
-        public Meteo[] newArray(int size) {
-            return new Meteo[size];
+        public Weather[] newArray(int size) {
+            return new Weather[size];
         }
     };
 }
