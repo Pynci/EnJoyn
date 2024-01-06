@@ -1,11 +1,8 @@
 package it.unimib.enjoyn.source;
 
-import org.json.JSONException;
-
 import java.io.IOException;
 
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
-import it.unimib.enjoyn.model.MeteoDatabaseResponse;
 import it.unimib.enjoyn.util.JSONParserUtil;
 
 public class EventMockRemoteDataSource extends BaseEventRemoteDataSource{

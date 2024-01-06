@@ -1,7 +1,6 @@
 package it.unimib.enjoyn.ui.main;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,8 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,70 +31,39 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.EventMockRepository;
-import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.util.JSONParserUtil;
-import it.unimib.enjoyn.util.ResponseCallback;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TodoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TodoFragment extends Fragment implements ResponseCallback {
+public class TodoFragment extends Fragment {
 
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private ProgressBar progressBar;
 
     private EventViewModel eventViewModel;
-    private IEventRepository iEventRepository;
 
     private List<Event> eventList;
-
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
     public TodoFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Todo.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TodoFragment newInstance(String param1, String param2) {
-        TodoFragment fragment = new TodoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+
+    public static TodoFragment newInstance() {
+
+        return new TodoFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
-        iEventRepository =
-                new EventMockRepository(requireActivity().getApplication(), this);
         eventList = new ArrayList<>();
-        iEventRepository.getTODOEvents();
+
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
     }
 
@@ -129,12 +95,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-        iEventRepository.getTODOEvents();
-
-
-        //List<Event> eventList = new ArrayList<Event>() ;
-        //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
-
 
          eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
                 new EventReclyclerViewAdapter.OnItemClickListener() {
@@ -142,7 +102,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
                     public void onEventItemClick(Event event) {
                         TodoFragmentDirections.ActionTodoToDiscoverSingleEvent action =
                                 TodoFragmentDirections.actionTodoToDiscoverSingleEvent(event);
-                        // startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
                         Navigation.findNavController(view).navigate(action);
 
                     }
@@ -165,7 +124,7 @@ public class TodoFragment extends Fragment implements ResponseCallback {
             if (result != null) {
                 if (result.isSuccess()) {
                     eventList.clear();
-                    eventList.addAll(((Result.Success)result).getData().getEventList());
+                    eventList.addAll(((Result.EventSuccess)result).getData().getEventList());
                     eventsRecyclerViewAdapter.notifyDataSetChanged();
                 } else {
                   /*  ErrorMessagesUtil errorMessagesUtil =
@@ -179,18 +138,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
         });
     }
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
-        if (true) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
-        //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
-            requireActivity().finish();
-        }
-    }
 
     private List<Event> getEventListWithGSon() {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
@@ -210,25 +157,6 @@ public class TodoFragment extends Fragment implements ResponseCallback {
         return null;
     }
 
-    @Override
-    public void onSuccess(List<Event> newsList, long lastUpdate) {
-
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-
-    }
-
-    @Override
-    public void onEventFavoriteStatusChanged(Event event) {
-
-    }
-
-    @Override
-    public void onEventTodoStatusChanged(Event event) {
-
-    }
 
     /*@Override
     public void onSuccess(List<Event> eventList, long lastUpdate) {

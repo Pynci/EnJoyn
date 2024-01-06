@@ -73,19 +73,19 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
 
     @Override
     public void onFailureFromRemote(Exception exception) {
-        Result.Error result = new Result.Error(exception.getMessage());
+        Result.EventError result = new Result.EventError(exception.getMessage());
         allEventMutableLiveData.postValue(result);
     }
 //TODO da fixare perché risulta  eventList.size = 0
     @Override
     public void onSuccessFromLocal(List<Event> eventList) {
-        Result.Success result = new Result.Success(new EventsDatabaseResponse(eventList));
+        Result.EventSuccess result = new Result.EventSuccess(new EventsDatabaseResponse(eventList));
         allEventMutableLiveData.postValue(result);
     }
 
     @Override
     public void onFailureFromLocal(Exception exception) {
-        Result.Error resultError = new Result.Error(exception.getMessage());
+        Result.EventError resultError = new Result.EventError(exception.getMessage());
         allEventMutableLiveData.postValue(resultError);
         favoriteEventMutableLiveData.postValue(resultError);
         toDoEventMutableLiveData.postValue(resultError);
@@ -96,18 +96,18 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
         Result allEventResult = allEventMutableLiveData.getValue();
 
         if (allEventResult != null && allEventResult.isSuccess()) {
-            List<Event> oldAllEvent = ((Result.Success)allEventResult).getData().getEventList();
+            List<Event> oldAllEvent = ((Result.EventSuccess)allEventResult).getData().getEventList();
             if (oldAllEvent.contains(event)) {
                 oldAllEvent.set(oldAllEvent.indexOf(event), event);
                 allEventMutableLiveData.postValue(allEventResult);
             }
         }
-        toDoEventMutableLiveData.postValue(new Result.Success(new EventsDatabaseResponse(eventToDo)));
+        toDoEventMutableLiveData.postValue(new Result.EventSuccess(new EventsDatabaseResponse(eventToDo)));
 
     }
     @Override
     public void onEventToDoStatusChanged(List<Event> event) {
-        toDoEventMutableLiveData.postValue(new Result.Success(new EventsDatabaseResponse(event)));
+        toDoEventMutableLiveData.postValue(new Result.EventSuccess(new EventsDatabaseResponse(event)));
     }
 
     @Override
@@ -115,17 +115,17 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
         Result allEventResult = allEventMutableLiveData.getValue();
 
         if (allEventResult != null && allEventResult.isSuccess()) {
-            List<Event> oldAllEvent = ((Result.Success)allEventResult).getData().getEventList();
+            List<Event> oldAllEvent = ((Result.EventSuccess)allEventResult).getData().getEventList();
             if (oldAllEvent.contains(event)) {
                 oldAllEvent.set(oldAllEvent.indexOf(event), event);
                 allEventMutableLiveData.postValue(allEventResult);
             }
         }
-        toDoEventMutableLiveData.postValue(new Result.Success(new EventsDatabaseResponse(eventFavorite)));
+        toDoEventMutableLiveData.postValue(new Result.EventSuccess(new EventsDatabaseResponse(eventFavorite)));
     }
     @Override
     public void onEventFavoriteStatusChanged(List<Event> event) {
-        favoriteEventMutableLiveData.postValue(new Result.Success(new EventsDatabaseResponse(event)));
+        favoriteEventMutableLiveData.postValue(new Result.EventSuccess(new EventsDatabaseResponse(event)));
     }
 
 }

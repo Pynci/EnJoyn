@@ -20,9 +20,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unimib.enjoyn.model.Meteo;
+import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
-import it.unimib.enjoyn.model.MeteoDatabaseResponse;
+import it.unimib.enjoyn.model.WeatherApiResponse;
+import it.unimib.enjoyn.model.WeatherDatabaseResponse;
 import it.unimib.enjoyn.model.UsersDatabaseResponse;
 
 public class JSONParserUtil {
@@ -45,10 +46,18 @@ public class JSONParserUtil {
         return new Gson().fromJson(bufferedReader, UsersDatabaseResponse.class);
     }
 
-    public MeteoDatabaseResponse parseJSONMeteoFileWithGSon(BufferedReader bufferedReader) throws IOException{
-        return new Gson().fromJson(bufferedReader, MeteoDatabaseResponse.class);
+    public WeatherDatabaseResponse parseJSONMeteoFileWithGSon(BufferedReader bufferedReader) throws IOException{
+        return new Gson().fromJson(bufferedReader, WeatherDatabaseResponse.class);
     }
-    public MeteoDatabaseResponse parseJSONFileWithJSONObjectArray(String fileName)
+
+
+    public WeatherApiResponse parseJSONFileAPIMeteo(String fileName) throws IOException {
+        InputStream inputStream = context.getAssets().open(fileName);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+        return new Gson().fromJson(bufferedReader, WeatherApiResponse.class);
+    }
+    public WeatherDatabaseResponse parseJSONFileWithJSONObjectArray(String fileName)
             throws IOException, JSONException {
 
         InputStream inputStream = context.getAssets().open(fileName);
@@ -56,47 +65,47 @@ public class JSONParserUtil {
 
         JSONObject rootJSONObject = new JSONObject(content);
 
-        MeteoDatabaseResponse meteoDataBaseResponse = new MeteoDatabaseResponse();
+        WeatherDatabaseResponse weatherDataBaseResponse = new WeatherDatabaseResponse();
 
 
-        JSONObject meteoJSONObject = rootJSONObject.getJSONObject("meteo");
+        JSONObject meteoJSONObject = rootJSONObject.getJSONObject("weather");
 
-        List<Meteo> newsList = null;
+        List<Weather> newsList = null;
         int articlesCount = meteoJSONObject.length();
 
 
             newsList = new ArrayList<>();
-            Meteo meteo;
+            Weather weather;
             //for (int i = 0; i < articlesCount; i++) {
 
                 JSONArray timeJSONArray = meteoJSONObject.getJSONArray("time");
                 JSONArray temperatureJSONArray = meteoJSONObject.getJSONArray( "temperature_2m");
                 JSONArray weatherCodeJSONArray = meteoJSONObject.getJSONArray("weather_code");
 
-                meteo = new Meteo();
+                weather = new Weather();
                 String[] meteoHour = new String[timeJSONArray.length()];
                 for (int j = 0; j < meteoHour.length; j++) {
                     meteoHour[j] = timeJSONArray.getString(j);
                 }
-                meteo.setHour(meteoHour);
+                weather.setHour(meteoHour);
                 double[] meteoTemperature= new double[temperatureJSONArray.length()];
                 for (int j = 0; j < meteoTemperature.length; j++) {
                     meteoTemperature[j] = temperatureJSONArray.getDouble(j);
                 }
-                meteo.setTemperature(meteoTemperature);
+                weather.setTemperature(meteoTemperature);
                 int[] meteoWeatherCode = new int[weatherCodeJSONArray.length()];
                 for (int j = 0; j < meteoWeatherCode.length; j++) {
                     meteoWeatherCode[j] = weatherCodeJSONArray.getInt(j);
                 }
-                meteo.setWeather_code(meteoWeatherCode);
+                weather.setWeather_code(meteoWeatherCode);
 
-                        newsList.add(meteo);
+                        newsList.add(weather);
                    // }
 
-            meteoDataBaseResponse.setMeteoList(newsList);
+            weatherDataBaseResponse.setWeatherList(newsList);
 
 
-        return meteoDataBaseResponse;
+        return weatherDataBaseResponse;
     }
 
 

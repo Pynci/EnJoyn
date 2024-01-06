@@ -1,6 +1,6 @@
 package it.unimib.enjoyn.database;
 
-import static it.unimib.enjoyn.util.Costants.EVENTS_DATABASE_NAME;
+import static it.unimib.enjoyn.util.Constants.EVENTS_DATABASE_NAME;
 
 import android.content.Context;
 

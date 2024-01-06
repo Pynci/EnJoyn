@@ -6,22 +6,37 @@ import androidx.lifecycle.ViewModel;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
+import android.util.Log;
+
+import it.unimib.enjoyn.repository.IWeatherRepository;
 
 public class EventViewModel extends ViewModel {
     private final IEventRepositoryWithLiveData eventRepositoryWithLiveData;
-    private final int page;
     private MutableLiveData<Result> eventLiveData;
     private MutableLiveData<Result> toDoEventListLiveData;
     private MutableLiveData<Result> favoriteEventListLiveData;
+    private final IWeatherRepository weatherRepository;
+    private MutableLiveData<Result> weatherListLiveData;
 
     public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData) {
         this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
-        this.page = 1;
+        weatherRepository = null;
+    }
+
+    public EventViewModel(IWeatherRepository iWeatherRepository) {
+        this.weatherRepository = iWeatherRepository;
+        eventRepositoryWithLiveData = null;
+    }
+
+    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository) {
+        this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
+        this.weatherRepository = iWeatherRepository;
     }
 
     /**
      * Returns the LiveData object associated with the
      * event list to the Fragment/Activity.
+     *
      * @return The LiveData object associated with the event list.
      */
     public MutableLiveData<Result> getEvent(String category, long lastUpdate) {
@@ -41,6 +56,7 @@ public class EventViewModel extends ViewModel {
     /**
      * Returns the LiveData object associated with the
      * list of favorite event to the Fragment/Activity.
+     *
      * @return The LiveData object associated with the list of favorite event.
      */
     public MutableLiveData<Result> getFavoriteEventLiveData() {
@@ -59,6 +75,7 @@ public class EventViewModel extends ViewModel {
 
     /**
      * Updates the event status.
+     *
      * @param event The event to be updated.
      */
     public void updateEvent(Event event) {
@@ -92,6 +109,7 @@ public class EventViewModel extends ViewModel {
 
     /**
      * Removes the event from the list of favorite event.
+     *
      * @param event The event to be removed from the list of favorite event.
      */
     public void removeFromFavorite(Event event) {
@@ -102,4 +120,16 @@ public class EventViewModel extends ViewModel {
         eventRepositoryWithLiveData.updateEvent(event);
     }
 
+    public MutableLiveData<Result> getWeather(String latitude, String logitude){
+        Log.d("API weather", "dentro getWeather su viewModel");
+        if (weatherListLiveData == null){
+            fetchWeather(latitude, logitude);
+        }
+        return weatherListLiveData;
+    }
+
+    private void fetchWeather(String latitude, String longitude){
+        Log.d("API weather", "dentro fetchWeather su viewModel");
+        weatherListLiveData = weatherRepository.fetchWeather(latitude, longitude);
+    }
 }

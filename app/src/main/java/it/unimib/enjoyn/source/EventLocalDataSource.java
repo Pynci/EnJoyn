@@ -1,6 +1,6 @@
 package it.unimib.enjoyn.source;
 
-import static it.unimib.enjoyn.util.Costants.UNEXPECTED_ERROR;
+import static it.unimib.enjoyn.util.Constants.UNEXPECTED_ERROR;
 
 import java.util.List;
 

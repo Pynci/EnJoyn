@@ -1,7 +1,5 @@
 package it.unimib.enjoyn.ui.main;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,14 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,11 +25,8 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.EventMockRepository;
-import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
-import it.unimib.enjoyn.util.JSONParserUtil;
-import it.unimib.enjoyn.util.ResponseCallback;
+import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
@@ -53,7 +41,6 @@ public class DiscoverFragment extends Fragment {
     private List<Event> eventList;
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
-    Button EventButton;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -77,10 +64,11 @@ public class DiscoverFragment extends Fragment {
 
         IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
                 requireActivity().getApplication());
+        IWeatherRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
 
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
-                new EventViewModelFactory(eventRepositoryWithLiveData)).get(EventViewModel.class);
+                new EventViewModelFactory(eventRepositoryWithLiveData, meteoRepository)).get(EventViewModel.class);
         eventList = new ArrayList<>();
     }
 
@@ -112,7 +100,7 @@ public class DiscoverFragment extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
-                    startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_favoritesFragment, false);
+                    startActivityBasedOnCondition(R.id.action_discover_to_favoritesFragment, false);
                 }
                 return false;
             }
@@ -122,11 +110,6 @@ public class DiscoverFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
-
-         //eventList = getEventListWithGSon();
-
-        //List<Event> eventList = new ArrayList<Event>() ;
-        //eventList.add(new Event(5464, "patate al forno", "ciao come stai, mangio patate", "14/02/2023", "12.00", false, "casa di fra", "casa di fra", new Category("cibo"), 6, 2.6));
 
 
         eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
@@ -161,7 +144,7 @@ public class DiscoverFragment extends Fragment {
                     if (result.isSuccess()) {
                         int initialSize = this.eventList.size();
                         this.eventList.clear();
-                        this.eventList.addAll(((Result.Success) result).getData().getEventList());
+                        this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
                         eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
                         eventsRecyclerViewAdapter.notifyDataSetChanged();
 
@@ -178,13 +161,9 @@ public class DiscoverFragment extends Fragment {
                 });
     }
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
-        if (true) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
+    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+
         //da utilizzare solo se si passa ad un'altra activity
         if (finishActivity){
             requireActivity().finish();

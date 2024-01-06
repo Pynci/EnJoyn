@@ -2,7 +2,6 @@ package it.unimib.enjoyn.ui.main;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,7 +9,9 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,25 +24,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import org.json.JSONException;
+import com.google.android.material.snackbar.Snackbar;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Calendar;
-import java.util.List;
 
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.model.Meteo;
+import it.unimib.enjoyn.model.Weather;
+import it.unimib.enjoyn.model.WeatherApiResponse;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.repository.IWeatherRepository;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
+import it.unimib.enjoyn.util.WeatherCallback;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NewEventFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewEventFragment extends Fragment {
+public class NewEventFragment extends Fragment implements WeatherCallback {
 
     ImageButton date;
     TextView selectedDate;
@@ -49,19 +52,18 @@ public class NewEventFragment extends Fragment {
     ImageButton time;
     TextView selectedTime;
 
-
-   TextView meteo;
+    TextView weather;
     TextView temperatura;
     String hourWeather;
-    int indexHour=-1;
-    int indexMinute=-1;
-    int indexDate =-1;
+    int indexHour = -1;
+    int indexMinute = -1;
+    int indexDate = -1;
     boolean equals = false;
-
     String dateWeather;
-
     ImageView weatherIcon;
 
+    private EventViewModel eventViewModel;
+    private Weather weatherAPIdata;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -98,10 +100,11 @@ public class NewEventFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        Log.d("API weather", "su OnCreate");
+        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
+        weatherAPIdata = new Weather();
+        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+        Log.d("API weather", "su OnCreate dopo tutto");
     }
 
     @Override
@@ -127,13 +130,32 @@ public class NewEventFragment extends Fragment {
             }
         });
 
-        List<Meteo> meteoList = getMeteoListWithGSon();
-        String[] dateArray = meteoList.get(0).getHour();
-        double[] temperatureArray = meteoList.get(0).getTemperature();
+        eventViewModel.getWeather("52.52", "13.41").observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccess()){
+                weatherAPIdata = ((Result.WeatherSuccess) result).getData().getWeather();
+                //this.meteoList.clear();
+                //this.meteoList.addAll(((Result.Success) result).getData().getMeteoList());
+                showWeatherOnNewEvent(requireView());
+            } else {
+                ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
+                Snackbar.make(view, errorMessagesUtil.getErrorMessage(((Result.WeatherError) result).getMessage()), Snackbar.LENGTH_LONG).show();
+            }
+        });
 
+
+        //iMeteoRepository.fetchMeteo("52.52", "13.41");
+        //weatherAPIdata = getMeteoListWithGSon();
+        //showWeatherOnNewEvent(requireView());
+
+    }
+
+    public void showWeatherOnNewEvent(View view){
+        String[] dateArray = weatherAPIdata.getHour();
+        double[] temperatureArray = weatherAPIdata.getTemperature();
+        Log.d("API weather", "errore show");
         date = view.findViewById(R.id.fragmentNewEvent_imageButton_datePicker);
         selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
-        meteo = view.findViewById(R.id.meteo);
+        weather = view.findViewById(R.id.weather);
         temperatura = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
@@ -162,36 +184,39 @@ public class NewEventFragment extends Fragment {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 // on below line we are setting date to our text view.
-                                selectedDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                                if(dayOfMonth>9)
-                                dateWeather = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                                else
-                                    dateWeather = year + "-" + (monthOfYear + 1) + "-" + "0"+dayOfMonth;
+                                String dayOfMonthString = Integer.toString(dayOfMonth) ;
+                                String monthOfYearString = Integer.toString(monthOfYear+1) ;
+                                if(dayOfMonth<=9)
+                                    dayOfMonthString= "0" + dayOfMonthString;
+                                if(monthOfYear<=9)
+                                    monthOfYearString= "0" + monthOfYearString;
+                                dateWeather = year + "-" + monthOfYearString + "-" +dayOfMonthString ;
+                                selectedDate.setText(dateWeather);
                                 equals = false;
-                               for( int i = 0;i < dateArray.length && !equals ; i+=96){
-                                   boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
-                                  String prova= dateArray[i].substring(0, 10);
-                                  if(dateWeather.equals(dateArray[i].substring(0, 10))) {
-                                      indexDate = i;
-                                      equals = true;
-                                  }
-                               }
+                                for( int i = 0;i < dateArray.length && !equals ; i+=96){
+                                    boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
+                                    String prova= dateArray[i].substring(0, 10);
+                                    if(dateWeather.equals(dateArray[i].substring(0, 10))) {
+                                        indexDate = i;
+                                        equals = true;
+                                    }
+                                }
                               /* if(indexDate>0) {
                                    indexDate += 96;
                                }*/
-                               if(!equals){
-                                   meteo.setText("meteo non disponibile, troppo lontano , accuratezza di 16 giorni");
-                                   temperatura.setText("");
-                                   weatherIcon.setBackgroundResource(0);
-                               }
-                               else {
-                                   if (indexHour >= 0 && indexMinute >= 0) {
-                                       String code = meteoList.get(0).getWeather_codeString(indexDate + indexHour + indexMinute);
-                                       meteo.setText(code);
-                                       temperatura.setText(meteoList.get(0).getTemperatureString(indexDate + indexHour + indexMinute));
-                                       setWeatherIcon(weatherIcon, Integer.parseInt(code));
-                                   }
-                               }
+                                if(!equals){
+                                    weather.setText("weather non disponibile, troppo lontano , accuratezza di 16 giorni");
+                                    temperatura.setText("");
+                                    weatherIcon.setBackgroundResource(0);
+                                }
+                                else {
+                                    if (indexHour >= 0 && indexMinute >= 0) {
+                                        String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
+                                        weather.setText(code);
+                                        temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute));
+                                        setWeatherIcon(weatherIcon, Integer.parseInt(code));
+                                    }
+                                }
                             }
                         },
                         // on below line we are passing year,
@@ -236,18 +261,15 @@ public class NewEventFragment extends Fragment {
                                 String dateHourWeather = dateWeather + "T" + hourWeather;
 
 
-
-
-
-                                assert meteoList != null;
-                                assert meteoList.get(0) != null;
-                                assert meteoList.get(0).getHour()[indexHour] != null;
+                                assert weatherAPIdata != null;
+                                //assert meteoList.get(0) != null;
+                                assert weatherAPIdata.getHour()[indexHour] != null;
                                 if(equals){
-                               double temp= temperatureArray[indexDate+indexHour+indexMinute];
-                               String code = meteoList.get(0).getWeather_codeString(indexDate+indexHour+indexMinute);
-                                meteo.setText(code);
-                                temperatura.setText( meteoList.get(0).getTemperatureString(indexDate+indexHour+indexMinute));
-                                setWeatherIcon(weatherIcon, Integer.parseInt(code));
+                                    double temp= temperatureArray[indexDate+indexHour+indexMinute];
+                                    String code = weatherAPIdata.getWeather_codeString(indexDate+indexHour+indexMinute);
+                                    weather.setText(code);
+                                    temperatura.setText(weatherAPIdata.getTemperatureString(indexDate+indexHour+indexMinute));
+                                    setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                 }
                             }
                         }, hour, minute, false);
@@ -257,9 +279,6 @@ public class NewEventFragment extends Fragment {
             }
 
         });
-
-
-
     }
 
     public void setWeatherIcon(ImageView weatherIcon, int code){
@@ -281,27 +300,41 @@ public class NewEventFragment extends Fragment {
             weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
         }
     }
-    private List<Meteo> getMeteoListWithGSon() {
+    private Weather getMeteoListWithGSon() {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
         try {
             /**TODO
              * sistemare questa parte
              * */
-
+            /*
             Context context = requireActivity().getApplication().getApplicationContext();
-            InputStream inputStream = context.getAssets().open("meteo.json"); //apro file
+            InputStream inputStream = context.getAssets().open("weather.json"); //apro file
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
 
             assert jsonParserUtil.parseJSONMeteoFileWithGSon(bufferedReader) != null;
 
-            List<Meteo> meteoList = jsonParserUtil.parseJSONFileWithJSONObjectArray("meteo.json").getMeteoList();
+            List<Weather> meteoList = jsonParserUtil.parseJSONFileWithJSONObjectArray("weather.json").getMeteoList();
 
             return meteoList;
+
+             */
+            WeatherApiResponse response = jsonParserUtil.parseJSONFileAPIMeteo("meteoCompleto.json");
+
+            return response.getWeather();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
         }
         return null;
+    }
+
+
+    @Override
+    public void onSuccessFromRemote(WeatherApiResponse weatherApiResponse) {
+        Log.d("API weather", "Entra in OnSuccessEV");
+    }
+
+    @Override
+    public void onFailureFromRemote(Exception exception) {
+
     }
 }
