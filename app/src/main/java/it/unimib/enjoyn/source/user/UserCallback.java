@@ -4,8 +4,8 @@ import it.unimib.enjoyn.model.User;
 
 public interface UserCallback {
 
-    void onAddUserFailure(Exception exception);
-    void onAddUserSuccess();
+    void onCreateUserFailure(Exception exception);
+    void onCreateUserSuccess();
 
     void onGetUserByUsernameSuccess(User userByUsername);
     void onGetUserByUsernameFailure(Exception exception);
@@ -13,6 +13,6 @@ public interface UserCallback {
     void onGetUserByEmailSuccess(User userByEmail);
     void onGetUserByEmailFailure(Exception exception);
 
-    void onAddUserImageFailure(Exception exception);
-    void onAddUserImageSuccess();
+    void onUpdateUserImageFailure(Exception exception);
+    void onUpdateUserImageSuccess();
 }

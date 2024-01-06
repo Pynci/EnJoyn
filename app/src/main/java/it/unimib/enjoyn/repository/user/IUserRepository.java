@@ -8,8 +8,8 @@ import it.unimib.enjoyn.model.Result;
 
 public interface IUserRepository {
 
-    MutableLiveData<Result> addUser(String email, String password, String username);
+    MutableLiveData<Result> createUser(String email, String password, String username);
     MutableLiveData<Result> getUserByUsername(String username);
     MutableLiveData<Result> getUserByEmail(String email);
-    MutableLiveData<Result> addUserImage(Uri uri);
+    MutableLiveData<Result> createUserImage(Uri uri);
 }

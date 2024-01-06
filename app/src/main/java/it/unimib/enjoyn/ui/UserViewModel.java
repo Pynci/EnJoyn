@@ -39,7 +39,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){
-        signUpResult = userRepository.addUser(email, password, username);
+        signUpResult = userRepository.createUser(email, password, username);
         return signUpResult;
     }
 
@@ -70,7 +70,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> registerUserImage(Uri uri) {
-        registerImageResult = userRepository.addUserImage(uri);
+        registerImageResult = userRepository.createUserImage(uri);
         return registerImageResult;
     }
 

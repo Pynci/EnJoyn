@@ -2,10 +2,6 @@ package it.unimib.enjoyn.source.user;
 
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,7 +42,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         storeUser(email, username, fbUser);
 
                     } else {
-                        userCallback.onAddUserFailure(task.getException());
+                        userCallback.onCreateUserFailure(task.getException());
                     }
                 });
     }
@@ -64,10 +60,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .setValue(userMap)
                 .addOnCompleteListener( result -> {
                     if(result.isSuccessful()){
-                        userCallback.onAddUserSuccess();
+                        userCallback.onCreateUserSuccess();
                     }
                     else{
-                        userCallback.onAddUserFailure(result.getException());
+                        userCallback.onCreateUserFailure(result.getException());
                     }
                 });
     }
@@ -134,10 +130,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         uploadTask.addOnCompleteListener(task -> {
 
             if (!task.isSuccessful()) {
-                userCallback.onAddUserImageFailure(task.getException());
+                userCallback.onUpdateUserImageFailure(task.getException());
             }
             else{
-                userCallback.onAddUserImageSuccess();
+                userCallback.onUpdateUserImageSuccess();
             }
         });
     }
