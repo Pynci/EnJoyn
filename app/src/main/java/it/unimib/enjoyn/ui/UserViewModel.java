@@ -2,6 +2,8 @@ package it.unimib.enjoyn.ui;
 
 import static it.unimib.enjoyn.util.Constants.AUTHENTICATION_ERROR;
 
+import android.net.Uri;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -21,6 +23,7 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<Result> userByEmail;
     private MutableLiveData<Result> signUpResult;
     private MutableLiveData<Result> signInResult;
+    private MutableLiveData<Result> registerImageResult;
 
     private final IUserRepository userRepository;
 
@@ -64,6 +67,11 @@ public class UserViewModel extends ViewModel {
     public MutableLiveData<Result> getUserByEmail(String email){
         userByEmail = userRepository.getUserByEmail(email);
         return userByEmail;
+    }
+
+    public MutableLiveData<Result> registerUserImage(Uri uri) {
+        registerImageResult = userRepository.addUserImage(uri);
+        return registerImageResult;
     }
 
 

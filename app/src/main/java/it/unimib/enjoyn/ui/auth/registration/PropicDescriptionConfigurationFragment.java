@@ -1,5 +1,6 @@
 package it.unimib.enjoyn.ui.auth.registration;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 //classi per la gestione del caricamento immagine
@@ -11,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -26,12 +28,15 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.UserViewModel;
 
 public class PropicDescriptionConfigurationFragment extends Fragment {
 
     public static final String TAG = PropicDescriptionConfigurationFragment.class.getSimpleName();
     private UserViewModel userViewModel;
+    private Uri currentURI;
+    private Observer<Result> userImageResultObserver;
 
     public PropicDescriptionConfigurationFragment() {
 
@@ -73,17 +78,30 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
         TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
 
+        userImageResultObserver = result -> {
+
+            if (result == null) {
+
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
+            }
+
+        };
+
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                     if (uri != null) {
                         userImage.setImageURI(uri);
+                        currentURI = uri;
                     } else {
                         Log.d("PhotoPicker", "No media selected");
                     }
                 });
 
         buttonNext.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
+
+            if (currentURI != null)
+                userViewModel.registerUserImage(currentURI).observe(this.getViewLifecycleOwner(), userImageResultObserver);
         });
 
         imageButtonAddPropic.setOnClickListener(v -> {

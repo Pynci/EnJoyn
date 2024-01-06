@@ -1,10 +1,19 @@
 package it.unimib.enjoyn.source.user;
 
+import android.net.Uri;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,11 +25,13 @@ import it.unimib.enjoyn.util.Constants;
 public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     private final DatabaseReference dbReference;
+    private final FirebaseStorage firebaseStorage;
     private final FirebaseAuth auth;
     private FirebaseUser fbUser;
 
     public UserRemoteDataSource() {
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
+        firebaseStorage = FirebaseStorage.getInstance("gs://enjoyn-9adca.appspot.com");
         auth = FirebaseAuth.getInstance();
     }
 
@@ -108,5 +119,26 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         userCallback.onGetUserByEmailFailure(task.getException());
                     }
                 });
+    }
+
+    /*
+    TODO: Da testare e controllare che sia stato implementato correttamente
+     */
+    public void addUserProfileImage(Uri profileImage) {
+
+        StorageReference storageRef = firebaseStorage.getReference();
+        StorageReference userImageRef = storageRef.child("user_images/" + auth.getUid());
+
+        UploadTask uploadTask = userImageRef.putFile(profileImage);
+
+        uploadTask.addOnCompleteListener(task -> {
+
+            if (!task.isSuccessful()) {
+                userCallback.onAddUserImageFailure(task.getException());
+            }
+            else{
+                userCallback.onAddUserImageSuccess();
+            }
+        });
     }
 }

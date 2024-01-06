@@ -4,14 +4,15 @@ import it.unimib.enjoyn.model.User;
 
 public interface UserCallback {
 
-    public void onAddUserFailure(Exception exception);
-
+    void onAddUserFailure(Exception exception);
     void onAddUserSuccess();
 
     void onGetUserByUsernameSuccess(User userByUsername);
-
     void onGetUserByUsernameFailure(Exception exception);
 
     void onGetUserByEmailSuccess(User userByEmail);
     void onGetUserByEmailFailure(Exception exception);
+
+    void onAddUserImageFailure(Exception exception);
+    void onAddUserImageSuccess();
 }

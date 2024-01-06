@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.repository.user;
 
+import android.net.Uri;
+
 import androidx.lifecycle.MutableLiveData;
 
 import it.unimib.enjoyn.model.Result;
@@ -69,6 +71,26 @@ public class UserRepository implements IUserRepository, UserCallback{
     @Override
     public void onGetUserByEmailFailure(Exception exception) {
         userByEmail.postValue(new Result.Error(exception.getMessage()));
+    }
+
+
+    /*
+    TODO: Da testare e controllare che siano implementati correttamente
+     */
+    @Override
+    public void onAddUserImageFailure(Exception exception) {
+        addResultException.postValue(new Result.Error(exception.getMessage()));
+    }
+
+    @Override
+    public void onAddUserImageSuccess() {
+        addResultException.postValue(null);
+    }
+
+    @Override
+    public MutableLiveData<Result> addUserImage(Uri uri) {
+        userRemoteDataSource.addUserProfileImage(uri);
+        return addResultException;
     }
 
 }
