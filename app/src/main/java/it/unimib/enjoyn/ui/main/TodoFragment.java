@@ -33,7 +33,6 @@ import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import it.unimib.enjoyn.util.JSONParserUtil;
-import it.unimib.enjoyn.util.ResponseCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
@@ -71,9 +70,6 @@ public class TodoFragment extends Fragment {
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
 
-        eventViewModel = new ViewModelProvider(
-                requireActivity(),
-                new EventViewModelFactory(eventRepositoryWithLiveData)).get(EventViewModel.class);
     }
 
     @Override

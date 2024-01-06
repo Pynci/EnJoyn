@@ -64,11 +64,11 @@ public class DiscoverFragment extends Fragment {
 
         IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
                 requireActivity().getApplication());
-        IWeatherRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
+        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
 
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
-                new EventViewModelFactory(eventRepositoryWithLiveData, meteoRepository)).get(EventViewModel.class);
+                new EventViewModelFactory(eventRepositoryWithLiveData, weatherRepository)).get(EventViewModel.class);
         eventList = new ArrayList<>();
     }
 
