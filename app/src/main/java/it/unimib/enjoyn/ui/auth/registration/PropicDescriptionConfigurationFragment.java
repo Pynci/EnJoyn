@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -25,10 +26,12 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.ui.UserViewModel;
 
 public class PropicDescriptionConfigurationFragment extends Fragment {
 
     public static final String TAG = PropicDescriptionConfigurationFragment.class.getSimpleName();
+    private UserViewModel userViewModel;
 
     public PropicDescriptionConfigurationFragment() {
 
@@ -49,6 +52,8 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                 // logica personalizzata per il tasto back (in questo caso non deve fare niente)
             }
         });
+
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
     }
 
     @Override
@@ -78,16 +83,45 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                 });
 
         buttonNext.setOnClickListener(v -> {
-
-            //TODO: inserire il controllo sull'username (dal DB)
             Navigation.findNavController(v).navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
-
         });
 
         imageButtonAddPropic.setOnClickListener(v -> {
             pickMedia.launch(new PickVisualMediaRequest.Builder()
                     .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                     .build());
+        });
+
+        nome.setOnFocusChangeListener((v, hasFocus) -> {
+
+            if(!hasFocus) {
+
+                String result = userViewModel.checkForNumbersAndSpecialCharacters(nome.getText().toString());
+
+                if(result.equals("has_forbidden_characters"))
+                    nome.setError("Non inserire caratteri speciali");
+                else
+                    nome.setError(null);
+            }
+            else {
+                nome.setError(null);
+            }
+        });
+
+        cognome.setOnFocusChangeListener((v, hasFocus) -> {
+
+            if(!hasFocus) {
+
+                String result = userViewModel.checkForNumbersAndSpecialCharacters(nome.getText().toString());
+
+                if(result.equals("has_forbidden_characters"))
+                    cognome.setError("Non inserire caratteri speciali");
+                else
+                    cognome.setError(null);
+            }
+            else {
+                cognome.setError(null);
+            }
         });
 
     }

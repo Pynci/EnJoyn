@@ -142,4 +142,22 @@ public class UserViewModel extends ViewModel {
 
         return "ok";
     }
+
+    public String checkForNumbersAndSpecialCharacters(String name) {
+
+        boolean containsForbiddenCharacters = false;
+
+        for (int i = 0; i < name.length(); i++) {
+
+            if (name.charAt(i) >= '0' && name.charAt(i) <= '9' ||
+                name.charAt(i) >= '!' && name.charAt(i) <= '/') {
+                containsForbiddenCharacters = true;
+            }
+        }
+
+        if(containsForbiddenCharacters)
+            return "has_forbidden_characters";
+        else
+            return "ok";
+    }
 }
