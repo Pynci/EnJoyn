@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.model.Result;
@@ -72,6 +73,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     private EventViewModel eventViewModel;
     private Weather weatherAPIdata;
 
+    Event newEvent;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -125,6 +127,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //creazione del nuovo evento
+        newEvent = new Event();
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -136,7 +140,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 return false;
             }
         });
-
+        // latitude and longitude "52.52", "13.41"
         eventViewModel.getWeather("52.52", "13.41").observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
                 weatherAPIdata = ((Result.WeatherSuccess) result).getData().getWeather();
@@ -153,7 +157,16 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         //iMeteoRepository.fetchMeteo("52.52", "13.41");
         //weatherAPIdata = getMeteoListWithGSon();
         //showWeatherOnNewEvent(requireView());
-
+        place = view.findViewById(R.id.fragmentNewEvent_imageButton_pickPlace);
+        place.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
+                NewEventFragmentDirections.ActionNewEventFragmentToNewEventMap action =
+                        NewEventFragmentDirections.actionNewEventFragmentToNewEventMap(newEvent);
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
 
     public void showWeatherOnNewEvent(View view){
@@ -175,6 +188,11 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 // on below line we are getting
                 // the instance of our calendar.
                 final Calendar c = Calendar.getInstance();
+
+                TextView luogo = view.findViewById(R.id.textViewProvaLuogo);
+                Log.d("API weather", newEvent.getPlaceName());
+                Log.d("API weather", newEvent.getPlace());
+                luogo.setText(newEvent.getPlaceName() + " e " + newEvent.getPlace());
 
                 // on below line we are getting
                 // our day, month and year.
@@ -287,13 +305,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             }
 
         });
-        place = view.findViewById(R.id.fragmentNewEvent_imageButton_pickPlace);
-        place.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
-            }
-        });
+
 
 
     }

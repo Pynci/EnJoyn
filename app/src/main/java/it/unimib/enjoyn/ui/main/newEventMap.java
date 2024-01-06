@@ -8,8 +8,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Picture;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -20,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
 
 
 import android.text.Editable;
@@ -27,13 +27,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -78,6 +76,8 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
+import it.unimib.enjoyn.model.Event;
+import it.unimib.enjoyn.model.EventLocation;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
 import kotlin.coroutines.CoroutineContext;
@@ -88,11 +88,11 @@ import kotlin.coroutines.EmptyCoroutineContext;
  * Use the {@link newEventMap#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class newEventMap extends Fragment implements  PermissionsListener {
+public class newEventMap extends Fragment implements PermissionsListener {
     private FragmentNewEventMapBinding fragmentNewEventMapBinding;
     private FragmentNewEventBinding fragmentNewEventBinding;
     MapView mapView;
-    EventLocation location;
+    public EventLocation location;
 
     Point point;
     FloatingActionButton positionButton;
@@ -212,6 +212,8 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
         }
+        //TODO Event newEvent = NewEventMapArgs.fromBundle(getArguments()).getEvent();
+
         point = null;
         mapView = view.findViewById(R.id.mapView);
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
@@ -338,11 +340,11 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                         searchBar.setText(placeAutocompleteSuggestion.getName());
                         searchResultsView.setVisibility(View.GONE);
                         //todo PIN sulla mappa
-                        //TODO Logica per creare pin sulla mappa da testare [modificare immagine : bisogna mettere un immagine BitMap ]
-                pointAnnotationManager.deleteAll();
-                PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
+                        //Logica per creare pin sulla mappa da testare [modificare immagine : bisogna mettere un immagine BitMap ]
+                        pointAnnotationManager.deleteAll();
+                        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
                         .withPoint(placeAutocompleteSuggestion.getCoordinate());
-                pointAnnotationManager.create(pointAnnotationOptions);
+                        pointAnnotationManager.create(pointAnnotationOptions);
 
 
                         location.setLongitude(placeAutocompleteSuggestion.getCoordinate().longitude());
@@ -364,6 +366,16 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                     }
                 });
 
+                newEventButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        //newEvent.setPlaceName(location.getName());
+                        //newEvent.setPlace(location.getLatitudeToString());
+                        getParentFragmentManager().popBackStackImmediate();
+
+                    }
+                });
 
             }
         });

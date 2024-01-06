@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui.main;
+package it.unimib.enjoyn.model;
 
 public class EventLocation {
     String id, name;

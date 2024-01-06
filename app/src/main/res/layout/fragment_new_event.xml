@@ -64,8 +64,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:ems="10"
-                android:inputType="time"
                 android:text="@string/Title"
                 app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_imageView_imageEvent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -78,7 +76,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
-                android:inputType="date"
                 android:text="@string/Description"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -168,13 +165,22 @@
 
             <ImageButton
                 android:id="@+id/fragmentNewEvent_imageButton_pickPlace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_width="71dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="64dp"
                 android:background="@null"
+                android:contentDescription="buttonToMap"
                 android:src="@drawable/baseline_add_location_24"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickTime" />
+
+            <TextView
+                android:id="@+id/textViewProvaLuogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageButton_pickPlace"
+                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageButton_pickPlace" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

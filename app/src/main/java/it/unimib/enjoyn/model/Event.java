@@ -40,7 +40,9 @@ public class Event implements Parcelable {
     @Embedded(prefix = "weather_")
     private Weather weather;
 
+    public Event(){
 
+    }
 
     public Event(long id, String title, String description, String date, String time, boolean confidential, String place, String placeName, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Weather weather) {
         this.id = id;
