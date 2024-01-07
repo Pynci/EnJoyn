@@ -1,7 +1,5 @@
 package it.unimib.enjoyn.ui;
 
-import static it.unimib.enjoyn.util.Constants.AUTHENTICATION_ERROR;
-
 import android.net.Uri;
 
 import androidx.lifecycle.MutableLiveData;
@@ -19,12 +17,14 @@ public class UserViewModel extends ViewModel {
 
     private FirebaseAuth auth;
 
-    private MutableLiveData<Result> userByUsername;
-    private MutableLiveData<Result> userByEmail;
+    private MutableLiveData<Result> userByUsernameResult;
+    private MutableLiveData<Result> userByEmailResult;
+    private MutableLiveData<Result> currentUserResult;
     private MutableLiveData<Result> signUpResult;
     private MutableLiveData<Result> signInResult;
-    private MutableLiveData<Result> registerImageResult;
-    private MutableLiveData<Result> registerNameAndSurnameResult;
+    private MutableLiveData<Result> emailVerificationSendingResult;
+    private MutableLiveData<Result> setUserPropicResult;
+    private MutableLiveData<Result> setUserNameAndSurnameResult;
 
     private final IUserRepository userRepository;
 
@@ -32,11 +32,11 @@ public class UserViewModel extends ViewModel {
     public UserViewModel() {
         auth = FirebaseAuth.getInstance();
         userRepository = ServiceLocator.getInstance().getUserRepository(false);
-        userByUsername = new MutableLiveData<>();
-        userByEmail = new MutableLiveData<>();
+        userByUsernameResult = new MutableLiveData<>();
+        userByEmailResult = new MutableLiveData<>();
         signUpResult = new MutableLiveData<>();
         signInResult = new MutableLiveData<>();
-        //resultAddUser = new MutableLiveData<>();
+        currentUserResult = new MutableLiveData<>();
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){
@@ -44,40 +44,40 @@ public class UserViewModel extends ViewModel {
         return signUpResult;
     }
 
+    public MutableLiveData<Result> sendEmailVerification(){
+        emailVerificationSendingResult = userRepository.sendEmailVerification();
+        return emailVerificationSendingResult;
+    }
 
     public MutableLiveData<Result> signIn(String email, String password){
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                   if(task.isSuccessful()){
-                        signInResult.postValue(new Result.SignInSuccess(auth.getCurrentUser()));
-                   }
-                   else{
-                       signInResult.postValue(new Result.Error(AUTHENTICATION_ERROR));
-                   }
-                });
-
+        signInResult = userRepository.signIn(email, password);
         return signInResult;
     }
 
 
     public MutableLiveData<Result> getUserByUsername(String username){
-        userByUsername = userRepository.getUserByUsername(username);
-        return userByUsername;
+        userByUsernameResult = userRepository.getUserByUsername(username);
+        return userByUsernameResult;
     }
 
     public MutableLiveData<Result> getUserByEmail(String email){
-        userByEmail = userRepository.getUserByEmail(email);
-        return userByEmail;
+        userByEmailResult = userRepository.getUserByEmail(email);
+        return userByEmailResult;
     }
 
-    public MutableLiveData<Result> registerUserImage(Uri uri) {
-        registerImageResult = userRepository.createUserPropic(uri);
-        return registerImageResult;
+    public MutableLiveData<Result> getCurrentUser(){
+        currentUserResult = userRepository.getCurrentUser();
+        return currentUserResult;
     }
 
-    public MutableLiveData<Result> registerUserNameAndSurname(String nome, String cognome) {
-        registerNameAndSurnameResult = userRepository.updateNameAndSurname(nome, cognome);
-        return registerNameAndSurnameResult;
+    public MutableLiveData<Result> setUserPropic(Uri uri) {
+        setUserPropicResult = userRepository.createPropic(uri);
+        return setUserPropicResult;
+    }
+
+    public MutableLiveData<Result> setUserNameAndSurname(String nome, String cognome) {
+        setUserNameAndSurnameResult = userRepository.updateNameAndSurname(nome, cognome);
+        return setUserNameAndSurnameResult;
     }
 
     public String checkEmail(String email) {

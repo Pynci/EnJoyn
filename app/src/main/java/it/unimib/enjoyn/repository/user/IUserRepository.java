@@ -9,8 +9,16 @@ import it.unimib.enjoyn.model.Result;
 public interface IUserRepository {
 
     MutableLiveData<Result> createUser(String email, String password, String username);
+
+    MutableLiveData<Result> signIn(String email, String password);
+
+    MutableLiveData<Result> sendEmailVerification();
+
     MutableLiveData<Result> getUserByUsername(String username);
     MutableLiveData<Result> getUserByEmail(String email);
-    MutableLiveData<Result> createUserPropic(Uri uri);
+
+    MutableLiveData<Result> getCurrentUser();
+
+    MutableLiveData<Result> createPropic(Uri uri);
     MutableLiveData<Result> updateNameAndSurname(String nome, String cognome);
 }

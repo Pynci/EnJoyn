@@ -111,10 +111,10 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         buttonNext.setOnClickListener(v -> {
 
             if (currentURI != null)
-                userViewModel.registerUserImage(currentURI).observe(this.getViewLifecycleOwner(), userImageResultObserver);
+                userViewModel.setUserPropic(currentURI).observe(this.getViewLifecycleOwner(), userImageResultObserver);
             if(!nome.getText().toString().equals("") && !cognome.getText().toString().equals(""))
                 userViewModel
-                        .registerUserNameAndSurname(nome.getText().toString(), cognome.getText().toString())
+                        .setUserNameAndSurname(nome.getText().toString(), cognome.getText().toString())
                         .observe(this.getViewLifecycleOwner(), userNameSurnameObserver);
 
             Navigation.findNavController(view)

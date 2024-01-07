@@ -9,6 +9,7 @@ import it.unimib.enjoyn.database.EventsRoomDatabase;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
+import it.unimib.enjoyn.source.user.AuthenticationDataSource;
 import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
 public class ServiceLocator {
@@ -35,17 +36,18 @@ public class ServiceLocator {
     public IUserRepository getUserRepository(boolean debugMode){
 
         UserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
+        AuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
         //TODO: aggiungere eventuale istanza locale (da passare anch'essa al repository)
         //TODO: singleton?
 
-        return new UserRepository(userRemoteDataSource);
+        return new UserRepository(userRemoteDataSource, authenticationDataSource);
     }
 
-    public FirebaseAuth getFirebaseAuth(){
-        return FirebaseAuth.getInstance();
-    }
-
-    public FirebaseUser getFirebaseUser(){
-        return FirebaseAuth.getInstance().getCurrentUser();
-    }
+//    public FirebaseAuth getFirebaseAuth(){
+//        return FirebaseAuth.getInstance();
+//    }
+//
+//    public FirebaseUser getFirebaseUser(){
+//        return FirebaseAuth.getInstance().getCurrentUser();
+//    }
 }

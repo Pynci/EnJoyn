@@ -23,8 +23,6 @@ import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import it.unimib.enjoyn.R;
 
@@ -33,12 +31,13 @@ import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.ui.auth.LoginActivity;
 
-
+// TODO: sistemare la presentazione degli errori all'utente ed eventuali stringhe hardcodate
 public class RegisterFragment extends Fragment {
 
     private UserViewModel userViewModel;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
     private Observer<Result> signUpObserver;
+    private Observer<Result> emailVerificationSendingObserver;
     private Observer<Result> usernameCheckObserver;
     private Observer<Result> emailCheckObserver;
     private boolean isUsernameOK;
@@ -91,37 +90,33 @@ public class RegisterFragment extends Fragment {
 
         //Observers
 
-        signUpObserver = error -> {
-            if(error == null){
+        signUpObserver = result -> {
+            if(result.isSuccessful()){
+                userViewModel.sendEmailVerification().observe(getViewLifecycleOwner(), emailVerificationSendingObserver);
+            }
+            else{
+                Snackbar.make(view, "Errore nella registrazione: " + ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        };
 
-                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-                firebaseUser.sendEmailVerification().addOnCompleteListener(task -> {
-
-                    if(task.isSuccessful()) {
-                        Navigation
+        emailVerificationSendingObserver = result -> {
+            if(result.isSuccessful()){
+                Navigation
                                 .findNavController(view)
                                 .navigate(R.id.action_registerFragment_to_confirmEmailMessageFragment2);
 
                         Snackbar.make(view, "Registrazione avvenuta correttamente", Snackbar.LENGTH_SHORT)
                                 .show();
-                    }
-                    else{
-                        Snackbar.make(view, "Errore nell'invio della mail di conferma", Snackbar.LENGTH_SHORT)
-                                .show();
-                    }
-                });
-
             }
             else{
-                Snackbar.make(view, "Errore nella registrazione: " + ((Result.Error) error).getMessage(),
-                        Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(view, "Errore nell'invio della mail di conferma", Snackbar.LENGTH_SHORT)
+                                .show();
             }
         };
 
         usernameCheckObserver = result -> {
-            if(result.isSuccess()){
+            if(result.isSuccessful()){
                 User user = ((Result.UserResponseSuccess) result).getData();
                 if(user == null){
                     isUsernameOK = true;
@@ -137,7 +132,7 @@ public class RegisterFragment extends Fragment {
         };
 
         emailCheckObserver = result -> {
-            if(result.isSuccess()){
+            if(result.isSuccessful()){
                 User user = ((Result.UserResponseSuccess) result).getData();
                 if(user == null){
                     isEmailOK = true;

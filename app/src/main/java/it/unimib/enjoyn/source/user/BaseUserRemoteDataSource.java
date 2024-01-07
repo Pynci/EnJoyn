@@ -10,13 +10,13 @@ public abstract class BaseUserRemoteDataSource {
         this.userCallback = userCallback;
     }
 
-    public abstract void createUser(String email, String password, String username);
+    public abstract void storeUser(String uid, String email, String username);
 
     public abstract void getUserByUsername(String username);
 
     public abstract void getUserByEmail(String email);
 
-    public abstract void createUserPropic(Uri propic);
+    public abstract void createPropic(Uri propic);
 
     public abstract void updateUserNameAndSurname(String name, String surname);
 }

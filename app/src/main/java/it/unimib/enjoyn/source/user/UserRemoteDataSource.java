@@ -3,7 +3,6 @@ package it.unimib.enjoyn.source.user;
 import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,47 +22,30 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     private final DatabaseReference dbReference;
     private final FirebaseStorage firebaseStorage;
     private final FirebaseAuth auth;
-    private FirebaseUser fbUser;
 
     public UserRemoteDataSource() {
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
-        firebaseStorage = FirebaseStorage.getInstance("gs://enjoyn-9adca.appspot.com");
+        firebaseStorage = FirebaseStorage.getInstance(Constants.STORAGE_PATH);
         auth = FirebaseAuth.getInstance();
     }
 
     @Override
-    public void createUser(String email, String password, String username) {
-
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-
-                        fbUser = auth.getCurrentUser();
-                        storeUser(email, username, fbUser);
-
-                    } else {
-                        userCallback.onCreateUserFailure(task.getException());
-                    }
-                });
-    }
-
-    public void storeUser(String email, String username, FirebaseUser fbUser){
-
+    public void storeUser(String uid, String email, String username) {
         Map<String, String> userMap = new HashMap<>();
 
         userMap.put("email", email);
         userMap.put("username", username);
 
         dbReference
-                .child(Constants.PATH_FOR_USERS)
-                .child(fbUser.getUid())
+                .child(Constants.USERS_PATH)
+                .child(uid)
                 .setValue(userMap)
                 .addOnCompleteListener( result -> {
                     if(result.isSuccessful()){
-                        userCallback.onCreateUserSuccess();
+                        userCallback.onStoreUserSuccess();
                     }
                     else{
-                        userCallback.onCreateUserFailure(result.getException());
+                        userCallback.onStoreUserFailure(result.getException());
                     }
                 });
     }
@@ -76,7 +58,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     @Override
     public void getUserByUsername(String username){
         dbReference
-                .child(Constants.PATH_FOR_USERS)
+                .child(Constants.USERS_PATH)
                 .orderByChild("username")
                 .equalTo(username)
                 .get().addOnCompleteListener(task -> {
@@ -99,7 +81,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     @Override
     public void getUserByEmail(String email){
         dbReference
-                .child(Constants.PATH_FOR_USERS)
+                .child(Constants.USERS_PATH)
                 .orderByChild("email")
                 .equalTo(email)
                 .get().addOnCompleteListener(task -> {
@@ -123,7 +105,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     TODO: Da testare e controllare che sia stato implementato correttamente
      */
     @Override
-    public void createUserPropic(Uri propic) {
+    public void createPropic(Uri propic) {
 
         StorageReference storageRef = firebaseStorage.getReference();
         StorageReference userImageRef = storageRef.child("user_images/" + auth.getUid());
@@ -133,10 +115,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         uploadTask.addOnCompleteListener(task -> {
 
             if (!task.isSuccessful()) {
-                userCallback.onCreateUserPropicFailure(task.getException());
+                userCallback.onCreatePropicFailure(task.getException());
             }
             else{
-                userCallback.onCreateUserPropicSuccess();
+                userCallback.onCreatePropicSuccess();
             }
         });
     }
@@ -150,7 +132,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         updateMap.put("cognome", surname);
 
         DatabaseReference userReference = dbReference
-                .child(Constants.PATH_FOR_USERS);
+                .child(Constants.USERS_PATH);
 
     }
 }
