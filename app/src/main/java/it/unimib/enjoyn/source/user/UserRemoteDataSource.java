@@ -32,7 +32,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void addUser(String email, String password, String username) {
+    public void createUser(String email, String password, String username) {
 
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -73,6 +73,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     }
 
+    @Override
     public void getUserByUsername(String username){
         dbReference
                 .child(Constants.PATH_FOR_USERS)
@@ -95,6 +96,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 });
     }
 
+    @Override
     public void getUserByEmail(String email){
         dbReference
                 .child(Constants.PATH_FOR_USERS)
@@ -120,24 +122,26 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     /*
     TODO: Da testare e controllare che sia stato implementato correttamente
      */
-    public void addUserProfileImage(Uri profileImage) {
+    @Override
+    public void createUserPropic(Uri propic) {
 
         StorageReference storageRef = firebaseStorage.getReference();
         StorageReference userImageRef = storageRef.child("user_images/" + auth.getUid());
 
-        UploadTask uploadTask = userImageRef.putFile(profileImage);
+        UploadTask uploadTask = userImageRef.putFile(propic);
 
         uploadTask.addOnCompleteListener(task -> {
 
             if (!task.isSuccessful()) {
-                userCallback.onCreateUserImageFailure(task.getException());
+                userCallback.onCreateUserPropicFailure(task.getException());
             }
             else{
-                userCallback.onCreateUserImageSuccess();
+                userCallback.onCreateUserPropicSuccess();
             }
         });
     }
 
+    @Override
     public void updateUserNameAndSurname(String name, String surname) {
 
         Map<String, String> updateMap = new HashMap<>();

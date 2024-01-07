@@ -1,6 +1,6 @@
 package it.unimib.enjoyn.source.user;
 
-import it.unimib.enjoyn.model.User;
+import android.net.Uri;
 
 public abstract class BaseUserRemoteDataSource {
 
@@ -10,5 +10,13 @@ public abstract class BaseUserRemoteDataSource {
         this.userCallback = userCallback;
     }
 
-    public abstract void addUser(String email, String password, String username);
+    public abstract void createUser(String email, String password, String username);
+
+    public abstract void getUserByUsername(String username);
+
+    public abstract void getUserByEmail(String email);
+
+    public abstract void createUserPropic(Uri propic);
+
+    public abstract void updateUserNameAndSurname(String name, String surname);
 }

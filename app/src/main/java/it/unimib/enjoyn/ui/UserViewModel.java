@@ -71,7 +71,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> registerUserImage(Uri uri) {
-        registerImageResult = userRepository.createUserImage(uri);
+        registerImageResult = userRepository.createUserPropic(uri);
         return registerImageResult;
     }
 

@@ -30,7 +30,7 @@ public class UserRepository implements IUserRepository, UserCallback{
 
     @Override
     public MutableLiveData<Result> createUser(String email, String password, String username) {
-        userRemoteDataSource.addUser(email, password, username);
+        userRemoteDataSource.createUser(email, password, username);
         return addResultException;
     }
 
@@ -82,12 +82,12 @@ public class UserRepository implements IUserRepository, UserCallback{
     TODO: Da testare e controllare che siano implementati correttamente
      */
     @Override
-    public void onCreateUserImageFailure(Exception exception) {
+    public void onCreateUserPropicFailure(Exception exception) {
         createImageResult.postValue(new Result.Error(exception.getMessage()));
     }
 
     @Override
-    public void onCreateUserImageSuccess() {
+    public void onCreateUserPropicSuccess() {
         createImageResult.postValue(null);
     }
 
@@ -102,8 +102,8 @@ public class UserRepository implements IUserRepository, UserCallback{
     }
 
     @Override
-    public MutableLiveData<Result> createUserImage(Uri uri) {
-        userRemoteDataSource.addUserProfileImage(uri);
+    public MutableLiveData<Result> createUserPropic(Uri uri) {
+        userRemoteDataSource.createUserPropic(uri);
         return createImageResult;
     }
 
