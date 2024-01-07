@@ -130,11 +130,23 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         uploadTask.addOnCompleteListener(task -> {
 
             if (!task.isSuccessful()) {
-                userCallback.onUpdateUserImageFailure(task.getException());
+                userCallback.onCreateUserImageFailure(task.getException());
             }
             else{
-                userCallback.onUpdateUserImageSuccess();
+                userCallback.onCreateUserImageSuccess();
             }
         });
+    }
+
+    public void updateUserNameAndSurname(String name, String surname) {
+
+        Map<String, String> updateMap = new HashMap<>();
+
+        updateMap.put("nome", name);
+        updateMap.put("cognome", surname);
+
+        DatabaseReference userReference = dbReference
+                .child(Constants.PATH_FOR_USERS);
+
     }
 }

@@ -12,4 +12,5 @@ public interface IUserRepository {
     MutableLiveData<Result> getUserByUsername(String username);
     MutableLiveData<Result> getUserByEmail(String email);
     MutableLiveData<Result> createUserImage(Uri uri);
+    MutableLiveData<Result> updateNameAndSurname(String nome, String cognome);
 }

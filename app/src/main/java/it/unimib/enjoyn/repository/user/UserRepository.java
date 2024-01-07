@@ -11,6 +11,8 @@ import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
 public class UserRepository implements IUserRepository, UserCallback{
 
+    private final MutableLiveData<Result> updateNameAndSurnameResult;
+    private final MutableLiveData<Result> createImageResult;
     private final MutableLiveData<Result> addResultException;
     private final MutableLiveData<Result> userByUsername;
     private final MutableLiveData<Result> userByEmail;
@@ -22,6 +24,8 @@ public class UserRepository implements IUserRepository, UserCallback{
         addResultException = new MutableLiveData<>();
         userByUsername = new MutableLiveData<>();
         userByEmail = new MutableLiveData<>();
+        createImageResult = new MutableLiveData<>();
+        updateNameAndSurnameResult = new MutableLiveData<>();
     }
 
     @Override
@@ -78,19 +82,35 @@ public class UserRepository implements IUserRepository, UserCallback{
     TODO: Da testare e controllare che siano implementati correttamente
      */
     @Override
-    public void onUpdateUserImageFailure(Exception exception) {
-        addResultException.postValue(new Result.Error(exception.getMessage()));
+    public void onCreateUserImageFailure(Exception exception) {
+        createImageResult.postValue(new Result.Error(exception.getMessage()));
     }
 
     @Override
-    public void onUpdateUserImageSuccess() {
-        addResultException.postValue(null);
+    public void onCreateUserImageSuccess() {
+        createImageResult.postValue(null);
+    }
+
+    @Override
+    public void onUpdateNameAndSurnameFailure(Exception exception) {
+        updateNameAndSurnameResult.postValue(new Result.Error(exception.getMessage()));
+    }
+
+    @Override
+    public void onUpdateNameAndSurnameSuccess() {
+        updateNameAndSurnameResult.postValue(null);
     }
 
     @Override
     public MutableLiveData<Result> createUserImage(Uri uri) {
         userRemoteDataSource.addUserProfileImage(uri);
-        return addResultException;
+        return createImageResult;
+    }
+
+    @Override
+    public MutableLiveData<Result> updateNameAndSurname(String name, String surname) {
+        userRemoteDataSource.updateUserNameAndSurname(name, surname);
+        return updateNameAndSurnameResult;
     }
 
 }

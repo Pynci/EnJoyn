@@ -2,6 +2,9 @@ package it.unimib.enjoyn.model;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Result {
     private Result(){
 
@@ -52,5 +55,4 @@ public abstract class Result {
             return message;
         }
     }
-
 }

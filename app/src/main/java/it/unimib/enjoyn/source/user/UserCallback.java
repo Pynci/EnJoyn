@@ -13,6 +13,9 @@ public interface UserCallback {
     void onGetUserByEmailSuccess(User userByEmail);
     void onGetUserByEmailFailure(Exception exception);
 
-    void onUpdateUserImageFailure(Exception exception);
-    void onUpdateUserImageSuccess();
+    void onCreateUserImageFailure(Exception exception);
+    void onCreateUserImageSuccess();
+
+    void onUpdateNameAndSurnameFailure(Exception exception);
+    void onUpdateNameAndSurnameSuccess();
 }

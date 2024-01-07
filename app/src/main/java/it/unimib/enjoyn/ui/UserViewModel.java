@@ -24,6 +24,7 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<Result> signUpResult;
     private MutableLiveData<Result> signInResult;
     private MutableLiveData<Result> registerImageResult;
+    private MutableLiveData<Result> registerNameAndSurnameResult;
 
     private final IUserRepository userRepository;
 
@@ -74,6 +75,10 @@ public class UserViewModel extends ViewModel {
         return registerImageResult;
     }
 
+    public MutableLiveData<Result> registerUserNameAndSurname(String nome, String cognome) {
+        registerNameAndSurnameResult = userRepository.updateNameAndSurname(nome, cognome);
+        return registerNameAndSurnameResult;
+    }
 
     public String checkEmail(String email) {
         if(email == null || email.length() == 0)

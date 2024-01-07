@@ -37,6 +37,8 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     private UserViewModel userViewModel;
     private Uri currentURI;
     private Observer<Result> userImageResultObserver;
+    private Observer<Result> userNameSurnameObserver;
+    private Observer<Result> descriptionObserver;
 
     public PropicDescriptionConfigurationFragment() {
 
@@ -79,13 +81,21 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
 
         userImageResultObserver = result -> {
-
             if (result == null) {
 
-                Navigation.findNavController(view)
-                        .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
             }
+        };
 
+        userNameSurnameObserver = result -> {
+            if (result == null) {
+
+            }
+        };
+
+        descriptionObserver = result -> {
+            if (result == null) {
+
+            }
         };
 
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
@@ -102,6 +112,13 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
 
             if (currentURI != null)
                 userViewModel.registerUserImage(currentURI).observe(this.getViewLifecycleOwner(), userImageResultObserver);
+            if(!nome.getText().toString().equals("") && !cognome.getText().toString().equals(""))
+                userViewModel
+                        .registerUserNameAndSurname(nome.getText().toString(), cognome.getText().toString())
+                        .observe(this.getViewLifecycleOwner(), userNameSurnameObserver);
+
+            Navigation.findNavController(view)
+                    .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
         });
 
         imageButtonAddPropic.setOnClickListener(v -> {
