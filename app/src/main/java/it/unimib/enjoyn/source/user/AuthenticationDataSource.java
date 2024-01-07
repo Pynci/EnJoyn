@@ -33,6 +33,7 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
+                        fbUser = auth.getCurrentUser();
                         authenticationCallback.onSignInSuccess();
                     }
                     else{
