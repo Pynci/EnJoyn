@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.UserViewModel;
-import it.unimib.enjoyn.ui.main.MainButtonMenuActivity;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.ui.auth.registration.RegisterActivity;
 
@@ -139,12 +137,15 @@ public class LoginFragment extends Fragment {
 
             view.clearFocus();
 
-            if(textInputEmail.getError() == null && textInputPassword.getError() == null){
+            String email = String.valueOf(editTextEmail.getText());
+            String password = String.valueOf(editTextPassword.getText());
 
-                String email = String.valueOf(editTextEmail.getText());
-                String password = String.valueOf(editTextPassword.getText());
-
+            if(!email.equals("") && !password.equals("")){
                 userViewModel.signIn(email, password).observe(getViewLifecycleOwner(), signInObserver);
+            }
+            else{
+                Snackbar.make(view, getString(R.string.authenticationFailed),
+                        Snackbar.LENGTH_SHORT).show();
             }
 
         });

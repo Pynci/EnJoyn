@@ -36,14 +36,13 @@ import it.unimib.enjoyn.ui.auth.LoginActivity;
 
 public class RegisterFragment extends Fragment {
 
-    public static final String TAG = RegisterFragment.class.getSimpleName();
     private UserViewModel userViewModel;
     private static final boolean USE_NAVIGATION_COMPONENT = true;
     private Observer<Result> signUpObserver;
     private Observer<Result> usernameCheckObserver;
     private Observer<Result> emailCheckObserver;
-    private boolean isUsernameOK = false;
-    private boolean isEmailOK = false;
+    private boolean isUsernameOK;
+    private boolean isEmailOK;
 
     public RegisterFragment() {
 
@@ -57,6 +56,8 @@ public class RegisterFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        isUsernameOK = false;
+        isEmailOK = false;
     }
 
     @Override
@@ -261,25 +262,32 @@ public class RegisterFragment extends Fragment {
 
             view.clearFocus();
 
-            if(textInputEmail.getError() == null && textInputPassword.getError() == null
-                && textInputConfirmPassword.getError() == null && textInputUsername.getError() == null){
+            String username = String.valueOf(editTextUsername.getText());
+            String email = String.valueOf(editTextEmail.getText());
+            String password = String.valueOf(editTextPassword.getText());
+            String confirmPassword = String.valueOf(editTextPassword.getText());
 
-                String email = String.valueOf(editTextEmail.getText());
-                String password = String.valueOf(editTextPassword.getText());
-                String username = String.valueOf(editTextUsername.getText());
+            if(userViewModel.checkUsername(username).equals("ok") &&
+                    userViewModel.checkEmail(email).equals("ok") &&
+                    userViewModel.checkPassword(password).equals("ok") &&
+                    userViewModel.checkConfirmPassword(password, confirmPassword).equals("ok")){
 
                 if(isUsernameOK && isEmailOK){
                     Log.d(this.getClass().getSimpleName(), "dentro all'if");
                     userViewModel.signUp(email, password, username).observe(getViewLifecycleOwner(), signUpObserver);
                 }
                 else if(!isUsernameOK){
-                    Snackbar.make(view, "Errore nella registrazione: nome utente già in uso",
+                    Snackbar.make(view, getString(R.string.usernameAlreadyInUse),
                             Snackbar.LENGTH_SHORT).show();
                 }
                 else {
-                    Snackbar.make(view, "Errore nella registrazione: email già in uso",
+                    Snackbar.make(view, getString(R.string.emailAlreadyInUse),
                             Snackbar.LENGTH_SHORT).show();
                 }
+            }
+            else{
+                Snackbar.make(view, getString(R.string.registrationFailed),
+                        Snackbar.LENGTH_SHORT).show();
             }
 
         });
