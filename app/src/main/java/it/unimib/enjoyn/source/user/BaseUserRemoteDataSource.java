@@ -18,5 +18,7 @@ public abstract class BaseUserRemoteDataSource {
 
     public abstract void createPropic(Uri propic);
 
-    public abstract void updateUserNameAndSurname(String name, String surname);
+    public abstract void createUserNameAndSurname(String name, String surname);
+
+    public abstract void createUserDescription(String description);
 }

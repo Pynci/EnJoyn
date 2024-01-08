@@ -16,6 +16,9 @@ public interface UserCallback {
     void onCreatePropicFailure(Exception exception);
     void onCreatePropicSuccess();
 
-    void onUpdateNameAndSurnameFailure(Exception exception);
-    void onUpdateNameAndSurnameSuccess();
+    void onCreateNameAndSurnameFailure(Exception exception);
+    void onCreateNameAndSurnameSuccess();
+
+    void onCreateDescriptionFailure(Exception exception);
+    void onCreateDescriptionSuccess();
 }

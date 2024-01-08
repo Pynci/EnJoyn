@@ -15,10 +15,14 @@ public interface IUserRepository {
     MutableLiveData<Result> sendEmailVerification();
 
     MutableLiveData<Result> getUserByUsername(String username);
+
     MutableLiveData<Result> getUserByEmail(String email);
 
     MutableLiveData<Result> getCurrentUser();
 
     MutableLiveData<Result> createPropic(Uri uri);
-    MutableLiveData<Result> updateNameAndSurname(String nome, String cognome);
+
+    MutableLiveData<Result> createNameAndSurname(String nome, String cognome);
+
+    MutableLiveData<Result> createUserDescription(String description);
 }

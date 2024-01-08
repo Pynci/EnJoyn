@@ -5,8 +5,6 @@ import android.net.Uri;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.enjoyn.model.Result;
@@ -14,8 +12,6 @@ import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserViewModel extends ViewModel {
-
-    private FirebaseAuth auth;
 
     private MutableLiveData<Result> userByUsernameResult;
     private MutableLiveData<Result> userByEmailResult;
@@ -25,18 +21,13 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<Result> emailVerificationSendingResult;
     private MutableLiveData<Result> setUserPropicResult;
     private MutableLiveData<Result> setUserNameAndSurnameResult;
+    private MutableLiveData<Result> setUserDescriptionResult;
 
     private final IUserRepository userRepository;
 
 
     public UserViewModel() {
-        auth = FirebaseAuth.getInstance();
         userRepository = ServiceLocator.getInstance().getUserRepository(false);
-        userByUsernameResult = new MutableLiveData<>();
-        userByEmailResult = new MutableLiveData<>();
-        signUpResult = new MutableLiveData<>();
-        signInResult = new MutableLiveData<>();
-        currentUserResult = new MutableLiveData<>();
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){
@@ -76,8 +67,13 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> setUserNameAndSurname(String nome, String cognome) {
-        setUserNameAndSurnameResult = userRepository.updateNameAndSurname(nome, cognome);
+        setUserNameAndSurnameResult = userRepository.createNameAndSurname(nome, cognome);
         return setUserNameAndSurnameResult;
+    }
+
+    public MutableLiveData<Result> setUserDescription(String description) {
+        setUserDescriptionResult = userRepository.createUserDescription(description);
+        return  setUserDescriptionResult;
     }
 
     public String checkEmail(String email) {

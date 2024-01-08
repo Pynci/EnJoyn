@@ -15,13 +15,14 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     private final UserRemoteDataSource userRemoteDataSource;
     private final AuthenticationDataSource authenticationDataSource;
-    private final MutableLiveData<Result> updateNameAndSurnameResult;
+    private final MutableLiveData<Result> createNameAndSurnameResult;
     private final MutableLiveData<Result> createPropicResult;
     private final MutableLiveData<Result> createUserResult;
     private final MutableLiveData<Result> signInResult;
     private final MutableLiveData<Result> userByUsernameResult;
     private final MutableLiveData<Result> userByEmailResult;
     private final MutableLiveData<Result> emailVerificationSendingResult;
+    private final MutableLiveData<Result> createUserDescriptionResult;
 
     public UserRepository(UserRemoteDataSource userRemoteDataSource, AuthenticationDataSource authenticationDataSource){
         this.userRemoteDataSource = userRemoteDataSource;
@@ -33,9 +34,10 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         userByUsernameResult = new MutableLiveData<>();
         userByEmailResult = new MutableLiveData<>();
         createPropicResult = new MutableLiveData<>();
-        updateNameAndSurnameResult = new MutableLiveData<>();
+        createNameAndSurnameResult = new MutableLiveData<>();
         emailVerificationSendingResult = new MutableLiveData<>();
         signInResult = new MutableLiveData<>();
+        createUserDescriptionResult = new MutableLiveData<>();
     }
 
     @Override
@@ -157,13 +159,23 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
-    public void onUpdateNameAndSurnameFailure(Exception exception) {
-        updateNameAndSurnameResult.postValue(new Result.Error(exception.getMessage()));
+    public void onCreateNameAndSurnameFailure(Exception exception) {
+        createNameAndSurnameResult.postValue(new Result.Error(exception.getMessage()));
     }
 
     @Override
-    public void onUpdateNameAndSurnameSuccess() {
-        updateNameAndSurnameResult.postValue(null);
+    public void onCreateNameAndSurnameSuccess() {
+        createNameAndSurnameResult.postValue(null);
+    }
+
+    @Override
+    public void onCreateDescriptionFailure(Exception exception) {
+        createUserDescriptionResult.postValue(new Result.Error(exception.getMessage()));
+    }
+
+    @Override
+    public void onCreateDescriptionSuccess() {
+        createUserDescriptionResult.postValue(null);
     }
 
     @Override
@@ -173,8 +185,14 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
-    public MutableLiveData<Result> updateNameAndSurname(String name, String surname) {
-        userRemoteDataSource.updateUserNameAndSurname(name, surname);
-        return updateNameAndSurnameResult;
+    public MutableLiveData<Result> createNameAndSurname(String name, String surname) {
+        userRemoteDataSource.createUserNameAndSurname(name, surname);
+        return createNameAndSurnameResult;
+    }
+
+    @Override
+    public MutableLiveData<Result> createUserDescription(String description) {
+        userRemoteDataSource.createUserDescription(description);
+        return createUserDescriptionResult;
     }
 }

@@ -13,6 +13,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.util.Constants;
@@ -124,15 +125,32 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void updateUserNameAndSurname(String name, String surname) {
+    public void createUserNameAndSurname(String name, String surname) {
 
-        Map<String, String> updateMap = new HashMap<>();
+        Map<String, Object> updateMap = new HashMap<>();
 
         updateMap.put("nome", name);
         updateMap.put("cognome", surname);
 
         DatabaseReference userReference = dbReference
-                .child(Constants.USERS_PATH);
+                .child(Constants.USERS_PATH)
+                .child(auth.getUid());
 
+        userReference.updateChildren(updateMap);
     }
+
+    @Override
+    public void createUserDescription(String description) {
+
+        Map<String, Object> updateMap = new HashMap<>();
+
+        updateMap.put("descrizione", description);
+
+        DatabaseReference userReference = dbReference
+                .child(Constants.USERS_PATH)
+                .child(auth.getUid());
+
+        userReference.updateChildren(updateMap);
+    }
+
 }
