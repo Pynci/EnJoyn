@@ -3,8 +3,6 @@ package it.unimib.enjoyn.source.user;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import it.unimib.enjoyn.model.User;
-
 public class AuthenticationDataSource extends BaseAuthenticationDataSource{
 
     private final FirebaseAuth auth;
@@ -23,7 +21,7 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
                         authenticationCallback.onSignUpSuccess(fbUser.getUid(), email, username);
 
                     } else {
-                        authenticationCallback.onSignUpFailure(task.getException());
+                        authenticationCallback.onAuthOperationFailure(task.getException());
                     }
                 });
     }
@@ -34,10 +32,10 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         fbUser = auth.getCurrentUser();
-                        authenticationCallback.onSignInSuccess();
+                        authenticationCallback.onAuthOperationSuccess();
                     }
                     else{
-                        authenticationCallback.onSignInFailure(task.getException());
+                        authenticationCallback.onAuthOperationFailure(task.getException());
                     }
                 });
     }
@@ -53,10 +51,10 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     public void sendEmailVerification() {
         fbUser.sendEmailVerification().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                authenticationCallback.onEmailVerificationSendingSuccess();
+                authenticationCallback.onAuthOperationSuccess();
             }
             else{
-                authenticationCallback.onEmailVerificationSendingFailure(task.getException());
+                authenticationCallback.onAuthOperationFailure(task.getException());
             }
         });
     }

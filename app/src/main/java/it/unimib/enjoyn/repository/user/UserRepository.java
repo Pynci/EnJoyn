@@ -15,14 +15,12 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     private final UserRemoteDataSource userRemoteDataSource;
     private final AuthenticationDataSource authenticationDataSource;
-    private final MutableLiveData<Result> createNameAndSurnameResult;
-    private final MutableLiveData<Result> createPropicResult;
-    private final MutableLiveData<Result> createUserResult;
-    private final MutableLiveData<Result> signInResult;
+
     private final MutableLiveData<Result> userByUsernameResult;
     private final MutableLiveData<Result> userByEmailResult;
-    private final MutableLiveData<Result> emailVerificationSendingResult;
-    private final MutableLiveData<Result> createUserDescriptionResult;
+
+    private final MutableLiveData<Result> resultFromRemote;
+    private final MutableLiveData<Result> resultFromAuth;
 
     public UserRepository(UserRemoteDataSource userRemoteDataSource, AuthenticationDataSource authenticationDataSource){
         this.userRemoteDataSource = userRemoteDataSource;
@@ -30,32 +28,21 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         userRemoteDataSource.setUserCallback(this);
         authenticationDataSource.setAuthenticationCallback(this);
 
-        createUserResult = new MutableLiveData<>();
         userByUsernameResult = new MutableLiveData<>();
         userByEmailResult = new MutableLiveData<>();
-        createPropicResult = new MutableLiveData<>();
-        createNameAndSurnameResult = new MutableLiveData<>();
-        emailVerificationSendingResult = new MutableLiveData<>();
-        signInResult = new MutableLiveData<>();
-        createUserDescriptionResult = new MutableLiveData<>();
+
+        resultFromRemote = new MutableLiveData<>();
+        resultFromAuth = new MutableLiveData<>();
     }
 
+
+    /*
+    Operazioni di manipolazione dei dati (create, get, read, update)
+     */
     @Override
     public MutableLiveData<Result> createUser(String email, String password, String username) {
         authenticationDataSource.signUp(email, password, username);
-        return createUserResult;
-    }
-
-    @Override
-    public MutableLiveData<Result> signIn(String email, String password){
-        authenticationDataSource.signIn(email, password);
-        return signInResult;
-    }
-
-    @Override
-    public MutableLiveData<Result> sendEmailVerification(){
-        authenticationDataSource.sendEmailVerification();
-        return emailVerificationSendingResult;
+        return resultFromRemote;
     }
 
     @Override
@@ -71,58 +58,86 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
+    public MutableLiveData<Result> createPropic(Uri uri) {
+        userRemoteDataSource.createPropic(uri);
+        return resultFromRemote;
+    }
+
+    @Override
+    public MutableLiveData<Result> createNameAndSurname(String name, String surname) {
+        userRemoteDataSource.createUserNameAndSurname(name, surname);
+        return resultFromRemote;
+    }
+
+    @Override
+    public MutableLiveData<Result> createUserDescription(String description) {
+        userRemoteDataSource.createUserDescription(description);
+        return resultFromRemote;
+    }
+
+    /*
+    Operazioni di manipolazione dell'utente di firebase
+     */
+
+    @Override
+    public MutableLiveData<Result> signIn(String email, String password){
+        authenticationDataSource.signIn(email, password);
+        return resultFromAuth;
+    }
+
+    @Override
+    public MutableLiveData<Result> sendEmailVerification(){
+        authenticationDataSource.sendEmailVerification();
+        return resultFromAuth;
+    }
+
+    @Override
     public MutableLiveData<Result> getCurrentUser(){
         // TODO: risolvere bug qui (qualcosa di asincrono si smerda)
         userRemoteDataSource.getUserByEmail(authenticationDataSource.getCurrentUserEmail());
-        return userByEmailResult;
+        return resultFromAuth;
+    }
+
+    /*
+    Callback
+     */
+
+    @Override
+    public void onSuccessFormRemote() {
+        resultFromRemote.postValue(new Result.Success());
+    }
+
+    @Override
+    public void onFailureFromRemote(Exception exception) {
+        resultFromRemote.postValue(new Result.Error(exception.getMessage()));
+    }
+
+
+    @Override
+    public void onAuthOperationSuccess() {
+        resultFromAuth.postValue(new Result.Success());
+    }
+
+    @Override
+    public void onAuthOperationFailure(Exception exception) {
+        resultFromAuth.postValue(new Result.Error(exception.getMessage()));
     }
 
 
     /*
-    La creazione di un nuovo utente è andata a buon fine se:
-    - l'inserimento nel sistema di autenticazione ha avuto successo
-    - l'inserimento nel database ha avuto successo
+    Le tue annotazioni + le callback che ti devi smazzare tu
      */
+    /*
+        La creazione di un nuovo utente è andata a buon fine se:
+        - l'inserimento nel sistema di autenticazione ha avuto successo
+        - l'inserimento nel database ha avuto successo
+     */
+
+
     @Override
     public void onSignUpSuccess(String uid, String email, String username) {
         userRemoteDataSource.storeUser(uid, email, username);
     }
-
-    @Override
-    public void onSignUpFailure(Exception exception) {
-        createUserResult.postValue(new Result.Error(exception.getMessage()));
-    }
-
-    @Override
-    public void onStoreUserSuccess(){
-        createUserResult.postValue(new Result.Success());
-    }
-
-    @Override
-    public void onStoreUserFailure(Exception exception) {
-        createUserResult.postValue(new Result.Error(exception.getMessage()));
-    }
-
-    @Override
-    public void onSignInSuccess() {
-        signInResult.postValue(new Result.Success());
-    }
-
-    @Override
-    public void onSignInFailure(Exception exception) {
-        signInResult.postValue(new Result.Error(exception.getMessage()));
-    }
-
-    @Override
-    public void onEmailVerificationSendingSuccess() {
-        emailVerificationSendingResult.postValue(new Result.Success());
-    }
-
-    @Override
-    public void onEmailVerificationSendingFailure(Exception exception) {
-        emailVerificationSendingResult.postValue(new Result.Error(exception.getMessage()));
-    }
-
 
     @Override
     public void onGetUserByUsernameSuccess(User user){
@@ -144,55 +159,4 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         userByEmailResult.postValue(new Result.Error(exception.getMessage()));
     }
 
-
-    /*
-    TODO: Da testare e controllare che siano implementati correttamente
-     */
-    @Override
-    public void onCreatePropicFailure(Exception exception) {
-        createPropicResult.postValue(new Result.Error(exception.getMessage()));
-    }
-
-    @Override
-    public void onCreatePropicSuccess() {
-        createPropicResult.postValue(null);
-    }
-
-    @Override
-    public void onCreateNameAndSurnameFailure(Exception exception) {
-        createNameAndSurnameResult.postValue(new Result.Error(exception.getMessage()));
-    }
-
-    @Override
-    public void onCreateNameAndSurnameSuccess() {
-        createNameAndSurnameResult.postValue(null);
-    }
-
-    @Override
-    public void onCreateDescriptionFailure(Exception exception) {
-        createUserDescriptionResult.postValue(new Result.Error(exception.getMessage()));
-    }
-
-    @Override
-    public void onCreateDescriptionSuccess() {
-        createUserDescriptionResult.postValue(null);
-    }
-
-    @Override
-    public MutableLiveData<Result> createPropic(Uri uri) {
-        userRemoteDataSource.createPropic(uri);
-        return createPropicResult;
-    }
-
-    @Override
-    public MutableLiveData<Result> createNameAndSurname(String name, String surname) {
-        userRemoteDataSource.createUserNameAndSurname(name, surname);
-        return createNameAndSurnameResult;
-    }
-
-    @Override
-    public MutableLiveData<Result> createUserDescription(String description) {
-        userRemoteDataSource.createUserDescription(description);
-        return createUserDescriptionResult;
-    }
 }

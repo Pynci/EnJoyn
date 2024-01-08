@@ -13,7 +13,6 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.util.Constants;
@@ -43,10 +42,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .setValue(userMap)
                 .addOnCompleteListener( result -> {
                     if(result.isSuccessful()){
-                        userCallback.onStoreUserSuccess();
+                        userCallback.onSuccessFormRemote();
                     }
                     else{
-                        userCallback.onStoreUserFailure(result.getException());
+                        userCallback.onFailureFromRemote(result.getException());
                     }
                 });
     }
@@ -102,9 +101,6 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 });
     }
 
-    /*
-    TODO: Da testare e controllare che sia stato implementato correttamente
-     */
     @Override
     public void createPropic(Uri propic) {
 
@@ -116,14 +112,17 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         uploadTask.addOnCompleteListener(task -> {
 
             if (!task.isSuccessful()) {
-                userCallback.onCreatePropicFailure(task.getException());
+                userCallback.onFailureFromRemote(task.getException());
             }
             else{
-                userCallback.onCreatePropicSuccess();
+                userCallback.onSuccessFormRemote();
             }
         });
     }
 
+    /*
+    TODO: Da testare e controllare che sia stato implementato correttamente
+     */
     @Override
     public void createUserNameAndSurname(String name, String surname) {
 
