@@ -95,7 +95,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     public MutableLiveData<Result> getCurrentUser(){
         // TODO: risolvere bug qui (qualcosa di asincrono si smerda)
         userRemoteDataSource.getUserByEmail(authenticationDataSource.getCurrentUserEmail());
-        return resultFromAuth;
+        return userByEmailResult;
     }
 
     /*
