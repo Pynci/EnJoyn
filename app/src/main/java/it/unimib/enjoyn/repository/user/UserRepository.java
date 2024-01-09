@@ -125,7 +125,8 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
 
     /*
-    Le tue annotazioni + le callback che ti devi smazzare tu
+    TODO: smazzarsi e compattare le callback sottostanti (se possibile)
+    Le tue annotazioni + le callback
      */
     /*
         La creazione di un nuovo utente è andata a buon fine se:

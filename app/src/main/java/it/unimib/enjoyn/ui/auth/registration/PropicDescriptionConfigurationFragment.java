@@ -27,6 +27,8 @@ import android.widget.ImageButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
+
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.UserViewModel;
@@ -36,9 +38,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     public static final String TAG = PropicDescriptionConfigurationFragment.class.getSimpleName();
     private UserViewModel userViewModel;
     private Uri currentURI;
-    private Observer<Result> userImageResultObserver;
-    private Observer<Result> userNameSurnameObserver;
-    private Observer<Result> descriptionObserver;
+    private Observer<Result> observerAddOptionalData;
 
     public PropicDescriptionConfigurationFragment() {
 
@@ -80,21 +80,25 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
         TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
 
-        userImageResultObserver = result -> {
-            if (result == null) {
+        observerAddOptionalData = result -> {
 
-            }
-        };
+            if(result instanceof Result.ResultList) {
 
-        userNameSurnameObserver = result -> {
-            if (result == null) {
+                boolean allSuccessfull = true;
+                List<Result> resultList = ((Result.ResultList) result).getResults();
 
-            }
-        };
+                for(int i = 0; i < resultList.size(); i++) {
 
-        descriptionObserver = result -> {
-            if (result == null) {
+                    if (!resultList.get(i).isSuccessful()) {
 
+                        allSuccessfull = false;
+                    }
+                }
+
+                if (allSuccessfull) {
+                    Navigation.findNavController(view)
+                            .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
+                }
             }
         };
 
@@ -110,15 +114,9 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
 
         buttonNext.setOnClickListener(v -> {
 
-            if (currentURI != null)
-                userViewModel.setUserPropic(currentURI).observe(this.getViewLifecycleOwner(), userImageResultObserver);
-            if(!nome.getText().toString().equals("") && !cognome.getText().toString().equals(""))
-                userViewModel
-                        .setUserNameAndSurname(nome.getText().toString(), cognome.getText().toString())
-                        .observe(this.getViewLifecycleOwner(), userNameSurnameObserver);
-
-            Navigation.findNavController(view)
-                    .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
+            userViewModel.setOptionalUserParameters(nome.getText().toString(), cognome.getText().toString(),
+                    description.getText().toString(), currentURI)
+                    .observe(this.getViewLifecycleOwner(), observerAddOptionalData);
         });
 
         imageButtonAddPropic.setOnClickListener(v -> {

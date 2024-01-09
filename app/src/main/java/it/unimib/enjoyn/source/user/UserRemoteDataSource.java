@@ -2,6 +2,10 @@ package it.unimib.enjoyn.source.user;
 
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -135,7 +139,13 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .child(Constants.USERS_PATH)
                 .child(auth.getUid());
 
-        userReference.updateChildren(updateMap);
+        userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
+
+            if(task.isSuccessful())
+                userCallback.onSuccessFormRemote();
+            else
+                userCallback.onFailureFromRemote(task.getException());
+        });
     }
 
     @Override
@@ -149,7 +159,13 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .child(Constants.USERS_PATH)
                 .child(auth.getUid());
 
-        userReference.updateChildren(updateMap);
+        userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
+
+            if(task.isSuccessful())
+                userCallback.onSuccessFormRemote();
+            else
+                userCallback.onFailureFromRemote(task.getException());
+        });
     }
 
 }

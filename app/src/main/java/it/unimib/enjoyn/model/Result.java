@@ -2,6 +2,9 @@ package it.unimib.enjoyn.model;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Result {
     private Result(){
 
@@ -37,6 +40,23 @@ public abstract class Result {
 
         public String getMessage(){
             return message;
+        }
+    }
+
+    public static final class ResultList extends Result {
+
+        private final List<Result> messages;
+
+        public ResultList() {
+            messages = new ArrayList<>();
+        }
+
+        public void addResult(Result result) {
+            messages.add(result);
+        }
+
+        public List<Result> getResults() {
+            return messages;
         }
     }
 }

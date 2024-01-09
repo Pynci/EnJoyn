@@ -3,9 +3,12 @@ package it.unimib.enjoyn.ui;
 import android.net.Uri;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import org.apache.commons.validator.routines.EmailValidator;
+
+import javax.annotation.Nullable;
 
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -23,8 +26,9 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<Result> setUserNameAndSurnameResult;
     private MutableLiveData<Result> setUserDescriptionResult;
 
-    private final IUserRepository userRepository;
+    private MutableLiveData<Result> setUserOptionalParametersResult;
 
+    private final IUserRepository userRepository;
 
     public UserViewModel() {
         userRepository = ServiceLocator.getInstance().getUserRepository(false);
@@ -66,14 +70,34 @@ public class UserViewModel extends ViewModel {
         return setUserPropicResult;
     }
 
-    public MutableLiveData<Result> setUserNameAndSurname(String nome, String cognome) {
-        setUserNameAndSurnameResult = userRepository.createNameAndSurname(nome, cognome);
+    public MutableLiveData<Result> setUserNameAndSurname(String name, String surname) {
+        setUserNameAndSurnameResult = userRepository.createNameAndSurname(name, surname);
         return setUserNameAndSurnameResult;
     }
 
     public MutableLiveData<Result> setUserDescription(String description) {
         setUserDescriptionResult = userRepository.createUserDescription(description);
-        return  setUserDescriptionResult;
+        return setUserDescriptionResult;
+    }
+
+    public MutableLiveData<Result> setOptionalUserParameters(String name, String surname,
+                                                             String description, Uri uri) {
+
+
+        Result.ResultList allresults = new Result.ResultList();
+
+        if(name != null && surname != null && !name.equals("") && !surname.equals("")) {
+            setUserNameAndSurname(name, surname).observeForever(allresults::addResult);
+        }
+        if(description != null && !description.equals("")) {
+            setUserDescription(description).observeForever(allresults::addResult);
+        }
+        if(uri != null) {
+            setUserPropic(uri).observeForever(allresults::addResult);
+        }
+
+        setUserOptionalParametersResult = new MutableLiveData<>(allresults);
+        return setUserOptionalParametersResult;
     }
 
     public String checkEmail(String email) {
