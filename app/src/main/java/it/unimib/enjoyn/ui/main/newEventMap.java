@@ -5,6 +5,7 @@ import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
 import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
 import android.Manifest;
+import android.app.BroadcastOptions;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -369,6 +370,10 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                 newEventButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("LOCATION",location);
+                        getParentFragmentManager().setFragmentResult("LOCATION_BUNDLE", bundle);
+
 
                         //newEvent.setPlaceName(location.getName());
                         //newEvent.setPlace(location.getLatitudeToString());
@@ -438,8 +443,6 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
 
     public void addOnMapClickListener(OnMapClickListener listener) {
         listener.onMapClick(point);
-
-
     }
 
     @Override

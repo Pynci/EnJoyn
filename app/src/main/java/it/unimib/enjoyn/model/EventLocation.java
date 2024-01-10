@@ -1,6 +1,9 @@
 package it.unimib.enjoyn.model;
 
-public class EventLocation {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class EventLocation implements Parcelable {
     String id, name;
     double longitude, latitude;
 
@@ -39,4 +42,47 @@ public class EventLocation {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.name);
+        dest.writeDouble(this.longitude);
+        dest.writeDouble(this.latitude);
+    }
+
+    public void readFromParcel(Parcel source) {
+        this.id = source.readString();
+        this.name = source.readString();
+        this.longitude = source.readDouble();
+        this.latitude = source.readDouble();
+    }
+
+    public EventLocation() {
+    }
+
+    protected EventLocation(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.longitude = in.readDouble();
+        this.latitude = in.readDouble();
+    }
+
+    public static final Parcelable.Creator<EventLocation> CREATOR = new Parcelable.Creator<EventLocation>() {
+        @Override
+        public EventLocation createFromParcel(Parcel source) {
+            return new EventLocation(source);
+        }
+
+        @Override
+        public EventLocation[] newArray(int size) {
+            return new EventLocation[size];
+        }
+    };
 }

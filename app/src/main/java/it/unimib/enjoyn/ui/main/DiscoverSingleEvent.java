@@ -112,7 +112,7 @@ public class DiscoverSingleEvent extends Fragment {
         }else{
             fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.Join);
         }
-
+        //DiscoverSingleEventArgs.fromBundle(getArguments()).getEvent().setDistance(44.44);
 
     }
 }

@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
@@ -45,6 +46,7 @@ import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.WeatherCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
+import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,6 +76,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     private Weather weatherAPIdata;
 
     Event newEvent;
+    private FragmentNewEventBinding fragmentNewEventBinding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -87,6 +90,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     public NewEventFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -121,7 +125,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                              Bundle savedInstanceState) {
         getViewLifecycleOwner();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_event, container, false);
+        fragmentNewEventBinding = FragmentNewEventBinding.inflate(inflater, container, false);
+        return fragmentNewEventBinding.getRoot();
     }
 
     @Override
@@ -157,14 +162,18 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         //iMeteoRepository.fetchMeteo("52.52", "13.41");
         //weatherAPIdata = getMeteoListWithGSon();
         //showWeatherOnNewEvent(requireView());
+
         place = view.findViewById(R.id.fragmentNewEvent_imageButton_pickPlace);
         place.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
-                NewEventFragmentDirections.ActionNewEventFragmentToNewEventMap action =
+                Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
+                /*NewEventFragmentDirections.ActionNewEventFragmentToNewEventMap action =
                         NewEventFragmentDirections.actionNewEventFragmentToNewEventMap(newEvent);
                 Navigation.findNavController(view).navigate(action);
+
+                 */
+
             }
         });
     }
@@ -179,6 +188,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         temperatura = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
+
         FragmentManager fragmentManager = getParentFragmentManager();
 
         // on below line we are adding click listener for our pick date button
@@ -189,10 +199,12 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 // the instance of our calendar.
                 final Calendar c = Calendar.getInstance();
 
+                /*
                 TextView luogo = view.findViewById(R.id.textViewProvaLuogo);
                 Log.d("API weather", newEvent.getPlaceName());
                 Log.d("API weather", newEvent.getPlace());
                 luogo.setText(newEvent.getPlaceName() + " e " + newEvent.getPlace());
+                 */
 
                 // on below line we are getting
                 // our day, month and year.
@@ -216,7 +228,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 if(monthOfYear<=9)
                                     monthOfYearString= "0" + monthOfYearString;
                                 dateWeather = year + "-" + monthOfYearString + "-" +dayOfMonthString ;
-                                selectedDate.setText(dateWeather);
+                                fragmentNewEventBinding.fragmentNewEventTextViewDate.setText(dateWeather);
                                 equals = false;
                                 for( int i = 0;i < dateArray.length && !equals ; i+=96){
                                     boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
@@ -230,15 +242,16 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                    indexDate += 96;
                                }*/
                                 if(!equals){
-                                    weather.setText("weather non disponibile, troppo lontano , accuratezza di 16 giorni");
-                                    temperatura.setText("");
-                                    weatherIcon.setBackgroundResource(0);
+                                    fragmentNewEventBinding.weather.setText("meteo non disponibile, troppo lontano , accuratezza di 16 giorni");
+                                    fragmentNewEventBinding.temperatura.setText("");
+                                    fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon.setBackgroundResource(0);
+                                    //weatherIcon.setBackgroundResource(0);
                                 }
                                 else {
                                     if (indexHour >= 0 && indexMinute >= 0) {
                                         String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
-                                        weather.setText(code);
-                                        temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute));
+                                        fragmentNewEventBinding.weather.setText(code);
+                                        fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute));
                                         setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                     }
                                 }
@@ -279,7 +292,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                                   int minute) {
                                 // on below line we are setting selected time
                                 // in our text view.
-                                selectedTime.setText(hourOfDay + ":" + minute);
+                                fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(hourOfDay + ":" + minute);
                                 hourWeather = hourOfDay + ":" + minute;
                                 indexHour = hourOfDay*4;
                                 indexMinute = minute/15;
@@ -291,11 +304,11 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 //assert meteoList.get(0) != null;
                                 assert weatherAPIdata.getHour()[indexHour] != null;
                                 if(equals){
-                                    double temp= temperatureArray[indexDate+indexHour+indexMinute];
+                                    double temp = temperatureArray[indexDate+indexHour+indexMinute];
                                     String code = weatherAPIdata.getWeather_codeString(indexDate+indexHour+indexMinute);
-                                    weather.setText(code);
-                                    temperatura.setText(weatherAPIdata.getTemperatureString(indexDate+indexHour+indexMinute));
-                                    setWeatherIcon(weatherIcon, Integer.parseInt(code));
+                                    fragmentNewEventBinding.weather.setText(code);
+                                    fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate+indexHour+indexMinute));
+                                    setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, Integer.parseInt(code));
                                 }
                             }
                         }, hour, minute, false);
