@@ -93,7 +93,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public MutableLiveData<Result> getCurrentUser(){
-        // TODO: risolvere bug qui (qualcosa di asincrono si smerda)
         userRemoteDataSource.getUserByEmail(authenticationDataSource.getCurrentUserEmail());
         return userByEmailResult;
     }
@@ -103,7 +102,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
      */
 
     @Override
-    public void onSuccessFormRemote() {
+    public void onSuccessFromRemote() {
         resultFromRemote.postValue(new Result.Success());
     }
 
@@ -123,22 +122,20 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         resultFromAuth.postValue(new Result.Error(exception.getMessage()));
     }
 
-
-    /*
-    TODO: smazzarsi e compattare le callback sottostanti (se possibile)
-    Le tue annotazioni + le callback
-     */
     /*
         La creazione di un nuovo utente è andata a buon fine se:
         - l'inserimento nel sistema di autenticazione ha avuto successo
         - l'inserimento nel database ha avuto successo
      */
-
-
     @Override
     public void onSignUpSuccess(String uid, String email, String username) {
         userRemoteDataSource.storeUser(uid, email, username);
     }
+
+    /*
+    TODO: smazzarsi e compattare le callback sottostanti (se possibile)
+    Le tue annotazioni + le callback
+     */
 
     @Override
     public void onGetUserByUsernameSuccess(User user){
@@ -146,18 +143,8 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
-    public void onGetUserByUsernameFailure(Exception exception){
-        userByUsernameResult.postValue(new Result.Error(exception.getMessage()));
-    }
-
-    @Override
     public void onGetUserByEmailSuccess(User user) {
         userByEmailResult.postValue(new Result.UserResponseSuccess(user));
-    }
-
-    @Override
-    public void onGetUserByEmailFailure(Exception exception) {
-        userByEmailResult.postValue(new Result.Error(exception.getMessage()));
     }
 
 }

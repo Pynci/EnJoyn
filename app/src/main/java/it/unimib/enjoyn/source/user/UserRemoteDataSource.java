@@ -2,10 +2,6 @@ package it.unimib.enjoyn.source.user;
 
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -46,7 +42,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .setValue(userMap)
                 .addOnCompleteListener( result -> {
                     if(result.isSuccessful()){
-                        userCallback.onSuccessFormRemote();
+                        userCallback.onSuccessFromRemote();
                     }
                     else{
                         userCallback.onFailureFromRemote(result.getException());
@@ -77,7 +73,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         }
                     }
                     else{
-                        userCallback.onGetUserByUsernameFailure(task.getException());
+                        userCallback.onFailureFromRemote(task.getException());
                     }
                 });
     }
@@ -100,7 +96,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         }
                     }
                     else{
-                        userCallback.onGetUserByEmailFailure(task.getException());
+                        userCallback.onFailureFromRemote(task.getException());
                     }
                 });
     }
@@ -119,7 +115,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 userCallback.onFailureFromRemote(task.getException());
             }
             else{
-                userCallback.onSuccessFormRemote();
+                userCallback.onSuccessFromRemote();
             }
         });
     }
@@ -142,7 +138,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
 
             if(task.isSuccessful())
-                userCallback.onSuccessFormRemote();
+                userCallback.onSuccessFromRemote();
             else
                 userCallback.onFailureFromRemote(task.getException());
         });
@@ -162,7 +158,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
 
             if(task.isSuccessful())
-                userCallback.onSuccessFormRemote();
+                userCallback.onSuccessFromRemote();
             else
                 userCallback.onFailureFromRemote(task.getException());
         });
