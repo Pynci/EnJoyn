@@ -13,18 +13,6 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserViewModel extends ViewModel {
 
-    private MutableLiveData<Result> userByUsernameResult;
-    private MutableLiveData<Result> userByEmailResult;
-    private MutableLiveData<Result> currentUserResult;
-    private MutableLiveData<Result> signUpResult;
-    private MutableLiveData<Result> signInResult;
-    private MutableLiveData<Result> emailVerificationSendingResult;
-    private MutableLiveData<Result> setUserPropicResult;
-    private MutableLiveData<Result> setUserNameAndSurnameResult;
-    private MutableLiveData<Result> setUserDescriptionResult;
-    private MutableLiveData<Result> setUserOptionalParametersResult;
-    private MutableLiveData<Result> resetPasswordEmailSendResult;
-
     private final IUserRepository userRepository;
 
     public UserViewModel() {
@@ -32,49 +20,44 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){
-        signUpResult = userRepository.createUser(email, password, username);
-        return signUpResult;
+        return userRepository.createUser(email, password, username);
     }
 
     public MutableLiveData<Result> sendEmailVerification(){
-        emailVerificationSendingResult = userRepository.sendEmailVerification();
-        return emailVerificationSendingResult;
+        return userRepository.sendEmailVerification();
     }
 
     public MutableLiveData<Result> signIn(String email, String password){
-        signInResult = userRepository.signIn(email, password);
-        return signInResult;
+        return userRepository.signIn(email, password);
     }
 
 
     public MutableLiveData<Result> getUserByUsername(String username){
-        userByUsernameResult = userRepository.getUserByUsername(username);
-        return userByUsernameResult;
+        return userRepository.getUserByUsername(username);
     }
 
     public MutableLiveData<Result> getUserByEmail(String email){
-        userByEmailResult = userRepository.getUserByEmail(email);
-        return userByEmailResult;
+        return userRepository.getUserByEmail(email);
     }
 
     public MutableLiveData<Result> getCurrentUser(){
-        currentUserResult = userRepository.getCurrentUser();
-        return currentUserResult;
+        return userRepository.getCurrentUser();
+    }
+
+    public Result isCurrentUserEmailVerified(){
+        return userRepository.isCurrentUserEmailVerified();
     }
 
     public MutableLiveData<Result> setUserPropic(Uri uri) {
-        setUserPropicResult = userRepository.createPropic(uri);
-        return setUserPropicResult;
+        return userRepository.createPropic(uri);
     }
 
     public MutableLiveData<Result> setUserNameAndSurname(String name, String surname) {
-        setUserNameAndSurnameResult = userRepository.updateNameAndSurname(name, surname);
-        return setUserNameAndSurnameResult;
+        return userRepository.updateNameAndSurname(name, surname);
     }
 
     public MutableLiveData<Result> setUserDescription(String description) {
-        setUserDescriptionResult = userRepository.updateDescription(description);
-        return setUserDescriptionResult;
+        return userRepository.updateDescription(description);
     }
 
     public MutableLiveData<Result> setOptionalUserParameters(String name, String surname,
@@ -93,13 +76,11 @@ public class UserViewModel extends ViewModel {
             setUserPropic(uri).observeForever(allresults::addResult);
         }
 
-        setUserOptionalParametersResult = new MutableLiveData<>(allresults);
-        return setUserOptionalParametersResult;
+        return new MutableLiveData<>(allresults);
     }
 
     public MutableLiveData<Result> sendResetPasswordEmail(String email) {
-        resetPasswordEmailSendResult = userRepository.sendResetPasswordEmail(email);
-        return resetPasswordEmailSendResult;
+        return userRepository.sendResetPasswordEmail(email);
     }
 
     public String checkEmail(String email) {

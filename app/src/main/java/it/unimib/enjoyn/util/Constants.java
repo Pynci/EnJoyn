@@ -15,9 +15,8 @@ public class Constants {
     // Constants for encrypted files
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.enjoyn.encrypted_file.txt";
 
-    //Costants for paths in the firebase DB
+    // Costants for paths in the firebase DB
     public static final String DATABASE_PATH = "https://enjoyn-9adca-default-rtdb.europe-west1.firebasedatabase.app/";
     public static final String STORAGE_PATH = "gs://enjoyn-9adca.appspot.com";
     public static final String USERS_PATH = "users";
-    public static final String AUTHENTICATION_ERROR = "authentication_failed";
 }

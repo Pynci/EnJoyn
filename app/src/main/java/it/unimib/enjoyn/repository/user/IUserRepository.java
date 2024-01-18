@@ -10,6 +10,8 @@ public interface IUserRepository {
 
     MutableLiveData<Result> createUser(String email, String password, String username);
 
+    Result isCurrentUserEmailVerified();
+
     MutableLiveData<Result> signIn(String email, String password);
 
     MutableLiveData<Result> sendEmailVerification();

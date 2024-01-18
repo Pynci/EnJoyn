@@ -10,6 +10,7 @@ import it.unimib.enjoyn.source.user.AuthenticationCallback;
 import it.unimib.enjoyn.source.user.AuthenticationDataSource;
 import it.unimib.enjoyn.source.user.UserCallback;
 import it.unimib.enjoyn.source.user.UserRemoteDataSource;
+import it.unimib.enjoyn.util.Errors;
 
 public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback {
 
@@ -73,6 +74,16 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     public MutableLiveData<Result> updateDescription(String description) {
         userRemoteDataSource.updateDescription(authenticationDataSource.getCurrentUserUID(), description);
         return resultFromRemote;
+    }
+
+    @Override
+    public Result isCurrentUserEmailVerified(){
+        Boolean value  = authenticationDataSource.isCurrentUserEmailVerified();
+        if(value != null){
+            return new Result.BooleanSuccess(value);
+        }
+        else
+            return new Result.Error(Errors.EMAILVERIFICATION_CHECK_FAILURE);
     }
 
     /*

@@ -14,6 +14,8 @@ public abstract class BaseAuthenticationDataSource {
 
     public abstract String getCurrentUserUID();
 
+    public abstract Boolean isCurrentUserEmailVerified();
+
     public abstract void sendEmailVerification();
     public abstract void sendResetPasswordEmail(String email);
 }

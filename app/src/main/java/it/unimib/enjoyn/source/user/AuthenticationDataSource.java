@@ -1,9 +1,5 @@
 package it.unimib.enjoyn.source.user;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -55,6 +51,13 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     public String getCurrentUserUID(){
         if(fbUser != null)
             return fbUser.getUid();
+        return null;
+    }
+
+    @Override
+    public Boolean isCurrentUserEmailVerified(){
+        if(fbUser != null)
+            return fbUser.isEmailVerified();
         return null;
     }
 

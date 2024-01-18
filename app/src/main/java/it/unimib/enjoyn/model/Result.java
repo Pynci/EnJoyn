@@ -1,7 +1,5 @@
 package it.unimib.enjoyn.model;
 
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +10,13 @@ public abstract class Result {
 
     public boolean isSuccessful() {
         return this instanceof UserResponseSuccess
-                || this instanceof Success;
+                || this instanceof Success
+                || this instanceof BooleanSuccess;
+    }
+
+
+    public static final class Success extends Result{
+        //class representing a generic Success of an operation
     }
 
     public static final class UserResponseSuccess extends Result {
@@ -27,8 +31,16 @@ public abstract class Result {
         }
     }
 
-    public static final class Success extends Result{
-        //class representing a generic Success of an operation
+    public static final class BooleanSuccess extends Result{
+        private final boolean value;
+
+        public BooleanSuccess(boolean value) {
+            this.value = value;
+        }
+
+        public boolean getData(){
+            return value;
+        }
     }
 
     public static final class Error extends Result {

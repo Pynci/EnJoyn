@@ -71,23 +71,41 @@ public class LoginFragment extends Fragment {
         signInObserver = result -> {
             if(result.isSuccessful()){
 
-                userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), userResult -> {
-                    if(userResult.isSuccessful()){
-                        User currentUser = ((Result.UserResponseSuccess) userResult).getData();
+                Result emailVerification = userViewModel.isCurrentUserEmailVerified();
+                if(emailVerification.isSuccessful()){
+                    boolean isEmailVerified = ((Result.BooleanSuccess) emailVerification).getData();
+                    if(isEmailVerified){
                         Navigation
                                 .findNavController(view)
-                                .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
-                        Snackbar.make(view, "(TEST) Login effettuato, mail: "
-                                                + currentUser.getEmail(),
-                                        Snackbar.LENGTH_SHORT)
-                                .show();
+                                .navigate(R.id.action_loginFragment_to_mainButtonMenuActivity);
                     }
                     else{
-                        Snackbar.make(view, "errore stranissimo pazzurdo",
-                                        Snackbar.LENGTH_SHORT)
-                                .show();
+                        Navigation
+                                .findNavController(view)
+                                .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
                     }
-                });
+                }
+                else{
+                    Snackbar.make(view, "errore matto in culo", Snackbar.LENGTH_SHORT).show();
+                }
+
+//                userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), userResult -> {
+//                    if(userResult.isSuccessful()){
+//                        User currentUser = ((Result.UserResponseSuccess) userResult).getData();
+//                        Navigation
+//                                .findNavController(view)
+//                                .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
+//                        Snackbar.make(view, "(TEST) Login effettuato, mail: "
+//                                                + currentUser.getEmail(),
+//                                        Snackbar.LENGTH_SHORT)
+//                                .show();
+//                    }
+//                    else{
+//                        Snackbar.make(view, "errore stranissimo pazzurdo",
+//                                        Snackbar.LENGTH_SHORT)
+//                                .show();
+//                    }
+//                });
             }
             else{
                 Snackbar.make(view, getString(R.string.authenticationFailed),
