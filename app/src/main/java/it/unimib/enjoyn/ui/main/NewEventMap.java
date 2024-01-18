@@ -5,7 +5,6 @@ import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
 import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
 import android.Manifest;
-import android.app.BroadcastOptions;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,11 +15,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 
@@ -58,57 +55,42 @@ import com.mapbox.maps.CameraOptions;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
-import com.mapbox.maps.ViewAnnotationOptions;
 import com.mapbox.maps.plugin.LocationPuck2D;
 import com.mapbox.maps.plugin.animation.CameraAnimationsPlugin;
-import com.mapbox.maps.plugin.animation.CameraAnimationsUtils;
 import com.mapbox.maps.plugin.animation.MapAnimationOptions;
 
 import com.mapbox.maps.plugin.gestures.OnMoveListener;
 import com.mapbox.maps.plugin.locationcomponent.LocationComponentPlugin;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener;
-import com.mapbox.maps.viewannotation.ViewAnnotationManager;
 import com.mapbox.search.ResponseInfo;
 import com.mapbox.search.SearchEngine;
 import com.mapbox.search.SearchEngineSettings;
-import com.mapbox.search.SearchMultipleSelectionCallback;
 import com.mapbox.search.SearchOptions;
 import com.mapbox.search.SearchSelectionCallback;
 import com.mapbox.search.autocomplete.PlaceAutocomplete;
 import com.mapbox.search.autocomplete.PlaceAutocompleteSuggestion;
 import com.mapbox.search.common.AsyncOperationTask;
-import com.mapbox.search.offline.OfflineResponseInfo;
-import com.mapbox.search.offline.OfflineSearchEngine;
-import com.mapbox.search.offline.OfflineSearchResult;
-import com.mapbox.search.record.HistoryRecord;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
 import com.mapbox.search.ui.adapter.autocomplete.PlaceAutocompleteUiAdapter;
 import com.mapbox.search.ui.view.CommonSearchViewConfiguration;
-import com.mapbox.search.ui.view.SearchMode;
 import com.mapbox.search.ui.view.SearchResultsView;
 import com.mapbox.search.ui.adapter.engines.SearchEngineUiAdapter;
-import com.mapbox.search.offline.OfflineSearchEngineSettings;
 
 import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
-import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.EmptyCoroutineContext;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link newEventMap#newInstance} factory method to
+ * Use the {@link NewEventMap#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class newEventMap extends Fragment implements PermissionsListener {
+public class NewEventMap extends Fragment implements PermissionsListener {
     private FragmentNewEventMapBinding fragmentNewEventMapBinding;
     private FragmentNewEventBinding fragmentNewEventBinding;
     MapView mapView;
@@ -152,7 +134,7 @@ public class newEventMap extends Fragment implements PermissionsListener {
         public void onIndicatorPositionChanged(@NonNull Point point) {
             mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
             getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
-            newEventMap.this.point = point;
+            NewEventMap.this.point = point;
 
         }
     };
@@ -185,7 +167,7 @@ public class newEventMap extends Fragment implements PermissionsListener {
     private String mParam1;
     private String mParam2;
 
-    public newEventMap() {
+    public NewEventMap() {
         // Required empty public constructor
     }
     /**
@@ -197,8 +179,8 @@ public class newEventMap extends Fragment implements PermissionsListener {
      * @return A new instance of fragment newEventMap.
      */
     // TODO: Rename and change types and number of parameters
-    public static newEventMap newInstance(String param1, String param2) {
-        newEventMap fragment = new newEventMap();
+    public static NewEventMap newInstance(String param1, String param2) {
+        NewEventMap fragment = new NewEventMap();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -441,10 +423,9 @@ public class newEventMap extends Fragment implements PermissionsListener {
                         bundle.putParcelable("LOCATION",location);
                         getParentFragmentManager().setFragmentResult("LOCATION_BUNDLE", bundle);
                          */
-                        Navigation.findNavController(v).navigate(R.id.action_newEventMap_to_newEventFragment);
-
-                        //newEvent.setPlaceName(location.getName());
-                        //newEvent.setPlace(location.getLatitudeToString());
+                        NewEventMapDirections.ActionNewEventMapToNewEventFragment action =
+                                NewEventMapDirections.actionNewEventMapToNewEventFragment(location);
+                        Navigation.findNavController(view).navigate(action);
 
                         //getParentFragmentManager().popBackStackImmediate();
 

@@ -62,25 +62,7 @@ public class Event implements Parcelable {
     }
 
 
-    /* da errore POJOs
-    public Event(long id, String title, String description, String date, String time, boolean confidential,
-                 String place, String placeName, Category category, int peopleNumber, double distance, boolean todo, boolean favorite, Weather weather) {
-        setId(id);
-        setTitle(title);
-        setDescription(description);
-        setDate(date);
-        setTime(time);
-        setConfidential(confidential);
-        setPlace(place);
-        setPlaceName(placeName);
-        setCategory(category);
-        setPeopleNumber(peopleNumber);
-        setDistance(distance);
-        setFavorite(favorite);
-        setTODO(todo);
-        setMeteo(weather);
-    }
-     */
+
 
     public long getId() {
         return id;

@@ -27,6 +27,9 @@ public class EventLocation implements Parcelable {
     public double getLongitude() {
         return longitude;
     }
+    public String getLongitudeToString(){
+        return Double.toString(longitude);
+    }
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;

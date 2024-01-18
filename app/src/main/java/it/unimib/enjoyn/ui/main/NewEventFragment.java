@@ -36,8 +36,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
 import it.unimib.enjoyn.model.Event;
+import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.model.Result;
@@ -136,6 +136,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        EventLocation location = NewEventFragmentArgs.fromBundle(getArguments()).getLocation();
         //creazione del nuovo evento
         newEvent = new Event();
         requireActivity().addMenuProvider(new MenuProvider() {
@@ -157,7 +158,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
         // latitude and longitude "52.52", "13.41"
-        eventViewModel.getWeather("52.52", "13.41").observe(getViewLifecycleOwner(), result -> {
+        eventViewModel.getWeather(location.getLatitudeToString(), location.getLongitudeToString()).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
                 weatherAPIdata = ((Result.WeatherSuccess) result).getData().getWeather();
                 showWeatherOnNewEvent(requireView());
@@ -186,11 +187,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             public void onClick(View v) {
                 //Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
 
-                /*NewEventFragmentDirections.ActionNewEventFragmentToNewEventMap action =
-                        NewEventFragmentDirections.actionNewEventFragmentToNewEventMap(newEvent);
-                Navigation.findNavController(view).navigate(action);
-
-                 */
 
             }
         });
