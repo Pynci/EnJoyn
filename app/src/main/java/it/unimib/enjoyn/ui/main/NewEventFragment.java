@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.Navigation;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -25,15 +23,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import org.json.JSONException;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Calendar;
-import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Event;
@@ -57,27 +50,31 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
     ImageButton date;
     TextView selectedDate;
+    String dateSaved;
 
     ImageButton time;
     ImageButton place;
     TextView selectedTime;
 
     TextView weather;
-    TextView temperatura;
+    TextView temperature;
     String hourWeather;
     int indexHour = -1;
     int indexMinute = -1;
     int indexDate = -1;
     boolean equals = false;
     String dateWeather;
-    String dateResult;
     String timeWeather;
-    Boolean setDate = false;
-    Boolean setTime = false;
     ImageView weatherIcon;
 
     private EventViewModel eventViewModel;
     private Weather weatherAPIdata;
+
+    static final String STATE_TIME ="timeSelected";
+    static final String STATE_DATE = "dateSelected";
+
+    Bundle savedInstance = new Bundle();
+
 
     Event newEvent;
     private FragmentNewEventBinding fragmentNewEventBinding;
@@ -117,6 +114,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            dateWeather = savedInstanceState.getString(STATE_DATE);
+            //Log.d("date", dateWeather);
+        }
         Log.d("API weather", "su OnCreate");
         IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
         weatherAPIdata = new Weather();
@@ -150,11 +151,11 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 return false;
             }
         });
-        String date;
+
         //selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         //selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
         //weather = view.findViewById(R.id.weather);
-        temperatura = view.findViewById(R.id.temperatura);
+        temperature = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
         // latitude and longitude "52.52", "13.41"
@@ -162,10 +163,11 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             if (result.isSuccess()){
                 weatherAPIdata = ((Result.WeatherSuccess) result).getData().getWeather();
                 showWeatherOnNewEvent(requireView());
-                //date = getDate(requireView());
+                //etDate(requireView());
                 //dateResult = getDate(requireView());
-                //fragmentNewEventBinding.fragmentNewEventTextViewDate.setText(dateResult);
                 //getTime(requireView());
+                if(dateWeather != null)
+                    fragmentNewEventBinding.fragmentNewEventTextViewDate.setText(dateWeather);
             } else {
                 ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
                 Snackbar.make(view, errorMessagesUtil.getErrorMessage(((Result.WeatherError) result).getMessage()), Snackbar.LENGTH_LONG).show();
@@ -218,6 +220,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
 
+
                 // on below line we are creating a variable for date picker dialog.
                 DatePickerDialog datePickerDialog = new DatePickerDialog(
                         // on below line we are passing context.
@@ -235,6 +238,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                     monthOfYearString= "0" + monthOfYearString;
                                 dateWeather = year + "-" + monthOfYearString + "-" +dayOfMonthString ;
                                 //fragmentNewEventBinding.fragmentNewEventTextViewDate.setText(dateWeather);
+                                //onSaveInstanceState(savedInstance, STATE_DATE, dateWeather);
                                 equals = false;
                                 for( int i = 0;i < dateArray.length && !equals ; i+=96){
                                     //boolean test = dateWeather.equals(dateArray[i].substring(0, 10));
@@ -302,7 +306,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                                   int minute) {
                                 // on below line we are setting selected time
                                 // in our text view.
-                                //fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(hourOfDay + ":" + minute);
+                                fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(hourOfDay + ":" + minute);
                                 timeWeather = hourOfDay+":"+minute;
                                 hourWeather = hourOfDay + ":" + minute;
                                 indexHour = hourOfDay*4;
@@ -334,9 +338,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         String[] dateArray = weatherAPIdata.getHour();
         double[] temperatureArray = weatherAPIdata.getTemperature();
         date = view.findViewById(R.id.fragmentNewEvent_imageButton_datePicker);
-        //selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
+        selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         //weather = view.findViewById(R.id.weather);
-        temperatura = view.findViewById(R.id.temperatura);
+        temperature = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
 
@@ -380,6 +384,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                     monthOfYearString= "0" + monthOfYearString;
                                 dateWeather = year + "-" + monthOfYearString + "-" +dayOfMonthString ;
                                 fragmentNewEventBinding.fragmentNewEventTextViewDate.setText(dateWeather);
+                                onSaveInstanceState(savedInstance, STATE_DATE, dateWeather);
                                 equals = false;
                                 for( int i = 0;i < dateArray.length && !equals ; i+=96){
                                     boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
@@ -529,5 +534,12 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     @Override
     public void onFailureFromRemote(Exception exception) {
 
+    }
+
+    public void onSaveInstanceState(Bundle savedInstanceState, String TAG, String state) {
+        // Save the user's current game state.
+        savedInstanceState.putString(TAG, state);
+        // Always call the superclass so it can save the view hierarchy state.
+        super.onSaveInstanceState(savedInstanceState);
     }
 }
