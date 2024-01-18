@@ -59,19 +59,19 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public MutableLiveData<Result> createPropic(Uri uri) {
-        userRemoteDataSource.createPropic(uri);
+        userRemoteDataSource.createPropic(authenticationDataSource.getCurrentUserUID(), uri);
         return resultFromRemote;
     }
 
     @Override
-    public MutableLiveData<Result> createNameAndSurname(String name, String surname) {
-        userRemoteDataSource.createUserNameAndSurname(name, surname);
+    public MutableLiveData<Result> updateNameAndSurname(String name, String surname) {
+        userRemoteDataSource.updateNameAndSurname(authenticationDataSource.getCurrentUserUID(), name, surname);
         return resultFromRemote;
     }
 
     @Override
-    public MutableLiveData<Result> createUserDescription(String description) {
-        userRemoteDataSource.createUserDescription(description);
+    public MutableLiveData<Result> updateDescription(String description) {
+        userRemoteDataSource.updateDescription(authenticationDataSource.getCurrentUserUID(), description);
         return resultFromRemote;
     }
 

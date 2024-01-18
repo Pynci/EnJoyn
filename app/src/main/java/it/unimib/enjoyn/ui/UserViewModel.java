@@ -3,12 +3,9 @@ package it.unimib.enjoyn.ui;
 import android.net.Uri;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import org.apache.commons.validator.routines.EmailValidator;
-
-import javax.annotation.Nullable;
 
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -71,12 +68,12 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> setUserNameAndSurname(String name, String surname) {
-        setUserNameAndSurnameResult = userRepository.createNameAndSurname(name, surname);
+        setUserNameAndSurnameResult = userRepository.updateNameAndSurname(name, surname);
         return setUserNameAndSurnameResult;
     }
 
     public MutableLiveData<Result> setUserDescription(String description) {
-        setUserDescriptionResult = userRepository.createUserDescription(description);
+        setUserDescriptionResult = userRepository.updateDescription(description);
         return setUserDescriptionResult;
     }
 

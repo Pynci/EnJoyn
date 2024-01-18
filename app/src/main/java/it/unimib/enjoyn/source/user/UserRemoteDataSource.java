@@ -21,12 +21,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     private final DatabaseReference dbReference;
     private final FirebaseStorage firebaseStorage;
-    private final FirebaseAuth auth;
 
     public UserRemoteDataSource() {
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
         firebaseStorage = FirebaseStorage.getInstance(Constants.STORAGE_PATH);
-        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -102,10 +100,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void createPropic(Uri propic) {
+    public void createPropic(String uid, Uri propic) {
 
         StorageReference storageRef = firebaseStorage.getReference();
-        StorageReference userImageRef = storageRef.child("user_images/" + auth.getUid());
+        StorageReference userImageRef = storageRef.child("user_images/" + uid);
 
         UploadTask uploadTask = userImageRef.putFile(propic);
 
@@ -124,7 +122,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     TODO: Da testare e controllare che sia stato implementato correttamente
      */
     @Override
-    public void createUserNameAndSurname(String name, String surname) {
+    public void updateNameAndSurname(String uid, String name, String surname) {
 
         Map<String, Object> updateMap = new HashMap<>();
 
@@ -133,10 +131,9 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
         DatabaseReference userReference = dbReference
                 .child(Constants.USERS_PATH)
-                .child(auth.getUid());
+                .child(uid);
 
         userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
-
             if(task.isSuccessful())
                 userCallback.onSuccessFromRemote();
             else
@@ -145,7 +142,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void createUserDescription(String description) {
+    public void updateDescription(String uid, String description) {
 
         Map<String, Object> updateMap = new HashMap<>();
 
@@ -153,10 +150,9 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
         DatabaseReference userReference = dbReference
                 .child(Constants.USERS_PATH)
-                .child(auth.getUid());
+                .child(uid);
 
         userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
-
             if(task.isSuccessful())
                 userCallback.onSuccessFromRemote();
             else

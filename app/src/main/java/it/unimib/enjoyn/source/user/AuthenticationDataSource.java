@@ -48,6 +48,13 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     }
 
     @Override
+    public String getCurrentUserUID(){
+        if(fbUser != null)
+            return fbUser.getUid();
+        return null;
+    }
+
+    @Override
     public void sendEmailVerification() {
         fbUser.sendEmailVerification().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -58,4 +65,6 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
             }
         });
     }
+
+
 }

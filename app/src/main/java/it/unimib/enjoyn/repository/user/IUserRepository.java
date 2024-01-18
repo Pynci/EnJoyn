@@ -22,7 +22,7 @@ public interface IUserRepository {
 
     MutableLiveData<Result> createPropic(Uri uri);
 
-    MutableLiveData<Result> createNameAndSurname(String nome, String cognome);
+    MutableLiveData<Result> updateNameAndSurname(String nome, String cognome);
 
-    MutableLiveData<Result> createUserDescription(String description);
+    MutableLiveData<Result> updateDescription(String description);
 }

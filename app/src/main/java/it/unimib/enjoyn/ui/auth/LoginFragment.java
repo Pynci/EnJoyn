@@ -88,11 +88,6 @@ public class LoginFragment extends Fragment {
                                 .show();
                     }
                 });
-//
-//
-////                // da includere dopo aver sistemato la configurazione del profilo
-////                Snackbar.make(view, "Bentornato " + auth.getCurrentUser().getDisplayName(), Snackbar.LENGTH_SHORT)
-////                        .show();
             }
             else{
                 Snackbar.make(view, getString(R.string.authenticationFailed),

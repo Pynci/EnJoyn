@@ -12,5 +12,7 @@ public abstract class BaseAuthenticationDataSource {
 
     public abstract String getCurrentUserEmail();
 
+    public abstract String getCurrentUserUID();
+
     public abstract void sendEmailVerification();
 }
