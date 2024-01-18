@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -25,9 +26,11 @@ import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,11 +69,27 @@ import com.mapbox.maps.plugin.locationcomponent.LocationComponentPlugin;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener;
 import com.mapbox.maps.viewannotation.ViewAnnotationManager;
+import com.mapbox.search.ResponseInfo;
+import com.mapbox.search.SearchEngine;
+import com.mapbox.search.SearchEngineSettings;
+import com.mapbox.search.SearchMultipleSelectionCallback;
+import com.mapbox.search.SearchOptions;
+import com.mapbox.search.SearchSelectionCallback;
 import com.mapbox.search.autocomplete.PlaceAutocomplete;
 import com.mapbox.search.autocomplete.PlaceAutocompleteSuggestion;
+import com.mapbox.search.common.AsyncOperationTask;
+import com.mapbox.search.offline.OfflineResponseInfo;
+import com.mapbox.search.offline.OfflineSearchEngine;
+import com.mapbox.search.offline.OfflineSearchResult;
+import com.mapbox.search.record.HistoryRecord;
+import com.mapbox.search.result.SearchResult;
+import com.mapbox.search.result.SearchSuggestion;
 import com.mapbox.search.ui.adapter.autocomplete.PlaceAutocompleteUiAdapter;
 import com.mapbox.search.ui.view.CommonSearchViewConfiguration;
+import com.mapbox.search.ui.view.SearchMode;
 import com.mapbox.search.ui.view.SearchResultsView;
+import com.mapbox.search.ui.adapter.engines.SearchEngineUiAdapter;
+import com.mapbox.search.offline.OfflineSearchEngineSettings;
 
 import java.util.List;
 
@@ -108,6 +127,8 @@ public class newEventMap extends Fragment implements PermissionsListener {
     private TextInputEditText searchBar;
     private boolean ignoreNextQueryUpdate = false;
     private PermissionsManager permissionsManager;
+    private SearchEngineUiAdapter searchEngineUiAdapter;
+    private SearchView searchView;
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
         @Override
@@ -120,29 +141,29 @@ public class newEventMap extends Fragment implements PermissionsListener {
         }
     });
 
-private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListener = new OnIndicatorBearingChangedListener() {
-    @Override
-    public void onIndicatorBearingChanged(double v) {
-        mapView.getMapboxMap().setCamera(new CameraOptions.Builder().bearing(v).build());
-    }
-};
-private final OnIndicatorPositionChangedListener onIndicatorPositionChangedListener = new OnIndicatorPositionChangedListener() {
-    @Override
-    public void onIndicatorPositionChanged(@NonNull Point point) {
-        mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
-        getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
-        newEventMap.this.point = point;
+    private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListener = new OnIndicatorBearingChangedListener() {
+        @Override
+        public void onIndicatorBearingChanged(double v) {
+            mapView.getMapboxMap().setCamera(new CameraOptions.Builder().bearing(v).build());
+        }
+    };
+    private final OnIndicatorPositionChangedListener onIndicatorPositionChangedListener = new OnIndicatorPositionChangedListener() {
+        @Override
+        public void onIndicatorPositionChanged(@NonNull Point point) {
+            mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
+            getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
+            newEventMap.this.point = point;
 
-    }
-};
-private final OnMoveListener onMoveListener = new OnMoveListener() {
-    @Override
-    public void onMoveBegin(@NonNull MoveGestureDetector moveGestureDetector) {
-        getLocationComponent(mapView).removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
-        getLocationComponent(mapView).removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
-        getGestures(mapView).removeOnMoveListener(onMoveListener);
-        positionButton.show();
-    }
+        }
+    };
+    private final OnMoveListener onMoveListener = new OnMoveListener() {
+        @Override
+        public void onMoveBegin(@NonNull MoveGestureDetector moveGestureDetector) {
+            getLocationComponent(mapView).removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
+            getLocationComponent(mapView).removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
+            getGestures(mapView).removeOnMoveListener(onMoveListener);
+            positionButton.show();
+        }
 
     @Override
     public boolean onMove(@NonNull MoveGestureDetector moveGestureDetector) {
@@ -167,7 +188,6 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
     public newEventMap() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -185,6 +205,8 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
         fragment.setArguments(args);
         return fragment;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -213,7 +235,16 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
         }
-        //TODO Event newEvent = NewEventMapArgs.fromBundle(getArguments()).getEvent();
+        //TODO Event newEvent = newEventMapArgs.fromBundle(getArguments()).getEvent();
+
+        searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
+                new SearchEngineSettings(getString(R.string.mapbox_access_token))
+        );
+
+        final SearchOptions options = new SearchOptions.Builder()
+                .limit(5)
+                .build();
+
 
         point = null;
         mapView = view.findViewById(R.id.mapView);
@@ -237,34 +268,15 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (ignoreNextQueryUpdate) {
-                    ignoreNextQueryUpdate = false;
-                } else {
-                    placeAutocompleteUiAdapter.search(s.toString(), new Continuation<Unit>() {
-                        @NonNull
-                        @Override
-                        public CoroutineContext getContext() {
-                            return EmptyCoroutineContext.INSTANCE;
-                        }
 
-                        @Override
-                        public void resumeWith(@NonNull Object o) {
-                           requireActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    searchResultsView.setVisibility(View.VISIBLE);
-                                }
-                        });
-                        }
-                    });
-
-                }
             }
 
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if (s.length() > 3){
+                    searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
+                }
             }
 
             @Override
@@ -291,7 +303,62 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
 
+                /*
+                OfflineSearchEngine offlineSearchEngine = OfflineSearchEngine.create(
+                        new OfflineSearchEngineSettings(getString(R.string.mapbox_access_token))
+                );
+                searchEngineUiAdapter = new SearchEngineUiAdapter(searchResultsView, searchEngine, offlineSearchEngine, null, null);
 
+                searchEngineUiAdapter.setSearchMode(SearchMode.AUTO);
+                searchEngineUiAdapter.addSearchListener(new SearchEngineUiAdapter.SearchListener() {
+                    @Override
+                    public void onSuggestionsShown(@NonNull List<SearchSuggestion> list, @NonNull ResponseInfo responseInfo) {
+                    }
+
+                    @Override
+                    public void onSearchResultsShown(@NonNull SearchSuggestion searchSuggestion, @NonNull List<SearchResult> list, @NonNull ResponseInfo responseInfo) {
+                    }
+
+                    @Override
+                    public void onOfflineSearchResultsShown(@NonNull List<OfflineSearchResult> list, @NonNull OfflineResponseInfo offlineResponseInfo) {
+                    }
+
+                    @Override
+                    public boolean onSuggestionSelected(@NonNull SearchSuggestion searchSuggestion) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSearchResultSelected(@NonNull SearchResult searchResult, @NonNull ResponseInfo responseInfo) {
+                        closeSearchView();
+
+                    }
+
+                    @Override
+                    public void onOfflineSearchResultSelected(@NonNull OfflineSearchResult offlineSearchResult, @NonNull OfflineResponseInfo offlineResponseInfo) {
+                    }
+
+                    @Override
+                    public void onError(@NonNull Exception e) {
+                    }
+
+                    @Override
+                    public void onHistoryItemClick(@NonNull HistoryRecord historyRecord) {
+                    }
+
+                    @Override
+                    public void onPopulateQueryClick(@NonNull SearchSuggestion searchSuggestion, @NonNull ResponseInfo responseInfo) {
+                        if(searchView != null){
+                            searchView.setQuery(searchSuggestion.getName(), true);
+                        }
+                    }
+
+                    @Override
+                    public void onFeedbackItemClick(@NonNull ResponseInfo responseInfo) {
+                    }
+                });
+
+                 */
 
                 positionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -370,14 +437,16 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
                 newEventButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Bundle bundle = new Bundle();
+                        /*Bundle bundle = new Bundle();
                         bundle.putParcelable("LOCATION",location);
                         getParentFragmentManager().setFragmentResult("LOCATION_BUNDLE", bundle);
-
+                         */
+                        Navigation.findNavController(v).navigate(R.id.action_newEventMap_to_newEventFragment);
 
                         //newEvent.setPlaceName(location.getName());
                         //newEvent.setPlace(location.getLatitudeToString());
-                        getParentFragmentManager().popBackStackImmediate();
+
+                        //getParentFragmentManager().popBackStackImmediate();
 
                     }
                 });
@@ -388,10 +457,12 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
 
 
 
-
-
-
     }
+
+    /*private void closeSearchView() {
+        searchView.setQuery("", false);
+    }*/
+
     private void updateCamera(Point point, Double bearing) {
         MapAnimationOptions animationOptions = new MapAnimationOptions.Builder().duration(1000L).build();
         CameraOptions cameraOptions = new CameraOptions.Builder().center(point).zoom(16.0).bearing(bearing).pitch(0.0)
@@ -453,10 +524,49 @@ private final OnMoveListener onMoveListener = new OnMoveListener() {
     }
 
 
+    private SearchEngine searchEngine;
+    private AsyncOperationTask searchRequestTask;
 
+    private final SearchSelectionCallback searchCallback = new SearchSelectionCallback() {
 
+        @Override
+        public void onSuggestions(@NonNull List<SearchSuggestion> suggestions, @NonNull ResponseInfo responseInfo) {
+            if (suggestions.isEmpty()) {
+                Log.i("SearchApiExample", "No suggestions found");
+            } else {
+                Log.i("SearchApiExample", "Search suggestions: " + suggestions + "\nSelecting first...");
+                searchRequestTask = searchEngine.select(suggestions.get(0), this);
+                //searchResultsView.set(suggestions);
+            }
+        }
 
+        @Override
+        public void onResult(@NonNull SearchSuggestion suggestion, @NonNull SearchResult result, @NonNull ResponseInfo info) {
+            Log.i("SearchApiExample", "Search result: " + result);
+            location.setLatitude(result.getCoordinate().latitude());
+            location.setLongitude(result.getCoordinate().longitude());
+            location.setName(result.getName());
+            Log.i("SearchApiExample", "Search result: " + location.getName());
+            Log.i("SearchApiExample", "Search result: " + location.getLatitudeToString());
+            Log.i("SearchApiExample", "Search result: " + location.getLongitude());
+        }
 
+        @Override
+        public void onResults(@NonNull SearchSuggestion suggestion, @NonNull List<SearchResult> results, @NonNull ResponseInfo responseInfo) {
+            Log.i("SearchApiExample", "Category search results: " + results);
+        }
+
+        @Override
+        public void onError(@NonNull Exception e) {
+            Log.i("SearchApiExample", "Search error: ", e);
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        searchRequestTask.cancel();
+        super.onDestroy();
+    }
     }
 
 

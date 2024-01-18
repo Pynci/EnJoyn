@@ -27,9 +27,7 @@
         android:name="it.unimib.enjoyn.ui.main.NewEventFragment"
         android:label="fragment_new_event"
         tools:layout="@layout/fragment_new_event" >
-        <action
-            android:id="@+id/action_newEventFragment_to_newEventMap"
-            app:destination="@id/newEventMap" />
+
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -72,5 +70,8 @@
         <argument
             android:name="newEvent"
             app:argType="it.unimib.enjoyn.model.Event" />
+        <action
+            android:id="@+id/action_newEventMap_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
     </fragment>
 </navigation>

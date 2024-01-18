@@ -40,7 +40,7 @@ public class MainButtonMenuActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.discover,
                 R.id.todo,
-                R.id.newEventFragment,
+                R.id.newEventMap,
                 R.id.friendsFragment,
                 R.id.profileFragment
                 ).build();

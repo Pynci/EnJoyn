@@ -150,9 +150,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             }
         });
         String date;
-        selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
-        selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
-        weather = view.findViewById(R.id.weather);
+        //selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
+        //selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
+        //weather = view.findViewById(R.id.weather);
         temperatura = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
@@ -184,7 +184,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         place.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
+                //Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
+
                 /*NewEventFragmentDirections.ActionNewEventFragmentToNewEventMap action =
                         NewEventFragmentDirections.actionNewEventFragmentToNewEventMap(newEvent);
                 Navigation.findNavController(view).navigate(action);
@@ -240,8 +241,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 //fragmentNewEventBinding.fragmentNewEventTextViewDate.setText(dateWeather);
                                 equals = false;
                                 for( int i = 0;i < dateArray.length && !equals ; i+=96){
-                                    boolean test=dateWeather.equals(dateArray[i].substring(0, 10));
-                                    String prova= dateArray[i].substring(0, 10);
+                                    //boolean test = dateWeather.equals(dateArray[i].substring(0, 10));
+                                    //String prova = dateArray[i].substring(0, 10);
                                     if(dateWeather.equals(dateArray[i].substring(0, 10))) {
                                         indexDate = i;
                                         equals = true;
@@ -337,13 +338,13 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         String[] dateArray = weatherAPIdata.getHour();
         double[] temperatureArray = weatherAPIdata.getTemperature();
         date = view.findViewById(R.id.fragmentNewEvent_imageButton_datePicker);
-        selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
-        weather = view.findViewById(R.id.weather);
+        //selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
+        //weather = view.findViewById(R.id.weather);
         temperatura = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
 
-        FragmentManager fragmentManager = getParentFragmentManager();
+        //FragmentManager fragmentManager = getParentFragmentManager();
 
         // on below line we are adding click listener for our pick date button
         date.setOnClickListener(new View.OnClickListener() {
