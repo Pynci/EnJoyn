@@ -76,16 +76,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return resultFromRemote;
     }
 
-    @Override
-    public Result isCurrentUserEmailVerified(){
-        Boolean value  = authenticationDataSource.isCurrentUserEmailVerified();
-        if(value != null){
-            return new Result.BooleanSuccess(value);
-        }
-        else
-            return new Result.Error(Errors.EMAILVERIFICATION_CHECK_FAILURE);
-    }
-
     /*
     Operazioni di manipolazione dell'utente di firebase
      */
@@ -94,6 +84,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     public MutableLiveData<Result> signIn(String email, String password){
         authenticationDataSource.signIn(email, password);
         return resultFromAuth;
+    }
+
+    @Override
+    public void signOut(){
+        authenticationDataSource.signOut();
     }
 
     @Override
@@ -112,6 +107,16 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     public MutableLiveData<Result> sendResetPasswordEmail(String email) {
         authenticationDataSource.sendResetPasswordEmail(email);
         return resultFromAuth;
+    }
+
+    @Override
+    public Result isCurrentUserEmailVerified(){
+        Boolean value  = authenticationDataSource.isCurrentUserEmailVerified();
+        if(value != null){
+            return new Result.BooleanSuccess(value);
+        }
+        else
+            return new Result.Error(Errors.EMAILVERIFICATION_CHECK_FAILURE);
     }
 
     /*

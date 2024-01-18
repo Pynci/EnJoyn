@@ -23,14 +23,17 @@ public class UserViewModel extends ViewModel {
         return userRepository.createUser(email, password, username);
     }
 
-    public MutableLiveData<Result> sendEmailVerification(){
-        return userRepository.sendEmailVerification();
-    }
-
     public MutableLiveData<Result> signIn(String email, String password){
         return userRepository.signIn(email, password);
     }
 
+    public void signOut(){
+        userRepository.signOut();
+    }
+
+    public MutableLiveData<Result> sendEmailVerification(){
+        return userRepository.sendEmailVerification();
+    }
 
     public MutableLiveData<Result> getUserByUsername(String username){
         return userRepository.getUserByUsername(username);

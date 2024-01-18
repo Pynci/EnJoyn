@@ -41,6 +41,11 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     }
 
     @Override
+    public void signOut(){
+        auth.signOut();
+    }
+
+    @Override
     public String getCurrentUserEmail(){
         if(fbUser != null)
             return fbUser.getEmail();

@@ -10,6 +10,8 @@ public abstract class BaseAuthenticationDataSource {
     public abstract void signUp(String email, String password, String username);
     public abstract void signIn(String email, String password);
 
+    public abstract void signOut();
+
     public abstract String getCurrentUserEmail();
 
     public abstract String getCurrentUserUID();

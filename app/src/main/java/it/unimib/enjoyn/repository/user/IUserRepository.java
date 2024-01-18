@@ -14,6 +14,8 @@ public interface IUserRepository {
 
     MutableLiveData<Result> signIn(String email, String password);
 
+    void signOut();
+
     MutableLiveData<Result> sendEmailVerification();
 
     MutableLiveData<Result> getUserByUsername(String username);

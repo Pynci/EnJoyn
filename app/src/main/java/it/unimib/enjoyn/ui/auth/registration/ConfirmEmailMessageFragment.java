@@ -12,20 +12,22 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.ui.UserViewModel;
 
 public class ConfirmEmailMessageFragment extends Fragment {
 
-    public static final String TAG = RegisterFragment.class.getSimpleName();
+    private UserViewModel userViewModel;
+    private Observer<Result> emailVerificationSendingObserver;
 
     public ConfirmEmailMessageFragment() {
-        // Required empty public constructor
     }
 
     public static ConfirmEmailMessageFragment newInstance() {
@@ -35,6 +37,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         // disabilita il tasto back affinché l'utente non possa tornare indietro
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -58,25 +61,22 @@ public class ConfirmEmailMessageFragment extends Fragment {
         Button buttonForNewEmail = view.findViewById(R.id.fragmentConfirmEmailMessage_button_newEmail);
         Button buttonToLogin = view.findViewById(R.id.fragmentConfirmEmailMessage_button_buttonToLogin);
 
+        emailVerificationSendingObserver = result -> {
+            if(result.isSuccessful()){
+                Snackbar.make(view, "È stata inviata una nuova mail di conferma",
+                                Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+            else{
+                Snackbar.make(view, "Si è verificato un errore nell'invio della mail di conferma",
+                                Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+        };
+
         buttonForNewEmail.setOnClickListener(v -> {
-            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-            firebaseUser.sendEmailVerification().addOnCompleteListener(task -> {
-
-                if(task.isSuccessful()) {
-                    Snackbar.make(view, "È stata inviata una nuova mail di conferma a " +
-                                    firebaseUser.getEmail(), Snackbar.LENGTH_SHORT)
-                            .show();
-                }
-                else{
-
-                    Snackbar.make(view, "Si è verificato un errore nell'invio della mail di conferma." +
-                                            "Riprovare tra qualche minuto",
-                                    Snackbar.LENGTH_SHORT)
-                            .show();
-                }
-            });
+            userViewModel.sendEmailVerification().observe(getViewLifecycleOwner(), emailVerificationSendingObserver);
 
         });
 
