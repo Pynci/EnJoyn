@@ -22,8 +22,8 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<Result> setUserPropicResult;
     private MutableLiveData<Result> setUserNameAndSurnameResult;
     private MutableLiveData<Result> setUserDescriptionResult;
-
     private MutableLiveData<Result> setUserOptionalParametersResult;
+    private MutableLiveData<Result> resetPasswordEmailSendResult;
 
     private final IUserRepository userRepository;
 
@@ -95,6 +95,11 @@ public class UserViewModel extends ViewModel {
 
         setUserOptionalParametersResult = new MutableLiveData<>(allresults);
         return setUserOptionalParametersResult;
+    }
+
+    public MutableLiveData<Result> sendResetPasswordEmail(String email) {
+        resetPasswordEmailSendResult = userRepository.sendResetPasswordEmail(email);
+        return resetPasswordEmailSendResult;
     }
 
     public String checkEmail(String email) {

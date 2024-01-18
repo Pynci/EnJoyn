@@ -1,5 +1,9 @@
 package it.unimib.enjoyn.source.user;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -66,5 +70,21 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
         });
     }
 
-
+    @Override
+    public void sendResetPasswordEmail(String email) {
+        if (fbUser == null) {
+            auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    authenticationCallback.onAuthOperationSuccess();
+                }
+                else{
+                    authenticationCallback.onAuthOperationFailure(task.getException());
+                }
+            });
+        }
+        else {
+            authenticationCallback.onAuthOperationFailure(new Exception("Impossibile modificare password " +
+                    "se l'utente è ancora autenticato"));
+        }
+    }
 }
