@@ -28,7 +28,7 @@
         android:label="fragment_confirm_email_message"
         tools:layout="@layout/fragment_confirm_email_message" >
         <action
-            android:id="@+id/action_confirmEmailMessageFragment2_to_loginActivity"
+            android:id="@+id/action_confirmEmailMessageFragment_to_loginActivity"
             app:destination="@id/loginActivity" />
     </fragment>
 </navigation>

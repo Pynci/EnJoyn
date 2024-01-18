@@ -81,9 +81,10 @@ public class ConfirmEmailMessageFragment extends Fragment {
         });
 
         buttonToLogin.setOnClickListener(v -> {
+            userViewModel.signOut();
             Navigation
                     .findNavController(v)
-                    .navigate(R.id.action_confirmEmailMessageFragment2_to_loginActivity);
+                    .navigate(R.id.action_confirmEmailMessageFragment_to_loginActivity);
         });
     }
 }

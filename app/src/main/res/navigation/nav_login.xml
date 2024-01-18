@@ -67,6 +67,10 @@
         android:id="@+id/confirmEmailMessageFragment"
         android:name="it.unimib.enjoyn.ui.auth.registration.ConfirmEmailMessageFragment"
         android:label="fragment_confirm_email_message"
-        tools:layout="@layout/fragment_confirm_email_message" />
+        tools:layout="@layout/fragment_confirm_email_message" >
+        <action
+            android:id="@+id/action_confirmEmailMessageFragment_to_loginActivity"
+            app:destination="@id/loginFragment" />
+    </fragment>
 
 </navigation>
