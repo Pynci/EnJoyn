@@ -545,7 +545,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     @Override
     public void onDestroy() {
-        searchRequestTask.cancel();
+        if (searchRequestTask != null) {
+            searchRequestTask.cancel();
+        }
         super.onDestroy();
     }
     }
