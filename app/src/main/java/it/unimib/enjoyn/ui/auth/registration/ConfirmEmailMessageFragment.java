@@ -74,11 +74,8 @@ public class ConfirmEmailMessageFragment extends Fragment {
             }
         };
 
-        buttonForNewEmail.setOnClickListener(v -> {
-
-            userViewModel.sendEmailVerification().observe(getViewLifecycleOwner(), emailVerificationSendingObserver);
-
-        });
+        buttonForNewEmail.setOnClickListener(v -> userViewModel.sendEmailVerification().observe(getViewLifecycleOwner(),
+                emailVerificationSendingObserver));
 
         buttonToLogin.setOnClickListener(v -> {
             userViewModel.signOut();

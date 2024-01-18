@@ -20,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.ui.auth.registration.RegisterActivity;
@@ -88,24 +87,6 @@ public class LoginFragment extends Fragment {
                 else{
                     Snackbar.make(view, "errore matto in culo", Snackbar.LENGTH_SHORT).show();
                 }
-
-//                userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), userResult -> {
-//                    if(userResult.isSuccessful()){
-//                        User currentUser = ((Result.UserResponseSuccess) userResult).getData();
-//                        Navigation
-//                                .findNavController(view)
-//                                .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
-//                        Snackbar.make(view, "(TEST) Login effettuato, mail: "
-//                                                + currentUser.getEmail(),
-//                                        Snackbar.LENGTH_SHORT)
-//                                .show();
-//                    }
-//                    else{
-//                        Snackbar.make(view, "errore stranissimo pazzurdo",
-//                                        Snackbar.LENGTH_SHORT)
-//                                .show();
-//                    }
-//                });
             }
             else{
                 Snackbar.make(view, getString(R.string.authenticationFailed),
@@ -154,9 +135,8 @@ public class LoginFragment extends Fragment {
         buttonRegister.setOnClickListener(v -> startActivityBasedOnCondition(RegisterActivity.class,
                 R.id.action_loginFragment_to_registerActivity, true));
 
-        buttonForgottenPassword.setOnClickListener(v -> {
-            startActivityBasedOnCondition(LoginActivity.class, R.id.action_loginFragment_to_passwordRecoverFragment, false);
-        });
+        buttonForgottenPassword.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
+                R.id.action_loginFragment_to_passwordRecoverFragment, false));
 
         buttonLogin.setOnClickListener(v -> {
 
