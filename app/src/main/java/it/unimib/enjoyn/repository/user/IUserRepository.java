@@ -25,4 +25,6 @@ public interface IUserRepository {
     MutableLiveData<Result> createNameAndSurname(String nome, String cognome);
 
     MutableLiveData<Result> createUserDescription(String description);
+
+    MutableLiveData<Result> sendResetPasswordEmail(String email);
 }

@@ -97,6 +97,12 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return userByEmailResult;
     }
 
+    @Override
+    public MutableLiveData<Result> sendResetPasswordEmail(String email) {
+        authenticationDataSource.sendResetPasswordEmail(email);
+        return resultFromAuth;
+    }
+
     /*
     Callback
      */

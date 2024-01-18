@@ -13,4 +13,5 @@ public abstract class BaseAuthenticationDataSource {
     public abstract String getCurrentUserEmail();
 
     public abstract void sendEmailVerification();
+    public abstract void sendResetPasswordEmail(String email);
 }

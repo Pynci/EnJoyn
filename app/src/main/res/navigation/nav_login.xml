@@ -58,7 +58,11 @@
         android:id="@+id/passwordRecoverFragment"
         android:name="it.unimib.enjoyn.ui.auth.PasswordResetFragment"
         android:label="fragment_password_recover"
-        tools:layout="@layout/fragment_password_reset" />
+        tools:layout="@layout/fragment_password_reset" >
+        <action
+            android:id="@+id/action_passwordRecoverFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/confirmEmailMessageFragment"
         android:name="it.unimib.enjoyn.ui.auth.registration.ConfirmEmailMessageFragment"
