@@ -60,12 +60,12 @@ public class CategoriesSelectionFragment extends Fragment {
         categoriesObserver = result -> {
             if (result.isSuccessful()) {
 
-                categoryViewModel.getAllNews().observe(this.getViewLifecycleOwner(), categoriesObserver);
-
                 CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
                         ((Result.CategoryResponseSuccess) result).getCategoryList());
                 listView.setAdapter(customAdapter);
             }
         };
+
+        categoryViewModel.getAllNews().observe(this.getViewLifecycleOwner(), categoriesObserver);
     }
 }

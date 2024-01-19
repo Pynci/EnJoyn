@@ -30,10 +30,10 @@ public class CategoryRepository implements ICategoryRepository, CategoryCallback
         return allCategoriesResult;
     }
 
+    //Callback
     @Override
     public void onSuccessGetAllCategories(List<Category> list) {
-        Result.CategoryResponseSuccess resultList = new Result.CategoryResponseSuccess(list);
-        allCategoriesResult.postValue(resultList);
+        allCategoriesResult.postValue(new Result.CategoryResponseSuccess(list));
     }
 
     @Override

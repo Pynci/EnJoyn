@@ -1,14 +1,11 @@
 package it.unimib.enjoyn.source.category;
 
-import androidx.annotation.NonNull;
-
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import it.unimib.enjoyn.model.Category;
@@ -25,26 +22,25 @@ public class CategoryRemoteDataSource extends BaseCategoryRemoteDataSource{
     @Override
     public void getAllCategories() {
 
-        DatabaseReference categoriesReference = databaseReference.child("Categories");
+        databaseReference
+                .child(Constants.CATEGORIES_PATH)
+                .get()
+                .addOnCompleteListener(task -> {
 
-        categoriesReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (task.isSuccessful()) {
 
-                List<Category> allCategories = new ArrayList<>();
+                        DataSnapshot snapshot = task.getResult();
+                        List<Category> allCategories = new ArrayList<>();
 
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    Category childValue = childSnapshot.getValue(Category.class);
-                    allCategories.add(childValue);
-                }
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            allCategories.add(dataSnapshot.getValue(Category.class));
+                        }
 
-                categoryCallback.onSuccessGetAllCategories(allCategories);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                categoryCallback.onFailureGetAllCategories(error.getMessage());
-            }
+                        categoryCallback.onSuccessGetAllCategories(allCategories);
+                    }
+                    else {
+                        categoryCallback.onFailureGetAllCategories(task.getException().getMessage());
+                    }
         });
     }
 }
