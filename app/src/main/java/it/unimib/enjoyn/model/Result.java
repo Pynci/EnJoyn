@@ -11,7 +11,8 @@ public abstract class Result {
     public boolean isSuccessful() {
         return this instanceof UserResponseSuccess
                 || this instanceof Success
-                || this instanceof BooleanSuccess;
+                || this instanceof BooleanSuccess
+                || this instanceof CategoryResponseSuccess;
     }
 
 
@@ -69,6 +70,19 @@ public abstract class Result {
 
         public List<Result> getResults() {
             return messages;
+        }
+    }
+
+    public static final class CategoryResponseSuccess extends Result {
+
+        private final List<Category> categoryList;
+
+        public CategoryResponseSuccess (List<Category> list) {
+            categoryList = list;
+        }
+
+        public List<Category> getCategoryList() {
+            return  categoryList;
         }
     }
 }

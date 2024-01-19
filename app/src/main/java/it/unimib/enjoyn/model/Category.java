@@ -7,16 +7,20 @@ import androidx.annotation.NonNull;
 
 public class Category implements Parcelable {
 
-    private String tipo;
+    private String nome;
 
     private int id;
 
-    public Category(String tipo) {
-        this.tipo = tipo;
+    public Category(){
+
+    }
+
+    public Category(String nome) {
+        this.nome = nome;
     }
 
     protected Category(Parcel in) {
-        tipo = in.readString();
+        nome = in.readString();
         id = in.readInt();
     }
 
@@ -39,16 +43,16 @@ public class Category implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(tipo);
+        dest.writeString(nome);
         dest.writeInt(id);
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public int getId() {
