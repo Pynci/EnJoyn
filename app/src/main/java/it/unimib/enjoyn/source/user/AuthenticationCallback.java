@@ -1,10 +1,13 @@
 package it.unimib.enjoyn.source.user;
 
+import it.unimib.enjoyn.model.User;
+
 public interface AuthenticationCallback {
 
-    void onAuthOperationSuccess();
-    void onAuthOperationFailure(Exception exception);
-
-    void onSignUpSuccess(String uid, String email, String username);
+    void onAuthSuccess();
+    void onAuthFailure(Exception exception);
+    void onSignUpSuccess(User user);
+    void onSignInSuccess(User user);
+    void onSignOutSuccess();
 
 }

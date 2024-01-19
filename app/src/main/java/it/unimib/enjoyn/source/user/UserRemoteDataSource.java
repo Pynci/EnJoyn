@@ -2,10 +2,13 @@ package it.unimib.enjoyn.source.user;
 
 import android.net.Uri;
 
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -21,36 +24,45 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     private final DatabaseReference dbReference;
     private final FirebaseStorage firebaseStorage;
+    private ValueEventListener userListener;
 
     public UserRemoteDataSource() {
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
         firebaseStorage = FirebaseStorage.getInstance(Constants.STORAGE_PATH);
+
+        userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    User user = snapshot.getValue(User.class);
+                    userCallback.onRemoteDatabaseSuccess(user);
+                }
+                else{
+                    userCallback.onRemoteDatabaseFailure(new Exception("ERRORE (cambiare stringa)"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                userCallback.onRemoteDatabaseSuccess(null);
+            }
+        };
     }
 
     @Override
-    public void storeUser(String uid, String email, String username) {
-        Map<String, String> userMap = new HashMap<>();
-
-        userMap.put("email", email);
-        userMap.put("username", username);
-
+    public void storeUser(User user) {
         dbReference
                 .child(Constants.USERS_PATH)
-                .child(uid)
-                .setValue(userMap)
+                .child(user.getUid())
+                .setValue(user)
                 .addOnCompleteListener( result -> {
                     if(result.isSuccessful()){
-                        userCallback.onSuccessFromRemote();
+                        userCallback.onAccountCreationSuccess(user);
                     }
                     else{
-                        userCallback.onFailureFromRemote(result.getException());
+                        userCallback.onRemoteDatabaseFailure(result.getException());
                     }
                 });
-    }
-
-    // https://firebase.google.com/docs/auth/android/manage-users?hl=it#update_a_users_profile
-    public void updateUser(){
-
     }
 
     @Override
@@ -71,7 +83,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         }
                     }
                     else{
-                        userCallback.onFailureFromRemote(task.getException());
+                        userCallback.onRemoteDatabaseFailure(task.getException());
                     }
                 });
     }
@@ -94,9 +106,25 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         }
                     }
                     else{
-                        userCallback.onFailureFromRemote(task.getException());
+                        userCallback.onRemoteDatabaseFailure(task.getException());
                     }
                 });
+    }
+
+    @Override
+    public void getUser(String uid){
+        dbReference
+                .child(Constants.USERS_PATH)
+                .child(uid)
+                .addValueEventListener(userListener);
+    }
+
+    @Override
+    public void stopGettingUser(String uid){
+        dbReference
+                .child(Constants.USERS_PATH)
+                .child(uid)
+                .removeEventListener(userListener);
     }
 
     @Override
@@ -110,17 +138,14 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         uploadTask.addOnCompleteListener(task -> {
 
             if (!task.isSuccessful()) {
-                userCallback.onFailureFromRemote(task.getException());
+                userCallback.onRemoteDatabaseFailure(task.getException());
             }
             else{
-                userCallback.onSuccessFromRemote();
+                userCallback.onRemoteDatabaseSuccess();
             }
         });
     }
 
-    /*
-    TODO: Da testare e controllare che sia stato implementato correttamente
-     */
     @Override
     public void updateNameAndSurname(String uid, String name, String surname) {
 
@@ -135,9 +160,9 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
         userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
             if(task.isSuccessful())
-                userCallback.onSuccessFromRemote();
+                userCallback.onRemoteDatabaseSuccess();
             else
-                userCallback.onFailureFromRemote(task.getException());
+                userCallback.onRemoteDatabaseFailure(task.getException());
         });
     }
 
@@ -154,9 +179,9 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
         userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
             if(task.isSuccessful())
-                userCallback.onSuccessFromRemote();
+                userCallback.onRemoteDatabaseSuccess();
             else
-                userCallback.onFailureFromRemote(task.getException());
+                userCallback.onRemoteDatabaseFailure(task.getException());
         });
     }
 

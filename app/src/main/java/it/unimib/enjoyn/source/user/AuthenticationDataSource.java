@@ -1,7 +1,13 @@
 package it.unimib.enjoyn.source.user;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import it.unimib.enjoyn.model.User;
 
 public class AuthenticationDataSource extends BaseAuthenticationDataSource{
 
@@ -18,10 +24,10 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         fbUser = auth.getCurrentUser();
-                        authenticationCallback.onSignUpSuccess(fbUser.getUid(), email, username);
+                        authenticationCallback.onSignUpSuccess(new User(fbUser.getUid(), email, username));
 
                     } else {
-                        authenticationCallback.onAuthOperationFailure(task.getException());
+                        authenticationCallback.onAuthFailure(task.getException());
                     }
                 });
     }
@@ -32,16 +38,26 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         fbUser = auth.getCurrentUser();
-                        authenticationCallback.onAuthOperationSuccess();
+                        authenticationCallback.onSignInSuccess(new User(fbUser.getUid(), email));
                     }
                     else{
-                        authenticationCallback.onAuthOperationFailure(task.getException());
+                        authenticationCallback.onAuthFailure(task.getException());
                     }
                 });
     }
 
     @Override
     public void signOut(){
+        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    firebaseAuth.removeAuthStateListener(this);
+                    authenticationCallback.onSignOutSuccess();
+                }
+            }
+        };
+        auth.addAuthStateListener(authStateListener);
         auth.signOut();
     }
 
@@ -70,10 +86,10 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     public void sendEmailVerification() {
         fbUser.sendEmailVerification().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                authenticationCallback.onAuthOperationSuccess();
+                authenticationCallback.onAuthSuccess();
             }
             else{
-                authenticationCallback.onAuthOperationFailure(task.getException());
+                authenticationCallback.onAuthFailure(task.getException());
             }
         });
     }
@@ -83,15 +99,15 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
         if (fbUser == null) {
             auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    authenticationCallback.onAuthOperationSuccess();
+                    authenticationCallback.onAuthSuccess();
                 }
                 else{
-                    authenticationCallback.onAuthOperationFailure(task.getException());
+                    authenticationCallback.onAuthFailure(task.getException());
                 }
             });
         }
         else {
-            authenticationCallback.onAuthOperationFailure(new Exception("Impossibile modificare password " +
+            authenticationCallback.onAuthFailure(new Exception("Impossibile modificare password " +
                     "se l'utente è ancora autenticato"));
         }
     }

@@ -12,11 +12,14 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class User implements Parcelable {
 
+    private String uid;
     private String username;
     private String email;
     private String name;
     private String surname;
     private String description;
+    private Boolean isEmailVerified;
+    private Boolean isProfileConfigured;
 
     /* TODO aggiungere immagine*/
 
@@ -24,15 +27,25 @@ public class User implements Parcelable {
 
     }
 
-    public User(String username) {
-        this.username = username;
+    public User(String uid) {
+        this.uid = uid;
     }
-    public User(String username, String email){
+
+    public User(String uid, String email){
+        this.uid = uid;
+        this.email = email;
+    }
+
+    public User(String uid, String username, String email){
+        this.uid = uid;
         this.username = username;
         this.email = email;
     }
 
-    public User(String username, String email, String name, String surname, String description) {
+    public User(String uid, String username, String email,
+                String name, String surname, String description) {
+        this.uid = uid;
+        this.email = email;
         this.username = username;
         this.name = name;
         this.surname = surname;
@@ -71,44 +84,68 @@ public class User implements Parcelable {
         dest.writeString(description);
     }
 
+    @Exclude
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public String getUsername() {
         return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public Boolean getEmailVerified() {
+        return isEmailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        isEmailVerified = emailVerified;
+    }
+
+    public Boolean getProfileConfigured() {
+        return isProfileConfigured;
+    }
+
+    public void setProfileConfigured(Boolean profileConfigured) {
+        isProfileConfigured = profileConfigured;
+    }
 }
