@@ -12,13 +12,14 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Category;
 
 public class CategoriesSelectionAdapter extends BaseAdapter {
 
-    private final List<String> data; // Cambia il tipo di dati in base ai tuoi requisiti
+    private final List<Category> data; // Cambia il tipo di dati in base ai tuoi requisiti
     private final Context context;
 
-    public CategoriesSelectionAdapter(Context context, List<String> data) {
+    public CategoriesSelectionAdapter(Context context, List<Category> data) {
         this.context = context;
         this.data = data;
     }
@@ -51,8 +52,8 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
         TextView nameCategoryCard1 = rowView.findViewById(R.id.NameCategoryCard1);
         TextView nameCategoryCard2 = rowView.findViewById(R.id.NameCategoryCard2);
 
-        nameCategoryCard1.setText(data.get(position));
-        nameCategoryCard2.setText(data.get(position + 1));
+        nameCategoryCard1.setText(data.get(position).getNome());
+        nameCategoryCard2.setText(data.get(position + 1).getNome());
 
         cardView1.setOnClickListener(v -> {
             cardView1.setChecked(!cardView1.isChecked());

@@ -11,7 +11,8 @@ public abstract class Result {
     public boolean isSuccessful() {
         return this instanceof UserResponseSuccess
                 || this instanceof Success
-                || this instanceof BooleanSuccess;
+                || this instanceof BooleanSuccess
+                || this instanceof CategoryResponseSuccess;
     }
 
 

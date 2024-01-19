@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +19,18 @@ import java.util.List;
 
 import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Category;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.ui.CategoryViewModel;
+import it.unimib.enjoyn.ui.UserViewModel;
+import it.unimib.enjoyn.ui.auth.LoginFragment;
 
 public class CategoriesSelectionFragment extends Fragment {
 
+    private CategoryViewModel categoryViewModel;
+    private Observer<Result> categoriesObserver;
+
     public CategoriesSelectionFragment() {
-        // Required empty public constructor
     }
 
     public static CategoriesSelectionFragment newInstance() {
@@ -31,6 +41,7 @@ public class CategoriesSelectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        categoryViewModel = new ViewModelProvider(requireActivity()).get(CategoryViewModel.class);
     }
 
     @Override
@@ -45,18 +56,16 @@ public class CategoriesSelectionFragment extends Fragment {
 
         ListView listView = view.findViewById(R.id.fragmentCategoriesSelection_ListView);
         listView.setDivider(null);
-        List<String> yourData = new ArrayList<>();
 
-        yourData.add("Prova");
-        yourData.add("test");
-        yourData.add("TAH");
-        yourData.add("origano");
-        yourData.add("siuuuum");
-        yourData.add("sos");
-        yourData.add("trucebaldazzi");
-        yourData.add("il signor bavaro");
+        categoriesObserver = result -> {
+            if (result.isSuccessful()) {
 
-        CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(), yourData);
-        listView.setAdapter(customAdapter);
+                categoryViewModel.getAllNews().observe(this.getViewLifecycleOwner(), categoriesObserver);
+
+                CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
+                        ((Result.CategoryResponseSuccess) result).getCategoryList());
+                listView.setAdapter(customAdapter);
+            }
+        };
     }
 }
