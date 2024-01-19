@@ -24,7 +24,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     private final DatabaseReference dbReference;
     private final FirebaseStorage firebaseStorage;
-    private ValueEventListener userListener;
+    private final ValueEventListener userListener;
 
     public UserRemoteDataSource() {
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
@@ -150,11 +150,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
         uploadTask.addOnCompleteListener(task -> {
 
-            if (!task.isSuccessful()) {
-                userCallback.onRemoteDatabaseFailure(task.getException());
-            }
-            else{
+            if (task.isSuccessful()) {
                 userCallback.onRemoteDatabaseSuccess();
+            } else {
+                userCallback.onRemoteDatabaseFailure(task.getException());
             }
         });
     }

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.util.ServiceLocator;
 
@@ -16,7 +17,7 @@ public class UserViewModel extends ViewModel {
     private final IUserRepository userRepository;
 
     public UserViewModel() {
-        userRepository = ServiceLocator.getInstance().getUserRepository(false);
+        userRepository = ServiceLocator.getInstance().getUserRepository();
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){
@@ -27,8 +28,8 @@ public class UserViewModel extends ViewModel {
         return userRepository.signIn(email, password);
     }
 
-    public void signOut(){
-        userRepository.signOut();
+    public MutableLiveData<Result> signOut(){
+        return userRepository.signOut();
     }
 
     public MutableLiveData<Result> sendEmailVerification(){
@@ -43,16 +44,12 @@ public class UserViewModel extends ViewModel {
         return userRepository.getUserByEmail(email);
     }
 
-    public MutableLiveData<Result> getCurrentUser(){
+    public User getCurrentUser(){
         return userRepository.getCurrentUser();
     }
 
-    public Result isCurrentUserEmailVerified(){
-        return userRepository.isCurrentUserEmailVerified();
-    }
-
     public MutableLiveData<Result> setUserPropic(Uri uri) {
-        return userRepository.createPropic(uri);
+        return userRepository.updatePropic(uri);
     }
 
     public MutableLiveData<Result> setUserNameAndSurname(String name, String surname) {

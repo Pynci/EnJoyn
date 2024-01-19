@@ -5,16 +5,15 @@ import android.net.Uri;
 import androidx.lifecycle.MutableLiveData;
 
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 
 public interface IUserRepository {
 
     MutableLiveData<Result> createUser(String email, String password, String username);
 
-    Result isCurrentUserEmailVerified();
-
     MutableLiveData<Result> signIn(String email, String password);
 
-    void signOut();
+    MutableLiveData<Result> signOut();
 
     MutableLiveData<Result> sendEmailVerification();
 
@@ -22,9 +21,9 @@ public interface IUserRepository {
 
     MutableLiveData<Result> getUserByEmail(String email);
 
-    MutableLiveData<Result> getCurrentUser();
+    User getCurrentUser();
 
-    MutableLiveData<Result> createPropic(Uri uri);
+    MutableLiveData<Result> updatePropic(Uri uri);
 
     MutableLiveData<Result> updateNameAndSurname(String nome, String cognome);
 

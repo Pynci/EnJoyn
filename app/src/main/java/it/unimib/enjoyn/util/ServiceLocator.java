@@ -2,11 +2,7 @@ package it.unimib.enjoyn.util;
 
 import android.app.Application;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import it.unimib.enjoyn.database.EventsRoomDatabase;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.user.AuthenticationDataSource;
@@ -33,7 +29,7 @@ public class ServiceLocator {
         return EventsRoomDatabase.getDatabase(application);
     }
 
-    public IUserRepository getUserRepository(boolean debugMode){
+    public IUserRepository getUserRepository(){
 
         UserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
         AuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();

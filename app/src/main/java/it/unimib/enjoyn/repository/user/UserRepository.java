@@ -12,7 +12,6 @@ import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
 import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
 import it.unimib.enjoyn.source.user.UserCallback;
 import it.unimib.enjoyn.source.user.UserRemoteDataSource;
-import it.unimib.enjoyn.util.Errors;
 
 public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback {
 
@@ -39,18 +38,32 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         resultFromAuth = new MutableLiveData<>();
     }
 
-
-    /*
-    Operazioni di manipolazione dei dati (create, get, read, update)
-     */
     @Override
     public MutableLiveData<Result> createUser(String email, String password, String username) {
         authenticationDataSource.signUp(email, password, username);
         return resultFromRemoteDatabase;
     }
 
+
     @Override
-    public MutableLiveData<Result> createPropic(Uri uri) {
+    public MutableLiveData<Result> getUserByUsername(String username){
+        userRemoteDataSource.getUserByUsername(username);
+        return userByUsername;
+    }
+
+    @Override
+    public MutableLiveData<Result> getUserByEmail(String email) {
+        userRemoteDataSource.getUserByEmail(email);
+        return userByEmail;
+    }
+
+    @Override
+    public User getCurrentUser(){
+        return currentUser;
+    }
+
+    @Override
+    public MutableLiveData<Result> updatePropic(Uri uri) {
         userRemoteDataSource.updatePropic(currentUser.getUid(), uri);
         return resultFromRemoteDatabase;
     }
@@ -68,36 +81,15 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
-    public MutableLiveData<Result> getUserByUsername(String username){
-        userRemoteDataSource.getUserByUsername(username);
-        return userByUsername;
-    }
-
-    @Override
-    public MutableLiveData<Result> getUserByEmail(String email) {
-        userRemoteDataSource.getUserByEmail(email);
-        return userByEmail;
-    }
-
-    @Override
-    public MutableLiveData<Result> getCurrentUser(){
-        userRemoteDataSource.getUserByEmail(authenticationDataSource.getCurrentUserEmail());
-        return userByEmail;
-    }
-
-    public User getCurrentUserTAH(){
-        return currentUser;
-    }
-
-    @Override
     public MutableLiveData<Result> signIn(String email, String password){
         authenticationDataSource.signIn(email, password);
         return resultFromAuth;
     }
 
     @Override
-    public void signOut(){
+    public MutableLiveData<Result> signOut(){
         authenticationDataSource.signOut();
+        return resultFromAuth;
     }
 
     @Override
@@ -112,19 +104,9 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return resultFromAuth;
     }
 
-    @Override
-    public Result isCurrentUserEmailVerified(){
-        Boolean value  = authenticationDataSource.isCurrentUserEmailVerified();
-        if(value != null){
-            return new Result.BooleanSuccess(value);
-        }
-        else
-            return new Result.Error(Errors.EMAILVERIFICATION_CHECK_FAILURE);
-    }
 
-    /*
-    Callback
-     */
+
+    // CALLBACK
 
     @Override
     public void onRemoteDatabaseSuccess(User user) {
@@ -171,6 +153,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onSignOutSuccess() {
+        resultFromAuth.postValue(new Result.Success());
         userRemoteDataSource.stopGettingUser(currentUser.getUid());
         currentUser = null;
     }
