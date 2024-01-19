@@ -54,14 +54,16 @@ public class MainButtonMenuActivity extends AppCompatActivity {
         // For the BottomNavigationView
         NavigationUI.setupWithNavController(bottomNav, navController);
 
-        NavigationUI.setupWithNavController(toolBar, navController);
 
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -69,4 +71,6 @@ public class MainButtonMenuActivity extends AppCompatActivity {
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
     }
+
+
 }
