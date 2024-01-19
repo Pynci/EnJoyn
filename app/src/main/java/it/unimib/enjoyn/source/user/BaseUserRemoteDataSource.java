@@ -22,7 +22,7 @@ public abstract class BaseUserRemoteDataSource {
 
     public abstract void stopGettingUser(String uid);
 
-    public abstract void createPropic(String uid, Uri propic);
+    public abstract void updatePropic(String uid, Uri propic);
 
     public abstract void updateNameAndSurname(String uid, String name, String surname);
 

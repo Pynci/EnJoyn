@@ -127,8 +127,21 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .removeEventListener(userListener);
     }
 
+    public void updateUser(String uid, Map<String, Object> updateMap){
+        DatabaseReference userReference = dbReference
+                .child(Constants.USERS_PATH)
+                .child(uid);
+
+        userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
+            if(task.isSuccessful())
+                userCallback.onRemoteDatabaseSuccess();
+            else
+                userCallback.onRemoteDatabaseFailure(task.getException());
+        });
+    }
+
     @Override
-    public void createPropic(String uid, Uri propic) {
+    public void updatePropic(String uid, Uri propic) {
 
         StorageReference storageRef = firebaseStorage.getReference();
         StorageReference userImageRef = storageRef.child("user_images/" + uid);
@@ -154,16 +167,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         updateMap.put("nome", name);
         updateMap.put("cognome", surname);
 
-        DatabaseReference userReference = dbReference
-                .child(Constants.USERS_PATH)
-                .child(uid);
-
-        userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
-            if(task.isSuccessful())
-                userCallback.onRemoteDatabaseSuccess();
-            else
-                userCallback.onRemoteDatabaseFailure(task.getException());
-        });
+        updateUser(uid, updateMap);
     }
 
     @Override
@@ -173,16 +177,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
         updateMap.put("descrizione", description);
 
-        DatabaseReference userReference = dbReference
-                .child(Constants.USERS_PATH)
-                .child(uid);
-
-        userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
-            if(task.isSuccessful())
-                userCallback.onRemoteDatabaseSuccess();
-            else
-                userCallback.onRemoteDatabaseFailure(task.getException());
-        });
+        updateUser(uid, updateMap);
     }
 
 }
