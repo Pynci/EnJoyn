@@ -73,7 +73,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     static final String STATE_TIME ="timeSelected";
     static final String STATE_DATE = "dateSelected";
 
-    Bundle savedInstance = new Bundle();
+    static Bundle savedInstance;
 
 
     Event newEvent;
@@ -105,6 +105,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     public static NewEventFragment newInstance(String param1, String param2) {
         NewEventFragment fragment = new NewEventFragment();
         Bundle args = new Bundle();
+        savedInstance = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
@@ -188,7 +189,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             @Override
             public void onClick(View v) {
                 //Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
-
 
             }
         });

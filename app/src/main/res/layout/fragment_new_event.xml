@@ -77,6 +77,8 @@
                 android:layout_marginTop="16dp"
                 android:ems="10"
                 android:text="@string/Description"
+                app:counterEnabled="true"
+                app:counterMaxLength="200"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"

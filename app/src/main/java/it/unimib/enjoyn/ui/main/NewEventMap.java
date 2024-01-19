@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -285,6 +286,31 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
 
+                searchBar.setOnKeyListener(new View.OnKeyListener(){
+                    public boolean onKey(View v, int keyCode, KeyEvent event){
+                        if((event.getAction()==KeyEvent.ACTION_DOWN)&&(keyCode==KeyEvent.KEYCODE_ENTER))
+                        {
+                            if (location != null){
+                                point = Point.fromLngLat(location.getLongitude(),location.getLatitude());
+
+                                updateCamera(point, 0.0);
+                                pointAnnotationManager.deleteAll();
+                                PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
+                                        .withPoint(point);
+                                pointAnnotationManager.create(pointAnnotationOptions);
+
+                                //newEventButton.setText(location.getName());
+
+                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                        "EEEEEEEEEEEEEEEEEEEEEEEEEEEEOOOOOOOOOOOOOOO",
+                                        Snackbar.LENGTH_LONG).show();
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
                 /*
                 OfflineSearchEngine offlineSearchEngine = OfflineSearchEngine.create(
                         new OfflineSearchEngineSettings(getString(R.string.mapbox_access_token))
@@ -428,7 +454,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                         Navigation.findNavController(view).navigate(action);
 
                         //getParentFragmentManager().popBackStackImmediate();
-
                     }
                 });
 
