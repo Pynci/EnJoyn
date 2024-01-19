@@ -33,7 +33,7 @@ public class CategoriesHolder {
         boolean isremoved = false;
 
         while (iterator.hasNext() && !isremoved) {
-            if(iterator.next().getTipo().equals(nomeCategoria)) {
+            if(iterator.next().getNome().equals(nomeCategoria)) {
                 iterator.remove();
                 isremoved = true;
             }
