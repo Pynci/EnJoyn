@@ -115,6 +115,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     private PermissionsManager permissionsManager;
     private SearchEngineUiAdapter searchEngineUiAdapter;
     private SearchView searchView;
+    MaterialButton newEventButton;
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
         @Override
@@ -235,7 +236,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         point = null;
         mapView = view.findViewById(R.id.mapView);
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
-        MaterialButton newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
+        newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
         //TOLTO per barra di ricerca
         placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
 
@@ -254,7 +255,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
 
@@ -267,7 +267,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -302,7 +301,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                                         .withPoint(point);
                                 pointAnnotationManager.create(pointAnnotationOptions);
 
-
+                                newEventButton.setText(location.getName());
 
                                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                         "EEEEEEEEEEEEEEEEEEEEEEEEEEEEOOOOOOOOOOOOOOO",
@@ -406,7 +405,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                                .build();
                        searchRequestTask = searchEngine.search(optionsReverse, searchReverseCallback);
 
-                       newEventButton.setText(location.getName());
 
                        //prova(point);
                        return false;
@@ -547,6 +545,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             } else {
                 Log.i("SearchApiExample", "Reverse geocoding results: " + results+ " "+ results.get(0).getName());
                 location.setName(results.get(0).getName());
+                newEventButton.setText(location.getName());
 
 
             }
