@@ -218,7 +218,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
         }
-        //TODO Event newEvent = newEventMapArgs.fromBundle(getArguments()).getEvent();
 
         searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
                 new SearchEngineSettings(getString(R.string.mapbox_access_token))
@@ -290,7 +289,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                     public boolean onKey(View v, int keyCode, KeyEvent event){
                         if((event.getAction()==KeyEvent.ACTION_DOWN)&&(keyCode==KeyEvent.KEYCODE_ENTER))
                         {
-                            if (location != null){
+                            if (location != null && location.getName() != ""){
                                 point = Point.fromLngLat(location.getLongitude(),location.getLatitude());
 
                                 updateCamera(point, 0.0);
@@ -299,7 +298,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                                         .withPoint(point);
                                 pointAnnotationManager.create(pointAnnotationOptions);
 
-                                //newEventButton.setText(location.getName());
+                                newEventButton.setText(location.getName());
 
                                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                         "EEEEEEEEEEEEEEEEEEEEEEEEEEEEOOOOOOOOOOOOOOO",
@@ -371,7 +370,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 positionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       // flyToCameraPosition(point);
+                        // flyToCameraPosition(point);
                         updateCamera(point, 0.0);
                         locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                         locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
@@ -477,21 +476,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         getCamera(mapView).easeTo(cameraOptions, animationOptions);
     }
 
-
-    private void flyToCameraPosition(Point point) {
-        Point cameraCenterCoordinates = com.mapbox.geojson.Point.fromLngLat(8.191926, 45.464098);
-        final CameraAnimationsPlugin camera = getCamera(mapView);
-        final Cancelable cancelable = (Cancelable) camera.easeTo(
-                new CameraOptions.Builder()
-                        .center(point)
-                        .bearing(0.0)
-                        .pitch(0.0)
-                        .zoom(13.0)
-                        .build(),
-                new MapAnimationOptions.Builder().duration(800).build());
-
-
-    }
 
 
   /*  private void prova(Point point) {
