@@ -4,6 +4,8 @@ import static com.mapbox.maps.plugin.animation.CameraAnimationsUtils.getCamera;
 import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
 import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
+import static it.unimib.enjoyn.util.Constants.EMPTY_LOCATION;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -85,6 +87,8 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
 import it.unimib.enjoyn.model.EventLocation;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -445,14 +449,19 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 newEventButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         /*Bundle bundle = new Bundle();
                         bundle.putParcelable("LOCATION",location);
                         getParentFragmentManager().setFragmentResult("LOCATION_BUNDLE", bundle);
                          */
-                        NewEventMapDirections.ActionNewEventMapToNewEventFragment action =
-                                NewEventMapDirections.actionNewEventMapToNewEventFragment(location);
-                        Navigation.findNavController(view).navigate(action);
-
+                        if(location.getLongitude() != 0.0 && location.getLatitude() != 0.0 && location.getName() != null) {
+                            NewEventMapDirections.ActionNewEventMapToNewEventFragment action =
+                                    NewEventMapDirections.actionNewEventMapToNewEventFragment(location);
+                            Navigation.findNavController(view).navigate(action);
+                        } else {
+                            ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
+                            Snackbar.make(view, errorMessagesUtil.getMapErrorMessage(EMPTY_LOCATION), Snackbar.LENGTH_LONG).show();
+                        }
                         //getParentFragmentManager().popBackStackImmediate();
                     }
                 });

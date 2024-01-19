@@ -144,6 +144,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         savedInstanceState = new Bundle();
         super.onViewCreated(view, savedInstanceState);
         EventLocation location = NewEventFragmentArgs.fromBundle(getArguments()).getLocation();
+
+        //Log.d("coordinate", ""+location.getLongitudeToString()+" "+location.getLatitudeToString()+" "+ location.getName());
         //creazione del nuovo evento
         newEvent = new Event();
         requireActivity().addMenuProvider(new MenuProvider() {
@@ -183,7 +185,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
             } else {
                 ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
-                Snackbar.make(view, errorMessagesUtil.getErrorMessage(((Result.WeatherError) result).getMessage()), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, errorMessagesUtil.getWeatherErrorMessage(((Result.WeatherError) result).getMessage()), Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -271,9 +273,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 else {
                                     if (indexHour >= 0 && indexMinute >= 0) {
                                         String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
+                                        weatherCode = Integer.parseInt(code);
                                         fragmentNewEventBinding.weather.setText(code);
                                         fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute));
-                                        //setWeatherIcon(weatherIcon, weatherCode);
+                                        setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
                                     }
                                 }
                             }
