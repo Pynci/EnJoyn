@@ -1,6 +1,7 @@
 package it.unimib.enjoyn.ui.auth;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -64,6 +65,7 @@ public class LoginFragment extends Fragment {
         TextInputLayout textInputPassword = view.findViewById(R.id.fragmentLogin_textInputLayout_password);
         EditText editTextPassword = view.findViewById(R.id.fragmentLogin_textInputEditText_password);
 
+        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         // Observers
 

@@ -1,11 +1,10 @@
 package it.unimib.enjoyn.ui.auth;
 
-import android.graphics.Color;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +21,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.ui.SnackbarBuilder;
 import it.unimib.enjoyn.ui.UserViewModel;
 
 public class PasswordResetFragment extends Fragment {
@@ -56,6 +56,7 @@ public class PasswordResetFragment extends Fragment {
         TextInputLayout textInputEmail = view.findViewById(R.id.fragmentPasswordReset_textInputLayout_email);
         TextInputEditText emailProvided = view.findViewById(R.id.fragmentPasswordReset_textInputEditText_email);
         Button buttonNext = view.findViewById(R.id.fragmentPasswordReset_button_next);
+        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         emailRecoverPasswordObserver = result -> {
 
@@ -66,9 +67,10 @@ public class PasswordResetFragment extends Fragment {
                         .navigate(R.id.action_passwordRecoverFragment_to_loginFragment);
             }
             else {
-                Snackbar.make(view, "Impossibile completare l'operazione richiesta",
-                                Snackbar.LENGTH_SHORT)
-                        .show();
+                String text = "Impossibile completare l'operazione richiesta";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
             }
         };
 
@@ -102,12 +104,18 @@ public class PasswordResetFragment extends Fragment {
                 userViewModel
                         .sendResetPasswordEmail(String.valueOf(emailProvided.getText()))
                         .observe(this.requireActivity(), emailRecoverPasswordObserver);
-                Snackbar.make(view, "Inviata una mail di ripristino password all'indirizzo specificato",
-                        Snackbar.LENGTH_SHORT).show();
+
+                String text = "Inviata una mail di ripristino password all'indirizzo specificato";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
             }
             else{
-                Snackbar.make(view, "Errore nella procedura di invio email.",
-                                Snackbar.LENGTH_SHORT).show();
+
+                Snackbar snackbar;
+                String text = "Impossibile inviare la mail di ripristino password";
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
             }
         });
     }

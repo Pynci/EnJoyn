@@ -1,5 +1,6 @@
 package it.unimib.enjoyn.ui.auth.registration;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -21,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.ui.SnackbarBuilder;
 import it.unimib.enjoyn.ui.UserViewModel;
 
 public class ConfirmEmailMessageFragment extends Fragment {
@@ -62,16 +64,21 @@ public class ConfirmEmailMessageFragment extends Fragment {
         Button buttonForNewEmail = view.findViewById(R.id.fragmentConfirmEmailMessage_button_newEmail);
         Button buttonToLogin = view.findViewById(R.id.fragmentConfirmEmailMessage_button_buttonToLogin);
 
+        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
         emailVerificationSendingObserver = result -> {
             if(result.isSuccessful()){
-                Snackbar.make(view, "È stata inviata una nuova mail di conferma",
-                                Snackbar.LENGTH_SHORT)
-                        .show();
+
+                String text = "È stata inviata una nuova mail di conferma";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
             }
             else{
-                Snackbar.make(view, "Si è verificato un errore nell'invio della mail di conferma",
-                                Snackbar.LENGTH_SHORT)
-                        .show();
+                String text = "Si è verificato un errore nell'invio della mail di conferma";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
             }
         };
 
