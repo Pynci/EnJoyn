@@ -71,4 +71,17 @@ public abstract class Result {
             return messages;
         }
     }
+
+    public static final class CategoryResponseSuccess extends Result {
+
+        private final List<Category> categoryList;
+
+        public CategoryResponseSuccess (List<Category> list) {
+            categoryList = list;
+        }
+
+        public List<Category> getCategoryList() {
+            return  categoryList;
+        }
+    }
 }
