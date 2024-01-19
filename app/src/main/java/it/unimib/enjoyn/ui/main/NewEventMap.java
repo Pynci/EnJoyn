@@ -49,7 +49,6 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 import com.mapbox.maps.plugin.gestures.GesturesUtils;
 import com.mapbox.maps.plugin.gestures.OnMapClickListener;
-import com.mapbox.common.Cancelable;
 import com.mapbox.geojson.Point;
 
 
@@ -59,7 +58,6 @@ import com.mapbox.maps.MapView;
 import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
 import com.mapbox.maps.plugin.LocationPuck2D;
-import com.mapbox.maps.plugin.animation.CameraAnimationsPlugin;
 import com.mapbox.maps.plugin.animation.MapAnimationOptions;
 
 import com.mapbox.maps.plugin.gestures.OnMoveListener;
@@ -67,12 +65,13 @@ import com.mapbox.maps.plugin.locationcomponent.LocationComponentPlugin;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener;
 import com.mapbox.search.ResponseInfo;
+import com.mapbox.search.ReverseGeoOptions;
+import com.mapbox.search.SearchCallback;
 import com.mapbox.search.SearchEngine;
 import com.mapbox.search.SearchEngineSettings;
 import com.mapbox.search.SearchOptions;
 import com.mapbox.search.SearchSelectionCallback;
 import com.mapbox.search.autocomplete.PlaceAutocomplete;
-import com.mapbox.search.autocomplete.PlaceAutocompleteSuggestion;
 import com.mapbox.search.common.AsyncOperationTask;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
@@ -232,6 +231,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 .build();
 
 
+
         point = null;
         mapView = view.findViewById(R.id.mapView);
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
@@ -302,7 +302,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                                         .withPoint(point);
                                 pointAnnotationManager.create(pointAnnotationOptions);
 
-                                newEventButton.setText(location.getName());
+
 
                                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                         "EEEEEEEEEEEEEEEEEEEEEEEEEEEEOOOOOOOOOOOOOOO",
@@ -368,8 +368,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                     public void onFeedbackItemClick(@NonNull ResponseInfo responseInfo) {
                     }
                 });
-
-                 */
+                */
 
                 positionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -401,49 +400,19 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
                                .withPoint(point);
                        pointAnnotationManager.create(pointAnnotationOptions);
+
+                       final ReverseGeoOptions optionsReverse = new ReverseGeoOptions.Builder(point)
+                               .limit(1)
+                               .build();
+                       searchRequestTask = searchEngine.search(optionsReverse, searchReverseCallback);
+
+                       newEventButton.setText(location.getName());
+
                        //prova(point);
                        return false;
                    }
                });
-                //TODO FUNZIONA MA NON USARE LA BARRA DI RICERCA PERCHé FA TANTE CHIAMATE API, usare metodo sopra per testare movimento camera e pin
-                    // TODO    SE SI VUOLE TESTARE CREARE NUOVO TOKEN DI MAPBOX da mettere nel GRADLE.PROPRETIES(PROJECT PROPERTIES) nella variabile MAPBOX_DOWNLOADS_TOKEN
-           placeAutocompleteUiAdapter.addSearchListener(new PlaceAutocompleteUiAdapter.SearchListener() {
-                    @Override
-                    public void onSuggestionsShown(@NonNull List<PlaceAutocompleteSuggestion> list) {
 
-                    }
-
-                    @Override
-                    public void onSuggestionSelected(@NonNull PlaceAutocompleteSuggestion placeAutocompleteSuggestion) {
-                        ignoreNextQueryUpdate = true;
-                        searchBar.setText(placeAutocompleteSuggestion.getName());
-                        searchResultsView.setVisibility(View.GONE);
-                        //todo PIN sulla mappa
-                        //Logica per creare pin sulla mappa da testare [modificare immagine : bisogna mettere un immagine BitMap ]
-                        pointAnnotationManager.deleteAll();
-                        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
-                        .withPoint(placeAutocompleteSuggestion.getCoordinate());
-                        pointAnnotationManager.create(pointAnnotationOptions);
-
-
-                        location.setLongitude(placeAutocompleteSuggestion.getCoordinate().longitude());
-                        location.setLatitude(placeAutocompleteSuggestion.getCoordinate().latitude());
-                        location.setName(placeAutocompleteSuggestion.getName());
-
-                        updateCamera(placeAutocompleteSuggestion.getCoordinate(), 0.0);
-                        newEventButton.setText(location.getName());
-                    }
-
-                    @Override
-                    public void onPopulateQueryClick(@NonNull PlaceAutocompleteSuggestion placeAutocompleteSuggestion) {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Exception e) {
-
-                    }
-                });
 
                 newEventButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -568,6 +537,26 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         }
         super.onDestroy();
     }
+
+    private final SearchCallback searchReverseCallback = new SearchCallback() {
+
+        @Override
+        public void onResults(@NonNull List<SearchResult> results, @NonNull ResponseInfo responseInfo) {
+            if (results.isEmpty()) {
+                Log.i("SearchApiExample", "No reverse geocoding results");
+            } else {
+                Log.i("SearchApiExample", "Reverse geocoding results: " + results+ " "+ results.get(0).getName());
+                location.setName(results.get(0).getName());
+
+
+            }
+        }
+
+        @Override
+        public void onError(@NonNull Exception e) {
+            Log.i("SearchApiExample", "Reverse geocoding error", e);
+        }
+    };
     }
 
 

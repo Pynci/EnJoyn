@@ -64,7 +64,6 @@ public class MainButtonMenuActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
