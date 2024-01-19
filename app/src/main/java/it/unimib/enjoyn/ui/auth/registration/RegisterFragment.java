@@ -29,7 +29,7 @@ import it.unimib.enjoyn.R;
 
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
-import it.unimib.enjoyn.ui.SnackbarBuilder;
+import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.ui.auth.LoginActivity;
 

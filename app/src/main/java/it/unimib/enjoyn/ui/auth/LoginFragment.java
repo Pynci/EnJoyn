@@ -78,7 +78,7 @@ public class LoginFragment extends Fragment {
                     if(isEmailVerified){
                         Navigation
                                 .findNavController(view)
-                                .navigate(R.id.action_loginFragment_to_mainButtonMenuActivity);
+                                .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
                     }
                     else{
                         Navigation

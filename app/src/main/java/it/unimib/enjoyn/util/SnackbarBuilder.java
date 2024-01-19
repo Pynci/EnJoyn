@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui;
+package it.unimib.enjoyn.util;
 
 import android.content.Context;
 import android.content.res.Configuration;

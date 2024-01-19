@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 
@@ -45,10 +46,20 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
             rowView = inflater.inflate(R.layout.custom_row_layout, parent, false);
         }
 
-        MaterialCardView palle = rowView.findViewById(R.id.customRawLayout_cardview);
+        MaterialCardView cardView1 = rowView.findViewById(R.id.customRawLayout_cardview1);
+        MaterialCardView cardView2 = rowView.findViewById(R.id.customRawLayout_cardview2);
+        TextView nameCategoryCard1 = rowView.findViewById(R.id.NameCategoryCard1);
+        TextView nameCategoryCard2 = rowView.findViewById(R.id.NameCategoryCard2);
 
-        palle.setOnClickListener(v -> {
-            palle.setChecked(!palle.isChecked());
+        nameCategoryCard1.setText(data.get(position));
+        nameCategoryCard2.setText(data.get(position + 1));
+
+        cardView1.setOnClickListener(v -> {
+            cardView1.setChecked(!cardView1.isChecked());
+        });
+
+        cardView2.setOnClickListener(v -> {
+            cardView2.setChecked(!cardView2.isChecked());
         });
 
         return rowView;

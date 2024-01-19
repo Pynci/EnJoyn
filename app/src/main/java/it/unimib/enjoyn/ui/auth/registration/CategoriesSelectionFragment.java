@@ -43,17 +43,18 @@ public class CategoriesSelectionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ListView listView = view.findViewById(R.id.fragmentCategoriesSelection_ListView); // Riferimento alla tua ListView
+        ListView listView = view.findViewById(R.id.fragmentCategoriesSelection_ListView);
+        listView.setDivider(null);
         List<String> yourData = new ArrayList<>();
 
         yourData.add("Prova");
         yourData.add("test");
         yourData.add("TAH");
         yourData.add("origano");
-        yourData.add("Prova");
-        yourData.add("test");
-        yourData.add("TAH");
-        yourData.add("origano");
+        yourData.add("siuuuum");
+        yourData.add("sos");
+        yourData.add("trucebaldazzi");
+        yourData.add("il signor bavaro");
 
         CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(), yourData);
         listView.setAdapter(customAdapter);
