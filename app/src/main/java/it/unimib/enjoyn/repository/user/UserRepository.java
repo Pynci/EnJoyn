@@ -1,6 +1,7 @@
 package it.unimib.enjoyn.repository.user;
 
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -141,14 +142,14 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onAccountCreationSuccess(User user) {
-        resultFromAuth.postValue(new Result.Success());
         userRemoteDataSource.getUser(user.getUid());
+        resultFromAuth.postValue(new Result.UserResponseSuccess(user));
     }
 
     @Override
     public void onSignInSuccess(User user) {
-        resultFromAuth.postValue(new Result.Success());
         userRemoteDataSource.getUser(user.getUid());
+        resultFromAuth.postValue(new Result.UserResponseSuccess(user));
     }
 
     @Override

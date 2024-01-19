@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.ui.auth.registration.RegisterActivity;
@@ -71,24 +72,29 @@ public class LoginFragment extends Fragment {
 
         signInObserver = result -> {
             if(result.isSuccessful()){
+                Snackbar.make(view, "login effettuato con account: " + ((Result.UserResponseSuccess) result).getData().getEmail(),
+                        Snackbar.LENGTH_SHORT)
+                        .show();
 
-                Result emailVerification = userViewModel.isCurrentUserEmailVerified();
-                if(emailVerification.isSuccessful()){
-                    boolean isEmailVerified = ((Result.BooleanSuccess) emailVerification).getData();
-                    if(isEmailVerified){
-                        Navigation
-                                .findNavController(view)
-                                .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
-                    }
-                    else{
-                        Navigation
-                                .findNavController(view)
-                                .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
-                    }
-                }
-                else{
-                    Snackbar.make(view, "errore matto in culo", Snackbar.LENGTH_SHORT).show();
-                }
+                //TODO: continuare qui
+
+//                Result emailVerification = userViewModel.isCurrentUserEmailVerified();
+//                if(emailVerification.isSuccessful()){
+//                    boolean isEmailVerified = ((Result.BooleanSuccess) emailVerification).getData();
+//                    if(isEmailVerified){
+//                        Navigation
+//                                .findNavController(view)
+//                                .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
+//                    }
+//                    else{
+//                        Navigation
+//                                .findNavController(view)
+//                                .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
+//                    }
+//                }
+//                else{
+//                    Snackbar.make(view, "errore matto in culo", Snackbar.LENGTH_SHORT).show();
+//                }
             }
             else{
                 Snackbar.make(view, getString(R.string.authenticationFailed),

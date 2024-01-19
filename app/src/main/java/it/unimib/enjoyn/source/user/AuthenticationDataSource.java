@@ -24,7 +24,7 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         fbUser = auth.getCurrentUser();
-                        authenticationCallback.onSignUpSuccess(new User(fbUser.getUid(), email, username));
+                        authenticationCallback.onSignUpSuccess(new User(fbUser.getUid(), username, email));
 
                     } else {
                         authenticationCallback.onAuthFailure(task.getException());
