@@ -52,8 +52,8 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
         TextView nameCategoryCard1 = rowView.findViewById(R.id.NameCategoryCard1);
         TextView nameCategoryCard2 = rowView.findViewById(R.id.NameCategoryCard2);
 
-        nameCategoryCard1.setText(data.get(position).getNome());
-        nameCategoryCard2.setText(data.get(position).getNome());
+        nameCategoryCard1.setText(data.get(position * 2).getNome());
+        nameCategoryCard2.setText(data.get(position * 2 + 1).getNome());
 
         cardView1.setOnClickListener(v -> {
             cardView1.setChecked(!cardView1.isChecked());
