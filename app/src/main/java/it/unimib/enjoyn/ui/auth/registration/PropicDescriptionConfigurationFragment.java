@@ -75,6 +75,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
 
         ShapeableImageView userImage = view.findViewById(R.id.propicDescriptionConfiguration_imageView_propic);
         Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
+        Button skip = view.findViewById(R.id.propicDescriptionConfiguration_button_skip);
         ImageButton imageButtonAddPropic = view.findViewById(R.id.propicDescriptionConfiguration_imageButton_addPropic);
         EditText cognome = view.findViewById(R.id.propicDescriptionConfiguration_editText_cognome);
         EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
@@ -111,6 +112,11 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                         Log.d("PhotoPicker", "No media selected");
                     }
                 });
+
+        skip.setOnClickListener(v -> {
+            Navigation.findNavController(view)
+                    .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
+        });
 
         buttonNext.setOnClickListener(v -> {
 
