@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.ui.main;
 
+import static it.unimib.enjoyn.util.Constants.EMPTY_FIELDS;
+
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -63,10 +65,15 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     int indexMinute = -1;
     int indexDate = -1;
     boolean equals = false;
+
+    String title;
     String dateWeather;
     String timeWeather;
     int weatherCode = -1;
+    String locationName;
     ImageView weatherIcon;
+    String description;
+    int numberOfPeople = -1;
 
     private EventViewModel eventViewModel;
     private Weather weatherAPIdata;
@@ -75,7 +82,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     static final String STATE_DATE = "dateSelected";
     private static final String STATE_CODE = "weatherCode";
 
-    static Bundle savedInstance;
 
 
     Event newEvent;
@@ -107,7 +113,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     public static NewEventFragment newInstance(String param1, String param2) {
         NewEventFragment fragment = new NewEventFragment();
         Bundle args = new Bundle();
-        savedInstance = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
@@ -143,7 +148,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         savedInstanceState = new Bundle();
         super.onViewCreated(view, savedInstanceState);
+
         EventLocation location = NewEventFragmentArgs.fromBundle(getArguments()).getLocation();
+        locationName = location.getName();
+        fragmentNewEventBinding.fragmentNewEventTextViewLocation.setText(locationName);
 
         //Log.d("coordinate", ""+location.getLongitudeToString()+" "+location.getLatitudeToString()+" "+ location.getName());
         //creazione del nuovo evento
@@ -160,6 +168,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             }
         });
 
+
+
+        Log.d("text", title+" "+description);
         //selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         //selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
         //weather = view.findViewById(R.id.weather);
@@ -203,6 +214,31 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             @Override
             public void onClick(View v) {
                 //Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
+
+            }
+        });
+
+        //click on create event
+        fragmentNewEventBinding.fragmentNewEventButtonCreateEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO da inserire tag categoria
+                title = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextTitle.getText());
+                description = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextDescription.getText());
+                numberOfPeople = Integer.parseInt(String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextNumber.getText()));
+
+                if(title != null && dateWeather != null && timeWeather != null && locationName != null && numberOfPeople != -1 && description != null){
+                    newEvent = new Event();
+                    newEvent.setTitle(title);
+                    newEvent.setDate(dateWeather);
+                    newEvent.setTime(timeWeather);
+                    newEvent.setPlaceName(locationName);
+                    newEvent.setPeopleNumber(numberOfPeople);
+                    newEvent.setDescription(description);
+                } else {
+                    ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
+                    Snackbar.make(view, errorMessagesUtil.getNewEventErrorMessage(EMPTY_FIELDS), Snackbar.LENGTH_LONG).show();
+                }
 
             }
         });

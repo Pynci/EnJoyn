@@ -391,7 +391,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                    public boolean onMapClick(@NonNull Point point) {
                        location.setLatitude(point.latitude());
                        location.setLongitude(point.longitude());
-                       newEventButton.setText(location.getLatitudeToString());
                        updateCamera(point, 0.0);
                        //todo mettere logica per pin sulla mappa da testare (riga 325)
 
@@ -509,6 +508,11 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         @Override
         public void onResult(@NonNull SearchSuggestion suggestion, @NonNull SearchResult result, @NonNull ResponseInfo info) {
             Log.i("SearchApiExample", "Search result: " + result);
+            if (location != null){
+                location.setLatitude(result.getCoordinate().latitude());
+                location.setLongitude(result.getCoordinate().longitude());
+                location.setName(result.getName());
+            }
             location.setLatitude(result.getCoordinate().latitude());
             location.setLongitude(result.getCoordinate().longitude());
             location.setName(result.getName());

@@ -3,6 +3,7 @@ package it.unimib.enjoyn.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -24,6 +25,7 @@ public class Event implements Parcelable {
 
     private boolean confidential;
 
+    @Nullable
     private String place;
 
     private String placeName;
@@ -31,11 +33,11 @@ public class Event implements Parcelable {
     private Category category;
 
     private int peopleNumber;
-
+    @Nullable
     private double distance;
 
     private boolean isTODO;
-
+    @Nullable
     private boolean isFavorite;
     @Embedded(prefix = "weather_")
     private Weather weather;
@@ -58,10 +60,7 @@ public class Event implements Parcelable {
         this.distance = distance;
         this.isTODO = isTODO;
         this.isFavorite = isFavorite;
-        this.weather = weather;
     }
-
-
 
 
     public long getId() {

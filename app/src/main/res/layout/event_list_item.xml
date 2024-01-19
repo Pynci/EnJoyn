@@ -42,9 +42,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:maxLines="1"
-                android:maxLength="30"
                 android:ellipsize="end"
+                android:maxLength="30"
+                android:maxLines="1"
                 android:text="Andare a mangiare al Kfc"
                 android:textColor="@color/cardview_light_background"
                 app:layout_constraintEnd_toStartOf="@+id/eventListItem_imageButton_favourite"
@@ -76,9 +76,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:maxLines="1"
-                android:maxLength="30"
                 android:ellipsize="end"
+                android:maxLength="30"
+                android:maxLines="1"
                 android:text="via arrivabene, 29"
                 app:drawableStartCompat="@drawable/baseline_place_24"
                 app:layout_constraintStart_toStartOf="parent"
@@ -150,6 +150,6 @@
                 app:srcCompat="@drawable/baseline_favorite_border_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

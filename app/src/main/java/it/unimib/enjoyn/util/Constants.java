@@ -32,6 +32,7 @@ public class Constants {
     public static final String API_ERROR = "error on API fetching";
     public static final String RETROFIT_ERROR = "retrofit_error";
     public static final String EMPTY_LOCATION = "empty_location";
+    public static final String EMPTY_FIELDS = "empty fields";
     // Constants for encrypted files
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.enjoyn.encrypted_file.txt";
 
