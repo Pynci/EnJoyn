@@ -1,9 +1,11 @@
 package it.unimib.enjoyn.ui.auth;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -21,7 +22,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.UserViewModel;
 
 public class PasswordResetFragment extends Fragment {
@@ -95,10 +95,19 @@ public class PasswordResetFragment extends Fragment {
         });
 
         buttonNext.setOnClickListener(v -> {
+
+            view.clearFocus();
+
             if(userViewModel.checkEmail(String.valueOf(emailProvided.getText())).equals("ok")){
                 userViewModel
                         .sendResetPasswordEmail(String.valueOf(emailProvided.getText()))
                         .observe(this.requireActivity(), emailRecoverPasswordObserver);
+                Snackbar.make(view, "Inviata una mail di ripristino password all'indirizzo specificato",
+                        Snackbar.LENGTH_SHORT).show();
+            }
+            else{
+                Snackbar.make(view, "Errore nella procedura di invio email.",
+                                Snackbar.LENGTH_SHORT).show();
             }
         });
     }
