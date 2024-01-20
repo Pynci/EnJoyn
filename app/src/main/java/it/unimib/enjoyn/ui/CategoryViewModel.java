@@ -14,11 +14,9 @@ import it.unimib.enjoyn.util.ServiceLocator;
 public class CategoryViewModel extends ViewModel {
 
     private final ICategoryRepository categoryRepository;
-    private MutableLiveData<Result> getAllImagesResult;
 
     public CategoryViewModel() {
         categoryRepository = ServiceLocator.getInstance().getcategoryRepository(false);
-        getAllImagesResult = new MutableLiveData<>();
     }
 
     public MutableLiveData<Result> getAllCategories() {
