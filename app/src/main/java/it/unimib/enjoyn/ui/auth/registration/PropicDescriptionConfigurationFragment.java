@@ -81,6 +81,8 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
         TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
 
+        userViewModel.updateProfileConfigurationStatus();
+
         observerAddOptionalData = result -> {
 
             if(result instanceof Result.ResultList) {
