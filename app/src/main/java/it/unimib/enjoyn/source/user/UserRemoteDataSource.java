@@ -32,6 +32,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
         firebaseStorage = FirebaseStorage.getInstance(Constants.STORAGE_PATH);
         currentUserUID = "";
+        isFirstUserFetch = true;
 
         userListener = new ValueEventListener() {
             @Override
@@ -121,7 +122,6 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     @Override
     public void getUser(String uid){
-        isFirstUserFetch = true;
         currentUserUID = uid;
         dbReference
                 .child(Constants.USERS_PATH)
