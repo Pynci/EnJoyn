@@ -64,6 +64,7 @@ import com.mapbox.maps.plugin.gestures.OnMoveListener;
 import com.mapbox.maps.plugin.locationcomponent.LocationComponentPlugin;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener;
+import com.mapbox.search.QueryType;
 import com.mapbox.search.ResponseInfo;
 import com.mapbox.search.ReverseGeoOptions;
 import com.mapbox.search.SearchCallback;
@@ -413,8 +414,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                                .withPoint(point);
                        pointAnnotationManager.create(pointAnnotationOptions);
 
+
                        final ReverseGeoOptions optionsReverse = new ReverseGeoOptions.Builder(point)
                                .limit(1)
+                               .types(QueryType.POI)
                                .build();
                        searchRequestTask = searchEngine.search(optionsReverse, searchReverseCallback);
 
@@ -546,6 +549,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Log.i("SearchApiExample", "No reverse geocoding results");
             } else {
                 Log.i("SearchApiExample", "Reverse geocoding results: " + results+ " "+ results.get(0).getName());
+                Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0));
+
                 location.setName(results.get(0).getName());
                 newEventButton.setText(location.getName());
 
