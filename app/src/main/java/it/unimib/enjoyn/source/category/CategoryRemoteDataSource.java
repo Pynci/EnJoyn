@@ -1,6 +1,7 @@
 package it.unimib.enjoyn.source.category;
 
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -25,7 +26,7 @@ public class CategoryRemoteDataSource extends BaseCategoryRemoteDataSource{
 
     public CategoryRemoteDataSource() {
         databaseReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
-        firebaseStorage = FirebaseStorage.getInstance(Constants.STORAGE_PATH);
+        firebaseStorage = FirebaseStorage.getInstance();
     }
 
     @Override
@@ -56,10 +57,11 @@ public class CategoryRemoteDataSource extends BaseCategoryRemoteDataSource{
     @Override
     public void getImageFromName(String name) {
 
-        StorageReference datastoreReference = firebaseStorage.getReference();
+        StorageReference imageref = firebaseStorage.getReference()
+                .child("categories")
+                .child(name.toLowerCase()+".jpg");
 
-        datastoreReference
-                .child("/categories/"+name+".jpg")
+        imageref
                 .getDownloadUrl()
                 .addOnSuccessListener(uri -> {
                     categoryCallback.onSuccessGetImageFromName(uri);
