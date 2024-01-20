@@ -81,6 +81,7 @@ import com.mapbox.search.ui.view.CommonSearchViewConfiguration;
 import com.mapbox.search.ui.view.SearchResultsView;
 import com.mapbox.search.ui.adapter.engines.SearchEngineUiAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
@@ -414,10 +415,12 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                                .withPoint(point);
                        pointAnnotationManager.create(pointAnnotationOptions);
 
-
+                        List<QueryType> queryTypeList= new ArrayList<>();
+                        queryTypeList.add(QueryType.POI);
+                       queryTypeList.add(QueryType.ADDRESS);
                        final ReverseGeoOptions optionsReverse = new ReverseGeoOptions.Builder(point)
                                .limit(1)
-                               .types(QueryType.POI)
+                               .types(queryTypeList)
                                .build();
                        searchRequestTask = searchEngine.search(optionsReverse, searchReverseCallback);
 
@@ -549,12 +552,17 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Log.i("SearchApiExample", "No reverse geocoding results");
             } else {
                 Log.i("SearchApiExample", "Reverse geocoding results: " + results+ " "+ results.get(0).getName());
-                Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0));
-
-                location.setName(results.get(0).getName());
+                Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId());
+                Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId().substring(0, 2).equals("add"));
+                Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId().substring(0, 2));
+               // Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(1));
+                if(results.get(0).getId().substring(0, 2).equals("ad")) {
+                    location.setName(results.get(0).getName() + " " + results.get(0).getAddress().getHouseNumber());
+                }
+                else {
+                    location.setName(results.get(0).getName());
+                }
                 newEventButton.setText(location.getName());
-
-
             }
         }
 

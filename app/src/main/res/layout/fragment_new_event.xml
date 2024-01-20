@@ -169,8 +169,8 @@
                 android:layout_width="162dp"
                 android:layout_height="155dp"
                 android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_description"
-                tools:layout_editor_absoluteX="217dp"
                 tools:srcCompat="@drawable/drawable_sun" />
 
             <EditText
