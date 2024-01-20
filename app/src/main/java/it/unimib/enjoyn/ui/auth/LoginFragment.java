@@ -21,7 +21,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.ui.auth.registration.RegisterActivity;
