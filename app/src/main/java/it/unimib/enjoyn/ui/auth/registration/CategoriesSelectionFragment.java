@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -21,11 +20,8 @@ import java.util.List;
 
 import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.CategoryViewModel;
-import it.unimib.enjoyn.ui.UserViewModel;
-import it.unimib.enjoyn.ui.auth.LoginFragment;
 
 public class CategoriesSelectionFragment extends Fragment {
 
@@ -84,6 +80,6 @@ public class CategoriesSelectionFragment extends Fragment {
             }
         };
 
-        categoryViewModel.getAllNews().observe(this.getViewLifecycleOwner(), categoriesObserver);
+        categoryViewModel.getAllCategories().observe(this.getViewLifecycleOwner(), categoriesObserver);
     }
 }

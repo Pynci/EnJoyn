@@ -21,7 +21,7 @@ public class CategoryViewModel extends ViewModel {
         getAllImagesResult = new MutableLiveData<>();
     }
 
-    public MutableLiveData<Result> getAllNews() {
+    public MutableLiveData<Result> getAllCategories() {
         return categoryRepository.readAllCategories();
     }
 
