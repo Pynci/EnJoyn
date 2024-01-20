@@ -311,7 +311,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                         String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
                                         weatherCode = Integer.parseInt(code);
                                        // fragmentNewEventBinding.weather.setText(code);
-                                        fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute));
+                                        fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute)+ "°C");
                                         setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
                                     }
                                 }
@@ -461,7 +461,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                     if (indexHour >= 0 && indexMinute >= 0) {
                                         String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
                                       //  fragmentNewEventBinding.weather.setText(code);
-                                        fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute));
+                                        fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute)+ "°C");
                                         setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                     }
                                 }

@@ -108,7 +108,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     FloatingActionButton positionButton;
     MapboxMap mapboxMap;
     Bitmap bitmap;
-    int i=0;
+    boolean positionChanged = true;
 
     private PlaceAutocomplete placeAutocomplete;
 
@@ -142,14 +142,14 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     private final OnIndicatorPositionChangedListener onIndicatorPositionChangedListener = new OnIndicatorPositionChangedListener() {
         @Override
         public void onIndicatorPositionChanged(@NonNull Point point) {
-            if(i==0) {
+            if(positionChanged) {
                 mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
                 getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
                 NewEventMap.this.selfLocation = point;
-                i=1;
+               positionChanged = false;
             }
             else{
-                i=0;
+                positionChanged = true;
             }
 
         }
@@ -508,11 +508,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         @Override
         public void onResult(@NonNull SearchSuggestion suggestion, @NonNull SearchResult result, @NonNull ResponseInfo info) {
             Log.i("SearchApiExample", "Search result: " + result);
-            if (location != null){
-                location.setLatitude(result.getCoordinate().latitude());
-                location.setLongitude(result.getCoordinate().longitude());
-                location.setName(result.getName());
-            }
             location.setLatitude(result.getCoordinate().latitude());
             location.setLongitude(result.getCoordinate().longitude());
             location.setName(result.getName());
@@ -553,8 +548,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId().substring(0, 2));
                // Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(1));
                 if(results.get(0).getId().substring(0, 2).equals("ad")) {
-                    if(results.get(0).getAddress().getHouseNumber()!= null)
-                    location.setName(results.get(0).getName() + " " + results.get(0).getAddress().getHouseNumber());
+                    if(results.get(0).getAddress().getHouseNumber()!= null) {
+                        location.setName(results.get(0).getName() + " " + results.get(0).getAddress().getHouseNumber());
+                    }
                 }
                 else {
                     location.setName(results.get(0).getName());

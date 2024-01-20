@@ -53,7 +53,7 @@
                 android:id="@+id/fragmentNewEvent_editText_title"
                 android:layout_width="344dp"
                 android:layout_height="75dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:hint="@string/Title"
                 android:inputType="text"
                 android:orientation="horizontal"
@@ -91,11 +91,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="19dp"
 
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="130dp"
                 android:text="temperature"
                 app:layout_constraintEnd_toEndOf="@+id/fragmentNewEvent_imageView_meteoIcon"
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_imageView_meteoIcon"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_description" />
+                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageView_meteoIcon" />
 
             <ImageButton
                 android:id="@+id/fragmentNewEvent_imageButton_datePicker"
@@ -153,20 +153,19 @@
                 android:id="@+id/fragmentNewEvent_button_createEvent"
                 android:layout_width="0dp"
                 android:layout_height="63dp"
-                android:layout_marginBottom="44dp"
+                android:layout_marginTop="24dp"
                 android:text="@string/Create_event"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintHorizontal_bias="0.25"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageView_people"
-                app:layout_constraintVertical_bias="0.911" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageView_people" />
 
             <ImageView
                 android:id="@+id/fragmentNewEvent_imageView_meteoIcon"
                 android:layout_width="174dp"
                 android:layout_height="153dp"
-                android:layout_marginStart="68dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="-27dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_date"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_description"
