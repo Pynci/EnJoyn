@@ -100,10 +100,13 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     MapView mapView;
     public EventLocation location;
 
-    Point point;
+    Point selfLocation;
+
+    Point eventLocation;
     FloatingActionButton positionButton;
     MapboxMap mapboxMap;
     Bitmap bitmap;
+    int i=0;
 
     private PlaceAutocomplete placeAutocomplete;
 
@@ -137,9 +140,19 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     private final OnIndicatorPositionChangedListener onIndicatorPositionChangedListener = new OnIndicatorPositionChangedListener() {
         @Override
         public void onIndicatorPositionChanged(@NonNull Point point) {
-            mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
-            getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
-            NewEventMap.this.point = point;
+            if(i==0) {
+                mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
+                getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
+                NewEventMap.this.selfLocation = point;
+                i=1;
+
+            }
+            else{
+                getLocationComponent(mapView).removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
+                getLocationComponent(mapView).removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
+                getGestures(mapView).removeOnMoveListener(onMoveListener);
+                i=0;
+            }
 
         }
     };
@@ -233,7 +246,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
 
-        point = null;
+        selfLocation = null;
+        eventLocation = null;
         mapView = view.findViewById(R.id.mapView);
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
         newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
@@ -293,14 +307,14 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                         if((event.getAction()==KeyEvent.ACTION_DOWN)&&(keyCode==KeyEvent.KEYCODE_ENTER))
                         {
                             if (location != null && location.getName() != ""){
-                                point = Point.fromLngLat(location.getLongitude(),location.getLatitude());
+                                eventLocation = Point.fromLngLat(location.getLongitude(),location.getLatitude());
 
-                                updateCamera(point, 0.0);
+
                                 pointAnnotationManager.deleteAll();
                                 PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
-                                        .withPoint(point);
+                                        .withPoint(eventLocation);
                                 pointAnnotationManager.create(pointAnnotationOptions);
-
+                                updateCamera(eventLocation, 0.0);
                                 newEventButton.setText(location.getName());
 
                                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
@@ -373,7 +387,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                     @Override
                     public void onClick(View v) {
                         // flyToCameraPosition(point);
-                        updateCamera(point, 0.0);
+                        updateCamera(selfLocation, 0.0);
                         locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                         locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                         getGestures(mapView).addOnMoveListener(onMoveListener);
@@ -439,9 +453,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     }
 
-    /*private void closeSearchView() {
-        searchView.setQuery("", false);
-    }*/
+
 
     private void updateCamera(Point point, Double bearing) {
         MapAnimationOptions animationOptions = new MapAnimationOptions.Builder().duration(1000L).build();
@@ -453,19 +465,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
 
-  /*  private void prova(Point point) {
-        ViewAnnotationManager viewAnnotationManager = fragmentNewEventMapBinding.mapView.getViewAnnotationManager();
-        AnnotatedFeature annotatedFeature = new AnnotatedFeature(point);
-        ViewAnnotationOptions viewAnnotationOptions = new ViewAnnotationOptions.Builder().annotatedFeature(annotatedFeature)
-                // View annotation is placed at the specific geo coordinate
-                .build();
-        View viewAnnotation = viewAnnotationManager.addViewAnnotation(
-                // Specify the layout resource id
-                R.layout.view_annotation_mapbox,
-                // Set any view annotation options
-                viewAnnotationOptions
-        );
-    }*/
+
 
     @Override
     public void onExplanationNeeded(@NonNull List<String> list) {
@@ -477,9 +477,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     }
 
-    public void addOnMapClickListener(OnMapClickListener listener) {
-        listener.onMapClick(point);
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

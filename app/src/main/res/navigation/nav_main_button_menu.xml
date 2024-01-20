@@ -27,7 +27,6 @@
         android:name="it.unimib.enjoyn.ui.main.NewEventFragment"
         android:label="fragment_new_event"
         tools:layout="@layout/fragment_new_event" >
-
         <argument
             android:name="location"
             app:argType="it.unimib.enjoyn.model.EventLocation" />
