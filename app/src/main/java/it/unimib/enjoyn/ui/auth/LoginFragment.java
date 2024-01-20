@@ -76,6 +76,10 @@ public class LoginFragment extends Fragment {
                         Snackbar.LENGTH_SHORT)
                         .show();
 
+                Navigation
+                        .findNavController(view)
+                        .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
+
                 //TODO: continuare qui
 
 //                Result emailVerification = userViewModel.isCurrentUserEmailVerified();

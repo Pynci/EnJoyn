@@ -30,4 +30,8 @@ public interface IUserRepository {
     MutableLiveData<Result> updateDescription(String description);
 
     MutableLiveData<Result> sendResetPasswordEmail(String email);
+
+    MutableLiveData<Result> updateEmailVerificationStatus();
+
+    MutableLiveData<Result> updateProfileConfigurationStatus();
 }

@@ -36,6 +36,11 @@ public class UserViewModel extends ViewModel {
         return userRepository.sendEmailVerification();
     }
 
+
+    public MutableLiveData<Result> sendResetPasswordEmail(String email) {
+        return userRepository.sendResetPasswordEmail(email);
+    }
+
     public MutableLiveData<Result> getUserByUsername(String username){
         return userRepository.getUserByUsername(username);
     }
@@ -60,6 +65,14 @@ public class UserViewModel extends ViewModel {
         return userRepository.updateDescription(description);
     }
 
+    public MutableLiveData<Result> updateEmailVerificationStatus(){
+        return userRepository.updateEmailVerificationStatus();
+    }
+
+    public MutableLiveData<Result> updateProfileConfigurationStatus(){
+        return userRepository.updateProfileConfigurationStatus();
+    }
+
     public MutableLiveData<Result> setOptionalUserParameters(String name, String surname,
                                                              String description, Uri uri) {
 
@@ -77,10 +90,6 @@ public class UserViewModel extends ViewModel {
         }
 
         return new MutableLiveData<>(allresults);
-    }
-
-    public MutableLiveData<Result> sendResetPasswordEmail(String email) {
-        return userRepository.sendResetPasswordEmail(email);
     }
 
     public String checkEmail(String email) {

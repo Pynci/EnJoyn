@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
 
     private UserViewModel userViewModel;
     private Observer<Result> emailVerificationSendingObserver;
+    private Observer<Result> emailVerificationStatusObserver;
 
     public ConfirmEmailMessageFragment() {
     }
@@ -62,6 +64,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
 
         Button buttonForNewEmail = view.findViewById(R.id.fragmentConfirmEmailMessage_button_newEmail);
         Button buttonToLogin = view.findViewById(R.id.fragmentConfirmEmailMessage_button_buttonToLogin);
+        Button buttonRefresh = view.findViewById(R.id.fragmentConfirmEmailMessage_button_refresh);
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -81,6 +84,18 @@ public class ConfirmEmailMessageFragment extends Fragment {
             }
         };
 
+        emailVerificationStatusObserver = result -> {
+            if(result.isSuccessful()){
+                Log.d(this.getClass().getSimpleName(), "dentro observer");
+                boolean isEmailVerified = ((Result.BooleanSuccess) result).getData();
+                if(isEmailVerified){
+//                    Navigation
+//                            .findNavController(view)
+//                            .navigate(R.id.action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment);
+                }
+            }
+        };
+
         buttonForNewEmail.setOnClickListener(v -> userViewModel.sendEmailVerification().observe(getViewLifecycleOwner(),
                 emailVerificationSendingObserver));
 
@@ -90,5 +105,15 @@ public class ConfirmEmailMessageFragment extends Fragment {
                     .findNavController(v)
                     .navigate(R.id.action_confirmEmailMessageFragment_to_loginActivity);
         });
+
+        buttonRefresh.setOnClickListener(v -> {
+            userViewModel.updateEmailVerificationStatus().observe(getViewLifecycleOwner(), emailVerificationStatusObserver);
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        userViewModel.updateEmailVerificationStatus().observe(getViewLifecycleOwner(), emailVerificationStatusObserver);
     }
 }

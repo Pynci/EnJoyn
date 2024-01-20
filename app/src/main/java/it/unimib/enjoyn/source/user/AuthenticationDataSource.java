@@ -1,9 +1,8 @@
 package it.unimib.enjoyn.source.user;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -62,27 +61,6 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     }
 
     @Override
-    public String getCurrentUserEmail(){
-        if(fbUser != null)
-            return fbUser.getEmail();
-        return null;
-    }
-
-    @Override
-    public String getCurrentUserUID(){
-        if(fbUser != null)
-            return fbUser.getUid();
-        return null;
-    }
-
-    @Override
-    public Boolean isCurrentUserEmailVerified(){
-        if(fbUser != null)
-            return fbUser.isEmailVerified();
-        return null;
-    }
-
-    @Override
     public void sendEmailVerification() {
         fbUser.sendEmailVerification().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -110,5 +88,16 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
             authenticationCallback.onAuthFailure(new Exception("Impossibile modificare password " +
                     "se l'utente è ancora autenticato"));
         }
+    }
+
+    @Override
+    public void checkEmailVerification(){
+        fbUser
+            .reload()
+            .addOnSuccessListener(task -> {
+                authenticationCallback.onEmailCheckSuccess(fbUser.isEmailVerified());
+            }).addOnFailureListener(e -> {
+                authenticationCallback.onAuthFailure(e);
+            });
     }
 }

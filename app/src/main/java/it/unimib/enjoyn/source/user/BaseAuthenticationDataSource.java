@@ -9,15 +9,9 @@ public abstract class BaseAuthenticationDataSource {
 
     public abstract void signUp(String email, String password, String username);
     public abstract void signIn(String email, String password);
-
     public abstract void signOut();
-
-    public abstract String getCurrentUserEmail();
-
-    public abstract String getCurrentUserUID();
-
-    public abstract Boolean isCurrentUserEmailVerified();
-
     public abstract void sendEmailVerification();
     public abstract void sendResetPasswordEmail(String email);
+
+    public abstract void checkEmailVerification();
 }

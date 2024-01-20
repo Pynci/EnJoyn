@@ -1,7 +1,5 @@
 package it.unimib.enjoyn.ui.auth.registration;
 
-// TODO: capire se è giusto che venga fuori questa caterva di dipendenze
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -280,7 +278,6 @@ public class RegisterFragment extends Fragment {
                     userViewModel.checkConfirmPassword(password, confirmPassword).equals("ok")){
 
                 if(isUsernameOK && isEmailOK){
-                    Log.d(this.getClass().getSimpleName(), "dentro all'if");
                     userViewModel.signUp(email, password, username).observe(getViewLifecycleOwner(), signUpObserver);
                 }
                 else if(!isUsernameOK){

@@ -9,5 +9,7 @@ public interface AuthenticationCallback {
     void onSignUpSuccess(User user);
     void onSignInSuccess(User user);
     void onSignOutSuccess();
+    void onEmailCheckSuccess(Boolean status);
+    void onEmailCheckFailure(Exception exception);
 
 }

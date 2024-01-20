@@ -89,5 +89,6 @@
     <string name="emailAlreadyInUse">Email già in uso</string>
     <string name="registrationFailed">Registrazione fallita</string>
     <string name="authenticationFailed">Autenticazione fallita</string>
+    <string name="refresh">Aggiorna</string>
 
 </resources>

@@ -1,7 +1,6 @@
 package it.unimib.enjoyn.repository.user;
 
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -21,6 +20,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     private final MutableLiveData<Result> userByUsername;
     private final MutableLiveData<Result> userByEmail;
+    private final MutableLiveData<Result> emailVerified;
     private User currentUser;
 
     private final MutableLiveData<Result> resultFromRemoteDatabase;
@@ -37,6 +37,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
         resultFromRemoteDatabase = new MutableLiveData<>();
         resultFromAuth = new MutableLiveData<>();
+        emailVerified = new MutableLiveData<>();
     }
 
     @Override
@@ -105,6 +106,19 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return resultFromAuth;
     }
 
+    @Override
+    public MutableLiveData<Result> updateEmailVerificationStatus(){
+        authenticationDataSource.checkEmailVerification();
+        return emailVerified;
+    }
+
+    @Override
+    public MutableLiveData<Result> updateProfileConfigurationStatus(){
+        userRemoteDataSource.updateProfileConfigurationStatus(currentUser.getUid(), true);
+        return resultFromRemoteDatabase;
+    }
+
+
 
 
     // CALLBACK
@@ -122,7 +136,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onRemoteDatabaseFailure(Exception exception) {
-        resultFromRemoteDatabase.postValue(new Result.Error(exception.getMessage()));
+        resultFromRemoteDatabase.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
     @Override
@@ -132,7 +146,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onAuthFailure(Exception exception) {
-        resultFromAuth.postValue(new Result.Error(exception.getMessage()));
+        resultFromAuth.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
     @Override
@@ -141,7 +155,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
-    public void onAccountCreationSuccess(User user) {
+    public void onUserCreationSuccess(User user) {
         userRemoteDataSource.getUser(user.getUid());
         resultFromAuth.postValue(new Result.UserResponseSuccess(user));
     }
@@ -157,6 +171,17 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         resultFromAuth.postValue(new Result.Success());
         userRemoteDataSource.stopGettingUser(currentUser.getUid());
         currentUser = null;
+    }
+
+    @Override
+    public void onEmailCheckSuccess(Boolean status) {
+        emailVerified.postValue(new Result.BooleanSuccess(status));
+        currentUser.setEmailVerified(status);
+    }
+
+    @Override
+    public void onEmailCheckFailure(Exception exception) {
+        emailVerified.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
     @Override
