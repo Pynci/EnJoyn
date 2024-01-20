@@ -26,6 +26,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     private final FirebaseStorage firebaseStorage;
     private final ValueEventListener userListener;
     private String currentUserUID;
+    boolean isFirstUserFetch;
 
     public UserRemoteDataSource() {
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
@@ -37,7 +38,11 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     User user = snapshot.getValue(User.class);
-                    user.setUid(currentUserUID);
+                    if(isFirstUserFetch){
+                        user.setUid(currentUserUID);
+                        isFirstUserFetch = false;
+                        userCallback.onUserReady(user);
+                    }
                     userCallback.onRemoteDatabaseSuccess(user);
                 }
                 else{
@@ -116,6 +121,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     @Override
     public void getUser(String uid){
+        isFirstUserFetch = true;
         currentUserUID = uid;
         dbReference
                 .child(Constants.USERS_PATH)

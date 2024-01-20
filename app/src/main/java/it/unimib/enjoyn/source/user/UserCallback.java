@@ -9,4 +9,5 @@ public interface UserCallback {
     void onRemoteDatabaseSuccess(User user);
     void onRemoteDatabaseSuccess();
     void onRemoteDatabaseFailure(Exception exception);
+    void onUserReady(User user);
 }

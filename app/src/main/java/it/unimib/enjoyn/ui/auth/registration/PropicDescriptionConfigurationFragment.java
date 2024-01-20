@@ -35,7 +35,6 @@ import it.unimib.enjoyn.ui.UserViewModel;
 
 public class PropicDescriptionConfigurationFragment extends Fragment {
 
-    public static final String TAG = PropicDescriptionConfigurationFragment.class.getSimpleName();
     private UserViewModel userViewModel;
     private Uri currentURI;
     private Observer<Result> observerAddOptionalData;
@@ -81,6 +80,8 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
         TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
 
+        userViewModel.updateProfileConfigurationStatus();
+
         observerAddOptionalData = result -> {
 
             if(result instanceof Result.ResultList) {
@@ -113,23 +114,20 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                     }
                 });
 
-        skip.setOnClickListener(v -> {
-            Navigation.findNavController(view)
-                    .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
-        });
+        skip.setOnClickListener(v ->
+                Navigation
+                        .findNavController(view)
+                        .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment));
 
-        buttonNext.setOnClickListener(v -> {
-
-            userViewModel.setOptionalUserParameters(nome.getText().toString(), cognome.getText().toString(),
+        buttonNext.setOnClickListener(v ->
+                userViewModel.setOptionalUserParameters(nome.getText().toString(), cognome.getText().toString(),
                     description.getText().toString(), currentURI)
-                    .observe(this.getViewLifecycleOwner(), observerAddOptionalData);
-        });
+                        .observe(this.getViewLifecycleOwner(), observerAddOptionalData));
 
-        imageButtonAddPropic.setOnClickListener(v -> {
-            pickMedia.launch(new PickVisualMediaRequest.Builder()
-                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                    .build());
-        });
+        imageButtonAddPropic.setOnClickListener(v ->
+                pickMedia.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build()));
 
         nome.setOnFocusChangeListener((v, hasFocus) -> {
 

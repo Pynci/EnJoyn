@@ -125,8 +125,8 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onRemoteDatabaseSuccess(User user) {
-        resultFromRemoteDatabase.postValue(new Result.Success());
         currentUser = user;
+        resultFromRemoteDatabase.postValue(new Result.Success());
     }
 
     @Override
@@ -137,6 +137,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public void onRemoteDatabaseFailure(Exception exception) {
         resultFromRemoteDatabase.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
+
+    @Override
+    public void onUserReady(User user) {
+        resultFromAuth.postValue(new Result.UserResponseSuccess(user));
     }
 
     @Override
@@ -157,13 +162,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public void onUserCreationSuccess(User user) {
         userRemoteDataSource.getUser(user.getUid());
-        resultFromAuth.postValue(new Result.UserResponseSuccess(user));
     }
 
     @Override
     public void onSignInSuccess(User user) {
         userRemoteDataSource.getUser(user.getUid());
-        resultFromAuth.postValue(new Result.UserResponseSuccess(user));
     }
 
     @Override
