@@ -78,7 +78,7 @@ public class LoginFragment extends Fragment {
 
                 Navigation
                         .findNavController(view)
-                        .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
+                        .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
 
                 //TODO: continuare qui
 

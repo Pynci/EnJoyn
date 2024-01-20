@@ -9,4 +9,6 @@ public abstract class BaseCategoryRemoteDataSource {
     }
 
     public abstract void getAllCategories();
+
+    public abstract void getImageFromName(String name);
 }
