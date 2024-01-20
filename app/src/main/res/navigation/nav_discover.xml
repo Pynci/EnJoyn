@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_discover"
+    app:startDestination="@id/discoverMapFragment">
+
+    <fragment
+        android:id="@+id/discoverRecyclerViewFragment"
+        android:name="it.unimib.enjoyn.ui.main.DiscoverRecyclerViewFragment"
+        android:label="fragment_discover_recycler_view"
+        tools:layout="@layout/fragment_discover_recycler_view" />
+    <fragment
+        android:id="@+id/discoverMapFragment"
+        android:name="it.unimib.enjoyn.ui.main.DiscoverMapFragment"
+        android:label="fragment_discover_map"
+        tools:layout="@layout/fragment_discover_map" >
+        <action
+            android:id="@+id/action_discoverMapFragment_to_discoverRecyclerViewFragment"
+            app:destination="@id/discoverRecyclerViewFragment" />
+    </fragment>
+</navigation>
