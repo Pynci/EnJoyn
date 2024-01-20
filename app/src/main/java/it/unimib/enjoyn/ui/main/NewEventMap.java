@@ -147,12 +147,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
                 NewEventMap.this.selfLocation = point;
                 i=1;
-
             }
             else{
-                getLocationComponent(mapView).removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
-                getLocationComponent(mapView).removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
-                getGestures(mapView).removeOnMoveListener(onMoveListener);
                 i=0;
             }
 
@@ -557,6 +553,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId().substring(0, 2));
                // Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(1));
                 if(results.get(0).getId().substring(0, 2).equals("ad")) {
+                    if(results.get(0).getAddress().getHouseNumber()!= null)
                     location.setName(results.get(0).getName() + " " + results.get(0).getAddress().getHouseNumber());
                 }
                 else {

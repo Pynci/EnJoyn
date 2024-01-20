@@ -41,7 +41,7 @@
                 android:id="@+id/fragmentNewEvent_imageView_imageEvent"
                 android:layout_width="183dp"
                 android:layout_height="126dp"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="16dp"
                 android:contentDescription="@string/propic"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -53,7 +53,7 @@
                 android:id="@+id/fragmentNewEvent_editText_title"
                 android:layout_width="344dp"
                 android:layout_height="75dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="32dp"
                 android:hint="@string/Title"
                 android:inputType="text"
                 android:orientation="horizontal"
@@ -85,23 +85,17 @@
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageButton_pickTime"
                 app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageButton_pickTime" />
 
-            <TextView
-                android:id="@+id/weather"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_textView_time" />
 
             <TextView
                 android:id="@+id/temperatura"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_height="19dp"
 
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/weather" />
+                android:layout_marginTop="120dp"
+                android:text="temperature"
+                app:layout_constraintEnd_toEndOf="@+id/fragmentNewEvent_imageView_meteoIcon"
+                app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_imageView_meteoIcon"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_description" />
 
             <ImageButton
                 android:id="@+id/fragmentNewEvent_imageButton_datePicker"
@@ -148,28 +142,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
+                android:ellipsize="end"
+                android:maxLength="30"
+                android:maxLines="1"
                 android:textSize="24sp"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageButton_pickPlace"
                 app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageButton_pickPlace" />
 
             <Button
                 android:id="@+id/fragmentNewEvent_button_createEvent"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="128dp"
+                android:layout_width="0dp"
                 android:layout_height="63dp"
                 android:layout_marginBottom="44dp"
                 android:text="@string/Create_event"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintHorizontal_bias="0.25"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageView_people"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.911" />
 
             <ImageView
                 android:id="@+id/fragmentNewEvent_imageView_meteoIcon"
-                android:layout_width="162dp"
-                android:layout_height="155dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="174dp"
+                android:layout_height="153dp"
+                android:layout_marginStart="68dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_date"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_description"
                 tools:srcCompat="@drawable/drawable_sun" />
 
