@@ -1,5 +1,6 @@
 package it.unimib.enjoyn.ui.auth.registration;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
@@ -60,9 +62,25 @@ public class CategoriesSelectionFragment extends Fragment {
         categoriesObserver = result -> {
             if (result.isSuccessful()) {
 
-                CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
-                        ((Result.CategoryResponseSuccess) result).getCategoryList());
-                listView.setAdapter(customAdapter);
+                categoryViewModel
+                        .getAllImages(((Result.CategoryResponseSuccess) result).getCategoryList())
+                        .observe(this.getViewLifecycleOwner(), result1 -> {
+
+                            List<Result> risultati = ((Result.ResultList) result1).getResults();
+                            Iterator<Result> iterator = risultati.iterator();
+                            List<Uri> images = new ArrayList<>();
+
+                            while (iterator.hasNext()) {
+
+                                Result.ImageReadFromRemote imageResult = (Result.ImageReadFromRemote) iterator.next();
+                                images.add(imageResult.getImageUri());
+                            }
+
+                            CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
+                                    ((Result.CategoryResponseSuccess) result).getCategoryList(), images);
+                            listView.setAdapter(customAdapter);
+
+                        });
             }
         };
 

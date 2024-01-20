@@ -1,13 +1,17 @@
 package it.unimib.enjoyn.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;
 
@@ -18,10 +22,12 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
 
     private final List<Category> data; // Cambia il tipo di dati in base ai tuoi requisiti
     private final Context context;
+    private final List<Uri> images;
 
-    public CategoriesSelectionAdapter(Context context, List<Category> data) {
+    public CategoriesSelectionAdapter(Context context, List<Category> data, List<Uri> images) {
         this.context = context;
         this.data = data;
+        this.images = images;
     }
 
     @Override
@@ -49,8 +55,15 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
 
         MaterialCardView cardView1 = rowView.findViewById(R.id.customRawLayout_cardview1);
         MaterialCardView cardView2 = rowView.findViewById(R.id.customRawLayout_cardview2);
+
         TextView nameCategoryCard1 = rowView.findViewById(R.id.NameCategoryCard1);
         TextView nameCategoryCard2 = rowView.findViewById(R.id.NameCategoryCard2);
+
+        ShapeableImageView imageView1 = rowView.findViewById(R.id.headerImageCard1);
+        ShapeableImageView imageView2 = rowView.findViewById(R.id.headerImageCard2);
+
+        Glide.with(context).load(images.get(position * 2)).into(imageView1);
+        Glide.with(context).load(images.get(position * 2 + 1)).into(imageView2);
 
         nameCategoryCard1.setText(data.get(position * 2).getNome());
         nameCategoryCard2.setText(data.get(position * 2 + 1).getNome());

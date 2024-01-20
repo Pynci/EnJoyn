@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.model;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,8 @@ public abstract class Result {
         return this instanceof UserResponseSuccess
                 || this instanceof Success
                 || this instanceof BooleanSuccess
-                || this instanceof CategoryResponseSuccess;
+                || this instanceof CategoryResponseSuccess
+                || this instanceof ImageReadFromRemote;
     }
 
 
@@ -83,6 +86,19 @@ public abstract class Result {
 
         public List<Category> getCategoryList() {
             return  categoryList;
+        }
+    }
+
+    public static final class ImageReadFromRemote extends Result{
+
+        private final Uri imageUri;
+
+        public ImageReadFromRemote(Uri uri) {
+            imageUri = uri;
+        }
+
+        public Uri getImageUri(){
+            return imageUri;
         }
     }
 }

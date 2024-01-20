@@ -54,6 +54,9 @@ dependencies {
     //Dipendenza per cardview
     implementation("androidx.cardview:cardview:1.0.0")
 
+    //Dipendenza per caricre immagini nei componenti dinamicamente
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
     //Dipendenze legate a FireBase
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics")
