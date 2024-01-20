@@ -1,8 +1,6 @@
 package it.unimib.enjoyn.source.user;
 
 import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -94,10 +92,7 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     public void checkEmailVerification(){
         fbUser
             .reload()
-            .addOnSuccessListener(task -> {
-                authenticationCallback.onEmailCheckSuccess(fbUser.isEmailVerified());
-            }).addOnFailureListener(e -> {
-                authenticationCallback.onAuthFailure(e);
-            });
+            .addOnSuccessListener(task -> authenticationCallback.onEmailCheckSuccess(fbUser.isEmailVerified()))
+            .addOnFailureListener(e -> authenticationCallback.onEmailCheckFailure(e));
     }
 }

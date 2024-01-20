@@ -66,19 +66,19 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public MutableLiveData<Result> updatePropic(Uri uri) {
-        userRemoteDataSource.updatePropic(currentUser.getUid(), uri);
+        userRemoteDataSource.updatePropic(uri);
         return resultFromRemoteDatabase;
     }
 
     @Override
     public MutableLiveData<Result> updateNameAndSurname(String name, String surname) {
-        userRemoteDataSource.updateNameAndSurname(currentUser.getUid(), name, surname);
+        userRemoteDataSource.updateNameAndSurname(name, surname);
         return resultFromRemoteDatabase;
     }
 
     @Override
     public MutableLiveData<Result> updateDescription(String description) {
-        userRemoteDataSource.updateDescription(currentUser.getUid(), description);
+        userRemoteDataSource.updateDescription(description);
         return resultFromRemoteDatabase;
     }
 
@@ -114,7 +114,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public MutableLiveData<Result> updateProfileConfigurationStatus(){
-        userRemoteDataSource.updateProfileConfigurationStatus(currentUser.getUid(), true);
+        userRemoteDataSource.updateProfileConfigurationStatus(true);
         return resultFromRemoteDatabase;
     }
 
@@ -175,8 +175,9 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onEmailCheckSuccess(Boolean status) {
-        emailVerified.postValue(new Result.BooleanSuccess(status));
         currentUser.setEmailVerified(status);
+        userRemoteDataSource.updateEmailVerificationStatus(status);
+        emailVerified.postValue(new Result.BooleanSuccess(status));
     }
 
     @Override

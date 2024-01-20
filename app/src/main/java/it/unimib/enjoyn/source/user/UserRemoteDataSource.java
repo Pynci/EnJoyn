@@ -30,6 +30,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     public UserRemoteDataSource() {
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
         firebaseStorage = FirebaseStorage.getInstance(Constants.STORAGE_PATH);
+        currentUserUID = "";
 
         userListener = new ValueEventListener() {
             @Override
@@ -124,6 +125,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
     @Override
     public void stopGettingUser(String uid){
+        currentUserUID = "";
         dbReference
                 .child(Constants.USERS_PATH)
                 .child(uid)
@@ -144,10 +146,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void updatePropic(String uid, Uri propic) {
+    public void updatePropic(Uri propic) {
 
         StorageReference storageRef = firebaseStorage.getReference();
-        StorageReference userImageRef = storageRef.child("user_images/" + uid);
+        StorageReference userImageRef = storageRef.child("user_images/" + currentUserUID);
 
         UploadTask uploadTask = userImageRef.putFile(propic);
 
@@ -162,32 +164,32 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void updateNameAndSurname(String uid, String name, String surname) {
+    public void updateNameAndSurname(String name, String surname) {
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("name", name);
         updateMap.put("surname", surname);
-        updateUser(uid, updateMap);
+        updateUser(currentUserUID, updateMap);
     }
 
     @Override
-    public void updateDescription(String uid, String description) {
+    public void updateDescription(String description) {
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("description", description);
-        updateUser(uid, updateMap);
+        updateUser(currentUserUID, updateMap);
     }
 
     @Override
-    public void updateEmailVerificationStatus(String uid, Boolean status){
+    public void updateEmailVerificationStatus(Boolean status){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("emailVerified", status);
-        updateUser(uid, updateMap);
+        updateUser(currentUserUID, updateMap);
     }
 
     @Override
-    public void updateProfileConfigurationStatus(String uid, Boolean status){
+    public void updateProfileConfigurationStatus(Boolean status){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("profileConfigured", status);
-        updateUser(uid, updateMap);
+        updateUser(currentUserUID, updateMap);
     }
 
 }

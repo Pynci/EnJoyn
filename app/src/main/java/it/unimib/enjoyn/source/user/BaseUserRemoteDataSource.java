@@ -22,13 +22,13 @@ public abstract class BaseUserRemoteDataSource {
 
     public abstract void stopGettingUser(String uid);
 
-    public abstract void updatePropic(String uid, Uri propic);
+    public abstract void updatePropic(Uri propic);
 
-    public abstract void updateNameAndSurname(String uid, String name, String surname);
+    public abstract void updateNameAndSurname(String name, String surname);
 
-    public abstract void updateDescription(String uid, String description);
+    public abstract void updateDescription(String description);
 
-    public abstract void updateEmailVerificationStatus(String uid, Boolean status);
+    public abstract void updateEmailVerificationStatus(Boolean status);
 
-    public abstract void updateProfileConfigurationStatus(String uid, Boolean status);
+    public abstract void updateProfileConfigurationStatus(Boolean status);
 }
