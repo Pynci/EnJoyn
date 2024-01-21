@@ -57,13 +57,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
-                requireActivity().getApplication());
-        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
-
-        eventViewModel = new ViewModelProvider(
-                requireActivity(),
-                new EventViewModelFactory(eventRepositoryWithLiveData, weatherRepository)).get(EventViewModel.class);
+        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         eventList = new ArrayList<>();
     }
 
