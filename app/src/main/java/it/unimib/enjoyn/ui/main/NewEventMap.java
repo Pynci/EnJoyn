@@ -129,6 +129,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
                         getString(R.string.eventRemoveToDo),
                         Snackbar.LENGTH_LONG).show();
+
+            }
+            else{
+
             }
         }
     });
@@ -143,14 +147,17 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         @Override
         public void onIndicatorPositionChanged(@NonNull Point point) {
             if(positionChanged) {
-                mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
-                getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
+               mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
+               // getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
                 NewEventMap.this.selfLocation = point;
-               positionChanged = false;
+               // updateCamera(selfLocation,0.0);
+               // positionChanged = false;
             }
-            else{
+          /*  else{
+                getLocationComponent(mapView).removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
+                getLocationComponent(mapView).removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 positionChanged = true;
-            }
+            }*/
 
         }
     };
@@ -228,10 +235,11 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (PermissionsManager.areLocationPermissionsGranted(requireActivity())) {
-            // Permission-sensitive logic called here, such as activating the Maps SDK's LocationComponent to show the device's location
+
         } else {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
+
         }
 
         searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
@@ -476,6 +484,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     @Override
     public void onPermissionResult(boolean b) {
+
 
     }
 

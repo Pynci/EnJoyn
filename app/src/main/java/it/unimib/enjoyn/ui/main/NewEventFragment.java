@@ -51,6 +51,7 @@ import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
+
     ImageButton date;
     TextView selectedDate;
 
@@ -74,6 +75,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     ImageView weatherIcon;
     String description;
     int numberOfPeople = -1;
+    double temp = -1;
 
     private EventViewModel eventViewModel;
     private Weather weatherAPIdata;
@@ -81,6 +83,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     static final String STATE_TIME ="timeSelected";
     static final String STATE_DATE = "dateSelected";
     private static final String STATE_CODE = "weatherCode";
+
+    private static final String STATE_TEMPERATURE = "temperature";
 
 
 
@@ -126,6 +130,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             dateWeather = savedInstanceState.getString(STATE_DATE);
             timeWeather= savedInstanceState.getString(STATE_TIME);
             weatherCode = savedInstanceState.getInt(STATE_CODE);
+            temp = savedInstanceState.getInt(STATE_TEMPERATURE);
             Log.d("code", ""+weatherCode);
         }
         Log.d("API weather", "su OnCreate");
@@ -148,14 +153,16 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         savedInstanceState = new Bundle();
         super.onViewCreated(view, savedInstanceState);
-
-        EventLocation location = NewEventFragmentArgs.fromBundle(getArguments()).getLocation();
-        locationName = location.getName();
-        fragmentNewEventBinding.fragmentNewEventTextViewLocation.setText(locationName);
-
-        //Log.d("coordinate", ""+location.getLongitudeToString()+" "+location.getLatitudeToString()+" "+ location.getName());
         //creazione del nuovo evento
         newEvent = new Event();
+
+        newEvent.setLocation(NewEventFragmentArgs.fromBundle(getArguments()).getLocation());
+        locationName = newEvent.getLocation().getName();
+        fragmentNewEventBinding.fragmentNewEventTextViewLocation.setText(locationName);
+
+
+        //Log.d("coordinate", ""+location.getLongitudeToString()+" "+location.getLatitudeToString()+" "+ location.getName());
+
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -179,7 +186,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
         // latitude and longitude "52.52", "13.41"
         Bundle finalSavedInstanceState = savedInstanceState;
-        eventViewModel.getWeather(location.getLatitudeToString(), location.getLongitudeToString()).observe(getViewLifecycleOwner(), result -> {
+        eventViewModel.getWeather(newEvent.getLocation().getLatitudeToString(), newEvent.getLocation().getLongitudeToString()).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()){
                 weatherAPIdata = ((Result.WeatherSuccess) result).getData().getWeather();
                 //showWeatherOnNewEvent(requireView());
@@ -193,6 +200,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                     fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(timeWeather);
                 if(weatherCode != -1)
                     setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
+                if(temp != -1)
+                    fragmentNewEventBinding.temperatura.setText(temp + "°C");
 
             } else {
                 ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
@@ -228,13 +237,13 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 numberOfPeople = Integer.parseInt(String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextNumber.getText()));
 
                 if(title != null && dateWeather != null && timeWeather != null && locationName != null && numberOfPeople != -1 && description != null){
-                    newEvent = new Event();
                     newEvent.setTitle(title);
                     newEvent.setDate(dateWeather);
                     newEvent.setTime(timeWeather);
-                    newEvent.setPlaceName(locationName);
                     newEvent.setPeopleNumber(numberOfPeople);
                     newEvent.setDescription(description);
+                    newEvent.setTODO(true);
+
                 } else {
                     ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
                     Snackbar.make(view, errorMessagesUtil.getNewEventErrorMessage(EMPTY_FIELDS), Snackbar.LENGTH_LONG).show();
@@ -259,9 +268,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
                 /*
                 TextView luogo = view.findViewById(R.id.textViewProvaLuogo);
-                Log.d("API weather", newEvent.getPlaceName());
                 Log.d("API weather", newEvent.getPlace());
-                luogo.setText(newEvent.getPlaceName() + " e " + newEvent.getPlace());
+                Log.d("API weather", newEvent.getPlace());
+                luogo.setText(newEvent.getPlace() + " e " + newEvent.getPlace());
                  */
 
                 // on below line we are getting
@@ -310,8 +319,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                     if (indexHour >= 0 && indexMinute >= 0) {
                                         String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
                                         weatherCode = Integer.parseInt(code);
+                                        temp = temperatureArray[indexDate+indexHour+indexMinute];
                                        // fragmentNewEventBinding.weather.setText(code);
-                                        fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute)+ "°C");
+                                        fragmentNewEventBinding.temperatura.setText(temp+ "°C");
                                         setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
                                     }
                                 }
@@ -372,11 +382,11 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 assert weatherAPIdata != null;
                                 assert weatherAPIdata.getHour()[indexHour] != null;
                                 if(equals){
-                                    double temp = temperatureArray[indexDate+indexHour+indexMinute];
+                                    temp = temperatureArray[indexDate+indexHour+indexMinute];
                                     String code = weatherAPIdata.getWeather_codeString(indexDate+indexHour+indexMinute);
                                     weatherCode = Integer.parseInt(code);
                                     //fragmentNewEventBinding.weather.setText(code);
-                                    fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate+indexHour+indexMinute)+ "°C");
+                                    fragmentNewEventBinding.temperatura.setText(temp+ "°C");
                                     setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, Integer.parseInt(code));
                                 }
                             }
@@ -410,9 +420,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
                 /*
                 TextView luogo = view.findViewById(R.id.textViewProvaLuogo);
-                Log.d("API weather", newEvent.getPlaceName());
                 Log.d("API weather", newEvent.getPlace());
-                luogo.setText(newEvent.getPlaceName() + " e " + newEvent.getPlace());
+                Log.d("API weather", newEvent.getPlace());
+                luogo.setText(newEvent.getPlace() + " e " + newEvent.getPlace());
                  */
 
                 // on below line we are getting
@@ -461,7 +471,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                     if (indexHour >= 0 && indexMinute >= 0) {
                                         String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
                                       //  fragmentNewEventBinding.weather.setText(code);
-                                        fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate + indexHour + indexMinute)+ "°C");
+                                        temp = temperatureArray[indexDate+indexHour+indexMinute];
+                                        fragmentNewEventBinding.temperatura.setText(temp+ "°C");
                                         setWeatherIcon(weatherIcon, Integer.parseInt(code));
                                     }
                                 }
@@ -514,10 +525,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 //assert meteoList.get(0) != null;
                                 assert weatherAPIdata.getHour()[indexHour] != null;
                                 if(equals){
-                                    double temp = temperatureArray[indexDate+indexHour+indexMinute];
+                                     temp = temperatureArray[indexDate+indexHour+indexMinute];
                                     String code = weatherAPIdata.getWeather_codeString(indexDate+indexHour+indexMinute);
                                     //fragmentNewEventBinding.weather.setText(code);
-                                    fragmentNewEventBinding.temperatura.setText(weatherAPIdata.getTemperatureString(indexDate+indexHour+indexMinute) + "°C");
+                                    fragmentNewEventBinding.temperatura.setText(temp + "°C");
                                     setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, Integer.parseInt(code));
                                 }
                             }
@@ -595,6 +606,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         savedInstanceState.putString(STATE_DATE, dateWeather);
         savedInstanceState.putString(STATE_TIME, timeWeather);
         savedInstanceState.putInt(STATE_CODE, weatherCode);
+        savedInstanceState.putDouble(STATE_TEMPERATURE, temp);
         // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
     }

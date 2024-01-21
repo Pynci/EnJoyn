@@ -21,14 +21,13 @@ public class Event implements Parcelable {
 
     private String date;
 
+    private String place;
+
     private String time;
 
     private boolean confidential;
-
-    @Nullable
-    private String place;
-
-    private String placeName;
+    @Embedded(prefix = "location_")
+    private EventLocation location;
     @Embedded(prefix = "category_")
     private Category category;
 
@@ -46,22 +45,22 @@ public class Event implements Parcelable {
 
     }
 
-    public Event(long id, String title, String description, String date, String time, boolean confidential, String place, String placeName, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Weather weather) {
+    public Event(long id, String title, String description, String date, String place, String time, boolean confidential, EventLocation location, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Weather weather) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.date = date;
+        this.place = place;
         this.time = time;
         this.confidential = confidential;
-        this.place = place;
-        this.placeName = placeName;
+        this.location = location;
         this.category = category;
         this.peopleNumber = peopleNumber;
         this.distance = distance;
         this.isTODO = isTODO;
         this.isFavorite = isFavorite;
+        this.weather = weather;
     }
-
 
     public long getId() {
         return id;
@@ -87,12 +86,12 @@ public class Event implements Parcelable {
         return confidential;
     }
 
-    public String getPlace() {
-        return place;
+    public EventLocation getLocation() {
+        return location;
     }
 
-    public String getPlaceName() {
-        return placeName;
+    public String getPlace() {
+        return place;
     }
 
     public Category getCategory() {
@@ -144,12 +143,12 @@ public class Event implements Parcelable {
         this.confidential = confidential;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setLocation(EventLocation location) {
+        this.location = location;
     }
 
-    public void setPlaceName(String placeName) {
-        this.placeName = placeName;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public void setCategory(Category category) {
@@ -202,6 +201,7 @@ public class Event implements Parcelable {
         return 0;
     }
 
+    //TODO aggiungere parcel di EventLocation
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
@@ -210,8 +210,6 @@ public class Event implements Parcelable {
         dest.writeString(this.date);
         dest.writeString(this.time);
         dest.writeByte(this.confidential ? (byte) 1 : (byte) 0);
-        dest.writeString(this.place);
-        dest.writeString(this.placeName);
         dest.writeParcelable(this.category, flags);
         dest.writeInt(this.peopleNumber);
         dest.writeDouble(this.distance);
@@ -227,8 +225,7 @@ public class Event implements Parcelable {
         this.date = source.readString();
         this.time = source.readString();
         this.confidential = source.readByte() != 0;
-        this.place = source.readString();
-        this.placeName = source.readString();
+
         this.category = source.readParcelable(Category.class.getClassLoader());
         this.peopleNumber = source.readInt();
         this.distance = source.readDouble();
@@ -244,8 +241,6 @@ public class Event implements Parcelable {
         this.date = in.readString();
         this.time = in.readString();
         this.confidential = in.readByte() != 0;
-        this.place = in.readString();
-        this.placeName = in.readString();
         this.category = in.readParcelable(Category.class.getClassLoader());
         this.peopleNumber = in.readInt();
         this.distance = in.readDouble();
@@ -273,11 +268,11 @@ public class Event implements Parcelable {
         if (this == o) return true;
         if (!(o instanceof Event)) return false;
         Event event = (Event) o;
-        return  confidential == event.confidential && Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title) && Objects.equals(description, event.description) && Objects.equals(date, event.date) && Objects.equals(time, event.time) && Objects.equals(place, event.place) && Objects.equals(placeName, event.placeName) && Objects.equals(category, event.category);
+        return  confidential == event.confidential && Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title) && Objects.equals(description, event.description) && Objects.equals(date, event.date) && Objects.equals(time, event.time) && Objects.equals(location, event.location) && Objects.equals(category, event.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( title, description, date, time, confidential, place, placeName, category, distance);
+        return Objects.hash( title, description, date, time, confidential, location, category, distance);
     }
 }
