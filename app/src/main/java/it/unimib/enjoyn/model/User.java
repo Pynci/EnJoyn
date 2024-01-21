@@ -4,13 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
+@Entity
 public class User implements Parcelable {
 
+    @PrimaryKey @NonNull
     private String uid;
     private String username;
     private String email;
