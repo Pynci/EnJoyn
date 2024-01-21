@@ -30,6 +30,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.google.android.material.button.MaterialButton;
@@ -85,8 +86,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.adapter.SuggestionListAdapter;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
+import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
@@ -100,6 +103,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     private FragmentNewEventBinding fragmentNewEventBinding;
     MapView mapView;
     public EventLocation location;
+    List<EventLocation> locationList;
+    private int distance;
+    private SuggestionListAdapter suggestionListAdapter;
+    private ListView suggestionListView;
 
     Point selfLocation;
 
@@ -248,7 +255,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 .limit(5)
                 .build();
 
-
+        suggestionListView = view.findViewById(R.id.fragmentNewEventMap_ListView);
 
         selfLocation = null;
         eventLocation = null;
@@ -507,6 +514,25 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Log.i("SearchApiExample", "Search suggestions: " + suggestions + "\nSelecting first...");
                 searchRequestTask = searchEngine.select(suggestions.get(0), this);
                 //searchResultsView.set(suggestions);
+
+                locationList = new ArrayList<>();
+
+                for(int i = 0; i<suggestions.size(); i++){
+                    locationList.add(new EventLocation());
+                    locationList.get(i).setName(suggestions.get(i).getName());
+                    //locationList.get(i).setLatitude(suggestions.get(i).getRequestOptions().getOptions());
+                    //locationList.get(i).setLongitude(suggestions.get(i).getRequestOptions().getOptions().getProximity().longitude());
+                }
+
+
+                suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, 0, new SuggestionListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onSuggestionItemClick(EventLocation eventLocation) {
+                        Snackbar.make(requireView(), "va", Snackbar.LENGTH_LONG).show();
+                    }
+                });
+                suggestionListView.setAdapter(suggestionListAdapter);
+                suggestionListView.setVisibility(View.VISIBLE);
             }
         }
 

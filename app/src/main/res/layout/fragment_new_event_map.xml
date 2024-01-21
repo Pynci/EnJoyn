@@ -61,13 +61,20 @@
         app:boxCornerRadiusTopStart="20sp"
         app:boxStrokeWidth="0sp"
         app:boxStrokeWidthFocused="0sp"
-        app:startIconDrawable="@drawable/baseline_manage_search_24">
+        app:startIconDrawable="@drawable/baseline_account_circle_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newEventMap_textInputEditText_textSearchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
+
+        <ListView
+            android:id="@+id/fragmentNewEventMap_ListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@id/newEventMap_textInputLayout_searchBar" />
 
     </com.google.android.material.textfield.TextInputLayout>
     <com.mapbox.search.ui.view.SearchResultsView
