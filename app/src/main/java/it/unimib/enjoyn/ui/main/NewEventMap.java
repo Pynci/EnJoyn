@@ -158,7 +158,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 getLocationComponent(mapView).removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 positionChanged = true;
             }
-
         }
     };
     private final OnMoveListener onMoveListener = new OnMoveListener() {
