@@ -16,15 +16,6 @@ public class EventViewModelFactory implements ViewModelProvider.Factory {
         this.iWeatherRepository = iWeatherRepository;
     }
 
-    public EventViewModelFactory(IEventRepositoryWithLiveData iEventRepositoryWithLiveData) {
-        this.iEventRepositoryWithLiveData = iEventRepositoryWithLiveData;
-        iWeatherRepository = null;
-    }
-
-    public EventViewModelFactory(IWeatherRepository iWeatherRepository) {
-        this.iWeatherRepository = iWeatherRepository;
-        iEventRepositoryWithLiveData = null;
-    }
 
     @NonNull
     @Override

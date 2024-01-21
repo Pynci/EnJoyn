@@ -40,7 +40,7 @@ public class MainButtonMenuActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.discover,
                 R.id.todo,
-                R.id.newEventFragment,
+                R.id.newEventMap,
                 R.id.friendsFragment,
                 R.id.profileFragment
                 ).build();
@@ -54,14 +54,15 @@ public class MainButtonMenuActivity extends AppCompatActivity {
         // For the BottomNavigationView
         NavigationUI.setupWithNavController(bottomNav, navController);
 
-        NavigationUI.setupWithNavController(toolBar, navController);
 
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -69,4 +70,6 @@ public class MainButtonMenuActivity extends AppCompatActivity {
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
     }
+
+
 }

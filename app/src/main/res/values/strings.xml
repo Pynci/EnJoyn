@@ -86,5 +86,15 @@
     <string name="remove">Rimuovi</string>
     <string name="eventAddToDo">Evento aggiunto al ToDo</string>
     <string name="eventRemoveToDo">Evento rimosso dal ToDo</string>
-
+    <string name="mapbox_access_token">sk.eyJ1Ijoic3NwaW5lbGxpMjkiLCJhIjoiY2xxbTd5djQzMWM4OTJpcnlibDIxMXpociJ9.Of1HNZIPFR23Eul1BOr_tA</string>
+    <string name="Create_event">Crea evento</string>
+    <string name="one">1</string>
+    <string name="map">Mappa</string>
+    <string name="list">Lista</string>
+    <string name="buttonDate">buttonDate</string>
+    <string name="buttonToMap">buttonToMap</string>
+    <string name="buttonTime">buttonTime</string>
+    <string name="imageWeather">imageWeather</string>
+    <string name="temperature">temperature</string>
+    <string name="search">Cerca</string>
 </resources>

@@ -37,14 +37,14 @@
                    android:layout_height="match_parent">
 
                    <androidx.constraintlayout.widget.Guideline
-                       android:id="@+id/guideline3"
+                       android:id="@+id/newEventFragment_guideline_left"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:orientation="vertical"
                        app:layout_constraintGuide_begin="20dp" />
 
                    <androidx.constraintlayout.widget.Guideline
-                       android:id="@+id/guideline4"
+                       android:id="@+id/newEventFragment_guideline_right"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:orientation="vertical"
@@ -58,7 +58,7 @@
                        android:textSize="30dp"
                        android:textStyle="bold"
                        app:layout_constraintBottom_toBottomOf="parent"
-                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                        app:layout_constraintTop_toTopOf="parent"
                        app:layout_constraintVertical_bias="0.095" />
 
@@ -68,14 +68,14 @@
                        android:layout_height="wrap_content"
                        android:layout_marginTop="12dp"
                        android:text="@string/Tag"
-                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                        app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_title" />
 
                    <ImageView
                        android:id="@+id/people"
                        android:layout_width="93dp"
                        android:layout_height="96dp"
-                       app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                       app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                        app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_title"
                        app:srcCompat="@drawable/baseline_people_outline_24"
                        tools:src="@tools:sample/avatars" />
@@ -104,7 +104,7 @@
                        app:drawableStartCompat="@drawable/baseline_calendar_month_24"
                        app:layout_constraintEnd_toStartOf="@+id/discoverSingleEvent_textView_hour"
                        app:layout_constraintHorizontal_chainStyle="packed"
-                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                        app:layout_constraintTop_toBottomOf="@+id/people" />
 
                    <TextView
@@ -126,7 +126,7 @@
                        android:text="@string/Street"
                        android:textSize="24sp"
                        app:layout_constraintHorizontal_chainStyle="packed"
-                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                        app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
 
                    <TextView
@@ -136,7 +136,7 @@
                        android:layout_marginTop="20dp"
                        android:text="@string/Description"
                        android:textSize="24sp"
-                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                        app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_distance" />
 
                    <Button
@@ -147,7 +147,7 @@
                        android:layout_marginTop="32dp"
                        android:text="@string/Join"
                        android:textSize="20sp"
-                       app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                       app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                        app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_description" />
 
                    <TextView
@@ -158,7 +158,7 @@
                        android:drawableStart="@drawable/baseline_place_24"
                        android:text="Distanza"
                        android:textSize="24sp"
-                       app:layout_constraintStart_toStartOf="@+id/guideline3"
+                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                        app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_place" />
 
 

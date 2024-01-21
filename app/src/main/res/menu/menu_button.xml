@@ -11,7 +11,7 @@
         android:icon="@drawable/baseline_outlined_flag_24"
         android:title="@string/todoButton" />
     <item
-        android:id="@+id/newEventFragment"
+        android:id="@+id/newEventMap"
         android:enabled="true"
         android:icon="@drawable/baseline_add_circle_outline_24"
         android:title="@string/newEventButton" />

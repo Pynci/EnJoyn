@@ -4,43 +4,45 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import com.google.android.material.tabs.TabLayout;
 
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
-import it.unimib.enjoyn.model.Event;
-import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.adapter.ViewPagerAdapter;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.util.ServiceLocator;
 
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DiscoverFragment#newInstance} factory method to
+ * Use the  factory method to
  * create an instance of this fragment.
  */
 public class DiscoverFragment extends Fragment {
 
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-    private EventViewModel eventViewModel;
-    private List<Event> eventList;
-    private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    EventViewModel eventViewModel;
 
+    TabLayout tabLayout;
+    ViewPager2 viewPager2;
+    ViewPagerAdapter viewPagerAdapter;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -50,144 +52,71 @@ public class DiscoverFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment Discover.
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment DiscoverMapFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DiscoverFragment newInstance() {
-
-        return new DiscoverFragment();
+    public static DiscoverMapFragment newInstance(String param1, String param2) {
+        DiscoverMapFragment fragment = new DiscoverMapFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //creazione dell'eventViewModel si può svolgere anche in DiscoverMapFragment
         IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
                 requireActivity().getApplication());
-        IWeatherRepository meteoRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
+        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
 
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
-                new EventViewModelFactory(eventRepositoryWithLiveData, meteoRepository)).get(EventViewModel.class);
-        eventList = new ArrayList<>();
+                new EventViewModelFactory(eventRepositoryWithLiveData, weatherRepository)).get(EventViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            // Use getViewLifecycleOwner() to avoid that the listener
-            // associated with a menu icon is called twice
-             getViewLifecycleOwner();
-
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_discover, container, false);
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-        requireActivity().addMenuProvider(new MenuProvider() {
+        tabLayout = view.findViewById(R.id.discoverFragment_tabLayout);
+        viewPager2 = view.findViewById(R.id.discoverFragment_viewPager);
+        viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
+        viewPager2.setAdapter(viewPagerAdapter);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menu.clear();
-                menuInflater.inflate(R.menu.menu_toolbar, menu);
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
             }
 
             @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
-                    startActivityBasedOnCondition(R.id.action_discover_to_favoritesFragment, false);
-                }
-                return false;
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                tabLayout.getTabAt(position).select();
             }
         });
 
-        RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.recyclerview_discover_event);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
-                LinearLayoutManager.VERTICAL, false);
-
-
-        eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
-                new EventReclyclerViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onEventItemClick(Event event) {
-                        DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action =
-                                DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
-                       // startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
-                        Navigation.findNavController(view).navigate(action);
-                    }
-
-                    @Override
-                    public void onJoinButtonPressed(int position) {
-                        eventList.get(position).setTODO(!eventList.get(position).isTODO());
-
-                        if(eventList.get(position).isTODO()) {
-                            eventList.get(position).incrementPeopleNumber();
-                        }
-                        else{
-                            eventList.get(position).decrementPeopleNumber();
-                        }
-                        eventViewModel.updateEvent(eventList.get(position));
-
-                    }
-                });
-        recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
-        recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
-
-        eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(),
-                result -> {
-                    if (result.isSuccess()) {
-                        int initialSize = this.eventList.size();
-                        this.eventList.clear();
-                        this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
-                        eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
-                        eventsRecyclerViewAdapter.notifyDataSetChanged();
-
-                    } else {
-                        /*
-                        ErrorMessagesUtil errorMessagesUtil =
-                                new ErrorMessagesUtil(requireActivity().getApplication());
-                        Snackbar.make(view, errorMessagesUtil.
-                                        getErrorMessage(((Result.Error) result).getMessage()),
-                                Snackbar.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                        */
-                    }
-                });
     }
 
-    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
-        Navigation.findNavController(requireView()).navigate(destination);
-
-        //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
-            requireActivity().finish();
-        }
-    }
-
-
-
-    /*
-    @Override
-    public void onEventTodoStatusChanged(Event event) {
-
-        if (event.isTODO()) {
-            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
-            Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.eventAddToDo),
-                    Snackbar.LENGTH_LONG).show();
-        } else {
-
-            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
-            Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.eventRemoveToDo),
-                    Snackbar.LENGTH_LONG).show();
-        }
-    }
-     */
 }

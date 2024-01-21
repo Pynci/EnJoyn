@@ -26,7 +26,11 @@
         android:id="@+id/newEventFragment"
         android:name="it.unimib.enjoyn.ui.main.NewEventFragment"
         android:label="fragment_new_event"
-        tools:layout="@layout/fragment_new_event" />
+        tools:layout="@layout/fragment_new_event" >
+        <argument
+            android:name="location"
+            app:argType="it.unimib.enjoyn.model.EventLocation" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="it.unimib.enjoyn.ui.main.ProfileFragment"
@@ -59,5 +63,14 @@
         <action
             android:id="@+id/action_favoritesFragment_to_discoverSingleEvent"
             app:destination="@id/discoverSingleEvent" />
+    </fragment>
+    <fragment
+        android:id="@+id/newEventMap"
+        android:name="it.unimib.enjoyn.ui.main.NewEventMap"
+        android:label="fragment_new_event_map"
+        tools:layout="@layout/fragment_new_event_map" >
+        <action
+            android:id="@+id/action_newEventMap_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
     </fragment>
 </navigation>
