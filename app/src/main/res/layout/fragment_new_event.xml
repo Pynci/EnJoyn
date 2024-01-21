@@ -24,14 +24,14 @@
 
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline3"
+                android:id="@+id/newEventFragment_guideline_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_begin="32dp" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline4"
+                android:id="@+id/newEventFragment_guideline_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -43,8 +43,8 @@
                 android:layout_height="126dp"
                 android:layout_marginTop="16dp"
                 android:contentDescription="@string/propic"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baseline_account_circle_24" />
 
@@ -58,10 +58,10 @@
                 android:inputType="text"
                 android:orientation="horizontal"
                 android:textAlignment="center"
-                android:textSize="24dp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageView_imageEvent" />
 
             <TextView
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Date"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_imageButton_datePicker"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageButton_datePicker"
                 app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageButton_datePicker"
@@ -80,19 +80,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Time"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_imageButton_pickTime"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageButton_pickTime"
                 app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageButton_pickTime" />
 
 
             <TextView
-                android:id="@+id/temperatura"
+                android:id="@+id/newEventFragment_textView_temperature"
                 android:layout_width="wrap_content"
-                android:layout_height="19dp"
-
+                android:layout_height="wrap_content"
                 android:layout_marginTop="130dp"
-                android:text="temperature"
                 app:layout_constraintEnd_toEndOf="@+id/fragmentNewEvent_imageView_meteoIcon"
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_imageView_meteoIcon"
                 app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageView_meteoIcon" />
@@ -104,11 +102,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:background="@null"
-                android:contentDescription="buttonDate"
+                android:contentDescription="@string/buttonDate"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 android:src="@drawable/baseline_calendar_month_24"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_description" />
 
             <ImageButton
@@ -118,11 +116,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@null"
-                android:contentDescription="buttonTime"
+                android:contentDescription="@string/buttonTime"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 android:src="@drawable/baseline_access_time_24"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_datePicker" />
 
             <ImageButton
@@ -131,9 +129,9 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
                 android:background="@null"
-                android:contentDescription="buttonToMap"
+                android:contentDescription="@string/buttonToMap"
                 android:src="@drawable/baseline_add_location_24"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickTime" />
 
             <TextView
@@ -141,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
+                android:text="Place"
                 android:ellipsize="end"
                 android:maxLength="30"
                 android:maxLines="1"
@@ -155,9 +153,9 @@
                 android:layout_height="63dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/Create_event"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                 app:layout_constraintHorizontal_bias="0.25"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageView_people" />
 
             <ImageView
@@ -166,10 +164,11 @@
                 android:layout_height="153dp"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="-27dp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_date"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_description"
-                tools:srcCompat="@drawable/drawable_sun" />
+                tools:srcCompat="@drawable/drawable_sun"
+                android:contentDescription="@string/imageWeather"/>
 
             <EditText
                 android:id="@+id/fragmentNewEvent_editText_description"
@@ -183,9 +182,9 @@
                 android:textSize="24sp"
                 app:counterEnabled="true"
                 app:counterMaxLength="200"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_title" />
 
             <ImageView
@@ -195,17 +194,17 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="12dp"
                 android:src="@drawable/baseline_people_outline_24"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace" />
 
             <EditText
                 android:id="@+id/fragmentNewEvent_editText_number"
-                android:layout_width="45dp"
+                android:layout_width="48dp"
                 android:layout_height="52dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
-                android:inputType="text"
+                android:inputType="number"
                 android:text="@string/one"
                 android:textAlignment="center"
                 android:textSize="24sp"

@@ -88,7 +88,6 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
 import it.unimib.enjoyn.model.EventLocation;
-import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 /**
@@ -253,7 +252,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
         selfLocation = null;
         eventLocation = null;
-        mapView = view.findViewById(R.id.mapView);
+        mapView = view.findViewById(R.id.newEventmap_mapView);
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
         newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
         //TOLTO per barra di ricerca

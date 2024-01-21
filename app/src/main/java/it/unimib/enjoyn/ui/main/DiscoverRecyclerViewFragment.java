@@ -25,9 +25,6 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
-import it.unimib.enjoyn.repository.IWeatherRepository;
-import it.unimib.enjoyn.util.ServiceLocator;
 
 
 public class DiscoverRecyclerViewFragment extends Fragment {
@@ -95,7 +92,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.recyclerview_discover_event);
+        RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.discoverRecyclerView_recyclerview_event);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);

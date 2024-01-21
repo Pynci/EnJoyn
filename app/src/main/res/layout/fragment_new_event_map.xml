@@ -9,7 +9,7 @@
 
 
     <com.mapbox.maps.MapView
-        android:id="@+id/mapView"
+        android:id="@+id/newEventmap_mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:mapbox_cameraTargetLat="45.464098"
@@ -54,7 +54,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:elevation="4dp"
-        android:hint="Cerca"
+        android:hint="@string/search"
         app:boxCornerRadiusBottomEnd="20sp"
         app:boxCornerRadiusBottomStart="20sp"
         app:boxCornerRadiusTopEnd="20sp"
