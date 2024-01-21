@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
@@ -62,20 +60,13 @@ public class CategoriesSelectionFragment extends Fragment {
                         .getAllImages(((Result.CategoryResponseSuccess) result).getCategoryList())
                         .observe(this.getViewLifecycleOwner(), result1 -> {
 
-                            List<Result> risultati = ((Result.ResultList) result1).getResults();
-                            Iterator<Result> iterator = risultati.iterator();
-                            List<Uri> images = new ArrayList<>();
+                            if(result1 instanceof Result.ImagesReadFromRemote){
 
-                            while (iterator.hasNext()) {
-
-                                Result.ImageReadFromRemote imageResult = (Result.ImageReadFromRemote) iterator.next();
-                                images.add(imageResult.getImageUri());
+                                List<Uri> images = ((Result.ImagesReadFromRemote) result1).getImagesUri();
+                                CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
+                                        ((Result.CategoryResponseSuccess) result).getCategoryList(), images);
+                                listView.setAdapter(customAdapter);
                             }
-
-                            CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
-                                    ((Result.CategoryResponseSuccess) result).getCategoryList(), images);
-                            listView.setAdapter(customAdapter);
-
                         });
             }
         };

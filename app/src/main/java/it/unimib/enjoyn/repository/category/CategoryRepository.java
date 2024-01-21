@@ -4,6 +4,8 @@ import android.net.Uri;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import it.unimib.enjoyn.model.Category;
@@ -17,11 +19,14 @@ public class CategoryRepository implements ICategoryRepository, CategoryCallback
     private final BaseCategoryRemoteDataSource categoryRemoteDataSource;
     private final MutableLiveData<Result> allCategoriesResult;
     private final MutableLiveData<Result> readImageFromNameResult;
+    private final List<Uri> imagesUri;
+    private int expectedImagesUriSize;
 
     public CategoryRepository(CategoryRemoteDataSource categoryRemoteDataSource) {
 
         this.categoryRemoteDataSource = categoryRemoteDataSource;
         categoryRemoteDataSource.setCategoryCallback(this);
+        imagesUri = new ArrayList<>();
 
         allCategoriesResult = new MutableLiveData<>();
         readImageFromNameResult = new MutableLiveData<>();
@@ -35,9 +40,17 @@ public class CategoryRepository implements ICategoryRepository, CategoryCallback
     }
 
     @Override
-    public MutableLiveData<Result> readImageFromName(String name) {
-        categoryRemoteDataSource.getImageFromName(name);
+    public MutableLiveData<Result> readAllImagesFromCategories(List<Category> categoryList) {
+        expectedImagesUriSize = categoryList.size();
+        for (Category category : categoryList) {
+            readImageFromName(category.getNome());
+        }
+
         return readImageFromNameResult;
+    }
+
+    public void readImageFromName(String name) {
+        categoryRemoteDataSource.getImageFromName(name);
     }
 
     //Callback
@@ -53,7 +66,11 @@ public class CategoryRepository implements ICategoryRepository, CategoryCallback
 
     @Override
     public void onSuccessGetImageFromName(Uri uri) {
-        readImageFromNameResult.postValue(new Result.ImageReadFromRemote(uri));
+        imagesUri.add(uri);
+
+        if(imagesUri.size() == expectedImagesUriSize) {
+            readImageFromNameResult.postValue(new Result.ImagesReadFromRemote(imagesUri));
+        }
     }
 
     @Override

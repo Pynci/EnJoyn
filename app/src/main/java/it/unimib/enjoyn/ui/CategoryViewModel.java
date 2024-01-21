@@ -24,14 +24,6 @@ public class CategoryViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> getAllImages(List<Category> categoryList) {
-
-        Iterator<Category> i = categoryList.iterator();
-        Result.ResultList resultList = new Result.ResultList();
-
-        while (i.hasNext()) {
-            categoryRepository.readImageFromName(i.next().getNome()).observeForever(resultList::addResult);
-        }
-
-        return new MutableLiveData<>(resultList);
+        return categoryRepository.readAllImagesFromCategories(categoryList);
     }
 }

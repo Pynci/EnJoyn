@@ -15,7 +15,7 @@ public abstract class Result {
                 || this instanceof Success
                 || this instanceof BooleanSuccess
                 || this instanceof CategoryResponseSuccess
-                || this instanceof ImageReadFromRemote;
+                || this instanceof ImagesReadFromRemote;
     }
 
 
@@ -89,15 +89,15 @@ public abstract class Result {
         }
     }
 
-    public static final class ImageReadFromRemote extends Result{
+    public static final class ImagesReadFromRemote extends Result{
 
-        private final Uri imageUri;
+        private final List<Uri> imageUri;
 
-        public ImageReadFromRemote(Uri uri) {
+        public ImagesReadFromRemote(List<Uri> uri) {
             imageUri = uri;
         }
 
-        public Uri getImageUri(){
+        public List<Uri> getImagesUri(){
             return imageUri;
         }
     }
