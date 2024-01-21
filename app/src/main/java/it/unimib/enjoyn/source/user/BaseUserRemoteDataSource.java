@@ -18,9 +18,9 @@ public abstract class BaseUserRemoteDataSource {
 
     public abstract void getUserByEmail(String email);
 
-    public abstract void getUser(String uid);
+    public abstract void setCurrentUser(String uid);
 
-    public abstract void stopGettingUser(String uid);
+    public abstract void clearCurrentUser(String uid);
 
     public abstract void updatePropic(Uri propic);
 

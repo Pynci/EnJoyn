@@ -169,18 +169,18 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onUserCreationSuccess(User user) {
-        userRemoteDataSource.getUser(user.getUid());
+        userRemoteDataSource.setCurrentUser(user.getUid());
     }
 
     @Override
     public void onSignInSuccess(User user) {
-        userRemoteDataSource.getUser(user.getUid());
+        userRemoteDataSource.setCurrentUser(user.getUid());
     }
 
     @Override
     public void onSignOutSuccess() {
         resultFromAuth.postValue(new Result.Success());
-        userRemoteDataSource.stopGettingUser(currentUser.getUid());
+        userRemoteDataSource.clearCurrentUser(currentUser.getUid());
         currentUser = null;
     }
 

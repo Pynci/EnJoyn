@@ -121,7 +121,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void getUser(String uid){
+    public void setCurrentUser(String uid){
         currentUserUID = uid;
         dbReference
                 .child(Constants.USERS_PATH)
@@ -130,7 +130,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void stopGettingUser(String uid){
+    public void clearCurrentUser(String uid){
         currentUserUID = "";
         dbReference
                 .child(Constants.USERS_PATH)
