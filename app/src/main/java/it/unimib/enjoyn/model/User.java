@@ -27,21 +27,21 @@ public class User implements Parcelable {
     /* TODO aggiungere immagine*/
 
     public User(){
-
+        this.uid = "";
     }
 
-    public User(String uid) {
+    public User(@NonNull String uid) {
         this.uid = uid;
     }
 
-    public User(String uid, String email){
+    public User(@NonNull String uid, String email){
         this.uid = uid;
         this.email = email;
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
     }
 
-    public User(String uid, String username, String email){
+    public User(@NonNull String uid, String username, String email){
         this.uid = uid;
         this.username = username;
         this.email = email;
@@ -49,7 +49,7 @@ public class User implements Parcelable {
         this.isProfileConfigured = false;
     }
 
-    public User(String uid, String username, String email,
+    public User(@NonNull String uid, String username, String email,
                 String name, String surname, String description) {
         this.uid = uid;
         this.email = email;
