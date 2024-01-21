@@ -151,13 +151,13 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                // getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
                 NewEventMap.this.selfLocation = point;
                // updateCamera(selfLocation,0.0);
-               // positionChanged = false;
+                positionChanged = false;
             }
-          /*  else{
+            else{
                 getLocationComponent(mapView).removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getLocationComponent(mapView).removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 positionChanged = true;
-            }*/
+            }
 
         }
     };
