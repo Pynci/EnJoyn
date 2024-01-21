@@ -17,6 +17,7 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Category;
+import it.unimib.enjoyn.ui.CategoriesHolder;
 
 public class CategoriesSelectionAdapter extends BaseAdapter {
 
@@ -70,10 +71,28 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
 
         cardView1.setOnClickListener(v -> {
             cardView1.setChecked(!cardView1.isChecked());
+
+            if(cardView1.isChecked()) {
+                CategoriesHolder categoriesHolder = CategoriesHolder.getInstance();
+                categoriesHolder.addCategory(data.get(position * 2));
+            }
+            else{
+                CategoriesHolder categoriesHolder = CategoriesHolder.getInstance();
+                categoriesHolder.removeCategory(data.get(position * 2).getNome());
+            }
         });
 
         cardView2.setOnClickListener(v -> {
             cardView2.setChecked(!cardView2.isChecked());
+
+            if(cardView2.isChecked()) {
+                CategoriesHolder categoriesHolder = CategoriesHolder.getInstance();
+                categoriesHolder.addCategory(data.get(position * 2 + 1));
+            }
+            else{
+                CategoriesHolder categoriesHolder = CategoriesHolder.getInstance();
+                categoriesHolder.removeCategory(data.get(position * 2 + 1).getNome());
+            }
         });
 
         return rowView;
