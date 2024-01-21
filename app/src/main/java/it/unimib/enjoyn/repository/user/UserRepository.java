@@ -32,6 +32,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         userRemoteDataSource.setUserCallback(this);
         authenticationDataSource.setAuthenticationCallback(this);
 
+        currentUser = null;
         userByUsername = new MutableLiveData<>();
         userByEmail = new MutableLiveData<>();
 
