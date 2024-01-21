@@ -151,7 +151,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             else{
                 positionChanged = true;
             }
-
         }
     };
     private final OnMoveListener onMoveListener = new OnMoveListener() {
