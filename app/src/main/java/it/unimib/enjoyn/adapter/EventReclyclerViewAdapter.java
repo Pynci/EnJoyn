@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,10 @@ import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
 
 public class EventReclyclerViewAdapter extends
-        RecyclerView.Adapter<EventReclyclerViewAdapter.NewViewHolder> {
+        RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int EVENT_VIEW_TYPE = 0;
+    private static final int LOADING_VIEW_TYPE = 1;
 
     public interface OnItemClickListener{
         void onEventItemClick(Event event);
@@ -33,19 +36,39 @@ public class EventReclyclerViewAdapter extends
         this.onItemClickListener = onItemClickListener;
     }
 
+    public int getItemViewType(int position){
+        if(eventList.get(position) == null){
+            return LOADING_VIEW_TYPE;
+        } else {
+            return EVENT_VIEW_TYPE;
+        }
+    }
 
     @NonNull
     @Override
-    public EventReclyclerViewAdapter.NewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_list_item, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = null;
 
-        return new NewViewHolder(view);
+        if(viewType == EVENT_VIEW_TYPE){
+            view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.event_list_item, parent, false);
+            return new EventViewHolder(view);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_loading_item, parent, false);
+            return new LoadingEventViewHolder(view);
+        }
+
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventReclyclerViewAdapter.NewViewHolder holder, int position) {
-        holder.bind(eventList.get(position));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof EventViewHolder){
+            ((EventViewHolder) holder).bind(eventList.get(position));
+        } else if (holder instanceof LoadingEventViewHolder) {
+            ((LoadingEventViewHolder) holder).activate();
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -56,7 +79,7 @@ public class EventReclyclerViewAdapter extends
     }
 
 
-    public class NewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView textViewTitle;
         private final TextView textViewData;
@@ -67,7 +90,7 @@ public class EventReclyclerViewAdapter extends
         private final Button joinButton;
 
 
-        public NewViewHolder(@NonNull View itemView) {
+        public EventViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewTitle = itemView.findViewById(R.id.eventListItem_textView_eventTitle);
             textViewData = itemView.findViewById(R.id.eventListItem_textView_date);
@@ -117,6 +140,19 @@ public class EventReclyclerViewAdapter extends
         }
 
 
+    }
+
+    public static class LoadingEventViewHolder extends RecyclerView.ViewHolder {
+
+        private final ProgressBar progressBar;
+        public LoadingEventViewHolder(@NonNull View itemView) {
+            super(itemView);
+            progressBar = itemView.findViewById(R.id.eventLoadingItem_progressBar);
+        }
+
+        public void activate(){
+            progressBar.setIndeterminate(true);
+        }
     }
 
 
