@@ -100,9 +100,15 @@ public class CategoriesSelectionFragment extends Fragment {
         });
 
         buttonConfirm.setOnClickListener(v -> {
-            Navigation
-                    .findNavController(view)
-                    .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
+
+            categoryViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
+
+                if (result.isSuccessful()) {
+                    Navigation
+                            .findNavController(view)
+                            .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
+                }
+            });
         });
 
         categoryViewModel.getAllCategories().observe(this.getViewLifecycleOwner(), categoriesObserver);

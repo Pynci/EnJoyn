@@ -2,18 +2,15 @@ package it.unimib.enjoyn.util;
 
 import android.app.Application;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import org.checkerframework.checker.units.qual.C;
-
 import it.unimib.enjoyn.database.EventsRoomDatabase;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.category.CategoryRepository;
 import it.unimib.enjoyn.repository.category.ICategoryRepository;
+import it.unimib.enjoyn.repository.interests.IInterestRepository;
+import it.unimib.enjoyn.repository.interests.InterestRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
+import it.unimib.enjoyn.source.interests.InterestRemoteDataSource;
 import it.unimib.enjoyn.source.user.AuthenticationDataSource;
 import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
@@ -48,10 +45,15 @@ public class ServiceLocator {
         return new UserRepository(userRemoteDataSource, authenticationDataSource);
     }
 
-    public ICategoryRepository getcategoryRepository(boolean debugMode){
+    public ICategoryRepository getCategoryRepository(){
 
         CategoryRemoteDataSource categoryRemoteDataSource = new CategoryRemoteDataSource();
         return new CategoryRepository(categoryRemoteDataSource);
+    }
+
+    public IInterestRepository getInterestRepository() {
+        InterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
+        return new InterestRepository(interestDataSource);
     }
 
 //    public FirebaseAuth getFirebaseAuth(){

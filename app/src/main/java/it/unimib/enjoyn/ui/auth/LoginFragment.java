@@ -70,6 +70,12 @@ public class LoginFragment extends Fragment {
         // Observers
 
         signInObserver = result -> {
+
+            Navigation
+                    .findNavController(view)
+                    .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
+
+            /*
             if(result.isSuccessful()){
                 if(userViewModel.getCurrentUser().getEmailVerified()){
                     if(userViewModel.getCurrentUser().getProfileConfigured()){
@@ -93,6 +99,7 @@ public class LoginFragment extends Fragment {
                 Snackbar.make(view, getString(R.string.authenticationFailed),
                         Snackbar.LENGTH_SHORT).show();
             }
+            */
         };
 
 

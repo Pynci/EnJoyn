@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,7 +20,7 @@ import it.unimib.enjoyn.ui.CategoriesHolder;
 
 public class CategoriesSelectionAdapter extends BaseAdapter {
 
-    private final List<Category> data; // Cambia il tipo di dati in base ai tuoi requisiti
+    private final List<Category> data;
     private final Context context;
     private final List<Uri> images;
 
@@ -54,25 +53,25 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
             rowView = inflater.inflate(R.layout.custom_row_layout, parent, false);
         }
 
-        MaterialCardView cardView1 = rowView.findViewById(R.id.customRawLayout_cardview1);
-        MaterialCardView cardView2 = rowView.findViewById(R.id.customRawLayout_cardview2);
+        MaterialCardView cardViewLeft = rowView.findViewById(R.id.customRawLayout_cardview1);
+        MaterialCardView cardViewRight = rowView.findViewById(R.id.customRawLayout_cardview2);
 
-        TextView nameCategoryCard1 = rowView.findViewById(R.id.NameCategoryCard1);
-        TextView nameCategoryCard2 = rowView.findViewById(R.id.NameCategoryCard2);
+        TextView nameCategoryCardLeft = rowView.findViewById(R.id.NameCategoryCard1);
+        TextView nameCategoryCardRight = rowView.findViewById(R.id.NameCategoryCard2);
 
-        ShapeableImageView imageView1 = rowView.findViewById(R.id.headerImageCard1);
-        ShapeableImageView imageView2 = rowView.findViewById(R.id.headerImageCard2);
+        ShapeableImageView imageViewLeft = rowView.findViewById(R.id.headerImageCard1);
+        ShapeableImageView imageViewRight = rowView.findViewById(R.id.headerImageCard2);
 
-        Glide.with(context).load(images.get(position * 2)).into(imageView1);
-        Glide.with(context).load(images.get(position * 2 + 1)).into(imageView2);
+        Glide.with(context).load(images.get(position * 2)).into(imageViewLeft);
+        Glide.with(context).load(images.get(position * 2 + 1)).into(imageViewRight);
 
-        nameCategoryCard1.setText(data.get(position * 2).getNome());
-        nameCategoryCard2.setText(data.get(position * 2 + 1).getNome());
+        nameCategoryCardLeft.setText(data.get(position * 2).getNome());
+        nameCategoryCardRight.setText(data.get(position * 2 + 1).getNome());
 
-        cardView1.setOnClickListener(v -> {
-            cardView1.setChecked(!cardView1.isChecked());
+        cardViewLeft.setOnClickListener(v -> {
+            cardViewLeft.setChecked(!cardViewLeft.isChecked());
 
-            if(cardView1.isChecked()) {
+            if(cardViewLeft.isChecked()) {
                 CategoriesHolder categoriesHolder = CategoriesHolder.getInstance();
                 categoriesHolder.addCategory(data.get(position * 2));
             }
@@ -82,10 +81,10 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
             }
         });
 
-        cardView2.setOnClickListener(v -> {
-            cardView2.setChecked(!cardView2.isChecked());
+        cardViewRight.setOnClickListener(v -> {
+            cardViewRight.setChecked(!cardViewRight.isChecked());
 
-            if(cardView2.isChecked()) {
+            if(cardViewRight.isChecked()) {
                 CategoriesHolder categoriesHolder = CategoriesHolder.getInstance();
                 categoriesHolder.addCategory(data.get(position * 2 + 1));
             }
