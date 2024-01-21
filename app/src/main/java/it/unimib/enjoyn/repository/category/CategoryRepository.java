@@ -5,7 +5,6 @@ import android.net.Uri;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import it.unimib.enjoyn.model.Category;

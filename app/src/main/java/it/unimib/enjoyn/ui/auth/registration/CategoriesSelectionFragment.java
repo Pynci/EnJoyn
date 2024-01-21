@@ -14,10 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.CategoryViewModel;
 
@@ -55,16 +58,32 @@ public class CategoriesSelectionFragment extends Fragment {
 
         categoriesObserver = result -> {
             if (result.isSuccessful()) {
+                List<Category> categoryList = ((Result.CategoryResponseSuccess) result).getCategoryList();
 
                 categoryViewModel
-                        .getAllImages(((Result.CategoryResponseSuccess) result).getCategoryList())
+                        .getAllImages(categoryList)
                         .observe(this.getViewLifecycleOwner(), result1 -> {
+
 
                             if(result1 instanceof Result.ImagesReadFromRemote){
 
-                                List<Uri> images = ((Result.ImagesReadFromRemote) result1).getImagesUri();
+                                List<Uri> imagesNotSorted = ((Result.ImagesReadFromRemote) result1).getImagesUri();
+                                List<Uri> imagesSorted = new ArrayList<>();
+
+                                for(int i = 0; i < categoryList.size(); i++) {
+                                    for(int j = 0; j < imagesNotSorted.size(); j++) {
+
+                                        String tempUri = imagesNotSorted.get(j).toString();
+                                        String tempCategory = categoryList.get(i).getNome().toLowerCase();
+
+                                        if (tempUri.contains(tempCategory)) {
+                                            imagesSorted.add(imagesNotSorted.get(j));
+                                        }
+                                    }
+                                }
+
                                 CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
-                                        ((Result.CategoryResponseSuccess) result).getCategoryList(), images);
+                                        categoryList, imagesSorted);
                                 listView.setAdapter(customAdapter);
                             }
                         });
