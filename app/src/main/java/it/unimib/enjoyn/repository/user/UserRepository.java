@@ -90,6 +90,12 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
+    public MutableLiveData<Result> refreshSession(){
+        authenticationDataSource.refreshSession();
+        return resultFromAuth;
+    }
+
+    @Override
     public MutableLiveData<Result> signOut(){
         authenticationDataSource.signOut();
         return resultFromAuth;
@@ -142,6 +148,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onUserReady(User user) {
+        currentUser = user;
         resultFromAuth.postValue(new Result.UserResponseSuccess(user));
     }
 

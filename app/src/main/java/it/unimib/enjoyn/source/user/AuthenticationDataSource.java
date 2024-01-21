@@ -35,12 +35,23 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         fbUser = auth.getCurrentUser();
-                        authenticationCallback.onSignInSuccess(new User(fbUser.getUid(), email));
+                        authenticationCallback.onSignInSuccess(new User(fbUser.getUid()));
                     }
                     else{
                         authenticationCallback.onAuthFailure(task.getException());
                     }
                 });
+    }
+
+    @Override
+    public void refreshSession(){
+        fbUser = auth.getCurrentUser();
+        if(fbUser != null){
+            authenticationCallback.onSignInSuccess(new User(fbUser.getUid()));
+        }
+        else{
+            authenticationCallback.onAuthSuccess();
+        }
     }
 
     @Override
