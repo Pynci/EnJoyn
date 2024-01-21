@@ -196,20 +196,39 @@ public class Event implements Parcelable {
             this.peopleNumber=peopleNumber;
     }
 
+    //TODO aggiungere parcel di EventLocation
+
+
+    /*TODO
+    quando prendiamo da db Firebase aggiungere peopleNumber*/
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event)) return false;
+        Event event = (Event) o;
+        return  confidential == event.confidential && Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title) && Objects.equals(description, event.description) && Objects.equals(date, event.date) && Objects.equals(time, event.time) && Objects.equals(location, event.location) && Objects.equals(category, event.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( title, description, date, time, confidential, location, category, distance);
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
-    //TODO aggiungere parcel di EventLocation
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeString(this.title);
         dest.writeString(this.description);
         dest.writeString(this.date);
+        dest.writeString(this.place);
         dest.writeString(this.time);
         dest.writeByte(this.confidential ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.location, flags);
         dest.writeParcelable(this.category, flags);
         dest.writeInt(this.peopleNumber);
         dest.writeDouble(this.distance);
@@ -223,9 +242,10 @@ public class Event implements Parcelable {
         this.title = source.readString();
         this.description = source.readString();
         this.date = source.readString();
+        this.place = source.readString();
         this.time = source.readString();
         this.confidential = source.readByte() != 0;
-
+        this.location = source.readParcelable(EventLocation.class.getClassLoader());
         this.category = source.readParcelable(Category.class.getClassLoader());
         this.peopleNumber = source.readInt();
         this.distance = source.readDouble();
@@ -239,8 +259,10 @@ public class Event implements Parcelable {
         this.title = in.readString();
         this.description = in.readString();
         this.date = in.readString();
+        this.place = in.readString();
         this.time = in.readString();
         this.confidential = in.readByte() != 0;
+        this.location = in.readParcelable(EventLocation.class.getClassLoader());
         this.category = in.readParcelable(Category.class.getClassLoader());
         this.peopleNumber = in.readInt();
         this.distance = in.readDouble();
@@ -260,19 +282,4 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
-
-    /*TODO
-    quando prendiamo da db Firebase aggiungere peopleNumber*/
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Event)) return false;
-        Event event = (Event) o;
-        return  confidential == event.confidential && Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title) && Objects.equals(description, event.description) && Objects.equals(date, event.date) && Objects.equals(time, event.time) && Objects.equals(location, event.location) && Objects.equals(category, event.category);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash( title, description, date, time, confidential, location, category, distance);
-    }
 }
