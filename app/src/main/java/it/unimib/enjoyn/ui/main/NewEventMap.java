@@ -321,9 +321,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                                 updateCamera(eventLocation, 0.0);
                                 newEventButton.setText(location.getName());
 
-                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                        "EEEEEEEEEEEEEEEEEEEEEEEEEEEEOOOOOOOOOOOOOOO",
-                                        Snackbar.LENGTH_LONG).show();
+
                             }
                             return true;
                         }

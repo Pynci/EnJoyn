@@ -97,4 +97,5 @@
     <string name="imageWeather">imageWeather</string>
     <string name="temperature">temperature</string>
     <string name="search">Cerca</string>
+    <string name="positioningEvent">Seleziona il luogo</string>
 </resources>
