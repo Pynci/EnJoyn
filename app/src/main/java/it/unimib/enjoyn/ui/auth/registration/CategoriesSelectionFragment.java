@@ -8,14 +8,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
@@ -27,7 +28,6 @@ import it.unimib.enjoyn.ui.CategoryViewModel;
 public class CategoriesSelectionFragment extends Fragment {
 
     private CategoryViewModel categoryViewModel;
-    private Observer<Result> categoriesObserver;
 
     public CategoriesSelectionFragment() {
     }
@@ -53,10 +53,13 @@ public class CategoriesSelectionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Button buttonSkip = view.findViewById(R.id.fragmentCategoriesSelection_button_skip);
+        Button buttonConfirm = view.findViewById(R.id.fragmentCategoriesSelection_button_confirm);
+
         ListView listView = view.findViewById(R.id.fragmentCategoriesSelection_ListView);
         listView.setDivider(null);
 
-        categoriesObserver = result -> {
+        Observer<Result> categoriesObserver = result -> {
             if (result.isSuccessful()) {
                 List<Category> categoryList = ((Result.CategoryResponseSuccess) result).getCategoryList();
 
@@ -65,13 +68,13 @@ public class CategoriesSelectionFragment extends Fragment {
                         .observe(this.getViewLifecycleOwner(), result1 -> {
 
 
-                            if(result1 instanceof Result.ImagesReadFromRemote){
+                            if (result1 instanceof Result.ImagesReadFromRemote) {
 
                                 List<Uri> imagesNotSorted = ((Result.ImagesReadFromRemote) result1).getImagesUri();
                                 List<Uri> imagesSorted = new ArrayList<>();
 
-                                for(int i = 0; i < categoryList.size(); i++) {
-                                    for(int j = 0; j < imagesNotSorted.size(); j++) {
+                                for (int i = 0; i < categoryList.size(); i++) {
+                                    for (int j = 0; j < imagesNotSorted.size(); j++) {
 
                                         String tempUri = imagesNotSorted.get(j).toString();
                                         String tempCategory = categoryList.get(i).getNome().toLowerCase();
@@ -89,6 +92,18 @@ public class CategoriesSelectionFragment extends Fragment {
                         });
             }
         };
+
+        buttonSkip.setOnClickListener(v -> {
+            Navigation
+                    .findNavController(view)
+                    .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
+        });
+
+        buttonConfirm.setOnClickListener(v -> {
+            Navigation
+                    .findNavController(view)
+                    .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
+        });
 
         categoryViewModel.getAllCategories().observe(this.getViewLifecycleOwner(), categoriesObserver);
     }
