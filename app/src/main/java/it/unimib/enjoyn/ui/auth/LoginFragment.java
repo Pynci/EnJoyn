@@ -28,6 +28,7 @@ import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.ui.UserViewModelFactory;
 import it.unimib.enjoyn.ui.auth.registration.RegisterActivity;
+import it.unimib.enjoyn.ui.main.MainButtonMenuActivity;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class LoginFragment extends Fragment {
@@ -61,7 +62,6 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         // Widgets
 
         Button buttonRegister = view.findViewById(R.id.fragmentLogin_button_register);
@@ -80,24 +80,13 @@ public class LoginFragment extends Fragment {
 
         signInObserver = result -> {
             if(result.isSuccessful()){
-                redirect(view,
-                        ((Result.UserSuccess) result).getData());
+                redirect(((Result.UserSuccess) result).getData());
             }
             else{
                 Snackbar.make(view, getString(R.string.authenticationFailed),
                         Snackbar.LENGTH_SHORT).show();
             }
         };
-
-        redirectObserver = result -> {
-            Log.d(this.getClass().getSimpleName(), "DENTRO OBSERVER QUIII");
-            //Log.d(this.getClass().getSimpleName(), ((Result.Error)result).getMessage());
-            if(result.isSuccessful())
-                redirect(view,
-                        ((Result.UserSuccess) result).getData());
-        };
-
-        userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), redirectObserver);
 
 
         // Listeners
@@ -188,22 +177,22 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void redirect(View view, User currentUser){
+    private void redirect(User currentUser){
         if(currentUser.getEmailVerified()){
             if(currentUser.getProfileConfigured()){
                 Navigation
-                        .findNavController(view)
+                        .findNavController(requireActivity(), R.id.nav_host_fragment)
                         .navigate(R.id.action_loginFragment_to_mainButtonMenuActivity);
             }
             else{
                 Navigation
-                        .findNavController(view)
+                        .findNavController(requireActivity(), R.id.nav_host_fragment)
                         .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
             }
         }
         else{
             Navigation
-                    .findNavController(view)
+                    .findNavController(requireActivity(), R.id.nav_host_fragment)
                     .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
         }
     }
