@@ -101,6 +101,7 @@ import it.unimib.enjoyn.util.ErrorMessagesUtil;
  * create an instance of this fragment.
  */
 public class NewEventMap extends Fragment implements PermissionsListener {
+    private static final String STATE_LOCATION = "location";
     private FragmentNewEventMapBinding fragmentNewEventMapBinding;
     MapView mapView;
     public EventLocation location;
@@ -109,13 +110,18 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     private SuggestionListAdapter suggestionListAdapter;
     private ListView suggestionListView;
 
+
     Point selfLocation;
 
     Point eventCoordinates;
     FloatingActionButton positionButton;
     Bitmap bitmap;
     boolean positionChanged = true;
+    boolean firstTime = false;
 
+    boolean suggestionClicked = false;
+
+    boolean searchClicked = false;
     private PlaceAutocomplete placeAutocomplete;
 
     private SearchResultsView searchResultsView;
@@ -218,9 +224,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+        if(savedInstanceState != null){
+            location = savedInstanceState.getParcelable(STATE_LOCATION);
         }
     }
 
@@ -252,6 +258,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 .limit(4)
                 .proximity(selfLocation)
                 .build();
+        Bundle finalSavedInstanceState = savedInstanceState;
+
 
         suggestionListView = view.findViewById(R.id.fragmentNewEventMap_ListView);
 
@@ -272,6 +280,11 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
         // immagine 3d scaricata, da usare per creare pin sulla mappa
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
+        if(location != null && location.getName()!= null){
+            eventSelectionPoint();
+        } else{
+            location = new EventLocation();
+        }
 
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -281,14 +294,16 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (s.length() > 3 ){ //&& !clickSuggestion
-                    searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
-                    suggestionListView.setVisibility(View.VISIBLE);
-                }
-                else{
-                    suggestionListView.setVisibility(View.GONE);
-                    //clickSuggestion = false;
+                if(firstTime) {
+                    if (s.length() > 3) { //&& !clickSuggestion
+                        searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
+                        suggestionListView.setVisibility(View.VISIBLE);
+                    } else {
+                        suggestionListView.setVisibility(View.GONE);
+                        //clickSuggestion = false;
+                    }
+                } else{
+                    firstTime=true;
                 }
             }
 
@@ -320,6 +335,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                         if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
                         {
                             suggestionListView.setVisibility(View.GONE);
+                            searchClicked=true;
                             eventSelectionPoint();
 
                             return true;
@@ -344,7 +360,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
                     }
                 });
-                location = new EventLocation();
+
 
 
               GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
@@ -449,8 +465,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             if (suggestions.isEmpty()) {
                 Log.i("SearchApiExample", "No suggestions found");
             } else {
-                Log.i("SearchApiExample", "Search suggestions: " + suggestions + "\nSelecting first...");
-                searchRequestTask = searchEngine.select(suggestions.get(0), this);
+                Log.i("SearchApi", "Search suggestions: " + suggestions + "\nSelecting first...");
+               /* if(searchClicked)
+                searchRequestTask = searchEngine.select(suggestions.get(0), this);*/
                 //searchResultsView.set(suggestions);
 
 
@@ -467,10 +484,12 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList,  new SuggestionListAdapter.OnItemClickListener() {
                     @Override
                     public void onSuggestionItemClick(EventLocation eventLocation, int position) {
+                        suggestionClicked = true;
                         searchRequestTask = searchEngine.select(suggestions.get(position), searchCallback);
                         Snackbar.make(requireView(), "va", Snackbar.LENGTH_LONG).show();
                         searchBar.setText(suggestions.get(position).getName());
                         suggestionListView.setVisibility(View.GONE);
+
                         eventSelectionPoint();
                         //clickSuggestion = true;
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -479,14 +498,34 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 });
                 suggestionListView.setAdapter(suggestionListAdapter);
             }
+            searchBar.setOnKeyListener(new View.OnKeyListener(){
+                public boolean onKey(View v, int keyCode, KeyEvent event){
+                    if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
+                    {
+                        searchClicked=true;
+                        searchRequestTask = searchEngine.select(suggestions.get(0), searchCallback);
+                        suggestionListView.setVisibility(View.GONE);
+                        eventSelectionPoint();
+
+                        return true;
+                    }
+                    return false;
+                }
+            });
         }
 
         @Override
         public void onResult(@NonNull SearchSuggestion suggestion, @NonNull SearchResult result, @NonNull ResponseInfo info) {
-            Log.i("SearchApiExample", "Search result: " + result);
-            location.setLatitude(result.getCoordinate().latitude());
-            location.setLongitude(result.getCoordinate().longitude());
-            location.setName(result.getName());
+            Log.i("SearchApie", "Search result: " + result);
+            if(suggestionClicked || searchClicked ) {
+                location.setLatitude(result.getCoordinate().latitude());
+                location.setLongitude(result.getCoordinate().longitude());
+                location.setName(result.getName());
+                suggestionClicked = false;
+                searchClicked = false;
+            }
+
+
             Log.i("SearchApiExample", "Search result: " + location.getName());
             Log.i("SearchApiExample", "Search result: " + location.getLatitudeToString());
             Log.i("SearchApiExample", "Search result: " + location.getLongitude());
@@ -551,6 +590,15 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             updateCamera(eventCoordinates, 0.0);
             newEventButton.setText(location.getName());
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state.
+        savedInstanceState.putParcelable(STATE_LOCATION, location);
+
+        // Always call the superclass so it can save the view hierarchy state.
+        super.onSaveInstanceState(savedInstanceState);
     }
     }
 
