@@ -18,7 +18,7 @@ import it.unimib.enjoyn.model.EventLocation;
 public class SuggestionListAdapter extends ArrayAdapter<EventLocation> {
 
     private final List<EventLocation> locationList;
-    private final int distance;
+    //private final int distance;
 
     private final int layout;
 
@@ -26,16 +26,15 @@ public class SuggestionListAdapter extends ArrayAdapter<EventLocation> {
 
     public interface OnItemClickListener{
 
-        void onSuggestionItemClick(EventLocation eventLocation);
+        void onSuggestionItemClick(EventLocation eventLocation,int position);
 
     }
 
 
 
-    public SuggestionListAdapter(@NonNull Context context, int layout, List<EventLocation> locationList, int distance, OnItemClickListener onItemClickListener) {
+    public SuggestionListAdapter(@NonNull Context context, int layout, List<EventLocation> locationList,  OnItemClickListener onItemClickListener) {
         super(context, layout, locationList);
         this.locationList = locationList;
-        this.distance = distance;
         this.layout = layout;
         this.onItemClickListener = onItemClickListener;
     }
@@ -52,12 +51,12 @@ public class SuggestionListAdapter extends ArrayAdapter<EventLocation> {
         locationName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onSuggestionItemClick(locationList.get(position));
+                onItemClickListener.onSuggestionItemClick(locationList.get(position),position);
             }
         });
 
         locationName.setText(locationList.get(position).getName());
-        distance.setText(distance+"km");
+        //distance.setText(distance+"km");
 
         return convertView;
     }

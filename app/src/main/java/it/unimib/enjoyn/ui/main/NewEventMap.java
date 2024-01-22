@@ -89,7 +89,6 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.SuggestionListAdapter;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
-import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
@@ -110,7 +109,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     Point selfLocation;
 
-    Point eventLocation;
+    Point eventCoordinates;
     FloatingActionButton positionButton;
     MapboxMap mapboxMap;
     Bitmap bitmap;
@@ -127,6 +126,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     private SearchEngineUiAdapter searchEngineUiAdapter;
     private SearchView searchView;
     MaterialButton newEventButton;
+
+   private PointAnnotationManager pointAnnotationManager;
+
+    private boolean clickSuggestion = false;
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
         @Override
@@ -252,13 +255,14 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         );
 
         final SearchOptions options = new SearchOptions.Builder()
-                .limit(5)
+                .limit(4)
+                .proximity(selfLocation)
                 .build();
 
         suggestionListView = view.findViewById(R.id.fragmentNewEventMap_ListView);
 
         selfLocation = null;
-        eventLocation = null;
+        eventCoordinates = null;
         mapView = view.findViewById(R.id.newEventmap_mapView);
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
         newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
@@ -267,7 +271,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
         searchBar = view.findViewById(R.id.newEventMap_textInputEditText_textSearchBar);
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
-        PointAnnotationManager pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
+         pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
 
         searchResultsView = view.findViewById(R.id.search_results_view);
         searchResultsView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
@@ -285,8 +289,14 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 3){
+
+                if (s.length() > 3 && !clickSuggestion){
                     searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
+                    suggestionListView.setVisibility(View.VISIBLE);
+                }
+                else{
+                    suggestionListView.setVisibility(View.GONE);
+                    clickSuggestion = false;
                 }
             }
 
@@ -315,82 +325,16 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
                 searchBar.setOnKeyListener(new View.OnKeyListener(){
                     public boolean onKey(View v, int keyCode, KeyEvent event){
-                        if((event.getAction()==KeyEvent.ACTION_DOWN)&&(keyCode==KeyEvent.KEYCODE_ENTER))
+                        if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
                         {
-                            if (location != null && location.getName() != ""){
-                                eventLocation = Point.fromLngLat(location.getLongitude(),location.getLatitude());
-
-
-                                pointAnnotationManager.deleteAll();
-                                PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
-                                        .withPoint(eventLocation);
-                                pointAnnotationManager.create(pointAnnotationOptions);
-                                updateCamera(eventLocation, 0.0);
-                                newEventButton.setText(location.getName());
-
-
-                            }
+                            eventSelectionPoint();
                             return true;
                         }
                         return false;
                     }
                 });
 
-                /*
-                OfflineSearchEngine offlineSearchEngine = OfflineSearchEngine.create(
-                        new OfflineSearchEngineSettings(getString(R.string.mapbox_access_token))
-                );
-                searchEngineUiAdapter = new SearchEngineUiAdapter(searchResultsView, searchEngine, offlineSearchEngine, null, null);
 
-                searchEngineUiAdapter.setSearchMode(SearchMode.AUTO);
-                searchEngineUiAdapter.addSearchListener(new SearchEngineUiAdapter.SearchListener() {
-                    @Override
-                    public void onSuggestionsShown(@NonNull List<SearchSuggestion> list, @NonNull ResponseInfo responseInfo) {
-                    }
-
-                    @Override
-                    public void onSearchResultsShown(@NonNull SearchSuggestion searchSuggestion, @NonNull List<SearchResult> list, @NonNull ResponseInfo responseInfo) {
-                    }
-
-                    @Override
-                    public void onOfflineSearchResultsShown(@NonNull List<OfflineSearchResult> list, @NonNull OfflineResponseInfo offlineResponseInfo) {
-                    }
-
-                    @Override
-                    public boolean onSuggestionSelected(@NonNull SearchSuggestion searchSuggestion) {
-                        return false;
-                    }
-
-                    @Override
-                    public void onSearchResultSelected(@NonNull SearchResult searchResult, @NonNull ResponseInfo responseInfo) {
-                        closeSearchView();
-
-                    }
-
-                    @Override
-                    public void onOfflineSearchResultSelected(@NonNull OfflineSearchResult offlineSearchResult, @NonNull OfflineResponseInfo offlineResponseInfo) {
-                    }
-
-                    @Override
-                    public void onError(@NonNull Exception e) {
-                    }
-
-                    @Override
-                    public void onHistoryItemClick(@NonNull HistoryRecord historyRecord) {
-                    }
-
-                    @Override
-                    public void onPopulateQueryClick(@NonNull SearchSuggestion searchSuggestion, @NonNull ResponseInfo responseInfo) {
-                        if(searchView != null){
-                            searchView.setQuery(searchSuggestion.getName(), true);
-                        }
-                    }
-
-                    @Override
-                    public void onFeedbackItemClick(@NonNull ResponseInfo responseInfo) {
-                    }
-                });
-                */
 
                 positionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -512,8 +456,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Log.i("SearchApiExample", "No suggestions found");
             } else {
                 Log.i("SearchApiExample", "Search suggestions: " + suggestions + "\nSelecting first...");
-                searchRequestTask = searchEngine.select(suggestions.get(0), this);
+                //searchRequestTask = searchEngine.select(suggestions.get(0), this);
                 //searchResultsView.set(suggestions);
+
 
                 locationList = new ArrayList<>();
 
@@ -525,14 +470,19 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 }
 
 
-                suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, 0, new SuggestionListAdapter.OnItemClickListener() {
+                suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList,  new SuggestionListAdapter.OnItemClickListener() {
                     @Override
-                    public void onSuggestionItemClick(EventLocation eventLocation) {
+                    public void onSuggestionItemClick(EventLocation eventLocation, int position) {
+                        searchRequestTask = searchEngine.select(suggestions.get(position), searchCallback);
                         Snackbar.make(requireView(), "va", Snackbar.LENGTH_LONG).show();
+                        searchBar.setText(suggestions.get(position).getName());
+                        suggestionListView.setVisibility(View.GONE);
+                        eventSelectionPoint();
+                        clickSuggestion = true;
                     }
                 });
                 suggestionListView.setAdapter(suggestionListAdapter);
-                suggestionListView.setVisibility(View.VISIBLE);
+
             }
         }
 
@@ -595,6 +545,18 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             Log.i("SearchApiExample", "Reverse geocoding error", e);
         }
     };
+
+    public void eventSelectionPoint(){
+        if (location != null && location.getName() != ""){
+            eventCoordinates = Point.fromLngLat(location.getLongitude(),location.getLatitude());
+            pointAnnotationManager.deleteAll();
+            PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
+                    .withPoint(eventCoordinates);
+            pointAnnotationManager.create(pointAnnotationOptions);
+            updateCamera(eventCoordinates, 0.0);
+            newEventButton.setText(location.getName());
+        }
+    }
     }
 
 

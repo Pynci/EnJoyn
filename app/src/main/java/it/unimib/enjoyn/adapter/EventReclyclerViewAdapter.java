@@ -109,11 +109,11 @@ public class EventReclyclerViewAdapter extends
         public void onClick(View v) {
 
             if(v.getId() == R.id.eventListItem_button_joinButton){
-                setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
-                onItemClickListener.onJoinButtonPressed(getAdapterPosition());
+                setTextButtonTodoEvent(!eventList.get(getBindingAdapterPosition()).isTODO());
+                onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
 
             }else{
-                onItemClickListener.onEventItemClick(eventList.get(getAdapterPosition()));
+                onItemClickListener.onEventItemClick(eventList.get(getBindingAdapterPosition()));
                 //Navigation.findNavController(v).navigate(R.id.action_discover_to_discoverSingleEvent);
             }
         }
