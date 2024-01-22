@@ -14,13 +14,15 @@ import it.unimib.enjoyn.source.user.UserCallback;
 
 public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback {
 
+    private final BaseUserLocalDataSource userLocalDataSource;
     private final BaseUserRemoteDataSource userRemoteDataSource;
     private final BaseAuthenticationDataSource authenticationDataSource;
 
     private final MutableLiveData<Result> userByUsername;
     private final MutableLiveData<Result> userByEmail;
     private final MutableLiveData<Result> emailVerified;
-    private User currentUser;
+    private User currentUserSincronoDelVaffanculo;
+    private final MutableLiveData<Result> currentUser;
 
     private final MutableLiveData<Result> resultFromRemoteDatabase;
     private final MutableLiveData<Result> resultFromAuth;
@@ -28,26 +30,52 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     public UserRepository(BaseUserLocalDataSource userLocalDataSource,
                           BaseUserRemoteDataSource userRemoteDataSource,
                           BaseAuthenticationDataSource authenticationDataSource){
+        this.userLocalDataSource = userLocalDataSource;
         this.userRemoteDataSource = userRemoteDataSource;
         this.authenticationDataSource = authenticationDataSource;
+        userLocalDataSource.setUserCallback(this);
         userRemoteDataSource.setUserCallback(this);
         authenticationDataSource.setAuthenticationCallback(this);
 
-        currentUser = null;
+        currentUserSincronoDelVaffanculo = null;
         userByUsername = new MutableLiveData<>();
         userByEmail = new MutableLiveData<>();
 
         resultFromRemoteDatabase = new MutableLiveData<>();
         resultFromAuth = new MutableLiveData<>();
         emailVerified = new MutableLiveData<>();
+        currentUser = new MutableLiveData<>();
     }
 
     @Override
-    public MutableLiveData<Result> createUser(String email, String password, String username) {
+    public MutableLiveData<Result> signUp(String email, String password, String username) {
         authenticationDataSource.signUp(email, password, username);
-        return resultFromRemoteDatabase;
+        return currentUser;
     }
 
+
+    @Override
+    public MutableLiveData<Result> signIn(String email, String password){
+        authenticationDataSource.signIn(email, password);
+        return currentUser;
+    }
+
+    @Override
+    public MutableLiveData<Result> refreshSession(){
+        authenticationDataSource.refreshSession();
+        return currentUser;
+    }
+
+    @Override
+    public MutableLiveData<Result> signOut(){
+        authenticationDataSource.signOut();
+        return currentUser;
+    }
+
+    public MutableLiveData<Result> getCurrentUser(){
+        // TODO: prendere l'utente dal database locale Room
+        return currentUser;
+    }
 
     @Override
     public MutableLiveData<Result> getUserByUsername(String username){
@@ -61,9 +89,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return userByEmail;
     }
 
+
+
     @Override
-    public User getCurrentUser(){
-        return currentUser;
+    public User getCurrentUserSincronoDelVaffanculo(){
+        return currentUserSincronoDelVaffanculo;
     }
 
     @Override
@@ -82,24 +112,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     public MutableLiveData<Result> updateDescription(String description) {
         userRemoteDataSource.updateDescription(description);
         return resultFromRemoteDatabase;
-    }
-
-    @Override
-    public MutableLiveData<Result> signIn(String email, String password){
-        authenticationDataSource.signIn(email, password);
-        return resultFromAuth;
-    }
-
-    @Override
-    public MutableLiveData<Result> refreshSession(){
-        authenticationDataSource.refreshSession();
-        return resultFromAuth;
-    }
-
-    @Override
-    public MutableLiveData<Result> signOut(){
-        authenticationDataSource.signOut();
-        return resultFromAuth;
     }
 
     @Override
@@ -133,7 +145,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onRemoteDatabaseSuccess(User user) {
-        currentUser = user;
+        currentUserSincronoDelVaffanculo = user;
         resultFromRemoteDatabase.postValue(new Result.Success());
     }
 
@@ -144,13 +156,47 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onRemoteDatabaseFailure(Exception exception) {
-        resultFromRemoteDatabase.postValue(new Result.Error(exception.getLocalizedMessage()));
+        currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
     @Override
+    public void onLocalDatabaseFailure(Exception exception) {
+        currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
+
+
+
+
+
+    @Override
     public void onUserReady(User user) {
-        currentUser = user;
-        resultFromAuth.postValue(new Result.UserResponseSuccess(user));
+        currentUserSincronoDelVaffanculo = user;
+        resultFromAuth.postValue(new Result.UserSuccess(user));
+    }
+
+    @Override
+    public void onRemoteUserFetchSuccess(User user) {
+        userLocalDataSource.insertUser(user);
+    }
+
+    @Override
+    public void onLocalUserDeletionSuccess() {
+        currentUser.postValue(new Result.UserSuccess(null));
+    }
+
+    @Override
+    public void onLocalUserUpdateSuccess(User user) {
+        currentUser.postValue(new Result.UserSuccess(user));
+    }
+
+    @Override
+    public void onLocalUserFetchSuccess(User user) {
+        currentUser.postValue(new Result.UserSuccess(user));
+    }
+
+    @Override
+    public void onLocalUserInsertionSuccess(User user) {
+        currentUser.postValue(new Result.UserSuccess(user));
     }
 
     @Override
@@ -160,34 +206,34 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onAuthFailure(Exception exception) {
-        resultFromAuth.postValue(new Result.Error(exception.getLocalizedMessage()));
+        currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
     @Override
     public void onSignUpSuccess(User user) {
-        userRemoteDataSource.storeUser(user);
+        userRemoteDataSource.createUser(user);
     }
 
     @Override
     public void onUserCreationSuccess(User user) {
-        userRemoteDataSource.setCurrentUser(user.getUid());
+        currentUser.postValue(new Result.UserSuccess(user));
     }
 
     @Override
     public void onSignInSuccess(User user) {
-        userRemoteDataSource.setCurrentUser(user.getUid());
+        userRemoteDataSource.getCurrentUser(user.getUid());
     }
 
     @Override
     public void onSignOutSuccess() {
-        resultFromAuth.postValue(new Result.Success());
-        userRemoteDataSource.clearCurrentUser(currentUser.getUid());
-        currentUser = null;
+        userLocalDataSource.deleteUser(((Result.UserSuccess) currentUser.getValue())
+                .getData());
+        currentUserSincronoDelVaffanculo = null;
     }
 
     @Override
     public void onEmailCheckSuccess(Boolean status) {
-        currentUser.setEmailVerified(status);
+        currentUserSincronoDelVaffanculo.setEmailVerified(status);
         userRemoteDataSource.updateEmailVerificationStatus(status);
         emailVerified.postValue(new Result.BooleanSuccess(status));
     }
@@ -198,13 +244,18 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
+    public void onAlreadySignedIn(String uid) {
+        userLocalDataSource.getUser(uid);
+    }
+
+    @Override
     public void onGetUserByUsernameSuccess(User user){
-        userByUsername.postValue(new Result.UserResponseSuccess(user));
+        userByUsername.postValue(new Result.UserSuccess(user));
     }
 
     @Override
     public void onGetUserByEmailSuccess(User user) {
-        userByEmail.postValue(new Result.UserResponseSuccess(user));
+        userByEmail.postValue(new Result.UserSuccess(user));
     }
 
 }

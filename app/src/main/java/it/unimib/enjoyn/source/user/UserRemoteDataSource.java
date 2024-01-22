@@ -59,7 +59,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void storeUser(User user) {
+    public void createUser(User user) {
         dbReference
                 .child(Constants.USERS_PATH)
                 .child(user.getUid())
@@ -121,22 +121,39 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void setCurrentUser(String uid){
-        currentUserUID = uid;
+    public void getCurrentUser(String uid){
+        //currentUserUID = uid;
         dbReference
                 .child(Constants.USERS_PATH)
                 .child(uid)
-                .addValueEventListener(userListener);
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        DataSnapshot queryResult = task.getResult();
+                        final Iterator<DataSnapshot> iterator = queryResult.getChildren().iterator();
+                        if(iterator.hasNext()){
+                            User currentUser = iterator.next().getValue(User.class);
+                            currentUser.setUid(uid);
+                            userCallback.onRemoteUserFetchSuccess(currentUser);
+                        }
+                        else{
+                            userCallback.onRemoteDatabaseFailure(task.getException());
+                        }
+                    }
+                    else{
+                        userCallback.onRemoteDatabaseFailure(task.getException());
+                    }
+                });
     }
 
-    @Override
-    public void clearCurrentUser(String uid){
-        currentUserUID = "";
-        dbReference
-                .child(Constants.USERS_PATH)
-                .child(uid)
-                .removeEventListener(userListener);
-    }
+//    @Override
+//    public void clearCurrentUser(String uid){
+//        //currentUserUID = "";
+//        dbReference
+//                .child(Constants.USERS_PATH)
+//                .child(uid)
+//                .removeEventListener(userListener);
+//    }
 
     public void updateUser(String uid, Map<String, Object> updateMap){
         DatabaseReference userReference = dbReference

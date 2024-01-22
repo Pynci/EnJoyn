@@ -9,10 +9,10 @@ import it.unimib.enjoyn.model.User;
 
 public interface IUserRepository {
 
-    User getCurrentUser();
+    User getCurrentUserSincronoDelVaffanculo();
     MutableLiveData<Result> getUserByUsername(String username);
     MutableLiveData<Result> getUserByEmail(String email);
-    MutableLiveData<Result> createUser(String email, String password, String username);
+    MutableLiveData<Result> signUp(String email, String password, String username);
     MutableLiveData<Result> signIn(String email, String password);
     MutableLiveData<Result> refreshSession();
     MutableLiveData<Result> signOut();

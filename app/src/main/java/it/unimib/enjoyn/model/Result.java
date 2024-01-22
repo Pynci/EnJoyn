@@ -11,10 +11,10 @@ public abstract class Result {
     }
 
     public boolean isSuccessful() {
-        return this instanceof UserResponseSuccess
+        return this instanceof UserSuccess
                 || this instanceof Success
                 || this instanceof BooleanSuccess
-                || this instanceof CategoryResponseSuccess
+                || this instanceof CategorySuccess
                 || this instanceof ImagesReadFromRemote;
     }
 
@@ -23,10 +23,10 @@ public abstract class Result {
         //class representing a generic Success of an operation
     }
 
-    public static final class UserResponseSuccess extends Result {
+    public static final class UserSuccess extends Result {
         private final User user;
 
-        public UserResponseSuccess(User user){
+        public UserSuccess(User user){
             this.user = user;
         }
 
@@ -76,11 +76,11 @@ public abstract class Result {
         }
     }
 
-    public static final class CategoryResponseSuccess extends Result {
+    public static final class CategorySuccess extends Result {
 
         private final List<Category> categoryList;
 
-        public CategoryResponseSuccess (List<Category> list) {
+        public CategorySuccess(List<Category> list) {
             categoryList = list;
         }
 

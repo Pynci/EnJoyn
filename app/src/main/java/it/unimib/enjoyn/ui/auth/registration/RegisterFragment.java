@@ -128,7 +128,7 @@ public class RegisterFragment extends Fragment {
 
         usernameCheckObserver = result -> {
             if(result.isSuccessful()){
-                User user = ((Result.UserResponseSuccess) result).getData();
+                User user = ((Result.UserSuccess) result).getData();
                 if(user == null){
                     isUsernameOK = true;
                 }
@@ -146,7 +146,7 @@ public class RegisterFragment extends Fragment {
 
         emailCheckObserver = result -> {
             if(result.isSuccessful()){
-                User user = ((Result.UserResponseSuccess) result).getData();
+                User user = ((Result.UserSuccess) result).getData();
                 if(user == null){
                     isEmailOK = true;
                 }

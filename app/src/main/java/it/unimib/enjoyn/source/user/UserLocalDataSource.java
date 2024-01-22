@@ -7,42 +7,61 @@ import it.unimib.enjoyn.model.User;
 public class UserLocalDataSource extends BaseUserLocalDataSource {
 
     private final UserDao userDao;
-    private String currentUserUID;
 
     public UserLocalDataSource(UserRoomDatabase userRoomDatabase){
         this.userDao = userRoomDatabase.userDao();
     }
 
-
-    public void setCurrentUser(){
-
-    }
-
     @Override
-    public void getCurrentUser() {
+    public void getUser(String uid) {
         UserRoomDatabase.databaseWriteExecutor.execute(() -> {
-            User user = userDao.getUser(currentUserUID);
-            // da fare callback
+            User user = userDao.getUser(uid);
+            if(user != null){
+                userCallback.onLocalUserFetchSuccess(user);
+            }
+            else{
+                userCallback.onLocalDatabaseFailure(new Exception("ERRORE QUERY LOCALE"));
+            }
         });
     }
 
     @Override
-    public void insertCurrentUser(User user) {
+    public void insertUser(User user) {
         UserRoomDatabase.databaseWriteExecutor.execute(() -> {
-            userDao.insertUser(user);
-            // da fare callback
+            long rowId = 0;
+            rowId = userDao.insertUser(user);
+            if(rowId != 0){
+                userCallback.onLocalUserInsertionSuccess(user);
+            }
+            else{
+                userCallback.onLocalDatabaseFailure(new Exception("ERRORE INSERIMENTO LOCALE"));
+            }
         });
     }
 
     @Override
-    public void updateCurrentUser(User user) {
-
+    public void updateUser(User user) {
+        UserRoomDatabase.databaseWriteExecutor.execute(() -> {
+            int rowsUpdated = userDao.updateUser(user);
+            if(rowsUpdated == 1){
+                userCallback.onLocalUserUpdateSuccess(user);
+            }
+            else{
+                userCallback.onLocalDatabaseFailure(new Exception("ERRORE AGGIORNAMENTO LOCALE"));
+            }
+        });
     }
 
     @Override
-    public void clearCurrentUser() {
+    public void deleteUser(User user) {
         UserRoomDatabase.databaseWriteExecutor.execute(() -> {
-            //userDao.deleteUser(User user)
+            int rowsDeleted = userDao.deleteUser(user);
+            if(rowsDeleted == 1){
+                userCallback.onLocalUserDeletionSuccess();
+            }
+            else{
+                userCallback.onLocalDatabaseFailure(new Exception("ERRORE CANCELLAZIONE LOCALE"));
+            }
         });
     }
 }

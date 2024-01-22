@@ -21,8 +21,12 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         fbUser = auth.getCurrentUser();
-                        authenticationCallback.onSignUpSuccess(new User(fbUser.getUid(), username, email));
-
+                        if(fbUser != null){
+                            authenticationCallback.onSignUpSuccess(new User(fbUser.getUid(), username, email));
+                        }
+                        else{
+                            authenticationCallback.onAuthFailure(task.getException());
+                        }
                     } else {
                         authenticationCallback.onAuthFailure(task.getException());
                     }
@@ -35,7 +39,13 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         fbUser = auth.getCurrentUser();
-                        authenticationCallback.onSignInSuccess(new User(fbUser.getUid()));
+                        if(fbUser != null){
+                            authenticationCallback.onSignInSuccess(new User(fbUser.getUid(), email));
+                        }
+                        else{
+                            authenticationCallback.onAuthFailure(task.getException());
+                        }
+
                     }
                     else{
                         authenticationCallback.onAuthFailure(task.getException());
@@ -47,10 +57,10 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     public void refreshSession(){
         fbUser = auth.getCurrentUser();
         if(fbUser != null){
-            authenticationCallback.onSignInSuccess(new User(fbUser.getUid()));
+            authenticationCallback.onAlreadySignedIn(fbUser.getUid());
         }
         else{
-            authenticationCallback.onAuthSuccess();
+            authenticationCallback.onSignOutSuccess();
         }
     }
 

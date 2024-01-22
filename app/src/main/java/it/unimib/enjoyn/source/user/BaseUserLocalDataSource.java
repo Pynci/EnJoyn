@@ -9,8 +9,8 @@ public abstract class BaseUserLocalDataSource {
         this.userCallback = userCallback;
     }
 
-    public abstract void getCurrentUser();
-    public abstract void insertCurrentUser(User user);
-    public abstract void updateCurrentUser(User user);
-    public abstract void clearCurrentUser();
+    public abstract void getUser(String uid);
+    public abstract void insertUser(User user);
+    public abstract void updateUser(User user);
+    public abstract void deleteUser(User user);
 }

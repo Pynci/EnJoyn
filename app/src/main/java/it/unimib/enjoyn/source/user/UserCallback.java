@@ -9,5 +9,15 @@ public interface UserCallback {
     void onRemoteDatabaseSuccess(User user);
     void onRemoteDatabaseSuccess();
     void onRemoteDatabaseFailure(Exception exception);
+    void onLocalDatabaseFailure(Exception exception);
     void onUserReady(User user);
+
+
+
+    void onRemoteUserFetchSuccess(User user);
+    void onLocalUserDeletionSuccess();
+    void onLocalUserUpdateSuccess(User user);
+    void onLocalUserFetchSuccess(User user);
+
+    void onLocalUserInsertionSuccess(User user);
 }

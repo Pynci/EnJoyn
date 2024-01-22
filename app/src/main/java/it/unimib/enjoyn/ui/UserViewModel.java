@@ -10,7 +10,6 @@ import org.apache.commons.validator.routines.EmailValidator;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserViewModel extends ViewModel {
 
@@ -21,7 +20,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){
-        return userRepository.createUser(email, password, username);
+        return userRepository.signUp(email, password, username);
     }
 
     public MutableLiveData<Result> signIn(String email, String password){
@@ -54,7 +53,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public User getCurrentUser(){
-        return userRepository.getCurrentUser();
+        return userRepository.getCurrentUserSincronoDelVaffanculo();
     }
 
     public MutableLiveData<Result> setUserPropic(Uri uri) {

@@ -12,4 +12,5 @@ public interface AuthenticationCallback {
     void onEmailCheckSuccess(Boolean status);
     void onEmailCheckFailure(Exception exception);
 
+    void onAlreadySignedIn(String uid);
 }
