@@ -10,6 +10,7 @@ import it.unimib.enjoyn.repository.interests.InterestRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
+import it.unimib.enjoyn.source.interests.InterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.InterestRemoteDataSource;
 import it.unimib.enjoyn.source.user.AuthenticationDataSource;
 import it.unimib.enjoyn.source.user.UserRemoteDataSource;
@@ -51,9 +52,14 @@ public class ServiceLocator {
         return new CategoryRepository(categoryRemoteDataSource);
     }
 
-    public IInterestRepository getInterestRepository() {
+    public EventsRoomDatabase getRoomDatabase(Application application) {
+        return EventsRoomDatabase.getDatabase(application);
+    }
+
+    public IInterestRepository getInterestRepository(Application application) {
         InterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
-        return new InterestRepository(interestDataSource);
+        InterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getRoomDatabase(application));
+        return new InterestRepository(interestDataSource, interestLocalDataSource);
     }
 
 //    public FirebaseAuth getFirebaseAuth(){

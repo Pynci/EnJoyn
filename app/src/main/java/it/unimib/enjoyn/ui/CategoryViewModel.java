@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.ui;
 
+import android.app.Application;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -17,9 +19,9 @@ public class CategoryViewModel extends ViewModel {
     private final IInterestRepository interestRepository;
     private final CategoriesHolder categoriesHolder;
 
-    public CategoryViewModel() {
+    public CategoryViewModel(Application application) {
         categoryRepository = ServiceLocator.getInstance().getCategoryRepository();
-        interestRepository = ServiceLocator.getInstance().getInterestRepository();
+        interestRepository = ServiceLocator.getInstance().getInterestRepository(application);
         categoriesHolder = CategoriesHolder.getInstance();
     }
 

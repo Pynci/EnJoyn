@@ -70,7 +70,6 @@ public class LoginFragment extends Fragment {
         // Observers
 
         signInObserver = result -> {
-
             Navigation
                     .findNavController(view)
                     .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);

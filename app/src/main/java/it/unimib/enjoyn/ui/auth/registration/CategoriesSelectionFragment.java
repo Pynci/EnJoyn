@@ -24,6 +24,7 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.CategoryViewModel;
+import it.unimib.enjoyn.ui.CategoryViewModelFactory;
 
 public class CategoriesSelectionFragment extends Fragment {
 
@@ -40,7 +41,9 @@ public class CategoriesSelectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categoryViewModel = new ViewModelProvider(requireActivity()).get(CategoryViewModel.class);
+        categoryViewModel = new ViewModelProvider(
+                requireActivity(),
+                new CategoryViewModelFactory(requireActivity().getApplication())).get(CategoryViewModel.class);
     }
 
     @Override
