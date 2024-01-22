@@ -40,6 +40,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
+    public MutableLiveData<Result> getCurrentUser(){
+        return currentUser;
+    }
+
+    @Override
     public MutableLiveData<Result> signUp(String email, String password, String username) {
         authenticationDataSource.signUp(email, password, username);
         return currentUser;
@@ -61,11 +66,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public MutableLiveData<Result> signOut(){
         authenticationDataSource.signOut();
-        return currentUser;
-    }
-
-    @Override
-    public MutableLiveData<Result> getCurrentUser(){
         return currentUser;
     }
 

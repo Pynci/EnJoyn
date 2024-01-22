@@ -19,6 +19,10 @@ public class UserViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
+    public MutableLiveData<Result> getCurrentUser(){
+        return userRepository.getCurrentUser();
+    }
+
     public MutableLiveData<Result> signUp(String email, String password, String username){
         return userRepository.signUp(email, password, username);
     }
@@ -50,10 +54,6 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<Result> getUserByEmail(String email){
         return userRepository.getUserByEmail(email);
-    }
-
-    public User getCurrentUser(){
-        return userRepository.getCurrentUserSincronoDelVaffanculo();
     }
 
     public MutableLiveData<Result> setUserPropic(Uri uri) {

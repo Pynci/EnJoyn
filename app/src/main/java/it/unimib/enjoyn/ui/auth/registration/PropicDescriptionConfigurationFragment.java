@@ -31,7 +31,10 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.UserViewModel;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 public class PropicDescriptionConfigurationFragment extends Fragment {
 
@@ -59,7 +62,9 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
             }
         });
 
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override

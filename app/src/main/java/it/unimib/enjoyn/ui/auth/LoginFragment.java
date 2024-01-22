@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.R;
@@ -77,8 +78,9 @@ public class LoginFragment extends Fragment {
 
         signInObserver = result -> {
             if(result.isSuccessful()){
-                if(userViewModel.getCurrentUser().getEmailVerified()){
-                    if(userViewModel.getCurrentUser().getProfileConfigured()){
+                User currentUser = ((Result.UserSuccess) result).getData();
+                if(currentUser.getEmailVerified()){
+                    if(currentUser.getProfileConfigured()){
                         Navigation
                                 .findNavController(view)
                                 .navigate(R.id.action_loginFragment_to_mainButtonMenuActivity);

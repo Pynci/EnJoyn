@@ -1,6 +1,7 @@
 package it.unimib.enjoyn.source.user;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -98,16 +99,8 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        DataSnapshot queryResult = task.getResult();
-                        final Iterator<DataSnapshot> iterator = queryResult.getChildren().iterator();
-                        if(iterator.hasNext()){
-                            User currentUser = iterator.next().getValue(User.class);
-                            currentUser.setUid(uid);
-                            userCallback.onRemoteUserFetchSuccess(currentUser);
-                        }
-                        else{
-                            userCallback.onRemoteDatabaseFailure(task.getException());
-                        }
+                        User currentUser = task.getResult().getValue(User.class);
+                        userCallback.onRemoteUserFetchSuccess(currentUser);
                     }
                     else{
                         userCallback.onRemoteDatabaseFailure(task.getException());
