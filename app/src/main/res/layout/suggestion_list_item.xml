@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
+        android:id ="@+id/suggestionListItem_cardView_suggestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"

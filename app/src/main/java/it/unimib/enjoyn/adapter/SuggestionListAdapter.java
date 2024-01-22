@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import java.util.List;
 
@@ -49,8 +50,8 @@ public class SuggestionListAdapter extends ArrayAdapter<EventLocation> {
 
         TextView locationName = convertView.findViewById(R.id.suggestionListItem_textView_locationName);
         TextView distance = convertView.findViewById(R.id.suggestionListItem_textView_distance);
-
-        locationName.setOnClickListener(new View.OnClickListener() {
+        CardView item = convertView.findViewById(R.id.suggestionListItem_cardView_suggestion);
+        item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClickListener.onSuggestionItemClick(locationList.get(position),position);
