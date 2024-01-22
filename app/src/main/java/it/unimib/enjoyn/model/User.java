@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
@@ -93,11 +92,12 @@ public class User implements Parcelable {
         dest.writeString(description);
     }
 
+    @NonNull
     public String getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(@NonNull String uid) {
         this.uid = uid;
     }
 

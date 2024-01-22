@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,9 +112,9 @@ public class ConfirmEmailMessageFragment extends Fragment {
                     .navigate(R.id.action_confirmEmailMessageFragment_to_loginActivity);
         });
 
-        buttonRefresh.setOnClickListener(v -> {
-            userViewModel.updateEmailVerificationStatus().observe(getViewLifecycleOwner(), emailVerificationStatusObserver);
-        });
+        buttonRefresh.setOnClickListener(v -> userViewModel.updateEmailVerificationStatus()
+                .observe(getViewLifecycleOwner(),
+                        emailVerificationStatusObserver));
     }
 
     @Override

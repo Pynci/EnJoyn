@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 
 public class UserViewModel extends ViewModel {
