@@ -36,7 +36,11 @@ public class CategoryRemoteDataSource extends BaseCategoryRemoteDataSource{
                         List<Category> allCategories = new ArrayList<>();
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            allCategories.add(dataSnapshot.getValue(Category.class));
+
+                            Category temp = dataSnapshot.getValue(Category.class);
+                            temp.setId(Integer.parseInt(dataSnapshot.getKey()));
+                            allCategories.add(temp);
+
                         }
 
                         categoryCallback.onSuccessGetAllCategories(allCategories);

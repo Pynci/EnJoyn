@@ -4,6 +4,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.CategoriesHolder;
+import it.unimib.enjoyn.util.Constants;
 
 public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {
 
@@ -11,7 +12,7 @@ public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {
 
     public InterestRemoteDataSource() {
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance(Constants.DATABASE_PATH);
     }
 
     @Override

@@ -102,7 +102,6 @@ public class CategoriesSelectionFragment extends Fragment {
         buttonConfirm.setOnClickListener(v -> {
 
             categoryViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
-
                 if (result.isSuccessful()) {
                     Navigation
                             .findNavController(view)
