@@ -190,8 +190,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onSignOutSuccess() {
-        userLocalDataSource.deleteUser(((Result.UserSuccess) currentUser.getValue())
-                .getData());
+        User user = ((Result.UserSuccess) currentUser.getValue()).getData();
+        if(user != null){
+            userLocalDataSource.deleteUser(((Result.UserSuccess) currentUser.getValue())
+                    .getData());
+        }
     }
 
     @Override

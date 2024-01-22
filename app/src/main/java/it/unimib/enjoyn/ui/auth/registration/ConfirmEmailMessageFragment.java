@@ -116,10 +116,4 @@ public class ConfirmEmailMessageFragment extends Fragment {
                 .observe(getViewLifecycleOwner(),
                         emailVerificationStatusObserver));
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        userViewModel.updateEmailVerificationStatus().observe(getViewLifecycleOwner(), emailVerificationStatusObserver);
-    }
 }

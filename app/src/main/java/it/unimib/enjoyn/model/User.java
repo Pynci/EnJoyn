@@ -31,6 +31,8 @@ public class User implements Parcelable {
 
     public User(@NonNull String uid) {
         this.uid = uid;
+        this.isEmailVerified = false;
+        this.isProfileConfigured = false;
     }
 
     public User(@NonNull String uid, String email){

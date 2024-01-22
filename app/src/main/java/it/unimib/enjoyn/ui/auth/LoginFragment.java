@@ -91,7 +91,7 @@ public class LoginFragment extends Fragment {
 
         redirectObserver = result -> {
             Log.d(this.getClass().getSimpleName(), "DENTRO OBSERVER QUIII");
-            Log.d(this.getClass().getSimpleName(), ((Result.Error)result).getMessage());
+            //Log.d(this.getClass().getSimpleName(), ((Result.Error)result).getMessage());
             if(result.isSuccessful())
                 redirect(view,
                         ((Result.UserSuccess) result).getData());
