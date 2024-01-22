@@ -86,6 +86,7 @@ import com.mapbox.search.ui.adapter.engines.SearchEngineUiAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.SuggestionListAdapter;
@@ -101,7 +102,6 @@ import it.unimib.enjoyn.util.ErrorMessagesUtil;
  */
 public class NewEventMap extends Fragment implements PermissionsListener {
     private FragmentNewEventMapBinding fragmentNewEventMapBinding;
-    private FragmentNewEventBinding fragmentNewEventBinding;
     MapView mapView;
     public EventLocation location;
     List<EventLocation> locationList;
@@ -113,19 +113,14 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     Point eventCoordinates;
     FloatingActionButton positionButton;
-    MapboxMap mapboxMap;
     Bitmap bitmap;
     boolean positionChanged = true;
 
     private PlaceAutocomplete placeAutocomplete;
 
     private SearchResultsView searchResultsView;
-
-    private PlaceAutocompleteUiAdapter placeAutocompleteUiAdapter;
     private TextInputEditText searchBar;
-    private boolean ignoreNextQueryUpdate = false;
     private PermissionsManager permissionsManager;
-    private SearchEngineUiAdapter searchEngineUiAdapter;
     private SearchView searchView;
     MaterialButton newEventButton;
 
@@ -140,9 +135,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
                         getString(R.string.eventRemoveToDo),
                         Snackbar.LENGTH_LONG).show();
-
-            }
-            else{
 
             }
         }
@@ -273,12 +265,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
         searchBar = view.findViewById(R.id.newEventMap_textInputEditText_textSearchBar);
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
-         pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
+        pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
 
         searchResultsView = view.findViewById(R.id.search_results_view);
         searchResultsView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
-        //TOLTO per barra di ricerca
-        placeAutocompleteUiAdapter = new PlaceAutocompleteUiAdapter(searchResultsView, placeAutocomplete, LocationEngineProvider.getBestLocationEngine(getContext()));
 
         // immagine 3d scaricata, da usare per creare pin sulla mappa
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
@@ -533,7 +523,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId().substring(0, 2).equals("add"));
                 Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId().substring(0, 2));
                // Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(1));
-                if(results.get(0).getId().substring(0, 2).equals("ad")) {
+                if(results.get(0).getId().startsWith("ad")) {
                     if(results.get(0).getAddress().getHouseNumber()!= null) {
                         location.setName(results.get(0).getName() + " " + results.get(0).getAddress().getHouseNumber());
                     }
@@ -552,7 +542,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     };
 
     public void eventSelectionPoint(){
-        if (location != null && location.getName() != ""){
+        if (location != null && !Objects.equals(location.getName(), "")){
             eventCoordinates = Point.fromLngLat(location.getLongitude(),location.getLatitude());
             pointAnnotationManager.deleteAll();
             PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
