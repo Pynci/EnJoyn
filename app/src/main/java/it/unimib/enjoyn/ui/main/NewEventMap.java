@@ -106,9 +106,12 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     MapView mapView;
     public EventLocation location;
     List<EventLocation> locationList;
-    private int distance;
+    List<Double> distanceList;
+     private double distance;
     private SuggestionListAdapter suggestionListAdapter;
     private ListView suggestionListView;
+    private double distanceSuggestionLatitude;
+    private double distanceSuggestionsLongitude;
 
 
     Point selfLocation;
@@ -262,7 +265,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
         suggestionListView = view.findViewById(R.id.fragmentNewEventMap_ListView);
-
+        firstTime = false;
         selfLocation = null;
         eventCoordinates = null;
         mapView = view.findViewById(R.id.newEventmap_mapView);
@@ -286,9 +289,11 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             location = new EventLocation();
         }
 
+
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
 
@@ -472,16 +477,22 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
                 locationList = new ArrayList<>();
+                distanceList = new ArrayList<>();
 
                 for(int i = 0; i<suggestions.size(); i++){
                     locationList.add(new EventLocation());
                     locationList.get(i).setName(suggestions.get(i).getName());
+                    suggestionClicked=true;
+                    searchRequestTask = searchEngine.select(suggestions.get(i), searchCallback);
+
+                    distance = 100*(Math.sqrt(Math.pow(selfLocation.latitude()-distanceSuggestionLatitude,2) + Math.pow(selfLocation.longitude() -distanceSuggestionsLongitude,2)));
+                    distanceList.add(round(distance,1));
                     //locationList.get(i).setLatitude(suggestions.get(i).getRequestOptions().getOptions());
                     //locationList.get(i).setLongitude(suggestions.get(i).getRequestOptions().getOptions().getProximity().longitude());
                 }
+                    suggestionClicked = false;
 
-
-                suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList,  new SuggestionListAdapter.OnItemClickListener() {
+                suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList,  new SuggestionListAdapter.OnItemClickListener() {
                     @Override
                     public void onSuggestionItemClick(EventLocation eventLocation, int position) {
                         suggestionClicked = true;
@@ -524,6 +535,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 suggestionClicked = false;
                 searchClicked = false;
             }
+            distanceSuggestionLatitude = result.getCoordinate().latitude();
+            distanceSuggestionsLongitude = result.getCoordinate().longitude();
 
 
             Log.i("SearchApiExample", "Search result: " + location.getName());
@@ -599,6 +612,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
         // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
+    }
+    public static double round(double n, int decimals) {
+        return Math.floor(n * Math.pow(10, decimals)) / Math.pow(10, decimals);
     }
     }
 

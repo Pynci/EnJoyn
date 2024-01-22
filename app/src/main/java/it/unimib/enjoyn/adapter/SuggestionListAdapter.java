@@ -19,7 +19,7 @@ public class SuggestionListAdapter extends ArrayAdapter<EventLocation> {
 
     private final List<EventLocation> locationList;
     //private final int distance;
-
+    private final List<Double> distanceList;
     private final int layout;
 
     private OnItemClickListener onItemClickListener;
@@ -32,10 +32,12 @@ public class SuggestionListAdapter extends ArrayAdapter<EventLocation> {
 
 
 
-    public SuggestionListAdapter(@NonNull Context context, int layout, List<EventLocation> locationList,  OnItemClickListener onItemClickListener) {
+    public SuggestionListAdapter(@NonNull Context context, int layout, List<EventLocation> locationList, List<Double> distanceList,  OnItemClickListener onItemClickListener) {
         super(context, layout, locationList);
         this.locationList = locationList;
+        this.distanceList = distanceList;
         this.layout = layout;
+
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -56,7 +58,7 @@ public class SuggestionListAdapter extends ArrayAdapter<EventLocation> {
         });
 
         locationName.setText(locationList.get(position).getName());
-        //distance.setText(distance+"km");
+        distance.setText(distanceList.get(position)+"km");
 
         return convertView;
     }
