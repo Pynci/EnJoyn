@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class LoginFragment extends Fragment {
     private static final boolean USE_NAVIGATION_COMPONENT = true;
     private UserViewModel userViewModel;
     private Observer<Result> signInObserver;
+    private Observer<Result> redirectObserver;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -78,30 +80,24 @@ public class LoginFragment extends Fragment {
 
         signInObserver = result -> {
             if(result.isSuccessful()){
-                User currentUser = ((Result.UserSuccess) result).getData();
-                if(currentUser.getEmailVerified()){
-                    if(currentUser.getProfileConfigured()){
-                        Navigation
-                                .findNavController(view)
-                                .navigate(R.id.action_loginFragment_to_mainButtonMenuActivity);
-                    }
-                    else{
-                        Navigation
-                                .findNavController(view)
-                                .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
-                    }
-                }
-                else{
-                    Navigation
-                            .findNavController(view)
-                            .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
-                }
+                redirect(view,
+                        ((Result.UserSuccess) result).getData());
             }
             else{
                 Snackbar.make(view, getString(R.string.authenticationFailed),
                         Snackbar.LENGTH_SHORT).show();
             }
         };
+
+        redirectObserver = result -> {
+            Log.d(this.getClass().getSimpleName(), "DENTRO OBSERVER QUIII");
+            Log.d(this.getClass().getSimpleName(), ((Result.Error)result).getMessage());
+            if(result.isSuccessful())
+                redirect(view,
+                        ((Result.UserSuccess) result).getData());
+        };
+
+        userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), redirectObserver);
 
 
         // Listeners
@@ -189,6 +185,26 @@ public class LoginFragment extends Fragment {
         //da utilizzare solo se si passa ad un'altra activity
         if (finishActivity) {
             requireActivity().finish();
+        }
+    }
+
+    private void redirect(View view, User currentUser){
+        if(currentUser.getEmailVerified()){
+            if(currentUser.getProfileConfigured()){
+                Navigation
+                        .findNavController(view)
+                        .navigate(R.id.action_loginFragment_to_mainButtonMenuActivity);
+            }
+            else{
+                Navigation
+                        .findNavController(view)
+                        .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
+            }
+        }
+        else{
+            Navigation
+                    .findNavController(view)
+                    .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
         }
     }
 }

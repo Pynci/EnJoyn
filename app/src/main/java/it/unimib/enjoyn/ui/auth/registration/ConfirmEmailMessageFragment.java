@@ -22,6 +22,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.repository.user.IUserRepository;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.UserViewModel;
 
@@ -41,7 +45,10 @@ public class ConfirmEmailMessageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         // disabilita il tasto back affinché l'utente non possa tornare indietro
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -86,12 +93,12 @@ public class ConfirmEmailMessageFragment extends Fragment {
 
         emailVerificationStatusObserver = result -> {
             if(result.isSuccessful()){
-                Log.d(this.getClass().getSimpleName(), "dentro observer");
-                boolean isEmailVerified = ((Result.BooleanSuccess) result).getData();
-                if(isEmailVerified){
-//                    Navigation
-//                            .findNavController(view)
-//                            .navigate(R.id.action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment);
+                User currentUser = ((Result.UserSuccess) result).getData();
+
+                if(currentUser.getEmailVerified()){
+                    Navigation
+                            .findNavController(view)
+                            .navigate(R.id.action_confirmEmailMessageFragment_to_loginActivity);
                 }
             }
         };

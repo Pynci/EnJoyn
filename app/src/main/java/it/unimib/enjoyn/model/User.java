@@ -93,7 +93,6 @@ public class User implements Parcelable {
         dest.writeString(description);
     }
 
-    @Exclude
     public String getUid() {
         return uid;
     }

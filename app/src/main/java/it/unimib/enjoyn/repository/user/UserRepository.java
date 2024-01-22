@@ -41,6 +41,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public MutableLiveData<Result> getCurrentUser(){
+        userLocalDataSource.getUser(authenticationDataSource.getCurrentUserUID());
         return currentUser;
     }
 
