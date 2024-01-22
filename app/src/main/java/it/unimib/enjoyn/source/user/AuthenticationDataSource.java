@@ -16,6 +16,17 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     }
 
     @Override
+    public String getCurrentUserUID(){
+        fbUser = auth.getCurrentUser();
+        if(fbUser != null){
+            return fbUser.getUid();
+        }
+        else{
+            return "";
+        }
+    }
+
+    @Override
     public void signUp(String email, String password, String username) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -83,10 +94,10 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     public void sendEmailVerification() {
         fbUser.sendEmailVerification().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                authenticationCallback.onAuthSuccess();
+                authenticationCallback.onEmailSendingSuccess();
             }
             else{
-                authenticationCallback.onAuthFailure(task.getException());
+                authenticationCallback.onEmailSendingFailure(task.getException());
             }
         });
     }
@@ -96,15 +107,15 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
         if (fbUser == null) {
             auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    authenticationCallback.onAuthSuccess();
+                    authenticationCallback.onEmailSendingSuccess();
                 }
                 else{
-                    authenticationCallback.onAuthFailure(task.getException());
+                    authenticationCallback.onEmailSendingFailure(task.getException());
                 }
             });
         }
         else {
-            authenticationCallback.onAuthFailure(new Exception("Impossibile modificare password " +
+            authenticationCallback.onEmailSendingFailure(new Exception("Impossibile modificare password " +
                     "se l'utente è ancora autenticato"));
         }
     }

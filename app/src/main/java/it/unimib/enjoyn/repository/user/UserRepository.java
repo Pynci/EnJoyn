@@ -21,8 +21,8 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     private final MutableLiveData<Result> userByUsername;
     private final MutableLiveData<Result> userByEmail;
     private final MutableLiveData<Result> emailVerified;
-    private User currentUserSincronoDelVaffanculo;
     private final MutableLiveData<Result> currentUser;
+    private final MutableLiveData<Result> emailSent;
 
     private final MutableLiveData<Result> resultFromRemoteDatabase;
     private final MutableLiveData<Result> resultFromAuth;
@@ -37,7 +37,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         userRemoteDataSource.setUserCallback(this);
         authenticationDataSource.setAuthenticationCallback(this);
 
-        currentUserSincronoDelVaffanculo = null;
         userByUsername = new MutableLiveData<>();
         userByEmail = new MutableLiveData<>();
 
@@ -45,6 +44,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         resultFromAuth = new MutableLiveData<>();
         emailVerified = new MutableLiveData<>();
         currentUser = new MutableLiveData<>();
+        emailSent = new MutableLiveData<>();
     }
 
     @Override
@@ -72,8 +72,8 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return currentUser;
     }
 
+    @Override
     public MutableLiveData<Result> getCurrentUser(){
-        // TODO: prendere l'utente dal database locale Room
         return currentUser;
     }
 
@@ -89,70 +89,51 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return userByEmail;
     }
 
-
-
-    @Override
-    public User getCurrentUserSincronoDelVaffanculo(){
-        return currentUserSincronoDelVaffanculo;
-    }
-
     @Override
     public MutableLiveData<Result> updatePropic(Uri uri) {
-        userRemoteDataSource.updatePropic(uri);
-        return resultFromRemoteDatabase;
+        userRemoteDataSource.updatePropic(authenticationDataSource.getCurrentUserUID(), uri);
+        return currentUser;
     }
 
     @Override
     public MutableLiveData<Result> updateNameAndSurname(String name, String surname) {
-        userRemoteDataSource.updateNameAndSurname(name, surname);
-        return resultFromRemoteDatabase;
+        userRemoteDataSource.updateNameAndSurname(authenticationDataSource.getCurrentUserUID(), name, surname);
+        return currentUser;
     }
 
     @Override
     public MutableLiveData<Result> updateDescription(String description) {
-        userRemoteDataSource.updateDescription(description);
-        return resultFromRemoteDatabase;
+        userRemoteDataSource.updateDescription(authenticationDataSource.getCurrentUserUID(), description);
+        return currentUser;
     }
 
     @Override
     public MutableLiveData<Result> sendEmailVerification(){
         authenticationDataSource.sendEmailVerification();
-        return resultFromAuth;
+        return emailSent;
     }
 
     @Override
     public MutableLiveData<Result> sendResetPasswordEmail(String email) {
         authenticationDataSource.sendResetPasswordEmail(email);
-        return resultFromAuth;
+        return emailSent;
     }
 
     @Override
     public MutableLiveData<Result> updateEmailVerificationStatus(){
         authenticationDataSource.checkEmailVerification();
-        return emailVerified;
+        return currentUser;
     }
 
     @Override
     public MutableLiveData<Result> updateProfileConfigurationStatus(){
-        userRemoteDataSource.updateProfileConfigurationStatus(true);
-        return resultFromRemoteDatabase;
+        userRemoteDataSource.updateProfileConfigurationStatus(authenticationDataSource.getCurrentUserUID(), true);
+        return currentUser;
     }
-
 
 
 
     // CALLBACK
-
-    @Override
-    public void onRemoteDatabaseSuccess(User user) {
-        currentUserSincronoDelVaffanculo = user;
-        resultFromRemoteDatabase.postValue(new Result.Success());
-    }
-
-    @Override
-    public void onRemoteDatabaseSuccess() {
-        resultFromRemoteDatabase.postValue(new Result.Success());
-    }
 
     @Override
     public void onRemoteDatabaseFailure(Exception exception) {
@@ -164,19 +145,14 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
-
-
-
-
-    @Override
-    public void onUserReady(User user) {
-        currentUserSincronoDelVaffanculo = user;
-        resultFromAuth.postValue(new Result.UserSuccess(user));
-    }
-
     @Override
     public void onRemoteUserFetchSuccess(User user) {
         userLocalDataSource.insertUser(user);
+    }
+
+    @Override
+    public void onRemoteUserUpdateSuccess() {
+        userRemoteDataSource.getCurrentUser(authenticationDataSource.getCurrentUserUID());
     }
 
     @Override
@@ -197,11 +173,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public void onLocalUserInsertionSuccess(User user) {
         currentUser.postValue(new Result.UserSuccess(user));
-    }
-
-    @Override
-    public void onAuthSuccess() {
-        resultFromAuth.postValue(new Result.Success());
     }
 
     @Override
@@ -228,14 +199,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     public void onSignOutSuccess() {
         userLocalDataSource.deleteUser(((Result.UserSuccess) currentUser.getValue())
                 .getData());
-        currentUserSincronoDelVaffanculo = null;
     }
 
     @Override
     public void onEmailCheckSuccess(Boolean status) {
-        currentUserSincronoDelVaffanculo.setEmailVerified(status);
-        userRemoteDataSource.updateEmailVerificationStatus(status);
-        emailVerified.postValue(new Result.BooleanSuccess(status));
+        userRemoteDataSource.updateEmailVerificationStatus(authenticationDataSource.getCurrentUserUID(), status);
     }
 
     @Override
@@ -246,6 +214,16 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public void onAlreadySignedIn(String uid) {
         userLocalDataSource.getUser(uid);
+    }
+
+    @Override
+    public void onEmailSendingSuccess() {
+        emailSent.postValue(new Result.Success());
+    }
+
+    @Override
+    public void onEmailSendingFailure(Exception exception) {
+        emailSent.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
     @Override

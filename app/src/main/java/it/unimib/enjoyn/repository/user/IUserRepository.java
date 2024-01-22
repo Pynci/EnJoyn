@@ -8,8 +8,7 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 
 public interface IUserRepository {
-
-    User getCurrentUserSincronoDelVaffanculo();
+    MutableLiveData<Result> getCurrentUser();
     MutableLiveData<Result> getUserByUsername(String username);
     MutableLiveData<Result> getUserByEmail(String email);
     MutableLiveData<Result> signUp(String email, String password, String username);
