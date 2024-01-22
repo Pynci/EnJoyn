@@ -73,6 +73,7 @@
             android:id="@+id/fragmentNewEventMap_ListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:visibility="gone"
             android:layout_below="@id/newEventMap_textInputLayout_searchBar" />
 

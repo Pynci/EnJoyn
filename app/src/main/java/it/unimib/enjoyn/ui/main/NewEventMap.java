@@ -7,6 +7,7 @@ import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.ge
 import static it.unimib.enjoyn.util.Constants.EMPTY_LOCATION;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +31,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -290,13 +292,13 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (s.length() > 3 && !clickSuggestion){
+                if (s.length() > 3 ){ //&& !clickSuggestion
                     searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
                     suggestionListView.setVisibility(View.VISIBLE);
                 }
                 else{
                     suggestionListView.setVisibility(View.GONE);
-                    clickSuggestion = false;
+                    //clickSuggestion = false;
                 }
             }
 
@@ -327,7 +329,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                     public boolean onKey(View v, int keyCode, KeyEvent event){
                         if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
                         {
+                            suggestionListView.setVisibility(View.GONE);
                             eventSelectionPoint();
+
                             return true;
                         }
                         return false;
@@ -456,7 +460,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Log.i("SearchApiExample", "No suggestions found");
             } else {
                 Log.i("SearchApiExample", "Search suggestions: " + suggestions + "\nSelecting first...");
-                //searchRequestTask = searchEngine.select(suggestions.get(0), this);
+                searchRequestTask = searchEngine.select(suggestions.get(0), this);
                 //searchResultsView.set(suggestions);
 
 
@@ -478,11 +482,12 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                         searchBar.setText(suggestions.get(position).getName());
                         suggestionListView.setVisibility(View.GONE);
                         eventSelectionPoint();
-                        clickSuggestion = true;
+                        //clickSuggestion = true;
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
                     }
                 });
                 suggestionListView.setAdapter(suggestionListAdapter);
-
             }
         }
 

@@ -180,7 +180,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         //selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         //selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
         //weather = view.findViewById(R.id.weather);
-        temperature = view.findViewById(R.id.newEventFragment_textView_temperature);
+        //temperature = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
         // latitude and longitude "52.52", "13.41"
