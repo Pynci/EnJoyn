@@ -5,7 +5,6 @@ import android.net.Uri;
 import androidx.lifecycle.MutableLiveData;
 
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.User;
 
 public interface IUserRepository {
     MutableLiveData<Result> getCurrentUser();

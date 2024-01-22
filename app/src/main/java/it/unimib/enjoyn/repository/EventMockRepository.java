@@ -31,7 +31,7 @@ public class EventMockRepository implements IEventRepository{
     public void fetchEvents(Category category) throws IOException {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 
-        EventsDatabaseResponse eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");;
+        EventsDatabaseResponse eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
         saveDataInDatabase(eventsDatabaseResponse.getEvents());
     }
 

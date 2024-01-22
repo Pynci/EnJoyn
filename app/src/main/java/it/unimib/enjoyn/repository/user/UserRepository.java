@@ -20,12 +20,8 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     private final MutableLiveData<Result> userByUsername;
     private final MutableLiveData<Result> userByEmail;
-    private final MutableLiveData<Result> emailVerified;
     private final MutableLiveData<Result> currentUser;
     private final MutableLiveData<Result> emailSent;
-
-    private final MutableLiveData<Result> resultFromRemoteDatabase;
-    private final MutableLiveData<Result> resultFromAuth;
 
     public UserRepository(BaseUserLocalDataSource userLocalDataSource,
                           BaseUserRemoteDataSource userRemoteDataSource,
@@ -39,10 +35,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
         userByUsername = new MutableLiveData<>();
         userByEmail = new MutableLiveData<>();
-
-        resultFromRemoteDatabase = new MutableLiveData<>();
-        resultFromAuth = new MutableLiveData<>();
-        emailVerified = new MutableLiveData<>();
         currentUser = new MutableLiveData<>();
         emailSent = new MutableLiveData<>();
     }
@@ -208,7 +200,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onEmailCheckFailure(Exception exception) {
-        emailVerified.postValue(new Result.Error(exception.getLocalizedMessage()));
+        currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
     @Override

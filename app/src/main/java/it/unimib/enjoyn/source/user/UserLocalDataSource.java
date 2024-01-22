@@ -28,8 +28,7 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
     @Override
     public void insertUser(User user) {
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
-            long rowId = 0;
-            rowId = userDao.insertUser(user);
+            long rowId = userDao.insertUser(user);
             if(rowId != 0){
                 userCallback.onLocalUserInsertionSuccess(user);
             }
