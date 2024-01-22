@@ -265,6 +265,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
         suggestionListView = view.findViewById(R.id.fragmentNewEventMap_ListView);
+        suggestionClicked = false;
+        searchClicked = false;
         firstTime = false;
         selfLocation = null;
         eventCoordinates = null;
@@ -482,15 +484,13 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 for(int i = 0; i<suggestions.size(); i++){
                     locationList.add(new EventLocation());
                     locationList.get(i).setName(suggestions.get(i).getName());
-                    suggestionClicked=true;
                     searchRequestTask = searchEngine.select(suggestions.get(i), searchCallback);
-
                     distance = 100*(Math.sqrt(Math.pow(selfLocation.latitude()-distanceSuggestionLatitude,2) + Math.pow(selfLocation.longitude() -distanceSuggestionsLongitude,2)));
                     distanceList.add(round(distance,1));
                     //locationList.get(i).setLatitude(suggestions.get(i).getRequestOptions().getOptions());
                     //locationList.get(i).setLongitude(suggestions.get(i).getRequestOptions().getOptions().getProximity().longitude());
                 }
-                    suggestionClicked = false;
+
 
                 suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList,  new SuggestionListAdapter.OnItemClickListener() {
                     @Override
