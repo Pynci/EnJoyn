@@ -28,6 +28,10 @@ public class UserViewModel extends ViewModel {
         return userRepository.signIn(email, password);
     }
 
+    public MutableLiveData<Result> refreshSession(){
+        return userRepository.refreshSession();
+    }
+
     public MutableLiveData<Result> signOut(){
         return userRepository.signOut();
     }

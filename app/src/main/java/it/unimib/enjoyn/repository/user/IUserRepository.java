@@ -13,6 +13,8 @@ public interface IUserRepository {
 
     MutableLiveData<Result> signIn(String email, String password);
 
+    MutableLiveData<Result> refreshSession();
+
     MutableLiveData<Result> signOut();
 
     MutableLiveData<Result> sendEmailVerification();
