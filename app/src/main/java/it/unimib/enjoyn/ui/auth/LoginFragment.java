@@ -1,6 +1,5 @@
 package it.unimib.enjoyn.ui.auth;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -11,7 +10,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,16 +25,12 @@ import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.ui.UserViewModelFactory;
-import it.unimib.enjoyn.ui.auth.registration.RegisterActivity;
-import it.unimib.enjoyn.ui.main.MainButtonMenuActivity;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class LoginFragment extends Fragment {
 
-    private static final boolean USE_NAVIGATION_COMPONENT = true;
     private UserViewModel userViewModel;
     private Observer<Result> signInObserver;
-    private Observer<Result> redirectObserver;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -80,7 +74,18 @@ public class LoginFragment extends Fragment {
 
         signInObserver = result -> {
             if(result.isSuccessful()){
-                redirect(((Result.UserSuccess) result).getData());
+                User currentUser = ((Result.UserSuccess) result).getData();
+                if(currentUser.getEmailVerified()){
+                    if(currentUser.getProfileConfigured()){
+                        navigateTo(R.id.action_loginFragment_to_mainButtonMenuActivity, true);
+                    }
+                    else{
+                        navigateTo(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment, false);
+                    }
+                }
+                else{
+                    navigateTo(R.id.action_loginFragment_to_confirmEmailMessageFragment, false);
+                }
             }
             else{
                 Snackbar.make(view, getString(R.string.authenticationFailed),
@@ -126,10 +131,10 @@ public class LoginFragment extends Fragment {
         });
 
 
-        buttonRegister.setOnClickListener(v -> startActivityBasedOnCondition(RegisterActivity.class,
+        buttonRegister.setOnClickListener(v -> navigateTo(
                 R.id.action_loginFragment_to_registerActivity, true));
 
-        buttonForgottenPassword.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
+        buttonForgottenPassword.setOnClickListener(v -> navigateTo(
                 R.id.action_loginFragment_to_passwordRecoverFragment, false));
 
         buttonLogin.setOnClickListener(v -> {
@@ -163,37 +168,10 @@ public class LoginFragment extends Fragment {
         }
          */
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination,
-                                               boolean finishActivity) {
-        if (USE_NAVIGATION_COMPONENT) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
-        //da utilizzare solo se si passa ad un'altra activity
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
         if (finishActivity) {
             requireActivity().finish();
-        }
-    }
-
-    private void redirect(User currentUser){
-        if(currentUser.getEmailVerified()){
-            if(currentUser.getProfileConfigured()){
-                Navigation
-                        .findNavController(requireActivity(), R.id.nav_host_fragment)
-                        .navigate(R.id.action_loginFragment_to_mainButtonMenuActivity);
-            }
-            else{
-                Navigation
-                        .findNavController(requireActivity(), R.id.nav_host_fragment)
-                        .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
-            }
-        }
-        else{
-            Navigation
-                    .findNavController(requireActivity(), R.id.nav_host_fragment)
-                    .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
         }
     }
 }

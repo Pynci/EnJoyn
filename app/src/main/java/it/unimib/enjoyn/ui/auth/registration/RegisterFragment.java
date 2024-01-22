@@ -1,6 +1,4 @@
 package it.unimib.enjoyn.ui.auth.registration;
-
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -31,13 +29,11 @@ import it.unimib.enjoyn.ui.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.UserViewModel;
-import it.unimib.enjoyn.ui.auth.LoginActivity;
 
 // TODO: sistemare la presentazione degli errori all'utente ed eventuali stringhe hardcodate
 public class RegisterFragment extends Fragment {
 
     private UserViewModel userViewModel;
-    private static final boolean USE_NAVIGATION_COMPONENT = true;
     private Observer<Result> signUpObserver;
     private Observer<Result> emailVerificationSendingObserver;
     private Observer<Result> usernameCheckObserver;
@@ -109,9 +105,7 @@ public class RegisterFragment extends Fragment {
 
         emailVerificationSendingObserver = result -> {
             if(result.isSuccessful()){
-                Navigation
-                                .findNavController(view)
-                                .navigate(R.id.action_registerFragment_to_confirmEmailMessageFragment2);
+                navigateTo(R.id.action_registerFragment_to_confirmEmailMessageFragment2, false);
 
                 String text = "Registrazione avvenuta correttamente";
                 Snackbar snackbar;
@@ -308,17 +302,12 @@ public class RegisterFragment extends Fragment {
 
         });
 
-        buttonLogin.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
+        buttonLogin.setOnClickListener(v -> navigateTo(
                 R.id.action_registerFragment_to_loginActivity, true));
     }
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
-        if (USE_NAVIGATION_COMPONENT) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
         if (finishActivity){
             requireActivity().finish();
         }

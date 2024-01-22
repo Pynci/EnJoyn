@@ -58,7 +58,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // logica personalizzata per il tasto back (in questo caso non deve fare niente)
+
             }
         });
 
@@ -103,8 +103,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                 }
 
                 if (allSuccessfull) {
-                    Navigation.findNavController(view)
-                            .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
+                    navigateTo(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment, false);
                 }
             }
         };
@@ -120,9 +119,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                 });
 
         skip.setOnClickListener(v ->
-                Navigation
-                        .findNavController(view)
-                        .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment));
+                navigateTo(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment, false));
 
         buttonNext.setOnClickListener(v ->
                 userViewModel.setOptionalUserParameters(nome.getText().toString(), cognome.getText().toString(),
@@ -166,5 +163,12 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
             }
         });
 
+    }
+
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
     }
 }

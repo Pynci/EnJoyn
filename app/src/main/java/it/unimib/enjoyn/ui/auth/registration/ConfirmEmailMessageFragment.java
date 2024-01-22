@@ -33,6 +33,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
     private UserViewModel userViewModel;
     private Observer<Result> emailVerificationSendingObserver;
     private Observer<Result> emailVerificationStatusObserver;
+    private Observer<Result> signOutObserver;
 
     public ConfirmEmailMessageFragment() {
     }
@@ -53,7 +54,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // logica personalizzata per il tasto back (in questo caso non deve fare niente)
+
             }
         });
     }
@@ -76,7 +77,6 @@ public class ConfirmEmailMessageFragment extends Fragment {
 
         emailVerificationSendingObserver = result -> {
             if(result.isSuccessful()){
-
                 String text = "È stata inviata una nuova mail di conferma";
                 Snackbar snackbar;
                 snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
@@ -95,10 +95,20 @@ public class ConfirmEmailMessageFragment extends Fragment {
                 User currentUser = ((Result.UserSuccess) result).getData();
 
                 if(currentUser.getEmailVerified()){
-                    Navigation
-                            .findNavController(view)
-                            .navigate(R.id.action_confirmEmailMessageFragment_to_loginActivity);
+                    navigateTo(R.id.action_confirmEmailMessageFragment_to_loginActivity, true);
                 }
+            }
+        };
+
+        signOutObserver = result -> {
+            if(result.isSuccessful()){
+                navigateTo(R.id.action_confirmEmailMessageFragment_to_loginActivity, true);
+            }
+            else{
+                String text = "Si è verificato un errore durante il logout";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
             }
         };
 
@@ -106,14 +116,18 @@ public class ConfirmEmailMessageFragment extends Fragment {
                 emailVerificationSendingObserver));
 
         buttonToLogin.setOnClickListener(v -> {
-            userViewModel.signOut();
-            Navigation
-                    .findNavController(v)
-                    .navigate(R.id.action_confirmEmailMessageFragment_to_loginActivity);
+            userViewModel.signOut().observe(getViewLifecycleOwner(), signOutObserver);
         });
 
         buttonRefresh.setOnClickListener(v -> userViewModel.updateEmailVerificationStatus()
                 .observe(getViewLifecycleOwner(),
                         emailVerificationStatusObserver));
+    }
+
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
     }
 }

@@ -54,29 +54,29 @@ public class SplashFragment extends Fragment {
 
         userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
-                redirect(((Result.UserSuccess) result).getData());
+                User currentUser = ((Result.UserSuccess) result).getData();
+                if(currentUser.getEmailVerified()){
+                    if(currentUser.getProfileConfigured()){
+                        navigateTo(R.id.action_splashFragment_to_mainButtonMenuActivity, true);
+                    }
+                    else{
+                        navigateTo(R.id.action_splashFragment_to_propicDescriptionConfigurationFragment, false);
+                    }
+                }
+                else{
+                    navigateTo(R.id.action_splashFragment_to_confirmEmailMessageFragment, false);
+                }
+            }
+            else{
+                navigateTo(R.id.action_splashFragment_to_loginFragment, false);
             }
         });
     }
 
-
-    private void redirect(User currentUser){
-        if(currentUser.getEmailVerified()){
-            if(currentUser.getProfileConfigured()){
-                Navigation
-                        .findNavController(requireActivity(), R.id.nav_host_fragment)
-                        .navigate(R.id.action_splashFragment_to_mainButtonMenuActivity);
-            }
-            else{
-                Navigation
-                        .findNavController(requireActivity(), R.id.nav_host_fragment)
-                        .navigate(R.id.action_splashFragment_to_propicDescriptionConfigurationFragment);
-            }
-        }
-        else{
-            Navigation
-                    .findNavController(requireActivity(), R.id.nav_host_fragment)
-                    .navigate(R.id.action_splashFragment_to_confirmEmailMessageFragment);
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
         }
     }
 }
