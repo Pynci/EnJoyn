@@ -2,8 +2,7 @@ package it.unimib.enjoyn.util;
 
 import android.app.Application;
 
-import it.unimib.enjoyn.database.EventsRoomDatabase;
-import it.unimib.enjoyn.database.UserRoomDatabase;
+import it.unimib.enjoyn.database.LocalRoomDatabase;
 import it.unimib.enjoyn.repository.category.CategoryRepository;
 import it.unimib.enjoyn.repository.category.ICategoryRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -32,17 +31,13 @@ public class ServiceLocator {
         return INSTANCE;
     }
 
-    public EventsRoomDatabase getEventDao(Application application) {
-        return EventsRoomDatabase.getDatabase(application);
-    }
-
-    public UserRoomDatabase getUserDao(Application application){
-        return UserRoomDatabase.getDatabase(application);
+    public LocalRoomDatabase getLocalDatabase(Application application) {
+        return LocalRoomDatabase.getDatabase(application);
     }
 
     public IUserRepository getUserRepository(Application application){
 
-        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getUserDao(application));
+        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getLocalDatabase(application));
         BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
         AuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
 

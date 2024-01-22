@@ -1,20 +1,20 @@
 package it.unimib.enjoyn.source.user;
 
 import it.unimib.enjoyn.database.UserDao;
-import it.unimib.enjoyn.database.UserRoomDatabase;
+import it.unimib.enjoyn.database.LocalRoomDatabase;
 import it.unimib.enjoyn.model.User;
 
 public class UserLocalDataSource extends BaseUserLocalDataSource {
 
     private final UserDao userDao;
 
-    public UserLocalDataSource(UserRoomDatabase userRoomDatabase){
-        this.userDao = userRoomDatabase.userDao();
+    public UserLocalDataSource(LocalRoomDatabase localRoomDatabase){
+        this.userDao = localRoomDatabase.userDao();
     }
 
     @Override
     public void getUser(String uid) {
-        UserRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             User user = userDao.getUser(uid);
             if(user != null){
                 userCallback.onLocalUserFetchSuccess(user);
@@ -27,7 +27,7 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
 
     @Override
     public void insertUser(User user) {
-        UserRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             long rowId = 0;
             rowId = userDao.insertUser(user);
             if(rowId != 0){
@@ -41,7 +41,7 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
 
     @Override
     public void updateUser(User user) {
-        UserRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             int rowsUpdated = userDao.updateUser(user);
             if(rowsUpdated == 1){
                 userCallback.onLocalUserUpdateSuccess(user);
@@ -54,7 +54,7 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
 
     @Override
     public void deleteUser(User user) {
-        UserRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             int rowsDeleted = userDao.deleteUser(user);
             if(rowsDeleted == 1){
                 userCallback.onLocalUserDeletionSuccess();

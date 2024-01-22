@@ -12,27 +12,30 @@ import androidx.room.TypeConverters;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.util.StringConverter;
 
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {Event.class, User.class}, version = 1)
 
 @TypeConverters({StringConverter.class})
-public abstract class UserRoomDatabase extends RoomDatabase {
+public abstract class LocalRoomDatabase extends RoomDatabase {
+    @TypeConverters({StringConverter.class})
+    public abstract EventsDao eventDao();
     @TypeConverters({StringConverter.class})
     public abstract UserDao userDao();
 
-    private static volatile UserRoomDatabase INSTANCE;
+    private static volatile LocalRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();
     public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    public static UserRoomDatabase getDatabase(final Context context) {
+    public static LocalRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (UserRoomDatabase.class) {
+            synchronized (LocalRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            UserRoomDatabase.class, EVENTS_DATABASE_NAME).build();
+                            LocalRoomDatabase.class, EVENTS_DATABASE_NAME).build();
                 }
             }
         }
