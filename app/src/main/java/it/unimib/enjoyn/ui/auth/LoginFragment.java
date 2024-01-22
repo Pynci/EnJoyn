@@ -21,9 +21,12 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
 import it.unimib.enjoyn.ui.auth.registration.RegisterActivity;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 public class LoginFragment extends Fragment {
 
@@ -38,7 +41,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override

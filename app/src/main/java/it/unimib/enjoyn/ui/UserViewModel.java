@@ -16,8 +16,8 @@ public class UserViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
 
-    public UserViewModel() {
-        userRepository = ServiceLocator.getInstance().getUserRepository();
+    public UserViewModel(IUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){

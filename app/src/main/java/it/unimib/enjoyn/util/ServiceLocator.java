@@ -2,19 +2,17 @@ package it.unimib.enjoyn.util;
 
 import android.app.Application;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import org.checkerframework.checker.units.qual.C;
-
 import it.unimib.enjoyn.database.EventsRoomDatabase;
-import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.database.UserRoomDatabase;
 import it.unimib.enjoyn.repository.category.CategoryRepository;
 import it.unimib.enjoyn.repository.category.ICategoryRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
 import it.unimib.enjoyn.source.user.AuthenticationDataSource;
+import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
+import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
+import it.unimib.enjoyn.source.user.UserLocalDataSource;
 import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
 public class ServiceLocator {
@@ -34,18 +32,21 @@ public class ServiceLocator {
         return INSTANCE;
     }
 
-    public EventsRoomDatabase getEventDao(Application application) { //istanza di news room database
+    public EventsRoomDatabase getEventDao(Application application) {
         return EventsRoomDatabase.getDatabase(application);
     }
 
-    public IUserRepository getUserRepository(){
+    public UserRoomDatabase getUserDao(Application application){
+        return UserRoomDatabase.getDatabase(application);
+    }
 
-        UserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
+    public IUserRepository getUserRepository(Application application){
+
+        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getUserDao(application));
+        BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
         AuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
-        //TODO: aggiungere eventuale istanza locale (da passare anch'essa al repository)
-        //TODO: singleton?
 
-        return new UserRepository(userRemoteDataSource, authenticationDataSource);
+        return new UserRepository(userLocalDataSource, userRemoteDataSource, authenticationDataSource);
     }
 
     public ICategoryRepository getcategoryRepository(boolean debugMode){
@@ -54,11 +55,4 @@ public class ServiceLocator {
         return new CategoryRepository(categoryRemoteDataSource);
     }
 
-//    public FirebaseAuth getFirebaseAuth(){
-//        return FirebaseAuth.getInstance();
-//    }
-//
-//    public FirebaseUser getFirebaseUser(){
-//        return FirebaseAuth.getInstance().getCurrentUser();
-//    }
 }

@@ -26,6 +26,9 @@ import it.unimib.enjoyn.R;
 
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.repository.user.IUserRepository;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.ui.auth.LoginActivity;
@@ -53,7 +56,10 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         isUsernameOK = false;
         isEmailOK = false;
     }

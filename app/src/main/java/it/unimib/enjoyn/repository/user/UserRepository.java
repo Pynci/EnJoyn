@@ -7,11 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.source.user.AuthenticationCallback;
-import it.unimib.enjoyn.source.user.AuthenticationDataSource;
 import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
+import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
 import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
 import it.unimib.enjoyn.source.user.UserCallback;
-import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
 public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback {
 
@@ -26,7 +25,9 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     private final MutableLiveData<Result> resultFromRemoteDatabase;
     private final MutableLiveData<Result> resultFromAuth;
 
-    public UserRepository(UserRemoteDataSource userRemoteDataSource, AuthenticationDataSource authenticationDataSource){
+    public UserRepository(BaseUserLocalDataSource userLocalDataSource,
+                          BaseUserRemoteDataSource userRemoteDataSource,
+                          BaseAuthenticationDataSource authenticationDataSource){
         this.userRemoteDataSource = userRemoteDataSource;
         this.authenticationDataSource = authenticationDataSource;
         userRemoteDataSource.setUserCallback(this);
