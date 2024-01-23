@@ -1,6 +1,5 @@
 package it.unimib.enjoyn.ui.auth;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -21,13 +20,15 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.UserViewModel;
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.ui.auth.registration.RegisterActivity;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 public class LoginFragment extends Fragment {
 
-    private static final boolean USE_NAVIGATION_COMPONENT = true;
     private UserViewModel userViewModel;
     private Observer<Result> signInObserver;
 
@@ -38,7 +39,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
@@ -51,7 +55,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         // Widgets
 
@@ -76,22 +79,21 @@ public class LoginFragment extends Fragment {
 
             /*
             if(result.isSuccessful()){
-                if(userViewModel.getCurrentUser().getEmailVerified()){
-                    if(userViewModel.getCurrentUser().getProfileConfigured()){
-                        Navigation
-                                .findNavController(view)
-                                .navigate(R.id.action_loginFragment_to_mainButtonMenuActivity);
+                User currentUser = ((Result.UserSuccess) result).getData();
+                if(currentUser != null){
+                    if(!currentUser.getEmailVerified()){
+                        navigateTo(R.id.action_loginFragment_to_confirmEmailMessageFragment, false);
                     }
-                    else{
-                        Navigation
-                                .findNavController(view)
-                                .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
+                    if(!currentUser.getProfileConfigured()){
+                        navigateTo(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment, false);
                     }
+                    if(!currentUser.getCategoriesSelectionDone()){
+                        navigateTo(R.id.action_loginFragment_to_categoriesSelectionFragment, false);
+                    }
+                    navigateTo(R.id.action_loginFragment_to_mainButtonMenuActivity, true);
                 }
                 else{
-                    Navigation
-                            .findNavController(view)
-                            .navigate(R.id.action_loginFragment_to_confirmEmailMessageFragment);
+                    navigateTo(R.id.action_splashFragment_to_loginFragment, false);
                 }
             }
             else{
@@ -139,10 +141,10 @@ public class LoginFragment extends Fragment {
         });
 
 
-        buttonRegister.setOnClickListener(v -> startActivityBasedOnCondition(RegisterActivity.class,
+        buttonRegister.setOnClickListener(v -> navigateTo(
                 R.id.action_loginFragment_to_registerActivity, true));
 
-        buttonForgottenPassword.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
+        buttonForgottenPassword.setOnClickListener(v -> navigateTo(
                 R.id.action_loginFragment_to_passwordRecoverFragment, false));
 
         buttonLogin.setOnClickListener(v -> {
@@ -176,15 +178,8 @@ public class LoginFragment extends Fragment {
         }
          */
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination,
-                                               boolean finishActivity) {
-        if (USE_NAVIGATION_COMPONENT) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
-        //da utilizzare solo se si passa ad un'altra activity
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
         if (finishActivity) {
             requireActivity().finish();
         }

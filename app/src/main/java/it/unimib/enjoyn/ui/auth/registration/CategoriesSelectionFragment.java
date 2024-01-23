@@ -64,7 +64,7 @@ public class CategoriesSelectionFragment extends Fragment {
 
         Observer<Result> categoriesObserver = result -> {
             if (result.isSuccessful()) {
-                List<Category> categoryList = ((Result.CategoryResponseSuccess) result).getCategoryList();
+                List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
 
                 categoryViewModel
                         .getAllImages(categoryList)

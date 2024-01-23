@@ -5,10 +5,10 @@ import android.app.Application;
 import java.io.IOException;
 import java.util.List;
 
+import it.unimib.enjoyn.database.LocalRoomDatabase;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.database.EventsDao;
-import it.unimib.enjoyn.database.EventsRoomDatabase;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.ResponseCallback;
@@ -23,21 +23,21 @@ public class EventMockRepository implements IEventRepository{
     public EventMockRepository(Application application, ResponseCallback responseCallback) {
         this.application = application;
         this.responseCallback = responseCallback;
-        EventsRoomDatabase eventsRoomDatabase = ServiceLocator.getInstance().getEventDao(application);
-        this.eventsDao = eventsRoomDatabase.eventDao();
+        LocalRoomDatabase localRoomDatabase = ServiceLocator.getInstance().getLocalDatabase(application);
+        this.eventsDao = localRoomDatabase.eventDao();
     }
 
     @Override
     public void fetchEvents(Category category) throws IOException {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 
-        EventsDatabaseResponse eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");;
+        EventsDatabaseResponse eventsDatabaseResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
         saveDataInDatabase(eventsDatabaseResponse.getEvents());
     }
 
     @Override
     public void getTODOEvents() {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             responseCallback.onSuccess(eventsDao.getTodoEvents(), System.currentTimeMillis());
         });
     }
@@ -49,7 +49,7 @@ public class EventMockRepository implements IEventRepository{
     }
 
     public void updateTodo(Event event){
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             eventsDao.updateSingleTodoEvent(event);
             responseCallback.onEventTodoStatusChanged(event);
         });
@@ -58,12 +58,12 @@ public class EventMockRepository implements IEventRepository{
 
     @Override
     public void getFavoriteEvents() {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             responseCallback.onSuccess(eventsDao.getFavoriteEvents(), System.currentTimeMillis());
         });
     }
     private void saveDataInDatabase(List<Event> newsList) {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             // Reads the news from the database
             List<Event> allNews = eventsDao.getAll();
 

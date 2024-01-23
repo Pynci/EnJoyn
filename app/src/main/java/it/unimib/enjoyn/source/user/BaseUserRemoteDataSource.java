@@ -12,23 +12,25 @@ public abstract class BaseUserRemoteDataSource {
         this.userCallback = userCallback;
     }
 
-    public abstract void storeUser(User user);
+    public abstract void createUser(User user);
 
     public abstract void getUserByUsername(String username);
 
     public abstract void getUserByEmail(String email);
 
-    public abstract void getUser(String uid);
+    public abstract void getCurrentUser(String uid);
 
-    public abstract void stopGettingUser(String uid);
+    //public abstract void clearCurrentUser(String uid);
 
-    public abstract void updatePropic(Uri propic);
+    public abstract void updatePropic(String uid, Uri propic);
 
-    public abstract void updateNameAndSurname(String name, String surname);
+    public abstract void updateNameAndSurname(String uid, String name, String surname);
 
-    public abstract void updateDescription(String description);
+    public abstract void updateDescription(String uid, String description);
 
-    public abstract void updateEmailVerificationStatus(Boolean status);
+    public abstract void updateEmailVerificationStatus(String uid, Boolean status);
 
-    public abstract void updateProfileConfigurationStatus(Boolean status);
+    public abstract void updateProfileConfigurationStatus(String uid, Boolean status);
+
+    public abstract void updateCategoriesSelectionStatus(String uid, Boolean status);
 }

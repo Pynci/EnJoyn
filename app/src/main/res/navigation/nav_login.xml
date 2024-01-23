@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_welcome"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_loginFragment_to_mainButtonMenuActivity"
             app:destination="@id/mainButtonMenuActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_categoriesSelectionFragment"
+            app:destination="@id/categoriesSelectionFragment" />
     </fragment>
     <activity
         android:id="@+id/mainButtonMenuActivity"
@@ -69,11 +72,32 @@
         android:label="fragment_confirm_email_message"
         tools:layout="@layout/fragment_confirm_email_message" >
         <action
-            android:id="@+id/action_confirmEmailMessageFragment_to_loginActivity"
+            android:id="@+id/action_confirmEmailMessageFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment"
             app:destination="@id/propicDescriptionConfigurationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="it.unimib.enjoyn.ui.auth.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_confirmEmailMessageFragment"
+            app:destination="@id/confirmEmailMessageFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_propicDescriptionConfigurationFragment"
+            app:destination="@id/propicDescriptionConfigurationFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_mainButtonMenuActivity"
+            app:destination="@id/mainButtonMenuActivity" />
+        <action
+            android:id="@+id/action_splashFragment_to_categoriesSelectionFragment"
+            app:destination="@id/categoriesSelectionFragment" />
     </fragment>
 
 </navigation>

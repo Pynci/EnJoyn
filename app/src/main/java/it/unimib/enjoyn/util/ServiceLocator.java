@@ -13,6 +13,9 @@ import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
 import it.unimib.enjoyn.source.interests.InterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.InterestRemoteDataSource;
 import it.unimib.enjoyn.source.user.AuthenticationDataSource;
+import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
+import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
+import it.unimib.enjoyn.source.user.UserLocalDataSource;
 import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 
 public class ServiceLocator {
@@ -36,14 +39,13 @@ public class ServiceLocator {
         return EventsRoomDatabase.getDatabase(application);
     }
 
-    public IUserRepository getUserRepository(){
+    public IUserRepository getUserRepository(Application application){
 
-        UserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
+        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getLocalDatabase(application));
+        BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
         AuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
-        //TODO: aggiungere eventuale istanza locale (da passare anch'essa al repository)
-        //TODO: singleton?
 
-        return new UserRepository(userRemoteDataSource, authenticationDataSource);
+        return new UserRepository(userLocalDataSource, userRemoteDataSource, authenticationDataSource);
     }
 
     public ICategoryRepository getCategoryRepository(){
@@ -61,12 +63,4 @@ public class ServiceLocator {
         InterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getRoomDatabase(application));
         return new InterestRepository(interestDataSource, interestLocalDataSource);
     }
-
-//    public FirebaseAuth getFirebaseAuth(){
-//        return FirebaseAuth.getInstance();
-//    }
-//
-//    public FirebaseUser getFirebaseUser(){
-//        return FirebaseAuth.getInstance().getCurrentUser();
-//    }
 }

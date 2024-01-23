@@ -1,6 +1,7 @@
 package it.unimib.enjoyn.source.user;
 
 import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -16,13 +17,28 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     }
 
     @Override
+    public String getCurrentUserUID(){
+        fbUser = auth.getCurrentUser();
+        if(fbUser != null){
+            return fbUser.getUid();
+        }
+        else{
+            return "";
+        }
+    }
+
+    @Override
     public void signUp(String email, String password, String username) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         fbUser = auth.getCurrentUser();
-                        authenticationCallback.onSignUpSuccess(new User(fbUser.getUid(), username, email));
-
+                        if(fbUser != null){
+                            authenticationCallback.onSignUpSuccess(new User(fbUser.getUid(), username, email));
+                        }
+                        else{
+                            authenticationCallback.onAuthFailure(task.getException());
+                        }
                     } else {
                         authenticationCallback.onAuthFailure(task.getException());
                     }
@@ -35,7 +51,13 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         fbUser = auth.getCurrentUser();
-                        authenticationCallback.onSignInSuccess(new User(fbUser.getUid()));
+                        if(fbUser != null){
+                            authenticationCallback.onSignInSuccess(new User(fbUser.getUid(), email));
+                        }
+                        else{
+                            authenticationCallback.onAuthFailure(task.getException());
+                        }
+
                     }
                     else{
                         authenticationCallback.onAuthFailure(task.getException());
@@ -47,10 +69,13 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     public void refreshSession(){
         fbUser = auth.getCurrentUser();
         if(fbUser != null){
-            authenticationCallback.onSignInSuccess(new User(fbUser.getUid()));
+            fbUser
+                    .reload()
+                    .addOnSuccessListener(task -> authenticationCallback.onAlreadySignedIn(fbUser.getUid()))
+                    .addOnFailureListener(e -> authenticationCallback.onAuthFailure(e));
         }
         else{
-            authenticationCallback.onAuthSuccess();
+            authenticationCallback.onNotLoggedYet();
         }
     }
 
@@ -73,10 +98,10 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     public void sendEmailVerification() {
         fbUser.sendEmailVerification().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                authenticationCallback.onAuthSuccess();
+                authenticationCallback.onEmailSendingSuccess();
             }
             else{
-                authenticationCallback.onAuthFailure(task.getException());
+                authenticationCallback.onEmailSendingFailure(task.getException());
             }
         });
     }
@@ -86,15 +111,15 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
         if (fbUser == null) {
             auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    authenticationCallback.onAuthSuccess();
+                    authenticationCallback.onEmailSendingSuccess();
                 }
                 else{
-                    authenticationCallback.onAuthFailure(task.getException());
+                    authenticationCallback.onEmailSendingFailure(task.getException());
                 }
             });
         }
         else {
-            authenticationCallback.onAuthFailure(new Exception("Impossibile modificare password " +
+            authenticationCallback.onEmailSendingFailure(new Exception("Impossibile modificare password " +
                     "se l'utente è ancora autenticato"));
         }
     }

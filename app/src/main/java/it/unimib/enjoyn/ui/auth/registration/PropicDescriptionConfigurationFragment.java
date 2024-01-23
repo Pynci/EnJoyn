@@ -31,7 +31,10 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.UserViewModel;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 public class PropicDescriptionConfigurationFragment extends Fragment {
 
@@ -55,11 +58,13 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // logica personalizzata per il tasto back (in questo caso non deve fare niente)
+
             }
         });
 
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
@@ -98,8 +103,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                 }
 
                 if (allSuccessfull) {
-                    Navigation.findNavController(view)
-                            .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
+                    navigateTo(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment, false);
                 }
             }
         };
@@ -115,9 +119,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                 });
 
         skip.setOnClickListener(v ->
-                Navigation
-                        .findNavController(view)
-                        .navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment));
+                navigateTo(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment, false));
 
         buttonNext.setOnClickListener(v ->
                 userViewModel.setOptionalUserParameters(nome.getText().toString(), cognome.getText().toString(),
@@ -161,5 +163,12 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
             }
         });
 
+    }
+
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
     }
 }

@@ -6,8 +6,15 @@ public interface UserCallback {
     void onGetUserByUsernameSuccess(User userByUsername);
     void onGetUserByEmailSuccess(User userByEmail);
     void onUserCreationSuccess(User user);
-    void onRemoteDatabaseSuccess(User user);
-    void onRemoteDatabaseSuccess();
     void onRemoteDatabaseFailure(Exception exception);
-    void onUserReady(User user);
+    void onLocalDatabaseFailure(Exception exception);
+
+
+
+    void onRemoteUserFetchSuccess(User user);
+    void onRemoteUserUpdateSuccess();
+    void onLocalUserDeletionSuccess();
+    void onLocalUserUpdateSuccess(User user);
+    void onLocalUserFetchSuccess(User user);
+    void onLocalUserInsertionSuccess(User user);
 }

@@ -15,15 +15,19 @@ import java.util.concurrent.Executors;
 import it.unimib.enjoyn.database.category.CategoryDao;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.util.StringConverter;
 
-@Database(entities = {Event.class, Category.class}, version = 1)
+@Database(entities = {Event.class, User.class, Category.class}, version = 1)
 
 @TypeConverters({StringConverter.class})
 public abstract class EventsRoomDatabase extends RoomDatabase {
 
     @TypeConverters({StringConverter.class})
     public abstract EventsDao eventDao();
+    @TypeConverters({StringConverter.class})
+    public abstract UserDao userDao();
+    @TypeConverters({StringConverter.class})
     public abstract CategoryDao categoryDao();
 
     private static volatile EventsRoomDatabase INSTANCE;

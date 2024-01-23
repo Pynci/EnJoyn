@@ -7,6 +7,8 @@ public abstract class BaseAuthenticationDataSource {
         this.authenticationCallback = authenticationCallback;
     }
 
+    public abstract String getCurrentUserUID();
+
     public abstract void signUp(String email, String password, String username);
     public abstract void signIn(String email, String password);
 

@@ -8,20 +8,22 @@ import androidx.lifecycle.ViewModel;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.util.ServiceLocator;
 
 public class UserViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
 
-    public UserViewModel() {
-        userRepository = ServiceLocator.getInstance().getUserRepository();
+    public UserViewModel(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public MutableLiveData<Result> getCurrentUser(){
+        return userRepository.getCurrentUser();
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){
-        return userRepository.createUser(email, password, username);
+        return userRepository.signUp(email, password, username);
     }
 
     public MutableLiveData<Result> signIn(String email, String password){
@@ -53,10 +55,6 @@ public class UserViewModel extends ViewModel {
         return userRepository.getUserByEmail(email);
     }
 
-    public User getCurrentUser(){
-        return userRepository.getCurrentUser();
-    }
-
     public MutableLiveData<Result> setUserPropic(Uri uri) {
         return userRepository.updatePropic(uri);
     }
@@ -75,6 +73,10 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<Result> updateProfileConfigurationStatus(){
         return userRepository.updateProfileConfigurationStatus();
+    }
+
+    public MutableLiveData<Result> updateCategoriesSelectionStatus(){
+        return userRepository.updateCategoriesSelectionStatus();
     }
 
     public MutableLiveData<Result> setOptionalUserParameters(String name, String surname,

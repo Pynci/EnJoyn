@@ -4,13 +4,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
+@Entity
 public class User implements Parcelable {
 
+    @PrimaryKey @NonNull
     private String uid;
     private String username;
     private String email;
@@ -19,25 +22,28 @@ public class User implements Parcelable {
     private String description;
     private Boolean isEmailVerified;
     private Boolean isProfileConfigured;
+    private Boolean isCategoriesSelectionDone;
 
     /* TODO aggiungere immagine*/
 
     public User(){
-
+        this.uid = "";
     }
 
-    public User(String uid) {
+    public User(@NonNull String uid) {
         this.uid = uid;
+        this.isEmailVerified = false;
+        this.isProfileConfigured = false;
     }
 
-    public User(String uid, String email){
+    public User(@NonNull String uid, String email){
         this.uid = uid;
         this.email = email;
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
     }
 
-    public User(String uid, String username, String email){
+    public User(@NonNull String uid, String username, String email){
         this.uid = uid;
         this.username = username;
         this.email = email;
@@ -45,7 +51,7 @@ public class User implements Parcelable {
         this.isProfileConfigured = false;
     }
 
-    public User(String uid, String username, String email,
+    public User(@NonNull String uid, String username, String email,
                 String name, String surname, String description) {
         this.uid = uid;
         this.email = email;
@@ -89,12 +95,12 @@ public class User implements Parcelable {
         dest.writeString(description);
     }
 
-    @Exclude
+    @NonNull
     public String getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(@NonNull String uid) {
         this.uid = uid;
     }
 
@@ -152,5 +158,13 @@ public class User implements Parcelable {
 
     public void setProfileConfigured(Boolean profileConfigured) {
         isProfileConfigured = profileConfigured;
+    }
+
+    public Boolean getCategoriesSelectionDone() {
+        return isCategoriesSelectionDone;
+    }
+
+    public void setCategoriesSelectionDone(Boolean categoriesSelectionDone) {
+        isCategoriesSelectionDone = categoriesSelectionDone;
     }
 }

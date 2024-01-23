@@ -6,11 +6,11 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +22,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.repository.user.IUserRepository;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.UserViewModel;
 
@@ -30,6 +34,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
     private UserViewModel userViewModel;
     private Observer<Result> emailVerificationSendingObserver;
     private Observer<Result> emailVerificationStatusObserver;
+    private Observer<Result> signOutObserver;
 
     public ConfirmEmailMessageFragment() {
     }
@@ -41,13 +46,16 @@ public class ConfirmEmailMessageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         // disabilita il tasto back affinché l'utente non possa tornare indietro
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // logica personalizzata per il tasto back (in questo caso non deve fare niente)
+
             }
         });
     }
@@ -65,12 +73,12 @@ public class ConfirmEmailMessageFragment extends Fragment {
         Button buttonForNewEmail = view.findViewById(R.id.fragmentConfirmEmailMessage_button_newEmail);
         Button buttonToLogin = view.findViewById(R.id.fragmentConfirmEmailMessage_button_buttonToLogin);
         Button buttonRefresh = view.findViewById(R.id.fragmentConfirmEmailMessage_button_refresh);
+        ProgressBar progressBar = view.findViewById(R.id.fragmentConfirmEmailMessage_progressBar);
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         emailVerificationSendingObserver = result -> {
             if(result.isSuccessful()){
-
                 String text = "È stata inviata una nuova mail di conferma";
                 Snackbar snackbar;
                 snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
@@ -86,34 +94,45 @@ public class ConfirmEmailMessageFragment extends Fragment {
 
         emailVerificationStatusObserver = result -> {
             if(result.isSuccessful()){
-                Log.d(this.getClass().getSimpleName(), "dentro observer");
-                boolean isEmailVerified = ((Result.BooleanSuccess) result).getData();
-                if(isEmailVerified){
-//                    Navigation
-//                            .findNavController(view)
-//                            .navigate(R.id.action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment);
+                User currentUser = ((Result.UserSuccess) result).getData();
+                if(currentUser != null){
+                    if(currentUser.getEmailVerified()){
+                        navigateTo(R.id.action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment, false);
+                    }
+                    progressBar.setVisibility(View.GONE);
                 }
+            }
+        };
+
+        signOutObserver = result -> {
+            if(result.isSuccessful()){
+                navigateTo(R.id.action_confirmEmailMessageFragment_to_loginActivity, false);
+            }
+            else{
+                String text = "Si è verificato un errore durante il logout";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
             }
         };
 
         buttonForNewEmail.setOnClickListener(v -> userViewModel.sendEmailVerification().observe(getViewLifecycleOwner(),
                 emailVerificationSendingObserver));
 
-        buttonToLogin.setOnClickListener(v -> {
-            userViewModel.signOut();
-            Navigation
-                    .findNavController(v)
-                    .navigate(R.id.action_confirmEmailMessageFragment_to_loginActivity);
-        });
+        buttonToLogin.setOnClickListener(v -> userViewModel.signOut().observe(getViewLifecycleOwner(), signOutObserver));
 
         buttonRefresh.setOnClickListener(v -> {
-            userViewModel.updateEmailVerificationStatus().observe(getViewLifecycleOwner(), emailVerificationStatusObserver);
+            progressBar.setVisibility(View.VISIBLE);
+            userViewModel.updateEmailVerificationStatus()
+                    .observe(getViewLifecycleOwner(),
+                            emailVerificationStatusObserver);
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        userViewModel.updateEmailVerificationStatus().observe(getViewLifecycleOwner(), emailVerificationStatusObserver);
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
     }
 }
