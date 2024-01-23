@@ -25,33 +25,40 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/propicDescriptionConfiguration_imageView_propic"
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/propicDescriptionConfiguration_cardView_propicAndButton"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_marginTop="50dp"
-            android:contentDescription="@string/propic"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="300dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_account_circle_24"
-            app:tint="@color/md_theme_light_primary" />
+            app:layout_constraintTop_toBottomOf="@+id/propicDescriptionConfiguration_button_skip">
 
-        <ImageButton
-            android:id="@+id/propicDescriptionConfiguration_imageButton_addPropic"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:background="@null"
-            android:contentDescription="@string/editPropic"
-            android:paddingStart="20dp"
-            android:paddingTop="20dp"
-            android:src="@drawable/baseline_add_circle_24"
-            android:theme="@style/AppTheme"
-            app:layout_constraintBottom_toBottomOf="@+id/propicDescriptionConfiguration_imageView_propic"
-            app:layout_constraintEnd_toEndOf="@+id/propicDescriptionConfiguration_imageView_propic"
-            app:tint="@color/md_theme_light_inversePrimary"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/propicDescriptionConfiguration_imageView_propic"
+                    style="@style/circleImageView"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:contentDescription="@string/propic"
+                    android:tintMode="src_atop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/baseline_account_circle_24" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <EditText
             android:id="@+id/propicDescriptionConfiguration_editText_cognome"
@@ -82,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginStart="40dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="40dp"
             android:autofillHints="person-name-given"
             android:background="@null"
@@ -97,7 +105,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/propicDescriptionConfiguration_imageView_propic" />
+            app:layout_constraintTop_toBottomOf="@+id/propicDescriptionConfiguration_cardView_propicAndButton" />
 
         <TextView
             android:id="@+id/propicDescriptionConfiguration_textView_describeYourself"
@@ -142,6 +150,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/propicDescriptionConfiguration_textInputLayout_description" />
+
+        <ImageButton
+            android:id="@+id/propicDescriptionConfiguration_imageButton_addPropic"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="130dp"
+            android:layout_marginTop="130dp"
+            android:background="@null"
+            android:contentDescription="@string/editPropic"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:src="@drawable/baseline_add_circle_24"
+            android:theme="@style/AppTheme"
+            app:layout_constraintStart_toStartOf="@+id/propicDescriptionConfiguration_cardView_propicAndButton"
+            app:layout_constraintTop_toTopOf="@+id/propicDescriptionConfiguration_cardView_propicAndButton"
+            app:tint="@color/md_theme_light_inversePrimary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

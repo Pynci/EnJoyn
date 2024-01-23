@@ -1,46 +1,45 @@
 package it.unimib.enjoyn.ui.auth.registration;
-
-import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.ui.auth.LoginActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the factory method to
- * create an instance of this fragment.
- */
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.repository.user.IUserRepository;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
+import it.unimib.enjoyn.util.SnackbarBuilder;
+import it.unimib.enjoyn.ui.UserViewModel;
+
+// TODO: sistemare la presentazione degli errori all'utente ed eventuali stringhe hardcodate
 public class RegisterFragment extends Fragment {
 
-    /*
-
-    //questi fanno parte della logica che va spostata altrove
-
-    TextInputLayout textInputPassword;
-    TextInputLayout textInputEmail;
-    TextInputLayout textInputConfirmPassword;
-    TextInputLayout textInputUsername;
-
-    EditText editTextPassword;
-    EditText editTextEmail;
-    EditText editTextConfirmPassword;
-    EditText editTextUsername;
-     */
-    Button buttonRegister;
-    Button buttonRegisterToLogin;
-
-    private static final boolean USE_NAVIGATION_COMPONENT = true;
+    private UserViewModel userViewModel;
+    private Observer<Result> signUpObserver;
+    private Observer<Result> emailVerificationSendingObserver;
+    private Observer<Result> usernameCheckObserver;
+    private Observer<Result> emailCheckObserver;
+    private boolean isUsernameOK;
+    private boolean isEmailOK;
 
     public RegisterFragment() {
 
@@ -53,6 +52,12 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        isUsernameOK = false;
+        isEmailOK = false;
     }
 
     @Override
@@ -65,196 +70,247 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        buttonRegister = view.findViewById(R.id.fragmentRegister_button_register);
-        buttonRegisterToLogin = view.findViewById(R.id.fragmentRegister_button_login);
+        //Widgets
 
-        /*
+        Button buttonRegister = view.findViewById(R.id.fragmentRegister_button_register);
+        Button buttonLogin = view.findViewById(R.id.fragmentRegister_button_login);
 
-        //questa logica va spostata altrove
+        TextInputLayout textInputEmail = view.findViewById(R.id.fragmentRegister_textInputLayout_email);
+        EditText editTextEmail = view.findViewById(R.id.fragmentRegister_textInputEditText_email);
 
-        textInputPassword = (view.findViewById(R.id.fragmentRegister_textInputLayout_password));
-        textInputEmail = view.findViewById(R.id.fragmentRegister_textInputLayout_email);
-        textInputConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputLayout_confirmPassword);
-        textInputUsername = view.findViewById(R.id.fragmentRegister_textInputLayout_username);
-        editTextPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_password);
-        editTextEmail = view.findViewById(R.id.fragmentRegister_textInputEditText_email);
-        editTextConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_confirmPassword);
-        editTextUsername = view.findViewById(R.id.fragmentRegister_textInputEditText_username);
+        TextInputLayout textInputPassword = view.findViewById(R.id.fragmentRegister_textInputLayout_password);
+        EditText editTextPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_password);
 
-       editTextEmail.setOnFocusChangeListener((v, hasFocus) -> {
-           if(!hasFocus){
-               String email = editTextEmail.getText().toString();
-               checkEmail(email);
-           }
-           else {
-               textInputEmail.setError(null);
-           }
-       });
+        TextInputLayout textInputConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputLayout_confirmPassword);
+        EditText editTextConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_confirmPassword);
+
+        TextInputLayout textInputUsername = view.findViewById(R.id.fragmentRegister_textInputLayout_username);
+        EditText editTextUsername = view.findViewById(R.id.fragmentRegister_textInputEditText_username);
+
+        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        //Observers
+
+        signUpObserver = result -> {
+            if(result.isSuccessful()){
+                User currentUser = ((Result.UserSuccess) result).getData();
+                if(currentUser != null){
+                    userViewModel.sendEmailVerification().observe(getViewLifecycleOwner(), emailVerificationSendingObserver);
+                }
+            }
+            else{
+                String text = "Errore nella registrazione: " + ((Result.Error) result).getMessage();
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
+            }
+        };
+
+        emailVerificationSendingObserver = result -> {
+            if(result.isSuccessful()){
+                navigateTo(R.id.action_registerFragment_to_confirmEmailMessageFragment, false);
+
+                String text = "Registrazione avvenuta correttamente";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
+            }
+            else{
+                String text = "Errore nell'invio della mail di conferma";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
+            }
+        };
+
+        usernameCheckObserver = result -> {
+            if(result.isSuccessful()){
+                User user = ((Result.UserSuccess) result).getData();
+                if(user == null){
+                    isUsernameOK = true;
+                }
+                else{
+                    textInputUsername.setError(getString(R.string.usernameAlreadyInUse));
+                }
+            }
+            else{
+                String text = "Si è verificato un errore: " + ((Result.Error) result).getMessage();
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
+            }
+        };
+
+        emailCheckObserver = result -> {
+            if(result.isSuccessful()){
+                User user = ((Result.UserSuccess) result).getData();
+                if(user == null){
+                    isEmailOK = true;
+                }
+                else{
+                    textInputEmail.setError(getString(R.string.emailAlreadyInUse));
+                }
+            }
+            else{
+                String text = "Si è verificato un errore: " + ((Result.Error) result).getMessage();
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
+            }
+        };
+
+
+
+        //Listeners
+
+        editTextUsername.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                String username = String.valueOf(editTextUsername.getText());
+                String result = userViewModel.checkUsername(username);
+
+                switch(result){
+                    case "ok":
+                        textInputUsername.setError(null);
+                        break;
+                    case "empty":
+                        textInputUsername.setError(getString(R.string.informationRequiredError));
+                        break;
+                    case "too_long":
+                        textInputUsername.setError(getString(R.string.stringTooLong));
+                        break;
+                    case "has_whitespace":
+                        textInputUsername.setError(getString(R.string.whitespaceNotAllowed));
+                        break;
+                }
+
+                userViewModel.getUserByUsername(username).observe(getViewLifecycleOwner(), usernameCheckObserver);
+            }
+            else{
+                textInputUsername.setError(null);
+            }
+        });
+
+        editTextEmail.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                String email = String.valueOf(editTextEmail.getText());
+                String result = userViewModel.checkEmail(email);
+
+                switch(result){
+                    case "ok":
+                        textInputEmail.setError(null);
+                        break;
+                    case "empty":
+                        textInputEmail.setError(getString(R.string.informationRequiredError));
+                        break;
+                    case "invalid":
+                        textInputEmail.setError(getString(R.string.invalidEmail));
+                        break;
+                }
+
+                userViewModel.getUserByEmail(email).observe(getViewLifecycleOwner(), emailCheckObserver);
+            }
+            else {
+                textInputEmail.setError(null);
+            }
+        });
 
         editTextPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
-                String password = editTextPassword.getText().toString();
-                checkPassword(password);
+                String password = String.valueOf(editTextPassword.getText());
+                String result = userViewModel.checkPassword(password);
+
+                switch(result){
+                    case "ok":
+                        textInputPassword.setError(null);
+                        break;
+                    case "empty":
+                        textInputPassword.setError(getString(R.string.tooShortPassword));
+                        break;
+                    case "number_missing":
+                        textInputPassword.setError(getString(R.string.numberMissingPassword));
+                        break;
+                    case "uppercaseChar_missing":
+                        textInputPassword.setError(getString(R.string.upperCaseMissingPassword));
+                        break;
+                    case "specialChar_missing":
+                        textInputPassword.setError(getString(R.string.specialCharacterMissingPassword));
+                        break;
+                }
             }
-            else {
+            else{
                 textInputPassword.setError(null);
             }
         });
 
         editTextConfirmPassword.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
-                String password = editTextPassword.getText().toString();
-                String confirmPassword = editTextConfirmPassword.getText().toString();
-                checkConfirmPassword(password, confirmPassword);
+                String password = String.valueOf(editTextPassword.getText());
+                String confirmPassword = String.valueOf(editTextConfirmPassword.getText());
+                String result = userViewModel.checkConfirmPassword(password, confirmPassword);
+
+                switch(result){
+                    case "ok":
+                        textInputConfirmPassword.setError(null);
+                        break;
+                    case "empty":
+                        textInputConfirmPassword.setError(getString(R.string.informationRequiredError));
+                        break;
+                    case "not_equal":
+                        textInputConfirmPassword.setError(getText(R.string.passwordNotEqual));
+                        break;
+                }
             }
-            else {
+            else{
                 textInputConfirmPassword.setError(null);
             }
         });
 
-        editTextUsername.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                String username = editTextUsername.getText().toString();
-                checkUsername(username);
-            }
-            else {
-                textInputUsername.setError(null);
-            }
-        });
-
-         */
-
-        //passaggio flat, va implementata la logica
         buttonRegister.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_confirmRegistrationCode);
-        });
 
-        //passaggio flat, va implementata la logica per i controlli
-        buttonRegisterToLogin.setOnClickListener(v -> startActivityBasedOnCondition(LoginActivity.class,
-                R.id.action_registerFragment_to_loginActivity, true));
-    }
+            view.clearFocus();
 
-    /*
+            String username = String.valueOf(editTextUsername.getText());
+            String email = String.valueOf(editTextEmail.getText());
+            String password = String.valueOf(editTextPassword.getText());
+            String confirmPassword = String.valueOf(editTextPassword.getText());
 
-    //questa logica va spostata altrove
+            if(userViewModel.checkUsername(username).equals("ok") &&
+                    userViewModel.checkEmail(email).equals("ok") &&
+                    userViewModel.checkPassword(password).equals("ok") &&
+                    userViewModel.checkConfirmPassword(password, confirmPassword).equals("ok")){
 
-        private boolean checkPassword(String password) {
-            boolean passedP;
-            boolean number = false;
-            boolean specialChar = false;
-            boolean capLetter = false;
-        if (password == null || password.length()==0) {
-            textInputPassword.setError(getString(R.string.stringNull));
-            return false;
-        }
-        if(password.length() < 8) {
-            textInputPassword.setError(getString(R.string.tooShortPassword));
-            return false;
-        }
+                if(isUsernameOK && isEmailOK){
+                    userViewModel.signUp(email, password, username).observe(getViewLifecycleOwner(), signUpObserver);
+                }
+                else if(!isUsernameOK){
 
-        for (int i = 0; i < password.length(); i++) {
-            if (password.charAt(i) >= '0' && password.charAt(i) <= '9') {
-                number = true;
-            }
-            if (password.charAt(i) >= 'A' && password.charAt(i) <= 'Z') {
-                capLetter = true;
-            }
-            if (password.charAt(i) >= '!' && password.charAt(i) <= '/') {
-                specialChar = true;
-            }
-
-        }
-
-
-        if (!number) {
-            textInputPassword.setError(getString(R.string.numberMissingPassword));
-        } else {
-            if (!capLetter) {
-                textInputPassword.setError(getString(R.string.upperCaseMissingPassword));
-            } else {
-                if (!specialChar) {
-                    textInputPassword.setError(getString(R.string.specialCharacterMissingPassword));
+                    String text = "Username già in uso";
+                    Snackbar snackbar;
+                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                    snackbar.show();
+                }
+                else {
+                    String text = "Email già in uso";
+                    Snackbar snackbar;
+                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                    snackbar.show();
                 }
             }
-
-        }
-        passedP = (number && capLetter && specialChar);
-        if (passedP) {
-            textInputPassword.setError(null);
-        }
-        return passedP;
-    }
-
-    private boolean checkEmail(String email) {
-        if(email==null || email.length()==0) {
-            textInputEmail.setError(getString(R.string.stringNull));
-            return false;
-        }
-        if (!(EmailValidator.getInstance().isValid(email))) {
-            textInputEmail.setError(getString(R.string.notValidEmail));
-            return false;
-        } else {
-            textInputEmail.setError(null);
-            return true;
-        }
-    }
-    private boolean checkConfirmPassword(String password, String confirmPassword) {
-        if(confirmPassword==null || confirmPassword.length()==0) {
-            textInputConfirmPassword.setError(getString(R.string.stringNull));
-            return false;
-        }
-        if (!(confirmPassword.equals(password))) {
-            textInputConfirmPassword.setError(getString(R.string.passwordNotEqual));
-            return false;
-        } else {
-            textInputConfirmPassword.setError(null);
-            return true;
-        }
-    }
-    private boolean checkSurName(String name, TextInputLayout Text) {
-
-        if (name == null || name.length()==0) {
-            Text.setError(getString(R.string.stringNull));
-            return false;}
-        if( name.length()>=42) {
-            Text.setError(getString(R.string.stringTooLong));
-            return false;
-        }
-        for (int i = 0; i < name.length(); i++) {
-            if (!(name.charAt(i) >= 'A' && name.charAt(i) <= 'Z') && !(name.charAt(i) >= 'a' && name.charAt(i) <= 'z') && !(name.charAt(i) == 32)) {
-                Text.setError(getString(R.string.notSerious));
-                return false;
+            else{
+                String text = "Registrazione fallita";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
             }
-        }
-        Text.setError(null);
-        return true;
 
+        });
+
+        buttonLogin.setOnClickListener(v -> navigateTo(
+                R.id.action_registerFragment_to_loginFragment, false));
     }
 
-    private boolean checkUsername(String username){
-        if (username == null || username.length()==0) {
-            textInputUsername.setError(getString(R.string.stringNull));
-            return false;}
-        if(username.length()>=20) {
-            textInputUsername.setError(getString(R.string.stringTooLong));
-            return false;
-        }
-        //aggiungere controllo di esistenza sul db
-
-        textInputUsername.setError(null);
-        return true;
-    }
-
-     */
-
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
-        if (USE_NAVIGATION_COMPONENT) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
-        //da utilizzare solo se si passa ad un'altra activity
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
         if (finishActivity){
             requireActivity().finish();
         }
