@@ -32,7 +32,7 @@ public class InterestLocalDataSource extends BaseInterestLocalDataSource{
     }
 
     @Override
-    public void setAllCategories(List<Category> categoryList) {
+    public void storeInterests(List<Category> categoryList) {
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
 
             long[] rowIds = categoryDao.insertAll(categoryList);

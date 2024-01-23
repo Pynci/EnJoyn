@@ -13,5 +13,5 @@ public abstract class BaseInterestLocalDataSource {
     }
 
     public abstract void getAllCategories();
-    public abstract void setAllCategories(List<Category> categoryList);
+    public abstract void storeInterests(List<Category> categoryList);
 }

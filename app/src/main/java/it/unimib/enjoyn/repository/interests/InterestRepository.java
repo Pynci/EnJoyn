@@ -23,6 +23,7 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
     private final BaseInterestRemoteDataSource interestRemoteDataSource;
     private final BaseInterestLocalDataSource interestLocalDataSource;
     private final MutableLiveData<Result> createUserInterestsResult;
+    private final MutableLiveData<Result> getCreateUserInterestsResult;
 
     public InterestRepository(Application application, BaseInterestRemoteDataSource interestRemoteDataSource,
                               BaseInterestLocalDataSource interestLocalDataSource,
@@ -35,11 +36,13 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
         interestRemoteDataSource.setInterestsCallback(this);
         interestLocalDataSource.setInterestsCallback(this);
         createUserInterestsResult = new MutableLiveData<>();
+        getCreateUserInterestsResult = new MutableLiveData<>();
     }
 
     @Override
     public MutableLiveData<Result> createUserInterests(CategoriesHolder categoriesHolder) {
         interestRemoteDataSource.storeUserInterests(categoriesHolder, authenticationDataSource.getCurrentUserUID());
+        interestLocalDataSource.storeInterests(categoriesHolder.getCategories());
         return createUserInterestsResult;
     }
 
@@ -55,21 +58,21 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
 
     @Override
     public void onSuccessGetInterestsFromLocal(List<Category> list) {
-
+        getCreateUserInterestsResult.postValue(new Result.CategorySuccess(list));
     }
 
     @Override
     public void onFailureGetInterestsFromLocal(Exception e) {
-
+        getCreateUserInterestsResult.postValue(new Result.Error(e.getMessage()));
     }
 
     @Override
     public void onSuccessSaveOnLocal() {
-
+        //Al momento non serve fare nulla
     }
 
     @Override
     public void onFailureSaveOnLocal(Exception e) {
-
+        //Al momento non serve fare nulla
     }
 }
