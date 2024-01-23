@@ -106,7 +106,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
 
         signOutObserver = result -> {
             if(result.isSuccessful()){
-                navigateTo(R.id.action_confirmEmailMessageFragment_to_loginActivity, false);
+                navigateTo(R.id.action_confirmEmailMessageFragment_to_loginFragment, false);
             }
             else{
                 String text = "Si è verificato un errore durante il logout";

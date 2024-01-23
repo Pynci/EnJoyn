@@ -59,12 +59,10 @@ public class PasswordResetFragment extends Fragment {
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         emailRecoverPasswordObserver = result -> {
-
             if (result.isSuccessful()){
-
                 Navigation
                         .findNavController(view)
-                        .navigate(R.id.action_passwordRecoverFragment_to_loginFragment);
+                        .navigate(R.id.action_passwordResetFragment_to_loginFragment);
             }
             else {
                 String text = "Impossibile completare l'operazione richiesta";
