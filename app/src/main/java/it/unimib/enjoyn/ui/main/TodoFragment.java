@@ -125,7 +125,7 @@ public class TodoFragment extends Fragment {
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
         eventViewModel.getToDoEventLiveData().observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
-                if (result.isSuccess()) {
+                if (result.isSuccessful()) {
                     eventList.clear();
                     eventList.addAll(((Result.EventSuccess)result).getData().getEventList());
                     eventsRecyclerViewAdapter.notifyDataSetChanged();

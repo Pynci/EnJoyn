@@ -1,64 +1,51 @@
 package it.unimib.enjoyn.ui.auth.registration;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 //classi per la gestione del caricamento immagine
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.IOException;
+import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.repository.user.IUserRepository;
+import it.unimib.enjoyn.ui.UserViewModel;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PropicDescriptionConfigurationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PropicDescriptionConfigurationFragment extends Fragment {
 
-    public static final String TAG = PropicDescriptionConfigurationFragment.class.getSimpleName();
-    private static final boolean USE_NAVIGATION_COMPONENT = true;
-
-
-    //callback settata per ricevere la foto selezionata dalla galleria (minuto 23 esercitazione Intent)
-    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            uri -> {
-                if(uri != null){
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),uri);
-                        ((ImageView) getView().findViewById(R.id.propicDescriptionConfiguration_imageView_propic)).setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
-
-
+    private UserViewModel userViewModel;
+    private Uri currentURI;
+    private Observer<Result> observerAddOptionalData;
 
     public PropicDescriptionConfigurationFragment() {
 
     }
 
-    //factory method per ottenere istanze del fragment
     public static PropicDescriptionConfigurationFragment newInstance() {
         return new PropicDescriptionConfigurationFragment();
     }
@@ -66,6 +53,18 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // disabilita il tasto back affinché l'utente non possa tornare indietro
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+            }
+        });
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
@@ -78,55 +77,98 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceBundle){
         super.onViewCreated(view, savedInstanceBundle);
 
-
-        final Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
-        final ImageButton imageButtonAddPropic = view.findViewById(R.id.propicDescriptionConfiguration_imageButton_addPropic);
-
-        /*
-
-       //per chiunque stia leggendo: se decommenti queste istruzioni crasha tutto e ti viene
-       //un gigantesco tumore ai polmoni (incurabile)
-
-        int themeColor = ContextCompat.getColor(requireContext(), requireContext().getTheme().getChangingConfigurations());
-        Drawable propic = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_account_circle_24);
-        Drawable addPropic = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_add_circle_24);
-        */
-
-
-        //questi potrebbero in futuro servire come attributi del fragment
-        EditText username = view.findViewById(R.id.propicDescriptionConfiguration_editText_cognome);
+        ShapeableImageView userImage = view.findViewById(R.id.propicDescriptionConfiguration_imageView_propic);
+        Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
+        Button skip = view.findViewById(R.id.propicDescriptionConfiguration_button_skip);
+        ImageButton imageButtonAddPropic = view.findViewById(R.id.propicDescriptionConfiguration_imageButton_addPropic);
+        EditText cognome = view.findViewById(R.id.propicDescriptionConfiguration_editText_cognome);
+        EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
         TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
 
+        userViewModel.updateProfileConfigurationStatus();
 
+        observerAddOptionalData = result -> {
 
-        buttonNext.setOnClickListener(v -> {
+            if(result instanceof Result.ResultList) {
 
-            //TODO: inserire il controllo sull'username (dal DB)
-            Navigation.findNavController(v).navigate(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment);
+                boolean allSuccessfull = true;
+                List<Result> resultList = ((Result.ResultList) result).getResults();
 
+                for(int i = 0; i < resultList.size(); i++) {
+
+                    if (!resultList.get(i).isSuccessful()) {
+
+                        allSuccessfull = false;
+                    }
+                }
+
+                if (allSuccessfull) {
+                    navigateTo(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment, false);
+                }
+            }
+        };
+
+        ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                    if (uri != null) {
+                        userImage.setImageURI(uri);
+                        currentURI = uri;
+                    } else {
+                        Log.d("PhotoPicker", "No media selected");
+                    }
+                });
+
+        skip.setOnClickListener(v ->
+                navigateTo(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment, false));
+
+        buttonNext.setOnClickListener(v ->
+                userViewModel.setOptionalUserParameters(nome.getText().toString(), cognome.getText().toString(),
+                    description.getText().toString(), currentURI)
+                        .observe(this.getViewLifecycleOwner(), observerAddOptionalData));
+
+        imageButtonAddPropic.setOnClickListener(v ->
+                pickMedia.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build()));
+
+        nome.setOnFocusChangeListener((v, hasFocus) -> {
+
+            if(!hasFocus) {
+
+                String result = userViewModel.checkForNumbersAndSpecialCharacters(nome.getText().toString());
+
+                if(result.equals("has_forbidden_characters"))
+                    nome.setError("Non inserire caratteri speciali");
+                else
+                    nome.setError(null);
+            }
+            else {
+                nome.setError(null);
+            }
         });
 
-        imageButtonAddPropic.setOnClickListener(v -> {
+        cognome.setOnFocusChangeListener((v, hasFocus) -> {
 
-            //TODO: implementare la logica di caricamento dell'immagine in relazione con il DB
-            //TODO: manipolare l'immagine in modo che non si smerdi
-            mGetContent.launch("image/*");
+            if(!hasFocus) {
+
+                String result = userViewModel.checkForNumbersAndSpecialCharacters(nome.getText().toString());
+
+                if(result.equals("has_forbidden_characters"))
+                    cognome.setError("Non inserire caratteri speciali");
+                else
+                    cognome.setError(null);
+            }
+            else {
+                cognome.setError(null);
+            }
         });
 
     }
 
-    /*
-    Avvia un'activity utilizzando gli Intent oppure il NavigationComponent.
-    Prende in input la classe dell'activity da avviare e l'id associato all'azione (passaggio da un'activity
-    all'altra) definita.
-    */
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
-        if (USE_NAVIGATION_COMPONENT) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
         }
-        requireActivity().finish();
     }
 }

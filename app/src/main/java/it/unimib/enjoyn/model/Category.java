@@ -4,19 +4,29 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class Category implements Parcelable {
 
-    private String tipo;
-
+    @PrimaryKey
     private int id;
 
-    public Category(String tipo) {
-        this.tipo = tipo;
+    @ColumnInfo(name = "nome_categoria")
+    private String nome;
+
+    public Category(){
+
+    }
+
+    public Category(String nome) {
+        this.nome = nome;
     }
 
     protected Category(Parcel in) {
-        tipo = in.readString();
+        nome = in.readString();
         id = in.readInt();
     }
 
@@ -39,16 +49,16 @@ public class Category implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(tipo);
+        dest.writeString(nome);
         dest.writeInt(id);
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public int getId() {

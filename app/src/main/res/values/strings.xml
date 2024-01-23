@@ -9,7 +9,6 @@
     <string name="DiscoverButton">Scopri</string>
     <string name="FriendsButton">Amici</string>
     <string name="ProfileButton">Profilo</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit">Modifica</string>
     <string name="Description">Descrizione</string>
@@ -48,7 +47,6 @@
     <string name="upperCaseMissingPassword">inserisci almeno una lettera maiuscola</string>
     <string name="specialCharacterMissingPassword">inserisci almeno un carattere speciale</string>
     <string name="tooShortPassword">Password troppo corta, almeno di 8 caratteri</string>
-    <string name="notValidEmail">Email non valida</string>
     <string name="passwordNotEqual">Password non uguali</string>
     <string name="stringTooLong">Troppo lungo</string>
     <string name="stringNull">Campo obbligatorio</string>
@@ -68,25 +66,38 @@
     <string name="skip">Salta</string>
     <string name="next">Avanti</string>
     <string name="confirmEmail">CONFERMA MAIL</string>
-    <string name="textRegistrationCodeSubtitles">Per confermare il tuo profilo, inserisci il codice di sei cifre che hai ricevuto tramite mail</string>
+    <string name="textRegistrationCodeSubtitles">Per confermare il tuo profilo, premi il link che hai ricevuto tramite mail</string>
     <string name="pinviewDescription">Prova</string>
-    <string name="newConfirmationCode">"Non hai ricevuto nessuna mail? Per generare un nuovo codice "</string>
+    <string name="emailNotReceived">"Non hai ricevuto nessuna mail?"</string>
     <string name="tapHere">premi qui</string>
     <string name="error_retriving_weather"> errore nel caricamento del weather</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="helloBlankFragment">Hello blank fragment</string>
     <string name="appLogo">Immagine rappresentante il logo dell\'applicazione</string>
     <string name="insertMailPasswordReset">Per poter ripristinare la password, inserisci l\'email associata al tuo account</string>
     <string name="passwordReset">Ripristino password</string>
     <string name="alreadyHasAccount">Hai già un account?</string>
     <string name="resetHere">Ripristinala qui</string>
+
+
+    <!-- Qui ci sono le stringhe che sono state ricontrollate e sono corrette-->
+    <string name="informationRequiredError">Questo campo è obbligatorio</string>
+    <string name="invalidEmail">Email non valida</string>
+    <string name="whitespaceNotAllowed">Gli spazi non sono ammessi</string>
+    <string name="newCode">Per generare un nuova nuova mail</string>
+    <string name="backToLogin">Torna al login</string>
+    <string name="usernameAlreadyInUse">Username già in uso</string>
+    <string name="emailAlreadyInUse">Email già in uso</string>
+    <string name="registrationFailed">Registrazione fallita</string>
+    <string name="authenticationFailed">Autenticazione fallita</string>
+    <string name="refresh">Aggiorna</string>
+
     <string name="favorites">Preferiti</string>
     <string name="bottonAddToFavorites">Bottone aggiungi ai preferiti</string>
     <string name="remove">Rimuovi</string>
     <string name="eventAddToDo">Evento aggiunto al ToDo</string>
     <string name="eventRemoveToDo">Evento rimosso dal ToDo</string>
-    <string name="mapbox_access_token">sk.eyJ1Ijoic3NwaW5lbGxpMjkiLCJhIjoiY2xxbTd5djQzMWM4OTJpcnlibDIxMXpociJ9.Of1HNZIPFR23Eul1BOr_tA</string>
+    <string name="mapbox_access_token">sk.eyJ1IjoicmVhbHB5bmNpIiwiYSI6ImNscnFtaGhhOTA1NWQybG56aXRqNHptM2wifQ.hw772niii39PmdUPCFB99A</string>
     <string name="Create_event">Crea evento</string>
     <string name="one">1</string>
     <string name="map">Mappa</string>

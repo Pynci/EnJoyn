@@ -95,7 +95,7 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
     public void onEventToDoStatusChanged(Event event, List<Event> eventToDo) {
         Result allEventResult = allEventMutableLiveData.getValue();
 
-        if (allEventResult != null && allEventResult.isSuccess()) {
+        if (allEventResult != null && allEventResult.isSuccessful()) {
             List<Event> oldAllEvent = ((Result.EventSuccess)allEventResult).getData().getEventList();
             if (oldAllEvent.contains(event)) {
                 oldAllEvent.set(oldAllEvent.indexOf(event), event);
@@ -114,7 +114,7 @@ public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData
     public void onEventFavoriteStatusChanged(Event event, List<Event> eventFavorite) {
         Result allEventResult = allEventMutableLiveData.getValue();
 
-        if (allEventResult != null && allEventResult.isSuccess()) {
+        if (allEventResult != null && allEventResult.isSuccessful()) {
             List<Event> oldAllEvent = ((Result.EventSuccess)allEventResult).getData().getEventList();
             if (oldAllEvent.contains(event)) {
                 oldAllEvent.set(oldAllEvent.indexOf(event), event);

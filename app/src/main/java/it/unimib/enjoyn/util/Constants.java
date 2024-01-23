@@ -12,6 +12,15 @@ public class Constants {
 
     public static final String EVENTS_DATABASE_NAME = "events_db";
 
+    // Constants for encrypted files
+    public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.enjoyn.encrypted_file.txt";
+
+    // Costants for paths in the firebase DB
+    public static final String DATABASE_PATH = "https://enjoyn-9adca-default-rtdb.europe-west1.firebasedatabase.app/";
+    public static final String STORAGE_PATH = "gs://enjoyn-9adca.appspot.com";
+    public static final String USERS_PATH = "Users";
+    public static final String CATEGORIES_PATH = "Categories";
+
     public static final String WEATHER_API_BASE_URL = "https://api.open-meteo.com/v1/";
 
     //https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&minutely_15=temperature_2m,weather_code&forecast_days=16
@@ -34,7 +43,6 @@ public class Constants {
     public static final String EMPTY_LOCATION = "empty_location";
     public static final String EMPTY_FIELDS = "empty fields";
     // Constants for encrypted files
-    public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.enjoyn.encrypted_file.txt";
 
     public static final String UNEXPECTED_ERROR = "unexpected error";
 }

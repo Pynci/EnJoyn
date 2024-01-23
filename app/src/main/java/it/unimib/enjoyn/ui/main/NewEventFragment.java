@@ -187,7 +187,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         // latitude and longitude "52.52", "13.41"
         Bundle finalSavedInstanceState = savedInstanceState;
         eventViewModel.getWeather(newEvent.getLocation().getLatitudeToString(), newEvent.getLocation().getLongitudeToString()).observe(getViewLifecycleOwner(), result -> {
-            if (result.isSuccess()){
+            if (result.isSuccessful()){
                 weatherAPIdata = ((Result.WeatherSuccess) result).getData().getWeather();
                 //showWeatherOnNewEvent(requireView());
                 getDate(requireView());

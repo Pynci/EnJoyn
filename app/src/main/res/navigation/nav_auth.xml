@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_welcome"
+    app:startDestination="@id/splashFragment">
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="it.unimib.enjoyn.ui.auth.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_mainButtonMenuActivity"
+            app:destination="@id/mainButtonMenuActivity" />
+        <action
+            android:id="@+id/action_splashFragment_to_confirmEmailMessageFragment"
+            app:destination="@id/confirmEmailMessageFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_propicDescriptionConfigurationFragment"
+            app:destination="@id/propicDescriptionConfigurationFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_categoriesSelectionFragment"
+            app:destination="@id/categoriesSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="it.unimib.enjoyn.ui.auth.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_passwordResetFragment"
+            app:destination="@id/passwordResetFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_confirmEmailMessageFragment"
+            app:destination="@id/confirmEmailMessageFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_propicDescriptionConfigurationFragment"
+            app:destination="@id/propicDescriptionConfigurationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_categoriesSelectionFragment"
+            app:destination="@id/categoriesSelectionFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_mainButtonMenuActivity"
+            app:destination="@id/mainButtonMenuActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="it.unimib.enjoyn.ui.auth.registration.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_confirmEmailMessageFragment"
+            app:destination="@id/confirmEmailMessageFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/mainButtonMenuActivity"
+        android:name="it.unimib.enjoyn.ui.main.MainButtonMenuActivity"
+        android:label="activity_main_button_menu"
+        tools:layout="@layout/activity_main_button_menu" />
+    <fragment
+        android:id="@+id/confirmEmailMessageFragment"
+        android:name="it.unimib.enjoyn.ui.auth.registration.ConfirmEmailMessageFragment"
+        android:label="fragment_confirm_email_message"
+        tools:layout="@layout/fragment_confirm_email_message" >
+        <action
+            android:id="@+id/action_confirmEmailMessageFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment"
+            app:destination="@id/propicDescriptionConfigurationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/propicDescriptionConfigurationFragment"
+        android:name="it.unimib.enjoyn.ui.auth.registration.PropicDescriptionConfigurationFragment"
+        android:label="fragment_propic_description_configuration"
+        tools:layout="@layout/fragment_propic_description_configuration" >
+        <action
+            android:id="@+id/action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment"
+            app:destination="@id/categoriesSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesSelectionFragment"
+        android:name="it.unimib.enjoyn.ui.auth.registration.CategoriesSelectionFragment"
+        android:label="fragment_categories_selection"
+        tools:layout="@layout/fragment_categories_selection" >
+        <action
+            android:id="@+id/action_categoriesSelectionFragment_to_mainButtonMenuActivity"
+            app:destination="@id/mainButtonMenuActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordResetFragment"
+        android:name="it.unimib.enjoyn.ui.auth.PasswordResetFragment"
+        android:label="fragment_password_reset"
+        tools:layout="@layout/fragment_password_reset" >
+        <action
+            android:id="@+id/action_passwordResetFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+</navigation>

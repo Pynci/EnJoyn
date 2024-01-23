@@ -2,7 +2,24 @@ package it.unimib.enjoyn.util;
 
 import android.app.Application;
 
-import it.unimib.enjoyn.database.EventsRoomDatabase;
+import it.unimib.enjoyn.database.LocalRoomDatabase;
+import it.unimib.enjoyn.repository.category.CategoryRepository;
+import it.unimib.enjoyn.repository.category.ICategoryRepository;
+import it.unimib.enjoyn.repository.interests.IInterestRepository;
+import it.unimib.enjoyn.repository.interests.InterestRepository;
+import it.unimib.enjoyn.repository.user.IUserRepository;
+import it.unimib.enjoyn.repository.user.UserRepository;
+import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
+import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
+import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
+import it.unimib.enjoyn.source.interests.InterestLocalDataSource;
+import it.unimib.enjoyn.source.interests.InterestRemoteDataSource;
+import it.unimib.enjoyn.source.user.AuthenticationDataSource;
+import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
+import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
+import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
+import it.unimib.enjoyn.source.user.UserLocalDataSource;
+import it.unimib.enjoyn.source.user.UserRemoteDataSource;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.WeatherRepository;
 import it.unimib.enjoyn.service.WeatherApiService;
@@ -39,9 +56,35 @@ public class ServiceLocator {
                 addConverterFactory(GsonConverterFactory.create()).build();
         return retrofit.create(WeatherApiService.class);
     }
+    public IUserRepository getUserRepository(Application application){
 
-    public EventsRoomDatabase getEventDao(Application application) { //istanza di event room database
-        return EventsRoomDatabase.getDatabase(application);
+        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getLocalDatabase(application));
+        BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
+        AuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
+
+        return new UserRepository(userLocalDataSource, userRemoteDataSource, authenticationDataSource);
+    }
+
+    public ICategoryRepository getCategoryRepository(){
+
+        CategoryRemoteDataSource categoryRemoteDataSource = new CategoryRemoteDataSource();
+        return new CategoryRepository(categoryRemoteDataSource);
+    }
+
+    public LocalRoomDatabase getLocalDatabase(Application application) {
+        return LocalRoomDatabase.getDatabase(application);
+    }
+
+    public IInterestRepository getInterestRepository(Application application) {
+        BaseInterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
+        BaseInterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
+        BaseAuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
+
+        return new InterestRepository(application, interestDataSource, interestLocalDataSource, authenticationDataSource);
+    }
+
+    public LocalRoomDatabase getEventDao(Application application) { //istanza di event room database
+        return LocalRoomDatabase.getDatabase(application);
     }
 
     public IWeatherRepository getWeatherRepository(Application application){

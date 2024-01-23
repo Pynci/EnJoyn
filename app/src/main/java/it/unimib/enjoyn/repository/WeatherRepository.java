@@ -35,7 +35,7 @@ public class WeatherRepository implements IWeatherRepository, WeatherCallback {
 
     @Override
     public void onSuccessFromRemote(WeatherApiResponse weatherApiResponse) {
-        if (weatherMutableLiveData.getValue() != null && weatherMutableLiveData.getValue().isSuccess()) {
+        if (weatherMutableLiveData.getValue() != null && weatherMutableLiveData.getValue().isSuccessful()) {
             Weather weather = ((Result.WeatherSuccess)weatherMutableLiveData.getValue()).getData().getWeather();
 
             Result.WeatherSuccess result = new Result.WeatherSuccess(weatherApiResponse);
