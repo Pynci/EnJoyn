@@ -449,7 +449,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     @Override
     public void onPermissionResult(boolean b) {
 
-
     }
 
 
@@ -574,7 +573,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId());
                 Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId().substring(0, 2).equals("add"));
                 Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(0).getId().substring(0, 2));
-               // Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(1));
+                // Log.i("SearchApiExample", "Reverse geocoding results: "+ results.get(1));
                 if(results.get(0).getId().startsWith("ad")) {
                     if(results.get(0).getAddress().getHouseNumber()!= null) {
                         location.setName(results.get(0).getName() + " " + results.get(0).getAddress().getHouseNumber());
@@ -616,7 +615,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     public static double round(double n, int decimals) {
         return Math.floor(n * Math.pow(10, decimals)) / Math.pow(10, decimals);
     }
-    }
+}
 
 
 

@@ -86,7 +86,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
-                    startActivityBasedOnCondition(R.id.action_discover_to_favoritesFragment, false);
+                    //startActivityBasedOnCondition(R.id.action_discover_to_favoritesFragment, false);
                 }
                 return false;
             }
@@ -103,8 +103,8 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                     @Override
                     public void onEventItemClick(Event event) {
                         DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action =
-                                DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
-                        // startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_discover_to_discoverSingleEvent, false);
+                               DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
+                        //Navigation.findNavController(view).navigate(R.id.action_discover_to_discoverSingleEvent);
                         Navigation.findNavController(view).navigate(action);
                     }
 

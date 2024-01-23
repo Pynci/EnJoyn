@@ -103,7 +103,8 @@ public class DiscoverSingleEvent extends Fragment {
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDate.setText(event.getDate());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDescription.setText(event.getDescription());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewHour.setText(event.getTime());
-        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getLocation().getName());
+        //fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getLocation().getName());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getPlace());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewTitle.setText(event.getTitle());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDistance.setText(event.getDistanceString());
         boolean isTodo = event.isTODO();
