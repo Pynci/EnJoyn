@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
-import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.model.Event;
 
 /**

@@ -39,7 +39,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.android.gestures.MoveGestureDetector;
@@ -58,7 +57,6 @@ import com.mapbox.geojson.Point;
 import com.mapbox.maps.CameraOptions;
 
 import com.mapbox.maps.MapView;
-import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
 import com.mapbox.maps.plugin.LocationPuck2D;
 import com.mapbox.maps.plugin.animation.MapAnimationOptions;
@@ -79,10 +77,8 @@ import com.mapbox.search.autocomplete.PlaceAutocomplete;
 import com.mapbox.search.common.AsyncOperationTask;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
-import com.mapbox.search.ui.adapter.autocomplete.PlaceAutocompleteUiAdapter;
 import com.mapbox.search.ui.view.CommonSearchViewConfiguration;
 import com.mapbox.search.ui.view.SearchResultsView;
-import com.mapbox.search.ui.adapter.engines.SearchEngineUiAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +86,6 @@ import java.util.Objects;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.SuggestionListAdapter;
-import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
@@ -496,7 +491,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                     public void onSuggestionItemClick(EventLocation eventLocation, int position) {
                         suggestionClicked = true;
                         searchRequestTask = searchEngine.select(suggestions.get(position), searchCallback);
-                        Snackbar.make(requireView(), "va", Snackbar.LENGTH_LONG).show();
+
                         searchBar.setText(suggestions.get(position).getName());
                         suggestionListView.setVisibility(View.GONE);
 
@@ -512,7 +507,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 public boolean onKey(View v, int keyCode, KeyEvent event){
                     if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
                     {
-                        searchClicked=true;
+                        searchClicked = true;
                         searchRequestTask = searchEngine.select(suggestions.get(0), searchCallback);
                         suggestionListView.setVisibility(View.GONE);
                         eventSelectionPoint();
@@ -536,7 +531,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             }
             distanceSuggestionLatitude = result.getCoordinate().latitude();
             distanceSuggestionsLongitude = result.getCoordinate().longitude();
-
 
             Log.i("SearchApiExample", "Search result: " + location.getName());
             Log.i("SearchApiExample", "Search result: " + location.getLatitudeToString());
