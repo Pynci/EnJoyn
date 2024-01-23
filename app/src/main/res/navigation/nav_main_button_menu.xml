@@ -38,7 +38,7 @@
             android:id="@+id/action_todo_to_discoverSingleEvent"
             app:destination="@id/discoverSingleEvent" />
     </fragment>
-    <include app:graph="@navigation/nav_login" />
+    <include app:graph="@navigation/nav_auth" />
     <fragment
         android:id="@+id/discoverSingleEvent"
         android:name="it.unimib.enjoyn.ui.main.DiscoverSingleEvent"
