@@ -14,13 +14,10 @@ public interface UserDao {
 
     @Query("SELECT * FROM user WHERE uid = :uid")
     User getUser(String uid);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertUser(User user);
-
     @Update
     int updateUser(User user);
-
     @Delete
     int deleteUser(User user);
 

@@ -62,7 +62,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         }
                     }
                     else{
-                        userCallback.onRemoteDatabaseFailure(task.getException());
+                        userCallback.onGetUserByUsernameFailure(task.getException());
                     }
                 });
     }
@@ -85,7 +85,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         }
                     }
                     else{
-                        userCallback.onRemoteDatabaseFailure(task.getException());
+                        userCallback.onGetUserByEmailFailure(task.getException());
                     }
                 });
     }

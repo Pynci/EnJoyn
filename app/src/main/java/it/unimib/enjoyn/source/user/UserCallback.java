@@ -17,4 +17,6 @@ public interface UserCallback {
     void onLocalUserUpdateSuccess(User user);
     void onLocalUserFetchSuccess(User user);
     void onLocalUserInsertionSuccess(User user);
+    void onGetUserByUsernameFailure(Exception exception);
+    void onGetUserByEmailFailure(Exception exception);
 }

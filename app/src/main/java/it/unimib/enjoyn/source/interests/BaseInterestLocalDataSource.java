@@ -8,6 +8,10 @@ public abstract class BaseInterestLocalDataSource {
 
     InterestsCallback interestsCallback;
 
+    public void setInterestsCallback(InterestsCallback interestsCallback){
+        this.interestsCallback = interestsCallback;
+    }
+
     public abstract void getAllCategories();
     public abstract void setAllCategories(List<Category> categoryList);
 }

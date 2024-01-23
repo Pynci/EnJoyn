@@ -73,11 +73,6 @@ public class LoginFragment extends Fragment {
         // Observers
 
         signInObserver = result -> {
-            Navigation
-                    .findNavController(view)
-                    .navigate(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment);
-
-            /*
             if(result.isSuccessful()){
                 User currentUser = ((Result.UserSuccess) result).getData();
                 if(currentUser != null){
@@ -92,15 +87,14 @@ public class LoginFragment extends Fragment {
                     }
                     navigateTo(R.id.action_loginFragment_to_mainButtonMenuActivity, true);
                 }
-                else{
-                    navigateTo(R.id.action_splashFragment_to_loginFragment, false);
-                }
+//                else{
+//                    navigateTo(R.id.action_splashFragment_to_loginFragment, false);
+//                }
             }
             else{
                 Snackbar.make(view, getString(R.string.authenticationFailed),
                         Snackbar.LENGTH_SHORT).show();
             }
-            */
         };
 
 

@@ -10,9 +10,12 @@ import it.unimib.enjoyn.repository.interests.InterestRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
+import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
+import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
 import it.unimib.enjoyn.source.interests.InterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.InterestRemoteDataSource;
 import it.unimib.enjoyn.source.user.AuthenticationDataSource;
+import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
 import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
 import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
 import it.unimib.enjoyn.source.user.UserLocalDataSource;
@@ -55,8 +58,10 @@ public class ServiceLocator {
     }
 
     public IInterestRepository getInterestRepository(Application application) {
-        InterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
-        InterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
-        return new InterestRepository(interestDataSource, interestLocalDataSource);
+        BaseInterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
+        BaseInterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
+        BaseAuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
+
+        return new InterestRepository(application, interestDataSource, interestLocalDataSource, authenticationDataSource);
     }
 }

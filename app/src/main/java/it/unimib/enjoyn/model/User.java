@@ -28,12 +28,16 @@ public class User implements Parcelable {
 
     public User(){
         this.uid = "";
+        this.isEmailVerified = false;
+        this.isProfileConfigured = false;
+        this.isCategoriesSelectionDone = false;
     }
 
     public User(@NonNull String uid) {
         this.uid = uid;
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
+        this.isCategoriesSelectionDone = false;
     }
 
     public User(@NonNull String uid, String email){
@@ -41,6 +45,7 @@ public class User implements Parcelable {
         this.email = email;
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
+        this.isCategoriesSelectionDone = false;
     }
 
     public User(@NonNull String uid, String username, String email){
@@ -49,6 +54,7 @@ public class User implements Parcelable {
         this.email = email;
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
+        this.isCategoriesSelectionDone = false;
     }
 
     public User(@NonNull String uid, String username, String email,
@@ -61,6 +67,7 @@ public class User implements Parcelable {
         this.description = description;
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
+        this.isCategoriesSelectionDone = false;
     }
 
     protected User(Parcel in) {

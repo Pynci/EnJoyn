@@ -175,6 +175,16 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
+    public void onGetUserByUsernameFailure(Exception exception) {
+        userByUsername.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
+
+    @Override
+    public void onGetUserByEmailFailure(Exception exception) {
+        userByEmail.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
+
+    @Override
     public void onAuthFailure(Exception exception) {
         currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
     }

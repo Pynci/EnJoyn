@@ -2,7 +2,6 @@ package it.unimib.enjoyn.source.interests;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.CategoriesHolder;
 import it.unimib.enjoyn.util.Constants;
 
@@ -16,15 +15,14 @@ public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {
     }
 
     @Override
-    public void storeUserInterests(CategoriesHolder categoriesHolder, User user) {
+    public void storeUserInterests(CategoriesHolder categoriesHolder, String uid) {
 
         firebaseDatabase
                 .getReference()
                 .child("Interests")
-                .child(user.getUid())
+                .child(uid)
                 .setValue(categoriesHolder.getCategories())
                 .addOnCompleteListener(task -> {
-
                     if (task.isSuccessful()) {
                         interestsCallback.onSuccessCreateUsersInterest();
                     }
