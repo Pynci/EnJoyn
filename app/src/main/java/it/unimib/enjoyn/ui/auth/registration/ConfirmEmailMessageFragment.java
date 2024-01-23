@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -72,6 +73,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
         Button buttonForNewEmail = view.findViewById(R.id.fragmentConfirmEmailMessage_button_newEmail);
         Button buttonToLogin = view.findViewById(R.id.fragmentConfirmEmailMessage_button_buttonToLogin);
         Button buttonRefresh = view.findViewById(R.id.fragmentConfirmEmailMessage_button_refresh);
+        ProgressBar progressBar = view.findViewById(R.id.fragmentConfirmEmailMessage_progressBar);
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -93,10 +95,10 @@ public class ConfirmEmailMessageFragment extends Fragment {
         emailVerificationStatusObserver = result -> {
             if(result.isSuccessful()){
                 User currentUser = ((Result.UserSuccess) result).getData();
-
                 if(currentUser.getEmailVerified()){
-                    navigateTo(R.id.action_confirmEmailMessageFragment_to_loginFragment, true);
+                    navigateTo(R.id.action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment, false);
                 }
+                progressBar.setVisibility(View.GONE);
             }
         };
 
@@ -119,9 +121,12 @@ public class ConfirmEmailMessageFragment extends Fragment {
             userViewModel.signOut().observe(getViewLifecycleOwner(), signOutObserver);
         });
 
-        buttonRefresh.setOnClickListener(v -> userViewModel.updateEmailVerificationStatus()
-                .observe(getViewLifecycleOwner(),
-                        emailVerificationStatusObserver));
+        buttonRefresh.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
+            userViewModel.updateEmailVerificationStatus()
+                    .observe(getViewLifecycleOwner(),
+                            emailVerificationStatusObserver);
+        });
     }
 
     private void navigateTo(int destination, boolean finishActivity) {
