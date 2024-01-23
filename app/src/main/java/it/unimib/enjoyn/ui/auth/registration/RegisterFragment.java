@@ -93,7 +93,10 @@ public class RegisterFragment extends Fragment {
 
         signUpObserver = result -> {
             if(result.isSuccessful()){
-                userViewModel.sendEmailVerification().observe(getViewLifecycleOwner(), emailVerificationSendingObserver);
+                User currentUser = ((Result.UserSuccess) result).getData();
+                if(currentUser != null){
+                    userViewModel.sendEmailVerification().observe(getViewLifecycleOwner(), emailVerificationSendingObserver);
+                }
             }
             else{
                 String text = "Errore nella registrazione: " + ((Result.Error) result).getMessage();
