@@ -35,12 +35,12 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
     }
 
     @Override
-    public void onSuccessCreateUsers() {
+    public void onSuccessCreateUsersInterest() {
         createUserInterestsResult.postValue(new Result.Success());
     }
 
     @Override
-    public void onFailureCreateUsers(Exception e) {
+    public void onFailureCreateUsersInterest(Exception e) {
         createUserInterestsResult.postValue(new Result.Error(e.getMessage()));
     }
 

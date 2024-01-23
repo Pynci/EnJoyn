@@ -6,8 +6,8 @@ import it.unimib.enjoyn.model.Category;
 
 public interface InterestsCallback {
 
-    void onSuccessCreateUsers();
-    void onFailureCreateUsers(Exception e);
+    void onSuccessCreateUsersInterest();
+    void onFailureCreateUsersInterest(Exception e);
 
     void onSuccessGetInterestsFromLocal(List<Category> list);
     void onFailureGetInterestsFromLocal(Exception e);

@@ -2,7 +2,7 @@ package it.unimib.enjoyn.util;
 
 import android.app.Application;
 
-import it.unimib.enjoyn.database.EventsRoomDatabase;
+import it.unimib.enjoyn.database.LocalRoomDatabase;
 import it.unimib.enjoyn.repository.category.CategoryRepository;
 import it.unimib.enjoyn.repository.category.ICategoryRepository;
 import it.unimib.enjoyn.repository.interests.IInterestRepository;
@@ -35,10 +35,6 @@ public class ServiceLocator {
         return INSTANCE;
     }
 
-    public EventsRoomDatabase getEventDao(Application application) { //istanza di news room database
-        return EventsRoomDatabase.getDatabase(application);
-    }
-
     public IUserRepository getUserRepository(Application application){
 
         BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getLocalDatabase(application));
@@ -54,13 +50,13 @@ public class ServiceLocator {
         return new CategoryRepository(categoryRemoteDataSource);
     }
 
-    public EventsRoomDatabase getRoomDatabase(Application application) {
-        return EventsRoomDatabase.getDatabase(application);
+    public LocalRoomDatabase getLocalDatabase(Application application) {
+        return LocalRoomDatabase.getDatabase(application);
     }
 
     public IInterestRepository getInterestRepository(Application application) {
         InterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
-        InterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getRoomDatabase(application));
+        InterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
         return new InterestRepository(interestDataSource, interestLocalDataSource);
     }
 }

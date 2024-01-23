@@ -2,23 +2,23 @@ package it.unimib.enjoyn.source.interests;
 
 import java.util.List;
 
-import it.unimib.enjoyn.database.EventsRoomDatabase;
-import it.unimib.enjoyn.database.category.CategoryDao;
+import it.unimib.enjoyn.database.LocalRoomDatabase;
+import it.unimib.enjoyn.database.CategoryDao;
 import it.unimib.enjoyn.model.Category;
 
 public class InterestLocalDataSource extends BaseInterestLocalDataSource{
 
     private final CategoryDao categoryDao;
 
-    public InterestLocalDataSource(EventsRoomDatabase eventsRoomDatabase) {
+    public InterestLocalDataSource(LocalRoomDatabase localRoomDatabase) {
 
-        categoryDao = eventsRoomDatabase.categoryDao();
+        categoryDao = localRoomDatabase.categoryDao();
     }
 
     @Override
     public void getAllCategories() {
 
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Category> categoryList = categoryDao.getAll();
 
             if(categoryList == null) {
@@ -33,10 +33,10 @@ public class InterestLocalDataSource extends BaseInterestLocalDataSource{
 
     @Override
     public void setAllCategories(List<Category> categoryList) {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
 
-            int numberOfRowAdded = categoryDao.insertAll(categoryList);
-            if(numberOfRowAdded == 0) {
+            long[] rowIds = categoryDao.insertAll(categoryList);
+            if(rowIds.length == 0) {
                 interestsCallback.onFailureSaveOnLocal(
                         new Exception("Errore nel salvataggio dei dati"));
             }

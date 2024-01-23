@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.database.category;
+package it.unimib.enjoyn.database;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -15,5 +15,5 @@ public interface CategoryDao {
     List<Category> getAll();
 
     @Insert
-    int insertAll(List<Category> categoryList);
+    long[] insertAll(List<Category> categoryList);
 }
