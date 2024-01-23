@@ -56,17 +56,16 @@ public class SplashFragment extends Fragment {
             if(result.isSuccessful()){
                 User currentUser = ((Result.UserSuccess) result).getData();
                 if(currentUser != null){
-                    if(currentUser.getEmailVerified()){
-                        if(currentUser.getProfileConfigured()){
-                            navigateTo(R.id.action_splashFragment_to_mainButtonMenuActivity, true);
-                        }
-                        else{
-                            navigateTo(R.id.action_splashFragment_to_propicDescriptionConfigurationFragment, false);
-                        }
-                    }
-                    else{
+                    if(!currentUser.getEmailVerified()){
                         navigateTo(R.id.action_splashFragment_to_confirmEmailMessageFragment, false);
                     }
+                    if(!currentUser.getProfileConfigured()){
+                        navigateTo(R.id.action_splashFragment_to_propicDescriptionConfigurationFragment, false);
+                    }
+                    if(!currentUser.getCategoriesSelectionDone()){
+                        navigateTo(R.id.action_splashFragment_to_categoriesSelectionFragment, false);
+                    }
+                    navigateTo(R.id.action_splashFragment_to_mainButtonMenuActivity, true);
                 }
                 else{
                     navigateTo(R.id.action_splashFragment_to_loginFragment, false);

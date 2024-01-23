@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_loginFragment_to_mainButtonMenuActivity"
             app:destination="@id/mainButtonMenuActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_categoriesSelectionFragment"
+            app:destination="@id/categoriesSelectionFragment" />
     </fragment>
     <activity
         android:id="@+id/mainButtonMenuActivity"
@@ -92,6 +95,9 @@
         <action
             android:id="@+id/action_splashFragment_to_mainButtonMenuActivity"
             app:destination="@id/mainButtonMenuActivity" />
+        <action
+            android:id="@+id/action_splashFragment_to_categoriesSelectionFragment"
+            app:destination="@id/categoriesSelectionFragment" />
     </fragment>
 
 </navigation>

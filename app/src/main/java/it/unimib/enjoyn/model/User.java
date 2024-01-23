@@ -22,6 +22,7 @@ public class User implements Parcelable {
     private String description;
     private Boolean isEmailVerified;
     private Boolean isProfileConfigured;
+    private Boolean isCategoriesSelectionDone;
 
     /* TODO aggiungere immagine*/
 
@@ -157,5 +158,13 @@ public class User implements Parcelable {
 
     public void setProfileConfigured(Boolean profileConfigured) {
         isProfileConfigured = profileConfigured;
+    }
+
+    public Boolean getCategoriesSelectionDone() {
+        return isCategoriesSelectionDone;
+    }
+
+    public void setCategoriesSelectionDone(Boolean categoriesSelectionDone) {
+        isCategoriesSelectionDone = categoriesSelectionDone;
     }
 }
