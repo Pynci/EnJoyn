@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
-import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 import it.unimib.enjoyn.model.Event;
 
 /**
@@ -103,7 +102,8 @@ public class DiscoverSingleEvent extends Fragment {
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDate.setText(event.getDate());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDescription.setText(event.getDescription());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewHour.setText(event.getTime());
-        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getLocation().getName());
+        //fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getLocation().getName());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getPlace());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewTitle.setText(event.getTitle());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDistance.setText(event.getDistanceString());
         boolean isTodo = event.isTODO();

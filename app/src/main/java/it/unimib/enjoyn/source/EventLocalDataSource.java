@@ -60,17 +60,17 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
     @Override
     public void insertEvent(List<Event> eventList) {
         EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            // Reads the news from the database
+            // Reads the event from the database
             List<Event> allEvent = eventDao.getAll();
 
-            // Checks if the news just downloaded has already been downloaded earlier
-            // in order to preserve the news status (marked as favorite or not)
+            // Checks if the event just downloaded has already been downloaded earlier
+            // in order to preserve the event status (marked as favorite or not)
             for (Event event : allEvent) {
-                // This check works because News and NewsSource classes have their own
+                // This check works because News and eventSource classes have their own
                 // implementation of equals(Object) and hashCode() methods
                 if (eventList.contains(event)) {
-                    // The primary key and the favorite status is contained only in the News objects
-                    // retrieved from the database, and not in the News objects downloaded from the
+                    // The primary key and the favorite status is contained only in the event objects
+                    // retrieved from the database, and not in the event objects downloaded from the
                     // Web Service. If the same news was already downloaded earlier, the following
                     // line of code replaces the the News object in newsList with the corresponding
                     // Event object saved in the database, so that it has the primary key and the
@@ -79,12 +79,12 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
                 }
             }
 
-            // Writes the news in the database and gets the associated primary keys
+            // Writes the event in the database and gets the associated primary keys
             List<Long> insertedNewsIds = eventDao.insertEventList(eventList);
             for (int i = 0; i < eventList.size(); i++) {
-                // Adds the primary key to the corresponding object News just downloaded so that
-                // if the user marks the news as favorite (and vice-versa), we can use its id
-                // to know which news in the database must be marked as favorite/not favorite
+                // Adds the primary key to the corresponding object event just downloaded so that
+                // if the user marks the event as favorite (and vice-versa), we can use its id
+                // to know which event in the database must be marked as favorite/not favorite
                 eventList.get(i).setId(insertedNewsIds.get(i));
             }
             //TODO aggiungere categorie (tag) di interesse

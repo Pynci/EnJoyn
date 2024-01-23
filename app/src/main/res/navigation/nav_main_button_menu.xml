@@ -11,11 +11,11 @@
         android:label="fragment_discover"
         tools:layout="@layout/fragment_discover" >
         <action
-            android:id="@+id/action_discover_to_discoverSingleEvent"
-            app:destination="@id/discoverSingleEvent" />
-        <action
             android:id="@+id/action_discover_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_discover_to_discoverSingleEvent"
+            app:destination="@id/discoverSingleEvent" />
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
@@ -72,5 +72,14 @@
         <action
             android:id="@+id/action_newEventMap_to_newEventFragment"
             app:destination="@id/newEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/discoverRecyclerViewFragment3"
+        android:name="it.unimib.enjoyn.ui.main.DiscoverRecyclerViewFragment"
+        android:label="fragment_discover_recycler_view"
+        tools:layout="@layout/fragment_discover_recycler_view" >
+        <action
+            android:id="@+id/action_discoverRecyclerViewFragment3_to_discoverSingleEvent"
+            app:destination="@id/discoverSingleEvent" />
     </fragment>
 </navigation>

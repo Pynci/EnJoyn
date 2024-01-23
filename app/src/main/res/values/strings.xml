@@ -98,4 +98,6 @@
     <string name="temperature">temperature</string>
     <string name="search">Cerca</string>
     <string name="positioningEvent">Seleziona il luogo</string>
+    <string name="Location">località</string>
+    <string name="km">km</string>
 </resources>

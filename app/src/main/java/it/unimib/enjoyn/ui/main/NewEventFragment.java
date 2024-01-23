@@ -74,7 +74,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     ImageView weatherIcon;
     String description;
     int numberOfPeople = -1;
-    double temp = -1;
+    double temp = -10000;
 
     private EventViewModel eventViewModel;
     private Weather weatherAPIdata;
@@ -85,7 +85,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
     private static final String STATE_TEMPERATURE = "temperature";
 
-
+    private static final String STATE_EQUALS = "equals";
 
     Event newEvent;
     private FragmentNewEventBinding fragmentNewEventBinding;
@@ -129,7 +129,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             dateWeather = savedInstanceState.getString(STATE_DATE);
             timeWeather= savedInstanceState.getString(STATE_TIME);
             weatherCode = savedInstanceState.getInt(STATE_CODE);
-            temp = savedInstanceState.getInt(STATE_TEMPERATURE);
+            temp = savedInstanceState.getDouble(STATE_TEMPERATURE);
+            equals = savedInstanceState.getBoolean(STATE_EQUALS);
             Log.d("code", ""+weatherCode);
         }
         Log.d("API weather", "su OnCreate");
@@ -180,7 +181,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         //selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
         //selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
         //weather = view.findViewById(R.id.weather);
-        temperature = view.findViewById(R.id.newEventFragment_textView_temperature);
+        //temperature = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
         // latitude and longitude "52.52", "13.41"
@@ -199,7 +200,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                     fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(timeWeather);
                 if(weatherCode != -1)
                     setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
-                if(temp != -1)
+                if(temp != -10000)
                     fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText(temp + "°C");
 
             } else {
@@ -462,6 +463,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         savedInstanceState.putString(STATE_TIME, timeWeather);
         savedInstanceState.putInt(STATE_CODE, weatherCode);
         savedInstanceState.putDouble(STATE_TEMPERATURE, temp);
+        savedInstanceState.putBoolean(STATE_EQUALS, equals);
         // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
     }
