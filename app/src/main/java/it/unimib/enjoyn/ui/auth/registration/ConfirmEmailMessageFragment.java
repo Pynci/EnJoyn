@@ -95,16 +95,18 @@ public class ConfirmEmailMessageFragment extends Fragment {
         emailVerificationStatusObserver = result -> {
             if(result.isSuccessful()){
                 User currentUser = ((Result.UserSuccess) result).getData();
-                if(currentUser.getEmailVerified()){
-                    navigateTo(R.id.action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment, false);
+                if(currentUser != null){
+                    if(currentUser.getEmailVerified()){
+                        navigateTo(R.id.action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment, false);
+                    }
+                    progressBar.setVisibility(View.GONE);
                 }
-                progressBar.setVisibility(View.GONE);
             }
         };
 
         signOutObserver = result -> {
             if(result.isSuccessful()){
-                navigateTo(R.id.action_confirmEmailMessageFragment_to_loginFragment, false);
+                navigateTo(R.id.action_confirmEmailMessageFragment_to_loginActivity, false);
             }
             else{
                 String text = "Si è verificato un errore durante il logout";
