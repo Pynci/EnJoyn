@@ -37,8 +37,8 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="32dp" />
 
-            <ImageView
-                android:id="@+id/fragmentNewEvent_imageView_imageEvent"
+            <ImageButton
+                android:id="@+id/fragmentNewEvent_ImageButton_photoPicker"
                 android:layout_width="183dp"
                 android:layout_height="126dp"
                 android:layout_marginTop="16dp"
@@ -46,7 +46,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                 app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_account_circle_24" />
+                app:srcCompat="@drawable/baseline_add_circle_outline_24"/>
 
 
             <EditText
@@ -62,7 +62,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageView_imageEvent" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_ImageButton_photoPicker" />
 
             <TextView
                 android:id="@+id/fragmentNewEvent_textView_date"
