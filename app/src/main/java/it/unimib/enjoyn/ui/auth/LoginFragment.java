@@ -75,16 +75,18 @@ public class LoginFragment extends Fragment {
         signInObserver = result -> {
             if(result.isSuccessful()){
                 User currentUser = ((Result.UserSuccess) result).getData();
-                if(currentUser.getEmailVerified()){
-                    if(currentUser.getProfileConfigured()){
-                        navigateTo(R.id.action_loginFragment_to_mainButtonMenuActivity, true);
+                if(currentUser != null){
+                    if(currentUser.getEmailVerified()){
+                        if(currentUser.getProfileConfigured()){
+                            navigateTo(R.id.action_loginFragment_to_mainButtonMenuActivity, true);
+                        }
+                        else{
+                            navigateTo(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment, false);
+                        }
                     }
                     else{
-                        navigateTo(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment, false);
+                        navigateTo(R.id.action_loginFragment_to_confirmEmailMessageFragment, false);
                     }
-                }
-                else{
-                    navigateTo(R.id.action_loginFragment_to_confirmEmailMessageFragment, false);
                 }
             }
             else{

@@ -71,7 +71,7 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
             authenticationCallback.onAlreadySignedIn(fbUser.getUid());
         }
         else{
-            authenticationCallback.onSignOutSuccess();
+            authenticationCallback.onNotLoggedYet();
         }
     }
 

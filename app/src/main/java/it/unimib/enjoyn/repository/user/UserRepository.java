@@ -213,6 +213,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
+    public void onNotLoggedYet() {
+        currentUser.postValue(new Result.UserSuccess(null));
+    }
+
+    @Override
     public void onEmailSendingSuccess() {
         emailSent.postValue(new Result.Success());
     }

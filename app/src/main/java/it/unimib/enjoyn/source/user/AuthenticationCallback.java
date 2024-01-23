@@ -13,4 +13,5 @@ public interface AuthenticationCallback {
     void onAlreadySignedIn(String uid);
     void onEmailSendingSuccess();
     void onEmailSendingFailure(Exception exception);
+    void onNotLoggedYet();
 }

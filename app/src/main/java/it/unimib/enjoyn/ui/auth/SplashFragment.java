@@ -52,19 +52,24 @@ public class SplashFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
+        userViewModel.refreshSession().observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
                 User currentUser = ((Result.UserSuccess) result).getData();
-                if(currentUser.getEmailVerified()){
-                    if(currentUser.getProfileConfigured()){
-                        navigateTo(R.id.action_splashFragment_to_mainButtonMenuActivity, true);
+                if(currentUser != null){
+                    if(currentUser.getEmailVerified()){
+                        if(currentUser.getProfileConfigured()){
+                            navigateTo(R.id.action_splashFragment_to_mainButtonMenuActivity, true);
+                        }
+                        else{
+                            navigateTo(R.id.action_splashFragment_to_propicDescriptionConfigurationFragment, false);
+                        }
                     }
                     else{
-                        navigateTo(R.id.action_splashFragment_to_propicDescriptionConfigurationFragment, false);
+                        navigateTo(R.id.action_splashFragment_to_confirmEmailMessageFragment, false);
                     }
                 }
                 else{
-                    navigateTo(R.id.action_splashFragment_to_confirmEmailMessageFragment, false);
+                    navigateTo(R.id.action_splashFragment_to_loginFragment, false);
                 }
             }
             else{
