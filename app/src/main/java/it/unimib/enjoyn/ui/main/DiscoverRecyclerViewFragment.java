@@ -127,7 +127,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
         eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(),
                 result -> {
-                    if (result.isSuccess()) {
+                    if (result.isSuccessful()) {
                         int initialSize = this.eventList.size();
                         this.eventList.clear();
                         this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());

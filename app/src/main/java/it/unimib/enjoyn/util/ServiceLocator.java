@@ -20,7 +20,6 @@ import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
 import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
 import it.unimib.enjoyn.source.user.UserLocalDataSource;
 import it.unimib.enjoyn.source.user.UserRemoteDataSource;
-import it.unimib.enjoyn.database.EventsRoomDatabase;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.WeatherRepository;
 import it.unimib.enjoyn.service.WeatherApiService;
@@ -84,8 +83,8 @@ public class ServiceLocator {
         return new InterestRepository(application, interestDataSource, interestLocalDataSource, authenticationDataSource);
     }
 
-    public EventsRoomDatabase getEventDao(Application application) { //istanza di event room database
-        return EventsRoomDatabase.getDatabase(application);
+    public LocalRoomDatabase getEventDao(Application application) { //istanza di event room database
+        return LocalRoomDatabase.getDatabase(application);
     }
 
     public IWeatherRepository getWeatherRepository(Application application){

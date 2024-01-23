@@ -5,15 +5,15 @@ import static it.unimib.enjoyn.util.Constants.UNEXPECTED_ERROR;
 import java.util.List;
 
 import it.unimib.enjoyn.database.EventsDao;
-import it.unimib.enjoyn.database.EventsRoomDatabase;
+import it.unimib.enjoyn.database.LocalRoomDatabase;
 import it.unimib.enjoyn.model.Event;
 
 public class EventLocalDataSource  extends BaseEventLocalDataSource{
 
     private final EventsDao eventDao;
 
-    public EventLocalDataSource(EventsRoomDatabase eventsRoomDatabase) {
-        this.eventDao = eventsRoomDatabase.eventDao();
+    public EventLocalDataSource(LocalRoomDatabase localRoomDatabase) {
+        this.eventDao = localRoomDatabase.eventDao();
     }
 
     /**
@@ -23,14 +23,14 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
      */
     @Override
     public void getEvent() {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             eventCallback.onSuccessFromLocal(eventDao.getAll());
         });
     }
 
     @Override
     public void getToDoEvent() {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Event> todoEvent = eventDao.getTodoEvents();
             eventCallback.onEventToDoStatusChanged(todoEvent);
         });
@@ -38,14 +38,14 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
 
     @Override
     public void getFavoriteEvent() {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             eventCallback.onEventFavoriteStatusChanged(eventDao.getFavoriteEvents());
         });
     }
 
     @Override
     public void updateEvent(Event event) {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             int rowUpdatedCounter = eventDao.updateSingleTodoEvent(event);
 
             if (rowUpdatedCounter == 1) {
@@ -59,7 +59,7 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
 
     @Override
     public void insertEvent(List<Event> eventList) {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             // Reads the event from the database
             List<Event> allEvent = eventDao.getAll();
 
