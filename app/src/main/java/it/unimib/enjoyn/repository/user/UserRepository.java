@@ -124,6 +124,12 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return currentUser;
     }
 
+    @Override
+    public MutableLiveData<Result> updateCategoriesSelectionStatus(){
+        userRemoteDataSource.updateCategoriesSelectionStatus(authenticationDataSource.getCurrentUserUID(), true);
+        return currentUser;
+    }
+
 
 
     // CALLBACK

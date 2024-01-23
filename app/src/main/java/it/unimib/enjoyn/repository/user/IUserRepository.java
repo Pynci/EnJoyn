@@ -21,4 +21,5 @@ public interface IUserRepository {
     MutableLiveData<Result> updateDescription(String description);
     MutableLiveData<Result> updateEmailVerificationStatus();
     MutableLiveData<Result> updateProfileConfigurationStatus();
+    MutableLiveData<Result> updateCategoriesSelectionStatus();
 }

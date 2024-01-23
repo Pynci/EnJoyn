@@ -75,6 +75,10 @@ public class UserViewModel extends ViewModel {
         return userRepository.updateProfileConfigurationStatus();
     }
 
+    public MutableLiveData<Result> updateCategoriesSelectionStatus(){
+        return userRepository.updateCategoriesSelectionStatus();
+    }
+
     public MutableLiveData<Result> setOptionalUserParameters(String name, String surname,
                                                              String description, Uri uri) {
 

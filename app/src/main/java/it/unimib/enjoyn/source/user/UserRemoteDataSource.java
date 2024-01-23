@@ -166,4 +166,11 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         updateUser(uid, updateMap);
     }
 
+    @Override
+    public void updateCategoriesSelectionStatus(String uid, Boolean status){
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("categoriesSelected", status);
+        updateUser(uid, updateMap);
+    }
+
 }
