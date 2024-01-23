@@ -23,8 +23,12 @@ import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.CategoryViewModel;
 import it.unimib.enjoyn.ui.CategoryViewModelFactory;
+import it.unimib.enjoyn.ui.UserViewModel;
+import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 public class CategoriesSelectionFragment extends Fragment {
 
@@ -61,6 +65,11 @@ public class CategoriesSelectionFragment extends Fragment {
 
         ListView listView = view.findViewById(R.id.fragmentCategoriesSelection_ListView);
         listView.setDivider(null);
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        UserViewModel userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        userViewModel.updateCategoriesSelectionStatus();
 
         Observer<Result> categoriesObserver = result -> {
             if (result.isSuccessful()) {

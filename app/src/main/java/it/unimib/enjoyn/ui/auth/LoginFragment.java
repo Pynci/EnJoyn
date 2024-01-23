@@ -79,17 +79,16 @@ public class LoginFragment extends Fragment {
                     if(!currentUser.getEmailVerified()){
                         navigateTo(R.id.action_loginFragment_to_confirmEmailMessageFragment, false);
                     }
-                    if(!currentUser.getProfileConfigured()){
+                    else if(!currentUser.getProfileConfigured()){
                         navigateTo(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment, false);
                     }
-                    if(!currentUser.getCategoriesSelectionDone()){
+                    else if(!currentUser.getCategoriesSelectionDone()){
                         navigateTo(R.id.action_loginFragment_to_categoriesSelectionFragment, false);
                     }
-                    navigateTo(R.id.action_loginFragment_to_mainButtonMenuActivity, true);
+                    else{
+                        navigateTo(R.id.action_loginFragment_to_mainButtonMenuActivity, true);
+                    }
                 }
-//                else{
-//                    navigateTo(R.id.action_splashFragment_to_loginFragment, false);
-//                }
             }
             else{
                 Snackbar.make(view, getString(R.string.authenticationFailed),
@@ -136,10 +135,10 @@ public class LoginFragment extends Fragment {
 
 
         buttonRegister.setOnClickListener(v -> navigateTo(
-                R.id.action_loginFragment_to_registerActivity, true));
+                R.id.action_loginFragment_to_registerFragment, false));
 
         buttonForgottenPassword.setOnClickListener(v -> navigateTo(
-                R.id.action_loginFragment_to_passwordRecoverFragment, false));
+                R.id.action_loginFragment_to_passwordResetFragment, false));
 
         buttonLogin.setOnClickListener(v -> {
 

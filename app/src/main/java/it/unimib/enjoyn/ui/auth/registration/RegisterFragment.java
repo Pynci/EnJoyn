@@ -105,7 +105,7 @@ public class RegisterFragment extends Fragment {
 
         emailVerificationSendingObserver = result -> {
             if(result.isSuccessful()){
-                navigateTo(R.id.action_registerFragment_to_confirmEmailMessageFragment2, false);
+                navigateTo(R.id.action_registerFragment_to_confirmEmailMessageFragment, false);
 
                 String text = "Registrazione avvenuta correttamente";
                 Snackbar snackbar;
@@ -303,7 +303,7 @@ public class RegisterFragment extends Fragment {
         });
 
         buttonLogin.setOnClickListener(v -> navigateTo(
-                R.id.action_registerFragment_to_loginActivity, true));
+                R.id.action_registerFragment_to_loginFragment, false));
     }
 
     private void navigateTo(int destination, boolean finishActivity) {
