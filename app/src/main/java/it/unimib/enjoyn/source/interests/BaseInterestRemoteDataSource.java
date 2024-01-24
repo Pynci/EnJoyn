@@ -1,7 +1,6 @@
 package it.unimib.enjoyn.source.interests;
 
-import it.unimib.enjoyn.source.user.AuthenticationCallback;
-import it.unimib.enjoyn.ui.CategoriesHolder;
+import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 
 public abstract class BaseInterestRemoteDataSource {
 

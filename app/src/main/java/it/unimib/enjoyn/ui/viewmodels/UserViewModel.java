@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui;
+package it.unimib.enjoyn.ui.viewmodels;
 
 import android.net.Uri;
 

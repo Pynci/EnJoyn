@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui.auth.registration;
+package it.unimib.enjoyn.ui.auth;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -24,23 +24,23 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
-import it.unimib.enjoyn.ui.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 
-public class ConfirmEmailMessageFragment extends Fragment {
+public class EmailVerificationFragment extends Fragment {
 
     private UserViewModel userViewModel;
     private Observer<Result> emailVerificationSendingObserver;
     private Observer<Result> emailVerificationStatusObserver;
     private Observer<Result> signOutObserver;
 
-    public ConfirmEmailMessageFragment() {
+    public EmailVerificationFragment() {
     }
 
-    public static ConfirmEmailMessageFragment newInstance() {
-        return new ConfirmEmailMessageFragment();
+    public static EmailVerificationFragment newInstance() {
+        return new EmailVerificationFragment();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_confirm_email_message, container, false);
+        return inflater.inflate(R.layout.fragment_email_verification, container, false);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
                 User currentUser = ((Result.UserSuccess) result).getData();
                 if(currentUser != null){
                     if(currentUser.getEmailVerified()){
-                        navigateTo(R.id.action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment, false);
+                        navigateTo(R.id.action_emailVerificationFragment_to_profileConfigurationFragment, false);
                     }
                     progressBar.setVisibility(View.GONE);
                 }
@@ -106,7 +106,7 @@ public class ConfirmEmailMessageFragment extends Fragment {
 
         signOutObserver = result -> {
             if(result.isSuccessful()){
-                navigateTo(R.id.action_confirmEmailMessageFragment_to_loginFragment, false);
+                navigateTo(R.id.action_emailVerificationFragment_to_signinFragment, false);
             }
             else{
                 String text = "Si è verificato un errore durante il logout";

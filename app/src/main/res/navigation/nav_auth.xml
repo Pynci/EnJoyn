@@ -10,56 +10,56 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_splashFragment_to_signinFragment"
+            app:destination="@id/signinFragment" />
         <action
             android:id="@+id/action_splashFragment_to_mainButtonMenuActivity"
             app:destination="@id/mainButtonMenuActivity" />
         <action
             android:id="@+id/action_splashFragment_to_confirmEmailMessageFragment"
-            app:destination="@id/confirmEmailMessageFragment" />
+            app:destination="@id/emailVerificationFragment" />
         <action
             android:id="@+id/action_splashFragment_to_propicDescriptionConfigurationFragment"
-            app:destination="@id/propicDescriptionConfigurationFragment" />
+            app:destination="@id/profileConfigurationFragment" />
         <action
             android:id="@+id/action_splashFragment_to_categoriesSelectionFragment"
             app:destination="@id/categoriesSelectionFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="it.unimib.enjoyn.ui.auth.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        android:id="@+id/signinFragment"
+        android:name="it.unimib.enjoyn.ui.auth.SigninFragment"
+        android:label="fragment_signin"
+        tools:layout="@layout/fragment_signin" >
         <action
-            android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            android:id="@+id/action_signinFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_passwordResetFragment"
+            android:id="@+id/action_signinFragment_to_passwordResetFragment"
             app:destination="@id/passwordResetFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_confirmEmailMessageFragment"
-            app:destination="@id/confirmEmailMessageFragment" />
+            android:id="@+id/action_signinFragment_to_emailVerificationFragment"
+            app:destination="@id/emailVerificationFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_propicDescriptionConfigurationFragment"
-            app:destination="@id/propicDescriptionConfigurationFragment" />
+            android:id="@+id/action_signinFragment_to_profileConfigurationFragment"
+            app:destination="@id/profileConfigurationFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_categoriesSelectionFragment"
+            android:id="@+id/action_signinFragment_to_categoriesSelectionFragment"
             app:destination="@id/categoriesSelectionFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_mainButtonMenuActivity"
+            android:id="@+id/action_signinFragment_to_mainButtonMenuActivity"
             app:destination="@id/mainButtonMenuActivity" />
     </fragment>
     <fragment
-        android:id="@+id/registerFragment"
-        android:name="it.unimib.enjoyn.ui.auth.registration.RegisterFragment"
-        android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        android:id="@+id/signupFragment"
+        android:name="it.unimib.enjoyn.ui.auth.SignupFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_signup" >
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_signupFragment_to_signinFragment"
+            app:destination="@id/signinFragment" />
         <action
-            android:id="@+id/action_registerFragment_to_confirmEmailMessageFragment"
-            app:destination="@id/confirmEmailMessageFragment" />
+            android:id="@+id/action_registerFragment_to_emailVerificationFragment"
+            app:destination="@id/emailVerificationFragment" />
     </fragment>
     <activity
         android:id="@+id/mainButtonMenuActivity"
@@ -67,29 +67,29 @@
         android:label="activity_main_button_menu"
         tools:layout="@layout/activity_main_button_menu" />
     <fragment
-        android:id="@+id/confirmEmailMessageFragment"
-        android:name="it.unimib.enjoyn.ui.auth.registration.ConfirmEmailMessageFragment"
-        android:label="fragment_confirm_email_message"
-        tools:layout="@layout/fragment_confirm_email_message" >
+        android:id="@+id/emailVerificationFragment"
+        android:name="it.unimib.enjoyn.ui.auth.EmailVerificationFragment"
+        android:label="fragment_email_verification"
+        tools:layout="@layout/fragment_email_verification" >
         <action
-            android:id="@+id/action_confirmEmailMessageFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_emailVerificationFragment_to_signinFragment"
+            app:destination="@id/signinFragment" />
         <action
-            android:id="@+id/action_confirmEmailMessageFragment_to_propicDescriptionConfigurationFragment"
-            app:destination="@id/propicDescriptionConfigurationFragment" />
+            android:id="@+id/action_emailVerificationFragment_to_profileConfigurationFragment"
+            app:destination="@id/profileConfigurationFragment" />
     </fragment>
     <fragment
-        android:id="@+id/propicDescriptionConfigurationFragment"
-        android:name="it.unimib.enjoyn.ui.auth.registration.PropicDescriptionConfigurationFragment"
-        android:label="fragment_propic_description_configuration"
-        tools:layout="@layout/fragment_propic_description_configuration" >
+        android:id="@+id/profileConfigurationFragment"
+        android:name="it.unimib.enjoyn.ui.auth.ProfileConfigurationFragment"
+        android:label="fragment_profile_configuration"
+        tools:layout="@layout/fragment_profile_configuration" >
         <action
-            android:id="@+id/action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment"
+            android:id="@+id/action_profileConfigurationFragment_to_categoriesSelectionFragment"
             app:destination="@id/categoriesSelectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoriesSelectionFragment"
-        android:name="it.unimib.enjoyn.ui.auth.registration.CategoriesSelectionFragment"
+        android:name="it.unimib.enjoyn.ui.auth.CategoriesSelectionFragment"
         android:label="fragment_categories_selection"
         tools:layout="@layout/fragment_categories_selection" >
         <action
@@ -103,6 +103,6 @@
         tools:layout="@layout/fragment_password_reset" >
         <action
             android:id="@+id/action_passwordResetFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/signinFragment" />
     </fragment>
 </navigation>

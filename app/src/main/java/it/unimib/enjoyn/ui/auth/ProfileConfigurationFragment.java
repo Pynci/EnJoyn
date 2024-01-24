@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui.auth.registration;
+package it.unimib.enjoyn.ui.auth;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,22 +32,22 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.ui.UserViewModel;
-import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
-public class PropicDescriptionConfigurationFragment extends Fragment {
+public class ProfileConfigurationFragment extends Fragment {
 
     private UserViewModel userViewModel;
     private Uri currentURI;
     private Observer<Result> observerAddOptionalData;
 
-    public PropicDescriptionConfigurationFragment() {
+    public ProfileConfigurationFragment() {
 
     }
 
-    public static PropicDescriptionConfigurationFragment newInstance() {
-        return new PropicDescriptionConfigurationFragment();
+    public static ProfileConfigurationFragment newInstance() {
+        return new ProfileConfigurationFragment();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_propic_description_configuration, container, false);
+        return inflater.inflate(R.layout.fragment_profile_configuration, container, false);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                 }
 
                 if (allSuccessfull) {
-                    navigateTo(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment, false);
+                    navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false);
                 }
             }
         };
@@ -119,7 +119,7 @@ public class PropicDescriptionConfigurationFragment extends Fragment {
                 });
 
         skip.setOnClickListener(v ->
-                navigateTo(R.id.action_propicDescriptionConfigurationFragment_to_categoriesSelectionFragment, false));
+                navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false));
 
         buttonNext.setOnClickListener(v ->
                 userViewModel.setOptionalUserParameters(nome.getText().toString(), cognome.getText().toString(),

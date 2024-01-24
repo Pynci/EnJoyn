@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui.auth.registration;
+package it.unimib.enjoyn.ui.auth;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -25,13 +25,13 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
-import it.unimib.enjoyn.ui.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 
 // TODO: sistemare la presentazione degli errori all'utente ed eventuali stringhe hardcodate
-public class RegisterFragment extends Fragment {
+public class SignupFragment extends Fragment {
 
     private UserViewModel userViewModel;
     private Observer<Result> signUpObserver;
@@ -41,12 +41,12 @@ public class RegisterFragment extends Fragment {
     private boolean isUsernameOK;
     private boolean isEmailOK;
 
-    public RegisterFragment() {
+    public SignupFragment() {
 
     }
 
-    public static RegisterFragment newInstance() {
-        return new RegisterFragment();
+    public static SignupFragment newInstance() {
+        return new SignupFragment();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        return inflater.inflate(R.layout.fragment_signup, container, false);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class RegisterFragment extends Fragment {
 
         emailVerificationSendingObserver = result -> {
             if(result.isSuccessful()){
-                navigateTo(R.id.action_registerFragment_to_confirmEmailMessageFragment, false);
+                navigateTo(R.id.action_registerFragment_to_emailVerificationFragment, false);
 
                 String text = "Registrazione avvenuta correttamente";
                 Snackbar snackbar;
@@ -306,7 +306,7 @@ public class RegisterFragment extends Fragment {
         });
 
         buttonLogin.setOnClickListener(v -> navigateTo(
-                R.id.action_registerFragment_to_loginFragment, false));
+                R.id.action_signupFragment_to_signinFragment, false));
     }
 
     private void navigateTo(int destination, boolean finishActivity) {

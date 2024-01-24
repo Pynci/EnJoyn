@@ -25,6 +25,7 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 
 
 public class DiscoverRecyclerViewFragment extends Fragment {
