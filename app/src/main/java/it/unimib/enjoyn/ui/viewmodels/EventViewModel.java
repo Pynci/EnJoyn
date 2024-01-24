@@ -131,7 +131,7 @@ public class EventViewModel extends ViewModel {
 
     //TODO per quando ricerchi dalla barra
     public MutableLiveData<Result> getMapSuggestion(String searchBarText){
-        Log.d("API weather", "dentro getWeather su viewModel");
+        Log.d("API map", "dentro getMap su viewModel");
         if (mapListLiveData == null){
             fetchMapSuggestion(searchBarText);
         }
@@ -139,7 +139,7 @@ public class EventViewModel extends ViewModel {
     }
 
     private void fetchMapSuggestion(String searchBarText){
-        Log.d("API weather", "dentro fetchWeather su viewModel");
+        Log.d("API map", "dentro fetchMapSuggestion su viewModel");
         mapListLiveData = mapRepository.fetchMapSu(searchBarText);
     }
 

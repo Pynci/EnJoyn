@@ -303,7 +303,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(firstTime) {
                     if (s.length() > 3) { //&& !clickSuggestion
-                        searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
+                        //searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
                         eventViewModel.getMapSuggestion(s.toString()).observe(getViewLifecycleOwner(), result -> {
                             if(result.isSuccessful()){
                                 List<SearchSuggestion> suggestions = ((Result.MapSuggestionSuccess) result).getData();
@@ -313,7 +313,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                                 for(int i = 0; i<suggestions.size(); i++){
                                     locationList.add(new EventLocation());
                                     locationList.get(i).setName(suggestions.get(i).getName());
-                                    searchRequestTask = searchEngine.select(suggestions.get(i), searchCallback);
+                                   // searchRequestTask = searchEngine.select(suggestions.get(i), searchCallback);
                                     distance = 100*(Math.sqrt(Math.pow(selfLocation.latitude()-distanceSuggestionLatitude,2) + Math.pow(selfLocation.longitude() -distanceSuggestionsLongitude,2)));
                                     distanceList.add(round(distance,1));
                                     //locationList.get(i).setLatitude(suggestions.get(i).getRequestOptions().getOptions());
@@ -323,7 +323,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                                     @Override
                                     public void onSuggestionItemClick(EventLocation eventLocation, int position) {
                                         suggestionClicked = true;
-                                        searchRequestTask = searchEngine.select(suggestions.get(position), searchCallback);
+                                       // searchRequestTask = searchEngine.select(suggestions.get(position), searchCallback);
 
                                         searchBar.setText(suggestions.get(position).getName());
                                         suggestionListView.setVisibility(View.GONE);
@@ -506,7 +506,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
 
-    private final SearchSelectionCallback searchCallback = new SearchSelectionCallback() {
+  /*  private final SearchSelectionCallback searchCallback = new SearchSelectionCallback() {
 
         @Override
         public void onSuggestions(@NonNull List<SearchSuggestion> suggestions, @NonNull ResponseInfo responseInfo) {
@@ -515,7 +515,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             } else {
                 Log.i("SearchApi", "Search suggestions: " + suggestions + "\nSelecting first...");
                /* if(searchClicked)
-                searchRequestTask = searchEngine.select(suggestions.get(0), this);*/
+                searchRequestTask = searchEngine.select(suggestions.get(0), this);
                 //searchResultsView.set(suggestions);
 
 
@@ -594,7 +594,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             Log.i("SearchApiExample", "Search error: ", e);
         }
     };
-
+   */
 
 
 

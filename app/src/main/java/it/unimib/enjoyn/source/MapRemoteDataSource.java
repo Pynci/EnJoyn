@@ -31,7 +31,7 @@ public class MapRemoteDataSource {
             .limit(4)
             .build();
     public void getMapSuggestion(String searchBarText) {
-
+        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
         searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
                 new SearchEngineSettings(MAPBOX_DOWNLOADS_TOKEN)
         );

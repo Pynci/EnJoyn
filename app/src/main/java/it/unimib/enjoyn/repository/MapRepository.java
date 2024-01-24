@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.mapbox.search.result.SearchResult;
@@ -49,6 +51,7 @@ public class MapRepository implements MapCallBack {
 
 
     public MutableLiveData<Result> fetchMapSu(String searchBarText) {
+        Log.d("API map", "dentro fetchMapSu su Reposity");
         mapRemoteDataSource.getMapSuggestion(searchBarText);
 
         return mapMutableLiveData;
