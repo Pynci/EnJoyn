@@ -99,7 +99,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                 LinearLayoutManager.VERTICAL, false);
 
 
-        eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList,
+        eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList, requireActivity().getApplication(),
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {

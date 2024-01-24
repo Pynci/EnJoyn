@@ -37,23 +37,62 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="32dp" />
 
-            <ImageButton
-                android:id="@+id/fragmentNewEvent_ImageButton_photoPicker"
-                android:layout_width="183dp"
-                android:layout_height="126dp"
-                android:layout_marginTop="16dp"
-                android:contentDescription="@string/propic"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/fragmentNewEvent_MaterialCardView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_marginTop="32dp"
+                app:cardCornerRadius="300dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                 app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_add_circle_outline_24"/>
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/fragmentNewEvent_ShapeableImageView_eventImage"
+                        style="@style/circleImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/propic"
+                        android:src="@drawable/baseline_add_photo_alternate_24"
+                        android:tintMode="src_atop"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/fragmentNewEvent_ImageButton_photoPicker"
+                        android:layout_width="76dp"
+                        android:layout_height="71dp"
+                        android:adjustViewBounds="true"
+                        android:background="@null"
+                        android:contentDescription="@string/propic"
+                        android:scaleType="fitCenter"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/baseline_add_24" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
 
             <EditText
                 android:id="@+id/fragmentNewEvent_editText_title"
                 android:layout_width="344dp"
                 android:layout_height="75dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="28dp"
                 android:hint="@string/Title"
                 android:inputType="text"
                 android:orientation="horizontal"
@@ -62,7 +101,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_ImageButton_photoPicker" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_MaterialCardView" />
 
             <TextView
                 android:id="@+id/fragmentNewEvent_textView_date"
@@ -211,6 +250,8 @@
                 android:textSize="24sp"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageView_people"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

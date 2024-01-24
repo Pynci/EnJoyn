@@ -4,6 +4,7 @@ import static it.unimib.enjoyn.util.Constants.EMPTY_FIELDS;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
@@ -77,6 +79,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     String locationName;
     ImageView weatherIcon;
     String description;
+    Uri eventImage;
     int numberOfPeople = -1;
     double temp = -10000;
 
@@ -179,6 +182,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             }
         });
 
+        ShapeableImageView image = fragmentNewEventBinding.fragmentNewEventShapeableImageViewEventImage;
         ImageButton photoPicker = fragmentNewEventBinding.fragmentNewEventImageButtonPhotoPicker;
 
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
@@ -186,6 +190,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                     // Callback is invoked after the user selects a media item or closes the
                     // photo picker.
                     if (uri != null) {
+                        image.setImageURI(uri);
+                        photoPicker.setVisibility(View.GONE);
+                        eventImage = uri;
                         Log.d("PhotoPicker", "Selected URI: " + uri);
                     } else {
                         Log.d("PhotoPicker", "No media selected");
@@ -264,7 +271,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 description = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextDescription.getText());
                 numberOfPeople = Integer.parseInt(String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextNumber.getText()));
 
-                if(title != null && dateWeather != null && timeWeather != null && locationName != null && numberOfPeople != -1 && description != null){
+                if(eventImage != null && title != null && dateWeather != null && timeWeather != null && locationName != null && numberOfPeople != -1 && description != null){
+                    newEvent.setImageUrl(eventImage
+                    );
                     newEvent.setTitle(title);
                     newEvent.setDate(dateWeather);
                     newEvent.setTime(timeWeather);
