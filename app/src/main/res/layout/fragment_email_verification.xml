@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.registration.ConfirmEmailMessageFragment"
+    tools:context=".ui.auth.EmailVerificationFragment"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout

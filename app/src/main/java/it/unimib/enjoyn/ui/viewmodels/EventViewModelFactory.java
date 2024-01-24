@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui.main;
+package it.unimib.enjoyn.ui.viewmodels;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

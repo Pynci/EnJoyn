@@ -22,18 +22,18 @@ import com.google.android.material.textfield.TextInputLayout;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.ui.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
-public class LoginFragment extends Fragment {
+public class SigninFragment extends Fragment {
 
     private UserViewModel userViewModel;
     private Observer<Result> signInObserver;
 
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
+    public static SigninFragment newInstance() {
+        return new SigninFragment();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_signin, container, false);
     }
 
 
@@ -77,16 +77,16 @@ public class LoginFragment extends Fragment {
                 User currentUser = ((Result.UserSuccess) result).getData();
                 if(currentUser != null){
                     if(!currentUser.getEmailVerified()){
-                        navigateTo(R.id.action_loginFragment_to_confirmEmailMessageFragment, false);
+                        navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
                     }
                     else if(!currentUser.getProfileConfigured()){
-                        navigateTo(R.id.action_loginFragment_to_propicDescriptionConfigurationFragment, false);
+                        navigateTo(R.id.action_signinFragment_to_profileConfigurationFragment, false);
                     }
                     else if(!currentUser.getCategoriesSelectionDone()){
-                        navigateTo(R.id.action_loginFragment_to_categoriesSelectionFragment, false);
+                        navigateTo(R.id.action_signinFragment_to_categoriesSelectionFragment, false);
                     }
                     else{
-                        navigateTo(R.id.action_loginFragment_to_mainButtonMenuActivity, true);
+                        navigateTo(R.id.action_signinFragment_to_mainButtonMenuActivity, true);
                     }
                 }
             }
@@ -135,10 +135,10 @@ public class LoginFragment extends Fragment {
 
 
         buttonRegister.setOnClickListener(v -> navigateTo(
-                R.id.action_loginFragment_to_registerFragment, false));
+                R.id.action_signinFragment_to_signupFragment, false));
 
         buttonForgottenPassword.setOnClickListener(v -> navigateTo(
-                R.id.action_loginFragment_to_passwordResetFragment, false));
+                R.id.action_signinFragment_to_passwordResetFragment, false));
 
         buttonLogin.setOnClickListener(v -> {
 

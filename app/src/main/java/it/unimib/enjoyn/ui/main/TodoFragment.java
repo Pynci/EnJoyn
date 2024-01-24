@@ -32,6 +32,7 @@ import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
+import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
 
