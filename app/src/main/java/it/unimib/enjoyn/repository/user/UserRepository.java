@@ -196,7 +196,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onUserCreationSuccess(User user) {
-        currentUser.postValue(new Result.UserSuccess(user));
+        userRemoteDataSource.getCurrentUser(user.getUid());
     }
 
     @Override
