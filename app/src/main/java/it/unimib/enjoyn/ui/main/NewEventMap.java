@@ -187,33 +187,11 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     }
 };
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public NewEventMap() {
         // Required empty public constructor
     }
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment newEventMap.
-     */
-    // TODO: Rename and change types and number of parameters
     public static NewEventMap newInstance(String param1, String param2) {
         NewEventMap fragment = new NewEventMap();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -231,10 +209,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         fragmentNewEventMapBinding = FragmentNewEventMapBinding.inflate(inflater, container, false);
         return fragmentNewEventMapBinding.getRoot();
-        // return inflater.inflate(R.layout.fragment_new_event_map, container, false);
     }
 
     @Override
@@ -380,16 +357,16 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
                         List<QueryType> queryTypeList= new ArrayList<>();
                         queryTypeList.add(QueryType.POI);
-                       queryTypeList.add(QueryType.ADDRESS);
-                       final ReverseGeoOptions optionsReverse = new ReverseGeoOptions.Builder(point)
+                        queryTypeList.add(QueryType.ADDRESS);
+                        final ReverseGeoOptions optionsReverse = new ReverseGeoOptions.Builder(point)
                                .limit(1)
                                .types(queryTypeList)
                                .build();
-                       searchRequestTask = searchEngine.search(optionsReverse, searchReverseCallback);
+                        searchRequestTask = searchEngine.search(optionsReverse, searchReverseCallback);
 
 
                        //prova(point);
-                       return false;
+                        return false;
                    }
                });
 
@@ -576,7 +553,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 else {
                     location.setName(results.get(0).getName());
                 }
-                newEventButton.setText(location.getName());
+                //newEventButton.setText(location.getName());
+                newEventButton.setText(location.getLatitude()+""+location.getLongitude());
             }
         }
 
