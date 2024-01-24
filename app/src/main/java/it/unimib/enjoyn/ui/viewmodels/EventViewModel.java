@@ -9,6 +9,7 @@ import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import android.util.Log;
 
 import it.unimib.enjoyn.repository.IWeatherRepository;
+import it.unimib.enjoyn.repository.MapRepository;
 
 public class EventViewModel extends ViewModel {
     private final IEventRepositoryWithLiveData eventRepositoryWithLiveData;
@@ -16,21 +17,16 @@ public class EventViewModel extends ViewModel {
     private MutableLiveData<Result> toDoEventListLiveData;
     private MutableLiveData<Result> favoriteEventListLiveData;
     private final IWeatherRepository weatherRepository;
+    private final MapRepository mapRepository;
     private MutableLiveData<Result> weatherListLiveData;
 
-    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData) {
-        this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
-        weatherRepository = null;
-    }
+    private MutableLiveData<Result> mapListLiveData;
 
-    public EventViewModel(IWeatherRepository iWeatherRepository) {
-        this.weatherRepository = iWeatherRepository;
-        eventRepositoryWithLiveData = null;
-    }
 
-    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository) {
+    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository, MapRepository mapRepository) {
         this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
         this.weatherRepository = iWeatherRepository;
+        this.mapRepository = mapRepository;
     }
 
     /**
@@ -132,4 +128,20 @@ public class EventViewModel extends ViewModel {
         Log.d("API weather", "dentro fetchWeather su viewModel");
         weatherListLiveData = weatherRepository.fetchWeather(latitude, longitude);
     }
+
+    //TODO per quando ricerchi dalla barra
+    public MutableLiveData<Result> getMapSuggestion(String searchBarText){
+        Log.d("API weather", "dentro getWeather su viewModel");
+        if (mapListLiveData == null){
+            fetchMapSuggestion(searchBarText);
+        }
+        return mapListLiveData;
+    }
+
+    private void fetchMapSuggestion(String searchBarText){
+        Log.d("API weather", "dentro fetchWeather su viewModel");
+        mapListLiveData = mapRepository.fetchMapSu(searchBarText);
+    }
+
+
 }

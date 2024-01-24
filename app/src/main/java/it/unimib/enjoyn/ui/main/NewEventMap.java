@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 
@@ -88,6 +89,8 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.SuggestionListAdapter;
 import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
 import it.unimib.enjoyn.model.EventLocation;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 /**
@@ -107,6 +110,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     private ListView suggestionListView;
     private double distanceSuggestionLatitude;
     private double distanceSuggestionsLongitude;
+
+    private EventViewModel eventViewModel;
 
 
     Point selfLocation;
@@ -222,7 +227,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         if(savedInstanceState != null){
             location = savedInstanceState.getParcelable(STATE_LOCATION);
         }
@@ -299,6 +304,44 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 if(firstTime) {
                     if (s.length() > 3) { //&& !clickSuggestion
                         searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
+                        eventViewModel.getMapSuggestion(s.toString()).observe(getViewLifecycleOwner(), result -> {
+                            if(result.isSuccessful()){
+                                List<SearchSuggestion> suggestions = ((Result.MapSuggestionSuccess) result).getData();
+                                locationList = new ArrayList<>();
+                                distanceList = new ArrayList<>();
+
+                                for(int i = 0; i<suggestions.size(); i++){
+                                    locationList.add(new EventLocation());
+                                    locationList.get(i).setName(suggestions.get(i).getName());
+                                    searchRequestTask = searchEngine.select(suggestions.get(i), searchCallback);
+                                    distance = 100*(Math.sqrt(Math.pow(selfLocation.latitude()-distanceSuggestionLatitude,2) + Math.pow(selfLocation.longitude() -distanceSuggestionsLongitude,2)));
+                                    distanceList.add(round(distance,1));
+                                    //locationList.get(i).setLatitude(suggestions.get(i).getRequestOptions().getOptions());
+                                    //locationList.get(i).setLongitude(suggestions.get(i).getRequestOptions().getOptions().getProximity().longitude());
+                                }
+                                suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList,  new SuggestionListAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onSuggestionItemClick(EventLocation eventLocation, int position) {
+                                        suggestionClicked = true;
+                                        searchRequestTask = searchEngine.select(suggestions.get(position), searchCallback);
+
+                                        searchBar.setText(suggestions.get(position).getName());
+                                        suggestionListView.setVisibility(View.GONE);
+
+                                        eventSelectionPoint();
+                                        //clickSuggestion = true;
+                                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                                    }
+                                });
+                                suggestionListView.setAdapter(suggestionListAdapter);
+
+                            }
+
+
+
+                                });
+
                         suggestionListView.setVisibility(View.VISIBLE);
                     } else {
                         suggestionListView.setVisibility(View.GONE);
@@ -459,6 +502,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     private SearchEngine searchEngine;
     private AsyncOperationTask searchRequestTask;
 
+
+
+
+
     private final SearchSelectionCallback searchCallback = new SearchSelectionCallback() {
 
         @Override
@@ -547,6 +594,13 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             Log.i("SearchApiExample", "Search error: ", e);
         }
     };
+
+
+
+
+
+
+
 
     @Override
     public void onDestroy() {

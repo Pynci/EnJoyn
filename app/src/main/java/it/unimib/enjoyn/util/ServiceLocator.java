@@ -3,12 +3,14 @@ package it.unimib.enjoyn.util;
 import android.app.Application;
 
 import it.unimib.enjoyn.database.LocalRoomDatabase;
+import it.unimib.enjoyn.repository.MapRepository;
 import it.unimib.enjoyn.repository.category.CategoryRepository;
 import it.unimib.enjoyn.repository.category.ICategoryRepository;
 import it.unimib.enjoyn.repository.interests.IInterestRepository;
 import it.unimib.enjoyn.repository.interests.InterestRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
+import it.unimib.enjoyn.source.MapRemoteDataSource;
 import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
@@ -93,6 +95,14 @@ public class ServiceLocator {
         weatherRemoteDataSource = new WeatherRemoteDataSource();
 
         return new WeatherRepository(weatherRemoteDataSource);
+    }
+
+    public MapRepository getMapRepository(Application application){
+        MapRemoteDataSource mapRemoteDataSource;
+
+        mapRemoteDataSource = new MapRemoteDataSource();
+
+        return new MapRepository(mapRemoteDataSource);
     }
 
     public IEventRepositoryWithLiveData getEventRepository(Application application){

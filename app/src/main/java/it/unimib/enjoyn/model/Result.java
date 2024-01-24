@@ -2,6 +2,8 @@ package it.unimib.enjoyn.model;
 
 import android.net.Uri;
 
+import com.mapbox.search.result.SearchSuggestion;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,18 @@ public abstract class Result {
         }
         public WeatherResponse getData(){
             return weatherResponse;
+        }
+    }
+
+    public static final class MapSuggestionSuccess extends Result{
+
+        private final List<SearchSuggestion> suggestions;
+
+        public MapSuggestionSuccess(List<SearchSuggestion> suggestions) {
+            this.suggestions = suggestions;
+        }
+        public List<SearchSuggestion> getData(){
+            return suggestions;
         }
     }
 

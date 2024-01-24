@@ -20,6 +20,7 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.ViewPagerAdapter;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import it.unimib.enjoyn.repository.IWeatherRepository;
+import it.unimib.enjoyn.repository.MapRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
@@ -54,9 +55,11 @@ public class DiscoverFragment extends Fragment {
                 requireActivity().getApplication());
         IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
 
+        MapRepository mapRepository = ServiceLocator.getInstance().getMapRepository(requireActivity().getApplication());
+
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
-                new EventViewModelFactory(eventRepositoryWithLiveData, weatherRepository)).get(EventViewModel.class);
+                new EventViewModelFactory(eventRepositoryWithLiveData, weatherRepository, mapRepository)).get(EventViewModel.class);
     }
 
     @Override
