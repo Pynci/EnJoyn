@@ -10,12 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DiscoverMapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DiscoverMapFragment extends Fragment {
 
     EventViewModel eventViewModel;
@@ -25,12 +21,8 @@ public class DiscoverMapFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static DiscoverMapFragment newInstance(String param1, String param2) {
-        DiscoverMapFragment fragment = new DiscoverMapFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    public static DiscoverMapFragment newInstance() {
+        return new DiscoverMapFragment();
     }
 
     @Override

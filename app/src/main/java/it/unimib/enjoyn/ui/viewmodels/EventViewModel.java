@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui.main;
+package it.unimib.enjoyn.ui.viewmodels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

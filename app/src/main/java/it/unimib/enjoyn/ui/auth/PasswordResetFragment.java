@@ -22,7 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.util.SnackbarBuilder;
-import it.unimib.enjoyn.ui.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 
 public class PasswordResetFragment extends Fragment {
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Category;
-import it.unimib.enjoyn.ui.CategoriesHolder;
+import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 
 public class CategoriesSelectionAdapter extends BaseAdapter {
 

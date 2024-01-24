@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui.auth.registration;
+package it.unimib.enjoyn.ui.auth;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,10 +24,10 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.ui.CategoryViewModel;
-import it.unimib.enjoyn.ui.CategoryViewModelFactory;
-import it.unimib.enjoyn.ui.UserViewModel;
-import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
+import it.unimib.enjoyn.ui.viewmodels.CategoryViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class CategoriesSelectionFragment extends Fragment {
@@ -38,8 +38,7 @@ public class CategoriesSelectionFragment extends Fragment {
     }
 
     public static CategoriesSelectionFragment newInstance() {
-        CategoriesSelectionFragment fragment = new CategoriesSelectionFragment();
-        return fragment;
+        return new CategoriesSelectionFragment();
     }
 
     @Override
@@ -112,7 +111,6 @@ public class CategoriesSelectionFragment extends Fragment {
         });
 
         buttonConfirm.setOnClickListener(v -> {
-
             categoryViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
                 if (result.isSuccessful()) {
                     Navigation

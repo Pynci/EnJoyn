@@ -2,7 +2,7 @@ package it.unimib.enjoyn.source.interests;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-import it.unimib.enjoyn.ui.CategoriesHolder;
+import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 import it.unimib.enjoyn.util.Constants;
 
 public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {

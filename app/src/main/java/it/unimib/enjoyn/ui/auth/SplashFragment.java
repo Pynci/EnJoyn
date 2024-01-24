@@ -16,8 +16,8 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.ui.UserViewModel;
-import it.unimib.enjoyn.ui.UserViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class SplashFragment extends Fragment {
@@ -70,11 +70,11 @@ public class SplashFragment extends Fragment {
                     }
                 }
                 else{
-                    navigateTo(R.id.action_splashFragment_to_loginFragment, false);
+                    navigateTo(R.id.action_splashFragment_to_signinFragment, false);
                 }
             }
             else{
-                navigateTo(R.id.action_splashFragment_to_loginFragment, false);
+                navigateTo(R.id.action_splashFragment_to_signinFragment, false);
             }
         });
     }

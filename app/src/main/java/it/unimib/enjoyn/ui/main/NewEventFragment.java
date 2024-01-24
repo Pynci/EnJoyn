@@ -39,6 +39,7 @@ import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IWeatherRepository;
+import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.WeatherCallback;
@@ -449,9 +450,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     private Weather getMeteoListWithGSon() {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
         try {
-            /**TODO
+            /*TODO
              * sistemare questa parte
-             * */
+            */
             /*
             Context context = requireActivity().getApplication().getApplicationContext();
             InputStream inputStream = context.getAssets().open("weather.json"); //apro file

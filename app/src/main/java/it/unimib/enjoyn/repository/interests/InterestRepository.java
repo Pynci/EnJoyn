@@ -13,7 +13,7 @@ import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
 import it.unimib.enjoyn.source.interests.InterestsCallback;
 import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
-import it.unimib.enjoyn.ui.CategoriesHolder;
+import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class InterestRepository implements IInterestRepository, InterestsCallback {

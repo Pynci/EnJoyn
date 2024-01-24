@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.ui;
+package it.unimib.enjoyn.ui.viewmodels;
 
 import java.util.ArrayList;
 import java.util.Iterator;
