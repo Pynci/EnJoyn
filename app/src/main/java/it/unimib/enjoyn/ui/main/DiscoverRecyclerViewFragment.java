@@ -77,22 +77,6 @@ public class DiscoverRecyclerViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menu.clear();
-                menuInflater.inflate(R.menu.menu_toolbar, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
-                    startActivityBasedOnCondition(R.id.action_discover_to_favoritesFragment, false);
-                }
-                return false;
-            }
-        });
-
         RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.discoverRecyclerView_recyclerview_event);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
