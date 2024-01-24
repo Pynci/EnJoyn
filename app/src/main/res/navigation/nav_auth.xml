@@ -86,6 +86,10 @@
         <action
             android:id="@+id/action_profileConfigurationFragment_to_categoriesSelectionFragment"
             app:destination="@id/categoriesSelectionFragment" />
+        <argument
+            android:name="origin"
+            app:argType="string"
+            android:defaultValue="fromAuth" />
     </fragment>
     <fragment
         android:id="@+id/categoriesSelectionFragment"

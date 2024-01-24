@@ -12,8 +12,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -77,6 +79,8 @@ public class ProfileConfigurationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceBundle){
         super.onViewCreated(view, savedInstanceBundle);
 
+        String origin = ProfileConfigurationFragmentArgs.fromBundle(getArguments()).getOrigin();
+
         ShapeableImageView userImage = view.findViewById(R.id.propicDescriptionConfiguration_imageView_propic);
         Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
         Button skip = view.findViewById(R.id.propicDescriptionConfiguration_button_skip);
@@ -84,6 +88,10 @@ public class ProfileConfigurationFragment extends Fragment {
         EditText cognome = view.findViewById(R.id.propicDescriptionConfiguration_editText_cognome);
         EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
         TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
+
+        if (origin.equals("fromProfile")){
+            skip.setVisibility(View.GONE);
+        }
 
         userViewModel.updateProfileConfigurationStatus();
 
@@ -103,7 +111,11 @@ public class ProfileConfigurationFragment extends Fragment {
                 }
 
                 if (allSuccessfull) {
-                    navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false);
+                    if(origin.equals("fromProfile")){
+                        FragmentManager.findFragment(view).getParentFragmentManager().popBackStack();
+                    } else {
+                        navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false);
+                    }
                 }
             }
         };

@@ -93,7 +93,8 @@ public class ProfileFragment extends Fragment {
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ProfileFragmentDirections.ActionProfileFragmentToProfileConfigurationFragment2 action = ProfileFragmentDirections.actionProfileFragmentToProfileConfigurationFragment2();
+                startActivityBasedOnCondition(R.id.action_profileFragment_to_profileConfigurationFragment2, false);
             }
         });
 

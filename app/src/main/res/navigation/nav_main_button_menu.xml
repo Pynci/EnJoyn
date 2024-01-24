@@ -90,5 +90,10 @@
         android:id="@+id/profileConfigurationFragment2"
         android:name="it.unimib.enjoyn.ui.auth.ProfileConfigurationFragment"
         android:label="fragment_profile_configuration"
-        tools:layout="@layout/fragment_profile_configuration" />
+        tools:layout="@layout/fragment_profile_configuration" >
+        <argument
+            android:name="origin"
+            app:argType="string"
+            android:defaultValue="fromProfile" />
+    </fragment>
 </navigation>
