@@ -35,7 +35,11 @@
         android:id="@+id/profileFragment"
         android:name="it.unimib.enjoyn.ui.main.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_authActivity2"
+            app:destination="@id/authActivity2" />
+    </fragment>
     <fragment
         android:id="@+id/todo"
         android:name="it.unimib.enjoyn.ui.main.TodoFragment"
@@ -82,4 +86,9 @@
             android:id="@+id/action_discoverRecyclerViewFragment3_to_discoverSingleEvent"
             app:destination="@id/discoverSingleEvent" />
     </fragment>
+    <activity
+        android:id="@+id/authActivity2"
+        android:name="it.unimib.enjoyn.ui.auth.AuthActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
 </navigation>

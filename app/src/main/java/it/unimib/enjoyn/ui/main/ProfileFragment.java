@@ -17,7 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -90,7 +90,8 @@ public class ProfileFragment extends Fragment {
         TextView propicUsernmame = view.findViewById(R.id.fragmentProfile_textView_username);
         TextView propicNameAndSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
         TextView description = view.findViewById(R.id.fragmentProfile_textView_descriptionText);
-        Button logout = view.findViewById(R.id.fragmentProfile_imageButton_logOut);
+        ImageButton logout = view.findViewById(R.id.fragmentProfile_imageButton_logOut);
+
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), result -> {
@@ -120,7 +121,7 @@ public class ProfileFragment extends Fragment {
                 if(result.isSuccessful()) {
                     Navigation
                             .findNavController(view)
-                            .navigate(R.id.action_profileFragment_to_authActivity);
+                            .navigate(R.id.action_profileFragment_to_authActivity2);
                 }
                 else{
                     String text = "Impossibile completare l'operazione richiesta";
