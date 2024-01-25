@@ -77,7 +77,7 @@ public class ProfileConfigurationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceBundle){
         super.onViewCreated(view, savedInstanceBundle);
 
-        ShapeableImageView userImage = view.findViewById(R.id.propicDescriptionConfiguration_imageView_propic);
+        ShapeableImageView userImage = view.findViewById(R.id.fragmentProfile_imageView_propic);
         Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
         Button skip = view.findViewById(R.id.propicDescriptionConfiguration_button_skip);
         ImageButton imageButtonAddPropic = view.findViewById(R.id.propicDescriptionConfiguration_imageButton_addPropic);

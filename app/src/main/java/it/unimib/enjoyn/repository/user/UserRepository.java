@@ -22,6 +22,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     private final MutableLiveData<Result> userByEmail;
     private final MutableLiveData<Result> currentUser;
     private final MutableLiveData<Result> emailSent;
+    private final MutableLiveData<Result> currentUserPropic;
 
     public UserRepository(BaseUserLocalDataSource userLocalDataSource,
                           BaseUserRemoteDataSource userRemoteDataSource,
@@ -37,6 +38,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         userByEmail = new MutableLiveData<>();
         currentUser = new MutableLiveData<>();
         emailSent = new MutableLiveData<>();
+        currentUserPropic = new MutableLiveData<>();
     }
 
     @Override
@@ -130,6 +132,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return currentUser;
     }
 
+    @Override
+    public MutableLiveData<Result> getCurrentUserPropic() {
+        userRemoteDataSource.getImageByUserId(authenticationDataSource.getCurrentUserUID());
+        return currentUserPropic;
+    }
 
 
     // CALLBACK
@@ -182,6 +189,16 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public void onGetUserByEmailFailure(Exception exception) {
         userByEmail.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
+
+    @Override
+    public void onGetCurrentUserPropicSuccess(Uri uri) {
+        currentUserPropic.postValue(new Result.SingleImageReadFromRemote(uri));
+    }
+
+    @Override
+    public void onGetCurrentUserPropicFailure(Exception e) {
+        currentUserPropic.postValue(new Result.Error(e.getMessage()));
     }
 
     @Override

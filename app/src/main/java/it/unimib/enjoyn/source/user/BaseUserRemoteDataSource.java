@@ -33,4 +33,6 @@ public abstract class BaseUserRemoteDataSource {
     public abstract void updateProfileConfigurationStatus(String uid, Boolean status);
 
     public abstract void updateCategoriesSelectionStatus(String uid, Boolean status);
+
+    public abstract void getImageByUserId(String userID);
 }

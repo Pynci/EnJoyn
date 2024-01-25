@@ -22,4 +22,6 @@ public interface IUserRepository {
     MutableLiveData<Result> updateEmailVerificationStatus();
     MutableLiveData<Result> updateProfileConfigurationStatus();
     MutableLiveData<Result> updateCategoriesSelectionStatus();
+
+    MutableLiveData<Result> getCurrentUserPropic();
 }

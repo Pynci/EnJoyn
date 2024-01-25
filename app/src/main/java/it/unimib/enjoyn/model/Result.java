@@ -151,4 +151,17 @@ public abstract class Result {
             return message;
         }
     }
+
+    public static final class SingleImageReadFromRemote extends Result{
+        private final Uri uri;
+
+        public  SingleImageReadFromRemote(Uri uri) {
+
+            this.uri = uri;
+        }
+
+        public Uri getUri() {
+            return uri;
+        }
+    }
 }

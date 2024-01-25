@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 
 public class UserViewModel extends ViewModel {
@@ -57,6 +58,10 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<Result> setUserPropic(Uri uri) {
         return userRepository.updatePropic(uri);
+    }
+
+    public MutableLiveData<Result> getUserPropic() {
+        return userRepository.getCurrentUserPropic();
     }
 
     public MutableLiveData<Result> setUserNameAndSurname(String name, String surname) {

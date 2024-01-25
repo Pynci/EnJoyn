@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.source.user;
 
+import android.net.Uri;
+
 import it.unimib.enjoyn.model.User;
 
 public interface UserCallback {
@@ -19,4 +21,7 @@ public interface UserCallback {
     void onLocalUserInsertionSuccess(User user);
     void onGetUserByUsernameFailure(Exception exception);
     void onGetUserByEmailFailure(Exception exception);
+
+    void onGetCurrentUserPropicSuccess(Uri uri);
+    void onGetCurrentUserPropicFailure(Exception e);
 }
