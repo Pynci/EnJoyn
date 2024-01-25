@@ -8,6 +8,10 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import android.util.Log;
 
+import com.mapbox.search.result.SearchSuggestion;
+
+import java.util.List;
+
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
 
@@ -20,8 +24,8 @@ public class EventViewModel extends ViewModel {
     private final MapRepository mapRepository;
     private MutableLiveData<Result> weatherListLiveData;
 
-    private MutableLiveData<Result> mapListLiveData;
-
+    private MutableLiveData<Result> mapSuggestionListLiveData;
+    private MutableLiveData<Result> mapSearchLiveData;
 
     public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository, MapRepository mapRepository) {
         this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
@@ -132,16 +136,28 @@ public class EventViewModel extends ViewModel {
     //TODO per quando ricerchi dalla barra
     public MutableLiveData<Result> getMapSuggestion(String searchBarText){
         Log.d("API map", "dentro getMap su viewModel");
-        if (mapListLiveData == null){
-            fetchMapSuggestion(searchBarText);
-        }
-        return mapListLiveData;
+       // if (mapSuggestionListLiveData == null){
+           return  mapRepository.fetchMapSu(searchBarText);
+        //fetchMapSuggestion(searchBarText);
+        //}
+      //  return mapSuggestionListLiveData;
     }
 
     private void fetchMapSuggestion(String searchBarText){
         Log.d("API map", "dentro fetchMapSuggestion su viewModel");
-        mapListLiveData = mapRepository.fetchMapSu(searchBarText);
+        mapSuggestionListLiveData = mapRepository.fetchMapSu(searchBarText);
+    }
+    public MutableLiveData<Result> getMapSearch( List<SearchSuggestion> suggestion){
+        Log.d("API map", "dentro getMap su viewModel");
+        if (mapSearchLiveData == null){
+            fetchMapSearch(suggestion);
+        }
+        return mapSearchLiveData;
     }
 
+    private void fetchMapSearch(List<SearchSuggestion> suggestion ){
+        Log.d("API map", "dentro fetchMapSuggestion su viewModel");
+        mapSearchLiveData = mapRepository.fetchMapSearch(suggestion);
+    }
 
 }

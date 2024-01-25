@@ -9,11 +9,13 @@ import androidx.annotation.NonNull;
 import com.mapbox.search.ResponseInfo;
 import com.mapbox.search.SearchEngine;
 import com.mapbox.search.SearchEngineSettings;
+import com.mapbox.search.SearchMultipleSelectionCallback;
 import com.mapbox.search.SearchOptions;
 import com.mapbox.search.SearchSelectionCallback;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
@@ -24,12 +26,15 @@ public class MapRemoteDataSource {
     protected MapCallBack mapCallBack;
     private SearchEngine searchEngine;
 
+
     public void setMapCallBack(MapCallBack mapCallBack) {
         this.mapCallBack = mapCallBack;
     }
     final SearchOptions options = new SearchOptions.Builder()
             .limit(4)
             .build();
+
+
     public void getMapSuggestion(String searchBarText) {
         Log.d("API map", "dentro fetchMapSu su DATASOURCE");
         searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
@@ -40,6 +45,29 @@ public class MapRemoteDataSource {
 
     }
 
+    public void getMapSearch( List<SearchSuggestion> suggestion) {
+        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+        searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
+                new SearchEngineSettings(MAPBOX_DOWNLOADS_TOKEN)
+        );
+
+
+        searchEngine.select(suggestion, searchMultipleSelectionCallback);
+
+    }
+
+    SearchMultipleSelectionCallback searchMultipleSelectionCallback = new SearchMultipleSelectionCallback() {
+        @Override
+        public void onResult(@NonNull List<SearchSuggestion> list, @NonNull List<SearchResult> searchResult, @NonNull ResponseInfo responseInfo) {
+            mapCallBack.onSuccessSearchFromRemote(searchResult);
+        }
+
+        @Override
+        public void onError(@NonNull Exception e) {
+
+        }
+    };
+
     SearchSelectionCallback searchCallback = new SearchSelectionCallback() {
 
 
@@ -49,7 +77,9 @@ public class MapRemoteDataSource {
                 Log.i("SearchApiExample", "No suggestions found");
             } else {
                 Log.i("SearchApi", "Search suggestions: " + suggestions + "\nSelecting first...");
+
                 mapCallBack.onSuccessSuggestionFromRemote(suggestions);
+
             }
         }
 
@@ -61,17 +91,18 @@ public class MapRemoteDataSource {
 
         @Override
         public void onResults(@NonNull SearchSuggestion searchSuggestion, @NonNull List<SearchResult> list, @NonNull ResponseInfo responseInfo) {
-            //non serve
+            mapCallBack.onFailureFromRemote(new Exception(API_ERROR));
         }
 
         @Override
         public void onResult(@NonNull SearchSuggestion searchSuggestion, @NonNull SearchResult searchResult, @NonNull ResponseInfo responseInfo) {
-            if (searchResult != null) {
+           /* if (searchResult != null) {
+
                 mapCallBack.onSuccessSearchFromRemote(searchResult);
             } else {
+*/
 
 
-            }
         }
     };
 }

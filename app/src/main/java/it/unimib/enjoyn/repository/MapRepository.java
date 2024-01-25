@@ -18,10 +18,13 @@ public class MapRepository implements MapCallBack {
 
     private final MutableLiveData<Result> mapMutableLiveData;
 
+    private final MutableLiveData<Result> mapMutableSearchLiveData;
+
     private final MapRemoteDataSource mapRemoteDataSource;
 
     public MapRepository( MapRemoteDataSource mapRemoteDataSource) {
         this.mapMutableLiveData = new MutableLiveData<>();
+        this.mapMutableSearchLiveData = new MutableLiveData<>();
         this.mapRemoteDataSource = mapRemoteDataSource;
         mapRemoteDataSource.setMapCallBack(this);
     }
@@ -40,8 +43,16 @@ public class MapRepository implements MapCallBack {
     }
 
     @Override
-    public void onSuccessSearchFromRemote(SearchResult searchResult) {
+    public void onSuccessSearchFromRemote(List<SearchResult> searchResult) {
+        if (  mapMutableSearchLiveData.getValue() != null &&   mapMutableSearchLiveData.getValue().isSuccessful()) {
+            // List<SearchSuggestion> suggestions = ((Result.WeatherSuccess) mapMutableLiveData.getValue()).getData().getWeather();
 
+            Result.MapSearchSuccess result = new Result.MapSearchSuccess(searchResult);
+            mapMutableSearchLiveData.postValue(result);
+        } else {
+            Result.MapSearchSuccess result = new Result.MapSearchSuccess(searchResult);
+            mapMutableSearchLiveData.postValue(result);
+        }
     }
 
     @Override
@@ -55,5 +66,13 @@ public class MapRepository implements MapCallBack {
         mapRemoteDataSource.getMapSuggestion(searchBarText);
 
         return mapMutableLiveData;
+    }
+
+
+    public MutableLiveData<Result> fetchMapSearch( List<SearchSuggestion> suggestion) {
+        Log.d("API map", "dentro fetchMapSu su Reposity");
+        mapRemoteDataSource.getMapSearch(suggestion);
+
+        return mapMutableSearchLiveData;
     }
 }
