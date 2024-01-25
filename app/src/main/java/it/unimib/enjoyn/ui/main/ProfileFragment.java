@@ -15,12 +15,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
 import it.unimib.enjoyn.ui.viewmodels.CategoryViewModelFactory;
@@ -80,6 +82,9 @@ public class ProfileFragment extends Fragment {
         });
 
         ShapeableImageView propic = view.findViewById(R.id.fragmentProfile_imageView_propic);
+        TextView propicUsernmame = view.findViewById(R.id.fragmentProfile_textView_username);
+        TextView propicNameAndSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
+        TextView description = view.findViewById(R.id.fragmentProfile_textView_descriptionText);
 
         userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), result -> {
 
@@ -88,6 +93,18 @@ public class ProfileFragment extends Fragment {
                         .with(this.getContext())
                         .load(((Result.SingleImageReadFromRemote) result).getUri())
                         .into(propic);
+        });
+
+        userViewModel.getCurrentUser().observe(this.getViewLifecycleOwner(), result -> {
+
+            if(result.isSuccessful() && result instanceof Result.UserSuccess) {
+
+                User user = ((Result.UserSuccess) result).getData();
+
+                propicUsernmame.setText(user.getUsername());
+                propicNameAndSurname.setText(user.getName() + " " + user.getSurname());
+                description.setText(user.getDescription());
+            }
         });
     }
 }

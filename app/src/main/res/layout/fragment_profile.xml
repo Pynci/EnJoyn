@@ -11,14 +11,14 @@
         android:layout_height="match_parent">
 
         <ImageButton
-            android:id="@+id/fragmentProfile_imageButton_shareButton"
+            android:id="@+id/fragmentProfile_imageButton_logOut"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="48dp"
             android:layout_height="53dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:contentDescription="@string/ButtonShare"
-            android:src="@drawable/baseline_share_24"
+            android:src="@drawable/logout_svgrepo_com"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +32,7 @@
             android:text="@string/edit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.983"
-            app:layout_constraintStart_toEndOf="@+id/fragmentProfile_imageButton_shareButton"
+            app:layout_constraintStart_toEndOf="@+id/fragmentProfile_imageButton_logOut"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.card.MaterialCardView
