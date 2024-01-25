@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.mapbox.geojson.Point;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
 
@@ -61,9 +62,9 @@ public class MapRepository implements MapCallBack {
     }
 
 
-    public MutableLiveData<Result> fetchMapSu(String searchBarText) {
+    public MutableLiveData<Result> fetchMapSu(String searchBarText, Point selfLocation) {
         Log.d("API map", "dentro fetchMapSu su Reposity");
-        mapRemoteDataSource.getMapSuggestion(searchBarText);
+        mapRemoteDataSource.getMapSuggestion(searchBarText, selfLocation);
 
         return mapMutableLiveData;
     }

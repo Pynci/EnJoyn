@@ -8,6 +8,7 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import android.util.Log;
 
+import com.mapbox.geojson.Point;
 import com.mapbox.search.result.SearchSuggestion;
 
 import java.util.List;
@@ -134,19 +135,19 @@ public class EventViewModel extends ViewModel {
     }
 
     //TODO per quando ricerchi dalla barra
-    public MutableLiveData<Result> getMapSuggestion(String searchBarText){
+    public MutableLiveData<Result> getMapSuggestion(String searchBarText, Point selfLocation){
         Log.d("API map", "dentro getMap su viewModel");
        // if (mapSuggestionListLiveData == null){
-        return  mapRepository.fetchMapSu(searchBarText);
+        return  mapRepository.fetchMapSu(searchBarText, selfLocation);
         //fetchMapSuggestion(searchBarText);
         //}
       //  return mapSuggestionListLiveData;
     }
 
-    private void fetchMapSuggestion(String searchBarText){
+    /*private void fetchMapSuggestion(String searchBarText){
         Log.d("API map", "dentro fetchMapSuggestion su viewModel");
         mapSuggestionListLiveData = mapRepository.fetchMapSu(searchBarText);
-    }
+    }*/
     public MutableLiveData<Result> getMapSearch( List<SearchSuggestion> suggestion){
         return mapRepository.fetchMapSearch(suggestion);
 //        Log.d("API map", "dentro getMap su viewModel");

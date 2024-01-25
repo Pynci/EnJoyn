@@ -341,8 +341,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                     location.setLatitude(searchResultList.get(position).getCoordinate().latitude());
                     location.setLongitude(searchResultList.get(position).getCoordinate().longitude());
                     location.setName(searchResultList.get(position).getName());
+                    firstTime= false;
                     searchBar.setText( searchResultList.get(position).getName());
                     suggestionListView.setVisibility(View.GONE);
+
                     eventSelectionPoint();
                     //clickSuggestion = true;
                     InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -368,7 +370,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                         suggestions = new ArrayList<>();
                         //searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
                         Log.d("TAH", "ASJBDIJAHBNSDHJKABSDHJBASJHDBAUISHEIJQWIEJAJSND");
-                        eventViewModel.getMapSuggestion(s.toString()).observe(getViewLifecycleOwner(), suggestionObserver);
+                        eventViewModel.getMapSuggestion(s.toString(), selfLocation).observe(getViewLifecycleOwner(), suggestionObserver);
                                 //}
 
                     } else {

@@ -6,12 +6,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.mapbox.geojson.Point;
 import com.mapbox.search.ResponseInfo;
 import com.mapbox.search.SearchEngine;
 import com.mapbox.search.SearchEngineSettings;
 import com.mapbox.search.SearchMultipleSelectionCallback;
 import com.mapbox.search.SearchOptions;
 import com.mapbox.search.SearchSelectionCallback;
+import com.mapbox.search.common.IsoCountryCode;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
 
@@ -30,17 +32,18 @@ public class MapRemoteDataSource {
     public void setMapCallBack(MapCallBack mapCallBack) {
         this.mapCallBack = mapCallBack;
     }
-    final SearchOptions options = new SearchOptions.Builder()
-            .limit(4)
-            .build();
 
 
-    public void getMapSuggestion(String searchBarText) {
+
+    public void getMapSuggestion(String searchBarText, Point selfLocation) {
         Log.d("API map", "dentro fetchMapSu su DATASOURCE");
         searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
                 new SearchEngineSettings(MAPBOX_DOWNLOADS_TOKEN)
         );
-
+        final SearchOptions options = new SearchOptions.Builder()
+                .limit(4)
+                .proximity(selfLocation)
+                .build();
         searchEngine.search(searchBarText, options, searchCallback);
 
     }
