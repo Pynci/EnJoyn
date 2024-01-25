@@ -22,17 +22,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/fragmentProfile_imageView_pictureUser"
-            android:layout_width="164dp"
-            android:layout_height="170dp"
-            android:layout_marginTop="24dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_imageButton_shareButton"
-            app:srcCompat="@drawable/baseline_account_circle_24" />
-
         <Button
             android:id="@+id/fragmentProfile_textButton_editProfile"
             style="@style/Widget.Material3.Button.TextButton"
@@ -46,25 +35,62 @@
             app:layout_constraintStart_toEndOf="@+id/fragmentProfile_imageButton_shareButton"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/profileFragment_cardView_propic"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="300dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_textButton_editProfile">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/propicDescriptionConfiguration_imageView_propic"
+                    style="@style/circleImageView"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:contentDescription="@string/propic"
+                    android:tintMode="src_atop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/baseline_account_circle_24" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView
             android:id="@+id/fragmentProfile_textView_username"
-            android:layout_width="150dp"
+            style="@style/Widget.MaterialComponents.TextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/username"
             android:textAlignment="center"
             android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="@+id/fragmentProfile_textView_nameSurname"
-            app:layout_constraintStart_toStartOf="@+id/fragmentProfile_textView_nameSurname"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_imageView_pictureUser" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileFragment_cardView_propic" />
 
         <TextView
             android:id="@+id/fragmentProfile_textView_nameSurname"
+            style="@style/Widget.MaterialComponents.TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
-            android:hint="@string/NameSurname"
+            android:text="@string/nameSurname"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +111,6 @@
                 android:layout_width="321dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
@@ -93,6 +118,40 @@
                 android:textSize="20sp" />
 
         </androidx.cardview.widget.CardView>
+
+        <ListView
+            android:layout_width="409dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button" />
+
+        <Button
+            android:id="@+id/button"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_cardView_description" />
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/Widget.MaterialComponents.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/interests"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_cardView_description" />
 
         <!--
         <ViewSwitcher
