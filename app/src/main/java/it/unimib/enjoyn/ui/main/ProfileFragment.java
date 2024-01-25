@@ -1,5 +1,6 @@
 package it.unimib.enjoyn.ui.main;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,10 +17,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
@@ -29,6 +33,7 @@ import it.unimib.enjoyn.ui.viewmodels.CategoryViewModelFactory;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
+import it.unimib.enjoyn.util.SnackbarBuilder;
 
 public class ProfileFragment extends Fragment {
 
@@ -85,6 +90,8 @@ public class ProfileFragment extends Fragment {
         TextView propicUsernmame = view.findViewById(R.id.fragmentProfile_textView_username);
         TextView propicNameAndSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
         TextView description = view.findViewById(R.id.fragmentProfile_textView_descriptionText);
+        Button logout = view.findViewById(R.id.fragmentProfile_imageButton_logOut);
+        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), result -> {
 
@@ -105,6 +112,23 @@ public class ProfileFragment extends Fragment {
                 propicNameAndSurname.setText(user.getName() + " " + user.getSurname());
                 description.setText(user.getDescription());
             }
+        });
+
+        logout.setOnClickListener(v -> {
+
+            userViewModel.signOut().observe(this.getViewLifecycleOwner(), result -> {
+                if(result.isSuccessful()) {
+                    Navigation
+                            .findNavController(view)
+                            .navigate(R.id.action_profileFragment_to_authActivity);
+                }
+                else{
+                    String text = "Impossibile completare l'operazione richiesta";
+                    Snackbar snackbar;
+                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                    snackbar.show();
+                }
+            });
         });
     }
 }
