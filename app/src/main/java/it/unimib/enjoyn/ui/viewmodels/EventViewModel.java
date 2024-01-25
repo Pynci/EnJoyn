@@ -137,7 +137,7 @@ public class EventViewModel extends ViewModel {
     public MutableLiveData<Result> getMapSuggestion(String searchBarText){
         Log.d("API map", "dentro getMap su viewModel");
        // if (mapSuggestionListLiveData == null){
-           return  mapRepository.fetchMapSu(searchBarText);
+        return  mapRepository.fetchMapSu(searchBarText);
         //fetchMapSuggestion(searchBarText);
         //}
       //  return mapSuggestionListLiveData;
@@ -148,16 +148,17 @@ public class EventViewModel extends ViewModel {
         mapSuggestionListLiveData = mapRepository.fetchMapSu(searchBarText);
     }
     public MutableLiveData<Result> getMapSearch( List<SearchSuggestion> suggestion){
-        Log.d("API map", "dentro getMap su viewModel");
-        if (mapSearchLiveData == null){
-            fetchMapSearch(suggestion);
-        }
-        return mapSearchLiveData;
+        return mapRepository.fetchMapSearch(suggestion);
+//        Log.d("API map", "dentro getMap su viewModel");
+//        if (mapSearchLiveData == null){
+//            fetchMapSearch(suggestion);
+//        }
+//        return mapSearchLiveData;
     }
-
-    private void fetchMapSearch(List<SearchSuggestion> suggestion ){
-        Log.d("API map", "dentro fetchMapSuggestion su viewModel");
-        mapSearchLiveData = mapRepository.fetchMapSearch(suggestion);
-    }
+//
+//    private void fetchMapSearch(List<SearchSuggestion> suggestion ){
+//        Log.d("API map", "dentro fetchMapSuggestion su viewModel");
+//        mapSearchLiveData = mapRepository.fetchMapSearch(suggestion);
+//    }
 
 }
