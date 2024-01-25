@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.ui.main;
 
+import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +30,7 @@ import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 
 public class DiscoverRecyclerViewFragment extends Fragment {
@@ -120,14 +125,13 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                         eventsRecyclerViewAdapter.notifyDataSetChanged();
 
                     } else {
-                        /*
+
                         ErrorMessagesUtil errorMessagesUtil =
                                 new ErrorMessagesUtil(requireActivity().getApplication());
                         Snackbar.make(view, errorMessagesUtil.
-                                        getErrorMessage(((Result.Error) result).getMessage()),
+                                        getEventErrorMessage(VIEW_MODEL_ERROR),
                                 Snackbar.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                        */
+
                     }
                 });
     }

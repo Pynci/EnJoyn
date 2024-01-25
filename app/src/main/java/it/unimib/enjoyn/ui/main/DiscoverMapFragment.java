@@ -4,6 +4,8 @@ import static com.mapbox.maps.plugin.animation.CameraAnimationsUtils.getCamera;
 import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
 import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
+import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -20,6 +22,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -81,7 +84,9 @@ import it.unimib.enjoyn.adapter.SuggestionListAdapter;
 import it.unimib.enjoyn.databinding.FragmentDiscoverMapBinding;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 
 public class DiscoverMapFragment extends Fragment implements PermissionsListener {
@@ -91,6 +96,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     private FragmentDiscoverMapBinding fragmentDiscoverMapBinding;
 
     List<Event> eventList;
+    Event event;
     MapView mapView;
     public EventLocation location;
     List<EventLocation> locationList;
@@ -140,6 +146,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+        eventList = new ArrayList<>();
     }
 
     @Override
@@ -249,6 +256,20 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
        bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
         //Todo logica eventi
+        eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(), result -> {
+
+            if(result.isSuccessful()){
+                this.eventList.clear();
+                this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
+            } else {
+                ErrorMessagesUtil errorMessagesUtil =
+                        new ErrorMessagesUtil(requireActivity().getApplication());
+                Snackbar.make(view, errorMessagesUtil.
+                                getEventErrorMessage(VIEW_MODEL_ERROR),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
         Point point = Point.fromLngLat(-122.08497461176863, 37.42241542518461);
         PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER)
                 .withPoint(point)
@@ -273,6 +294,12 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             pointAnnotationManager.addClickListener(new OnPointAnnotationClickListener() {
                 @Override
                 public boolean onAnnotationClick(PointAnnotation annotation) {
+                    /*for(int i = 0; i < eventList.size(); i++){
+
+                    }*/
+                    event = eventList.get(0);
+                    DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
+                    Navigation.findNavController(view).navigate(action);
                     annotation.getPoint().latitude();
                     annotation.getPoint().longitude();
                     Snackbar.make(view, "va point: LAT: "+annotation.getPoint().latitude()+" LONG: "+annotation.getPoint().longitude(), Snackbar.LENGTH_SHORT).show();

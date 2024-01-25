@@ -96,4 +96,13 @@
             app:argType="string"
             android:defaultValue="fromProfile" />
     </fragment>
+    <fragment
+        android:id="@+id/discoverMapFragment2"
+        android:name="it.unimib.enjoyn.ui.main.DiscoverMapFragment"
+        android:label="fragment_discover_map"
+        tools:layout="@layout/fragment_discover_map" >
+        <action
+            android:id="@+id/action_discoverMapFragment2_to_discoverSingleEvent"
+            app:destination="@id/discoverSingleEvent" />
+    </fragment>
 </navigation>
