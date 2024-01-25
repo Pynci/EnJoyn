@@ -17,7 +17,8 @@ public abstract class Result {
                 || this instanceof CategorySuccess
                 || this instanceof ImagesReadFromRemote
                 || this instanceof EventSuccess
-                || this instanceof WeatherSuccess;
+                || this instanceof WeatherSuccess
+                || this instanceof SingleImageReadFromRemote;
     }
 
 

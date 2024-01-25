@@ -178,7 +178,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
 
         StorageReference imageref = firebaseStorage.getReference()
                 .child("user_images")
-                .child(userId+".jpg");
+                .child(userId);
 
         imageref
                 .getDownloadUrl()
