@@ -34,9 +34,12 @@ import com.mapbox.geojson.Point;
 import com.mapbox.maps.CameraOptions;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.Style;
+import com.mapbox.maps.extension.style.layers.properties.generated.TextAnchor;
 import com.mapbox.maps.plugin.LocationPuck2D;
 import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
 import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
+import com.mapbox.maps.plugin.annotation.OnAnnotationClickListener;
+import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
@@ -55,6 +58,7 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentDiscoverMapBinding;
+import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 
@@ -64,6 +68,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
     private FragmentDiscoverMapBinding fragmentDiscoverMapBinding;
 
+    List<Event> eventList;
     MapView mapView;
     public EventLocation location;
     List<EventLocation> locationList;
@@ -159,7 +164,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
 
-                fragmentDiscoverMapBinding.fragmentDiscoverMapTextInputLayoutSearchBar.setOnKeyListener(new View.OnKeyListener() {
+                /*fragmentDiscoverMapBinding.fragmentDiscoverMapTextInputLayoutSearchBar.setOnKeyListener(new View.OnKeyListener() {
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
                         if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                             fragmentDiscoverMapBinding.fragmentDiscoverMapListView.setVisibility(View.GONE);
@@ -169,7 +174,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                         }
                         return false;
                     }
-                });
+                });*/
 
             }
         });
@@ -179,8 +184,9 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
         PointAnnotationManager pointAnnotationManager = mapView != null ? mapView.createPointAnnotationManager() : null;*/
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
 // Impostazione delle opzioni per il layer del simbolo risultante
-        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions()
-                .withPoint(Point.fromLngLat(-122.09, 37.42))
+        Point point = Point.fromLngLat(-122.08497461176863, 37.42241542518461);
+        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER)
+                .withPoint(point)
                 .withIconImage(bitmap);
 
 // Aggiunta del pointAnnotation risultante alla mappa

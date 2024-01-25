@@ -102,7 +102,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     public EventLocation location;
     List<EventLocation> locationList;
     List<Double> distanceList;
-     private double distance;
+    private double distance;
     private SuggestionListAdapter suggestionListAdapter;
     private ListView suggestionListView;
     private double distanceSuggestionLatitude;
@@ -121,7 +121,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     boolean searchClicked = false;
     private PlaceAutocomplete placeAutocomplete;
-
     private SearchResultsView searchResultsView;
     private TextInputEditText searchBar;
     private PermissionsManager permissionsManager;
@@ -350,6 +349,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                        updateCamera(point, 0.0);
                        //todo mettere logica per pin sulla mappa da testare (riga 325)
 
+                       Log.d("coordinate", "long "+point.longitude()+" lat "+point.latitude());
                        pointAnnotationManager.deleteAll();
                        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
                                .withPoint(point);
@@ -555,6 +555,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 }
                 //newEventButton.setText(location.getName());
                 newEventButton.setText(location.getLatitude()+""+location.getLongitude());
+
             }
         }
 
