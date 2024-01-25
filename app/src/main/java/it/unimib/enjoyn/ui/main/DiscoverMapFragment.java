@@ -1,9 +1,11 @@
 package it.unimib.enjoyn.ui.main;
 
+import static com.mapbox.maps.plugin.animation.CameraAnimationsUtils.getCamera;
 import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
 import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,10 +21,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -32,14 +40,19 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.android.gestures.MoveGestureDetector;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.CameraOptions;
+import com.mapbox.maps.EdgeInsets;
 import com.mapbox.maps.MapView;
+import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
 import com.mapbox.maps.extension.style.layers.properties.generated.TextAnchor;
 import com.mapbox.maps.plugin.LocationPuck2D;
+import com.mapbox.maps.plugin.animation.MapAnimationOptions;
+import com.mapbox.maps.plugin.annotation.Annotation;
 import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
 import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
 import com.mapbox.maps.plugin.annotation.OnAnnotationClickListener;
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotation;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
@@ -47,20 +60,29 @@ import com.mapbox.maps.plugin.gestures.OnMoveListener;
 import com.mapbox.maps.plugin.locationcomponent.LocationComponentPlugin;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener;
+import com.mapbox.search.ResponseInfo;
 import com.mapbox.search.SearchEngine;
 import com.mapbox.search.SearchEngineSettings;
 import com.mapbox.search.SearchOptions;
+import com.mapbox.search.SearchSelectionCallback;
+import com.mapbox.search.autocomplete.PlaceAutocomplete;
+import com.mapbox.search.common.AsyncOperationTask;
+import com.mapbox.search.result.SearchResult;
+import com.mapbox.search.result.SearchSuggestion;
 import com.mapbox.search.ui.view.CommonSearchViewConfiguration;
 import com.mapbox.search.ui.view.SearchResultsView;
 
-import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.adapter.SuggestionListAdapter;
 import it.unimib.enjoyn.databinding.FragmentDiscoverMapBinding;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.util.SnackbarBuilder;
 
 public class DiscoverMapFragment extends Fragment implements PermissionsListener {
 
@@ -72,16 +94,27 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     MapView mapView;
     public EventLocation location;
     List<EventLocation> locationList;
-
     Point selfLocation;
     private SearchEngine searchEngine;
     Bitmap bitmap;
+    List<Double> distanceList;
+    private double distance;
+    private double distanceSuggestionLatitude;
+    private double distanceSuggestionsLongitude;
     Point eventCoordinates;
     FloatingActionButton positionButton;
     boolean positionChanged = true;
+    boolean firstTime = false;
+    boolean suggestionClicked = false;
     boolean searchClicked = false;
+    private ListView suggestionListView;
+    private SuggestionListAdapter suggestionListAdapter;
+    private SearchResultsView searchResultsView;
+    private PlaceAutocomplete placeAutocomplete;
+    private TextInputEditText searchBar;
     private PermissionsManager permissionsManager;
     private PointAnnotationManager pointAnnotationManager;
+    private AsyncOperationTask searchRequestTask;
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
         @Override
@@ -137,12 +170,19 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                 .proximity(selfLocation)
                 .build();
 
+        suggestionListView = view.findViewById(R.id.fragmentDiscoverMap_listView);
+        suggestionClicked = false;
+        searchClicked = false;
+        firstTime = false;
+        positionButton = view.findViewById(R.id.fragmentDiscoverMap_FloatingActionButton);
         selfLocation = null;
+        searchBar = view.findViewById(R.id.fragmentDiscoverMap_TextInputEditText_searchBar);
         mapView = view.findViewById(R.id.fragmentDiscoverMap_mapView);
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
         pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
-
+        placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
         fragmentDiscoverMapBinding.fragmentDiscoverMapSearchResultView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
+
 
         // immagine 3d scaricata, da usare per creare pin sulla mappa
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
@@ -150,6 +190,33 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION );
         }
+
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(firstTime) {
+                    if (s.length() > 3) { //&& !clickSuggestion
+                        searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
+                        suggestionListView.setVisibility(View.VISIBLE);
+                    } else {
+                        suggestionListView.setVisibility(View.GONE);
+                        //clickSuggestion = false;
+                    }
+                } else{
+                    firstTime=true;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
@@ -178,24 +245,130 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
             }
         });
-                /*List<Annotation> annotationApi = mapView != null ? mapView.getAnnotations() : null;
 
-// Creazione del PointAnnotationManager
-        PointAnnotationManager pointAnnotationManager = mapView != null ? mapView.createPointAnnotationManager() : null;*/
-        bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
-// Impostazione delle opzioni per il layer del simbolo risultante
+
+       bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
+        //Todo logica eventi
         Point point = Point.fromLngLat(-122.08497461176863, 37.42241542518461);
         PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER)
                 .withPoint(point)
                 .withIconImage(bitmap);
 
-// Aggiunta del pointAnnotation risultante alla mappa
+        if (pointAnnotationManager != null) {
+            pointAnnotationManager.create(pointAnnotationOptions);
+        }
+
+        Point point2 = Point.fromLngLat(-122.08564492453274, 37.42158123915911);
+        pointAnnotationOptions.withTextAnchor(TextAnchor.CENTER)
+                .withPoint(point2)
+                .withIconImage(bitmap);
+
         if (pointAnnotationManager != null) {
             pointAnnotationManager.create(pointAnnotationOptions);
         }
 
 
+
+        if (pointAnnotationManager != null) {
+            pointAnnotationManager.addClickListener(new OnPointAnnotationClickListener() {
+                @Override
+                public boolean onAnnotationClick(PointAnnotation annotation) {
+                    annotation.getPoint().latitude();
+                    annotation.getPoint().longitude();
+                    Snackbar.make(view, "va point: LAT: "+annotation.getPoint().latitude()+" LONG: "+annotation.getPoint().longitude(), Snackbar.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+        }
+
     }
+
+    private final SearchSelectionCallback searchCallback = new SearchSelectionCallback() {
+
+        @Override
+        public void onSuggestions(@NonNull List<SearchSuggestion> suggestions, @NonNull ResponseInfo responseInfo) {
+            if (suggestions.isEmpty()) {
+                Log.i("SearchApiExample", "No suggestions found");
+            } else {
+                Log.i("SearchApi", "Search suggestions: " + suggestions + "\nSelecting first...");
+               /* if(searchClicked)
+                searchRequestTask = searchEngine.select(suggestions.get(0), this);*/
+                //searchResultsView.set(suggestions);
+
+
+                locationList = new ArrayList<>();
+                distanceList = new ArrayList<>();
+
+                for(int i = 0; i<suggestions.size(); i++){
+                    locationList.add(new EventLocation());
+                    locationList.get(i).setName(suggestions.get(i).getName());
+                    searchRequestTask = searchEngine.select(suggestions.get(i), searchCallback);
+                    distance = 100*(Math.sqrt(Math.pow(selfLocation.latitude()-distanceSuggestionLatitude,2) + Math.pow(selfLocation.longitude() -distanceSuggestionsLongitude,2)));
+                    distanceList.add(round(distance,1));
+                    //locationList.get(i).setLatitude(suggestions.get(i).getRequestOptions().getOptions());
+                    //locationList.get(i).setLongitude(suggestions.get(i).getRequestOptions().getOptions().getProximity().longitude());
+                }
+
+
+                suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList,  new SuggestionListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onSuggestionItemClick(EventLocation eventLocation, int position) {
+                        suggestionClicked = true;
+                        searchRequestTask = searchEngine.select(suggestions.get(position), searchCallback);
+
+                        searchBar.setText(suggestions.get(position).getName());
+                        suggestionListView.setVisibility(View.GONE);
+
+                        //clickSuggestion = true;
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    }
+                });
+                suggestionListView.setAdapter(suggestionListAdapter);
+            }
+            searchBar.setOnKeyListener(new View.OnKeyListener(){
+                public boolean onKey(View v, int keyCode, KeyEvent event){
+                    if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
+                    {
+                        searchClicked = true;
+                        searchRequestTask = searchEngine.select(suggestions.get(0), searchCallback);
+                        suggestionListView.setVisibility(View.GONE);
+
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
+
+        @Override
+        public void onResult(@NonNull SearchSuggestion suggestion, @NonNull SearchResult result, @NonNull ResponseInfo info) {
+            Log.i("SearchApie", "Search result: " + result);
+            if(suggestionClicked || searchClicked ) {
+                eventSelectionPoint(result);
+                suggestionClicked = false;
+                searchClicked = false;
+            }
+            distanceSuggestionLatitude = result.getCoordinate().latitude();
+            distanceSuggestionsLongitude = result.getCoordinate().longitude();
+
+            //Log.i("SearchApiExample", "Search result: " + location.getName());
+            //Log.i("SearchApiExample", "Search result: " + location.getLatitudeToString());
+            //Log.i("SearchApiExample", "Search result: " + location.getLongitude());
+        }
+
+        @Override
+        public void onResults(@NonNull SearchSuggestion suggestion, @NonNull List<SearchResult> results, @NonNull ResponseInfo responseInfo) {
+            Log.i("SearchApiExample", "Category search results: " + results);
+        }
+
+        @Override
+        public void onError(@NonNull Exception e) {
+            Log.i("SearchApiExample", "Search error: ", e);
+        }
+    };
+
+
 
     private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListener = new OnIndicatorBearingChangedListener() {
         @Override
@@ -210,7 +383,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                 mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
                 // getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
                 DiscoverMapFragment.this.selfLocation = point;
-                // updateCamera(selfLocation,0.0);
                 positionChanged = false;
             }
             else{
@@ -250,4 +422,33 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     public void onPermissionResult(boolean granted) {
 
     }
+    public static double round(double n, int decimals) {
+        return Math.floor(n * Math.pow(10, decimals)) / Math.pow(10, decimals);
+    }
+
+    public void eventSelectionPoint(SearchResult result){
+        if (result != null){
+            eventCoordinates = Point.fromLngLat(result.getCoordinate().longitude(),result.getCoordinate().latitude());
+            PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
+                    .withPoint(eventCoordinates);
+            pointAnnotationManager.create(pointAnnotationOptions);
+            updateCamera(eventCoordinates, 0.0);
+        }
+    }
+
+    private void updateCamera(Point point, Double bearing) {
+        MapAnimationOptions animationOptions = new MapAnimationOptions.Builder().duration(1000L).build();
+        CameraOptions cameraOptions = new CameraOptions.Builder().center(point).zoom(16.0).bearing(bearing).pitch(0.0)
+                .padding(new EdgeInsets(1000.0, 0.0, 0.0, 0.0)).build();
+
+        getCamera(mapView).easeTo(cameraOptions, animationOptions);
+    }
+    @Override
+    public void onDestroy() {
+        if (searchRequestTask != null) {
+            searchRequestTask.cancel();
+        }
+        super.onDestroy();
+    }
+
 }

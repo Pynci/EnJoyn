@@ -107,8 +107,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     private ListView suggestionListView;
     private double distanceSuggestionLatitude;
     private double distanceSuggestionsLongitude;
-
-
     Point selfLocation;
 
     Point eventCoordinates;
