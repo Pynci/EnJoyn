@@ -336,6 +336,15 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     event = eventList.get((int)annotation.getId());
                     eventItem.setVisibility(View.VISIBLE);
 
+                    eventItem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
+                            Navigation.findNavController(view).navigate(action);
+
+                        }
+                    });
+
                     //DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
                     //Navigation.findNavController(view).navigate(action);
                     annotation.getPoint().latitude();

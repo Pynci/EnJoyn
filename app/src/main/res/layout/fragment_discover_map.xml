@@ -21,11 +21,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:contentDescription="@string/Select"
-        android:layout_marginBottom="80dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="56dp"
+        android:contentDescription="@string/Select"
         android:src="@drawable/baseline_my_location_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentDiscoverMap_cardView_eventItem"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -88,10 +88,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="48dp"
         android:visibility="gone"
         app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/fragmentDiscoverMap_FloatingActionButton"
+        app:layout_constraintBottom_toBottomOf="@+id/fragmentDiscoverMap_mapView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
