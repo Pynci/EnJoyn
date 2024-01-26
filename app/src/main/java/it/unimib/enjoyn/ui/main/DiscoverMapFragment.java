@@ -192,7 +192,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
 
         // immagine 3d scaricata, da usare per creare pin sulla mappa
-        bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
+        //bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
         // Dichiarazione della variabile annotationApi
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION );
@@ -249,12 +249,26 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                         return false;
                     }
                 });*/
+                positionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // flyToCameraPosition(point);
+                        updateCamera(selfLocation, 0.0);
+                        locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
+                        locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
+                        getGestures(mapView).addOnMoveListener(onMoveListener);
+
+
+                        positionButton.hide();
+
+                    }
+                });
 
             }
         });
 
 
-       bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
+        bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
         //Todo logica eventi
         eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(), result -> {
 
@@ -288,6 +302,15 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             pointAnnotationManager.create(pointAnnotationOptions);
         }
 
+        Point point3 = Point.fromLngLat(11.436340722694553,46.28347051230523);
+        pointAnnotationOptions.withTextAnchor(TextAnchor.CENTER)
+                .withPoint(point3)
+                .withIconImage(bitmap);
+
+        if (pointAnnotationManager != null) {
+            pointAnnotationManager.create(pointAnnotationOptions);
+        }
+
 
 
         if (pointAnnotationManager != null) {
@@ -297,12 +320,12 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     /*for(int i = 0; i < eventList.size(); i++){
 
                     }*/
-                    event = eventList.get(0);
+                    event = eventList.get((int)annotation.getId());
                     DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
                     Navigation.findNavController(view).navigate(action);
                     annotation.getPoint().latitude();
                     annotation.getPoint().longitude();
-                    Snackbar.make(view, "va point: LAT: "+annotation.getPoint().latitude()+" LONG: "+annotation.getPoint().longitude(), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "va point: LAT: "+annotation.getPoint().latitude()+" LONG: "+annotation.getPoint().longitude()+ " ID "+annotation.getId(), Snackbar.LENGTH_SHORT).show();
                     return true;
                 }
             });
@@ -456,9 +479,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     public void eventSelectionPoint(SearchResult result){
         if (result != null){
             eventCoordinates = Point.fromLngLat(result.getCoordinate().longitude(),result.getCoordinate().latitude());
-            PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
-                    .withPoint(eventCoordinates);
-            pointAnnotationManager.create(pointAnnotationOptions);
             updateCamera(eventCoordinates, 0.0);
         }
     }
