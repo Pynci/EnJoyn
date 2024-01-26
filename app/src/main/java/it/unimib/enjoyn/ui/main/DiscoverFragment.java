@@ -78,7 +78,7 @@ public class DiscoverFragment extends Fragment {
         viewPager2 = view.findViewById(R.id.discoverFragment_viewPager);
         viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
         viewPager2.setAdapter(viewPagerAdapter);
-
+        viewPager2.setUserInputEnabled(false);
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {

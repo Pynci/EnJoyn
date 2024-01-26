@@ -17,155 +17,146 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-       <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/eventListItem_imageView_background"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:adjustViewBounds="true"
+                android:scaleType="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/img_0410" />
 
-           <androidx.cardview.widget.CardView
-               android:layout_width="363dp"
-               android:layout_height="wrap_content"
-               android:layout_marginTop="32dp"
-               app:cardBackgroundColor="@color/md_theme_dark_onPrimaryContainer"
-               app:cardCornerRadius="20dp"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/newEventFragment_guideline_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="20dp" />
 
-               <androidx.constraintlayout.widget.ConstraintLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/newEventFragment_guideline_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="20dp" />
 
-                   <androidx.constraintlayout.widget.Guideline
-                       android:id="@+id/newEventFragment_guideline_left"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:orientation="vertical"
-                       app:layout_constraintGuide_begin="20dp" />
+            <TextView
+                android:id="@+id/discoverSingleEvent_textView_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/ActivityName"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_background"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                   <androidx.constraintlayout.widget.Guideline
-                       android:id="@+id/newEventFragment_guideline_right"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:orientation="vertical"
-                       app:layout_constraintGuide_end="20dp" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Tag"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background" />
 
-                   <TextView
-                       android:id="@+id/discoverSingleEvent_textView_title"
-                       android:layout_width="325dp"
-                       android:layout_height="wrap_content"
-                       android:text="@string/ActivityName"
-                       android:textSize="30dp"
-                       android:textStyle="bold"
-                       app:layout_constraintBottom_toBottomOf="parent"
-                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintVertical_bias="0.095" />
+            <ImageView
+                android:id="@+id/people"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="peopleImage"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
+                app:srcCompat="@drawable/baseline_people_outline_24"
+                tools:src="@tools:sample/avatars" />
 
-                   <com.google.android.material.chip.Chip
-                       android:id="@+id/chip"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginTop="12dp"
-                       android:text="@string/Tag"
-                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                       app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_title" />
+            <TextView
+                android:id="@+id/discoverSingleEvent_textView_numberOfParticipants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/NumberOfParticipants"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/people"
+                app:layout_constraintEnd_toStartOf="@+id/people"
+                app:layout_constraintTop_toTopOf="@+id/people" />
 
-                   <ImageView
-                       android:id="@+id/people"
-                       android:layout_width="93dp"
-                       android:layout_height="96dp"
-                       app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
-                       app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_title"
-                       app:srcCompat="@drawable/baseline_people_outline_24"
-                       tools:src="@tools:sample/avatars" />
+            <TextView
+                android:id="@+id/discoverSingleEvent_textView_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
 
-                   <TextView
-                       android:id="@+id/discoverSingleEvent_textView_numberOfParticipants"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginTop="52dp"
-                       android:layout_marginEnd="8dp"
-                       android:layout_marginBottom="26dp"
-                       android:text="@string/NumberOfParticipants"
-                       android:textSize="30sp"
-                       app:layout_constraintBottom_toBottomOf="@+id/people"
-                       app:layout_constraintEnd_toStartOf="@+id/people"
-                       app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_title" />
+                android:text="@string/Date"
+                android:textSize="24sp"
+                app:drawableStartCompat="@drawable/baseline_calendar_month_24"
+                app:layout_constraintEnd_toStartOf="@+id/discoverSingleEvent_textView_hour"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/people" />
 
-                   <TextView
-                       android:id="@+id/discoverSingleEvent_textView_date"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginTop="16dp"
+            <TextView
+                android:id="@+id/discoverSingleEvent_textView_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/Time"
+                android:textSize="24sp"
+                app:drawableStartCompat="@drawable/baseline_access_time_24"
+                app:layout_constraintBaseline_toBaselineOf="@+id/discoverSingleEvent_textView_date"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
+                app:layout_constraintStart_toEndOf="@+id/discoverSingleEvent_textView_date" />
 
-                       android:text="@string/Date"
-                       android:textSize="24sp"
-                       app:drawableStartCompat="@drawable/baseline_calendar_month_24"
-                       app:layout_constraintEnd_toStartOf="@+id/discoverSingleEvent_textView_hour"
-                       app:layout_constraintHorizontal_chainStyle="packed"
-                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                       app:layout_constraintTop_toBottomOf="@+id/people" />
+            <TextView
+                android:id="@+id/discoverSingleEvent_textView_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/Street"
+                android:textSize="24sp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
 
-                   <TextView
-                       android:id="@+id/discoverSingleEvent_textView_hour"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginStart="8dp"
-                       android:text="@string/Time"
-                       android:textSize="24sp"
-                       app:drawableStartCompat="@drawable/baseline_access_time_24"
-                       app:layout_constraintBaseline_toBaselineOf="@+id/discoverSingleEvent_textView_date"
-                       app:layout_constraintStart_toEndOf="@+id/discoverSingleEvent_textView_date" />
+            <TextView
+                android:id="@+id/discoverSingleEvent_textView_description"
+                android:layout_width="325dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/Description"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_distance" />
 
-                   <TextView
-                       android:id="@+id/discoverSingleEvent_textView_place"
-                       android:layout_width="325dp"
-                       android:layout_height="wrap_content"
-                       android:layout_marginTop="20dp"
-                       android:text="@string/Street"
-                       android:textSize="24sp"
-                       app:layout_constraintHorizontal_chainStyle="packed"
-                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                       app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
+            <TextView
+                android:id="@+id/discoverSingleEvent_textView_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/km"
+                android:textSize="24sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/discoverSingleEvent_textView_place"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right" />
 
-                   <TextView
-                       android:id="@+id/discoverSingleEvent_textView_description"
-                       android:layout_width="325dp"
-                       android:layout_height="wrap_content"
-                       android:layout_marginTop="20dp"
-                       android:text="@string/Description"
-                       android:textSize="24sp"
-                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                       app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_distance" />
-
-                   <Button
-                       android:id="@+id/discoverSingleEvent_button_join"
-                       style="@style/Widget.Material3.Button.IconButton"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginTop="32dp"
-                       android:text="@string/Join"
-                       android:textSize="20sp"
-                       app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
-                       app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_description" />
-
-                   <TextView
-                       android:id="@+id/discoverSingleEvent_textView_distance"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_marginTop="20dp"
-                       android:drawableStart="@drawable/baseline_place_24"
-                       android:text="Distanza"
-                       android:textSize="24sp"
-                       app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                       app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_place" />
+            <Button
+                android:id="@+id/discoverSingleEvent_button_join"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/Join"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
+                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_description" />
 
 
-               </androidx.constraintlayout.widget.ConstraintLayout>
-           </androidx.cardview.widget.CardView>
 
 
-       </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>
