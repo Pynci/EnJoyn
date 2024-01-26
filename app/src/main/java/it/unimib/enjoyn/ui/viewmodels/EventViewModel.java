@@ -8,7 +8,14 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import android.util.Log;
 
+import com.mapbox.geojson.Point;
+import com.mapbox.search.QueryType;
+import com.mapbox.search.result.SearchSuggestion;
+
+import java.util.List;
+
 import it.unimib.enjoyn.repository.IWeatherRepository;
+import it.unimib.enjoyn.repository.MapRepository;
 
 public class EventViewModel extends ViewModel {
     private final IEventRepositoryWithLiveData eventRepositoryWithLiveData;
@@ -16,21 +23,16 @@ public class EventViewModel extends ViewModel {
     private MutableLiveData<Result> toDoEventListLiveData;
     private MutableLiveData<Result> favoriteEventListLiveData;
     private final IWeatherRepository weatherRepository;
+    private final MapRepository mapRepository;
     private MutableLiveData<Result> weatherListLiveData;
 
-    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData) {
-        this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
-        weatherRepository = null;
-    }
+    private MutableLiveData<Result> mapSuggestionListLiveData;
+    private MutableLiveData<Result> mapSearchLiveData;
 
-    public EventViewModel(IWeatherRepository iWeatherRepository) {
-        this.weatherRepository = iWeatherRepository;
-        eventRepositoryWithLiveData = null;
-    }
-
-    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository) {
+    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository, MapRepository mapRepository) {
         this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
         this.weatherRepository = iWeatherRepository;
+        this.mapRepository = mapRepository;
     }
 
     /**
@@ -132,4 +134,41 @@ public class EventViewModel extends ViewModel {
         Log.d("API weather", "dentro fetchWeather su viewModel");
         weatherListLiveData = weatherRepository.fetchWeather(latitude, longitude);
     }
+
+    //TODO per quando ricerchi dalla barra
+    public MutableLiveData<Result> getMapSuggestion(String searchBarText, Point selfLocation){
+        Log.d("API map", "dentro getMap su viewModel");
+       // if (mapSuggestionListLiveData == null){
+        return  mapRepository.fetchMapSu(searchBarText, selfLocation);
+        //fetchMapSuggestion(searchBarText);
+        //}
+      //  return mapSuggestionListLiveData;
+    }
+
+    /*private void fetchMapSuggestion(String searchBarText){
+        Log.d("API map", "dentro fetchMapSuggestion su viewModel");
+        mapSuggestionListLiveData = mapRepository.fetchMapSu(searchBarText);
+    }*/
+    public MutableLiveData<Result> getMapSearch( List<SearchSuggestion> suggestion){
+        return mapRepository.fetchMapSearch(suggestion);
+//        Log.d("API map", "dentro getMap su viewModel");
+//        if (mapSearchLiveData == null){
+//            fetchMapSearch(suggestion);
+//        }
+//        return mapSearchLiveData;
+    }
+    public MutableLiveData<Result> getMapReverseSearch(  Point point){
+        return mapRepository.fetchMapReverseSearch(point);
+//        Log.d("API map", "dentro getMap su viewModel");
+//        if (mapSearchLiveData == null){
+//            fetchMapSearch(suggestion);
+//        }
+//        return mapSearchLiveData;
+    }
+//
+//    private void fetchMapSearch(List<SearchSuggestion> suggestion ){
+//        Log.d("API map", "dentro fetchMapSuggestion su viewModel");
+//        mapSearchLiveData = mapRepository.fetchMapSearch(suggestion);
+//    }
+
 }

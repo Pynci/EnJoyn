@@ -2,6 +2,9 @@ package it.unimib.enjoyn.model;
 
 import android.net.Uri;
 
+import com.mapbox.search.result.SearchResult;
+import com.mapbox.search.result.SearchSuggestion;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,10 @@ public abstract class Result {
                 || this instanceof CategorySuccess
                 || this instanceof ImagesReadFromRemote
                 || this instanceof EventSuccess
-                || this instanceof WeatherSuccess;
+                || this instanceof WeatherSuccess
+                || this instanceof MapSuggestionSuccess
+                || this instanceof MapSearchSuccess
+                || this instanceof MapReverseSearchSuccess;
     }
 
 
@@ -60,6 +66,42 @@ public abstract class Result {
             return weatherResponse;
         }
     }
+
+    public static final class MapSuggestionSuccess extends Result{
+
+        private final List<SearchSuggestion> suggestions;
+
+        public MapSuggestionSuccess(List<SearchSuggestion> suggestions) {
+            this.suggestions = suggestions;
+        }
+        public List<SearchSuggestion> getData(){
+            return suggestions;
+        }
+    }
+    public static final class MapSearchSuccess extends Result{
+
+        private final List<SearchResult> searchResult ;
+
+        public MapSearchSuccess(List<SearchResult> searchResult) {
+            this.searchResult =  searchResult;
+        }
+        public List<SearchResult> getData(){
+            return searchResult;
+        }
+    }
+
+    public static final class MapReverseSearchSuccess extends Result{
+
+        private final SearchResult reverseSearchResult ;
+
+        public MapReverseSearchSuccess(SearchResult reverseSearchResult) {
+            this.reverseSearchResult =  reverseSearchResult;
+        }
+        public SearchResult getData(){
+            return reverseSearchResult;
+        }
+    }
+
 
     public static final class BooleanSuccess extends Result{
         private final boolean value;
