@@ -336,6 +336,16 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     event = eventList.get((int)annotation.getId());
                     eventItem.setVisibility(View.VISIBLE);
 
+                    fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
+                    fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
+                    fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
+                    fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getPlace());
+                    //calcolare distanza
+                    //fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumber());
+                    //fragmentDiscoverMapBinding.eventListItemImageViewEventImage.setImageURI(event.getImageUrl());
+                    //mettere immagine meteo
+
+
                     eventItem.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

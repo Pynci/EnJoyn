@@ -26,6 +26,7 @@
                 android:layout_width="438dp"
                 android:layout_height="199dp"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/background"
                 android:scaleType="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +39,7 @@
                 android:layout_height="41dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/ActivityName"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_background"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentDiscoverSingleEvent_materialCardView_eventImage"
@@ -68,6 +69,7 @@
                         android:id="@+id/imageView3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:contentDescription="@string/UserImageEvent"
                         app:srcCompat="@drawable/baseline_camera_alt_24" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -92,7 +94,7 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="16dp"
-                android:contentDescription="peopleImage"
+                android:contentDescription="@string/peopleNumber"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
                 app:srcCompat="@drawable/baseline_people_outline_24"
@@ -104,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="@string/NumberOfParticipants"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/people"
                 app:layout_constraintEnd_toStartOf="@+id/people"
                 app:layout_constraintTop_toTopOf="@+id/people"
@@ -117,7 +119,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/Date"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background" />
 
@@ -129,7 +131,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/Time"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
 

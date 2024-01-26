@@ -233,6 +233,7 @@
                 android:layout_height="43dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="12dp"
+                android:contentDescription="@string/peopleNumber"
                 android:src="@drawable/baseline_people_outline_24"
                 app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace" />

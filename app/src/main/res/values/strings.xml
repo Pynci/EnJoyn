@@ -112,4 +112,8 @@
     <string name="Location">località</string>
     <string name="km">km</string>
     <string name="save">Salva</string>
+    <string name="background">background</string>
+    <string name="image">image</string>
+    <string name="UserImageEvent">Immagine scelta dall\'utente per l\'evento</string>
+    <string name="peopleNumber">number of people</string>
 </resources>
