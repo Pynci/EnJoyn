@@ -109,10 +109,11 @@ public class ProfileFragment extends Fragment {
             if(result.isSuccessful() && result instanceof Result.UserSuccess) {
 
                 User user = ((Result.UserSuccess) result).getData();
-
-                propicUsernmame.setText(user.getUsername());
-                propicNameAndSurname.setText(user.getName() + " " + user.getSurname());
-                description.setText(user.getDescription());
+                if(user != null){
+                    propicUsernmame.setText(user.getUsername());
+                    propicNameAndSurname.setText(user.getName() + " " + user.getSurname());
+                    description.setText(user.getDescription());
+                }
             }
         });
 
@@ -120,9 +121,7 @@ public class ProfileFragment extends Fragment {
 
             userViewModel.signOut().observe(this.getViewLifecycleOwner(), result -> {
                 if(result.isSuccessful()) {
-                    Navigation
-                            .findNavController(view)
-                            .navigate(R.id.action_profileFragment_to_authActivity2);
+                    navigateTo(R.id.action_profileFragment_to_authActivity2, true,true);
                 }
                 else{
                     String text = "Impossibile completare l'operazione richiesta";
