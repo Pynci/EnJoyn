@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -59,6 +60,8 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotation;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
+import com.mapbox.maps.plugin.gestures.GesturesUtils;
+import com.mapbox.maps.plugin.gestures.OnMapClickListener;
 import com.mapbox.maps.plugin.gestures.OnMoveListener;
 import com.mapbox.maps.plugin.locationcomponent.LocationComponentPlugin;
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener;
@@ -121,6 +124,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     private PermissionsManager permissionsManager;
     private PointAnnotationManager pointAnnotationManager;
     private AsyncOperationTask searchRequestTask;
+    CardView eventItem;
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
         @Override
@@ -264,6 +268,14 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     }
                 });
 
+                GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
+                    @Override
+                    public boolean onMapClick(@NonNull Point point) {
+                        eventItem.setVisibility(View.GONE);
+                        return false;
+                    }
+                });
+
             }
         });
 
@@ -302,7 +314,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             pointAnnotationManager.create(pointAnnotationOptions);
         }
 
-        Point point3 = Point.fromLngLat(11.436340722694553,46.28347051230523);
+        Point point3 = Point.fromLngLat(11.436340722694551,46.28347051230523);
         pointAnnotationOptions.withTextAnchor(TextAnchor.CENTER)
                 .withPoint(point3)
                 .withIconImage(bitmap);
@@ -311,6 +323,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             pointAnnotationManager.create(pointAnnotationOptions);
         }
 
+        eventItem = view.findViewById(R.id.fragmentDiscoverMap_cardView_eventItem);
 
 
         if (pointAnnotationManager != null) {
@@ -321,17 +334,22 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
                     }*/
                     event = eventList.get((int)annotation.getId());
-                    DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
-                    Navigation.findNavController(view).navigate(action);
+                    eventItem.setVisibility(View.VISIBLE);
+
+                    //DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
+                    //Navigation.findNavController(view).navigate(action);
                     annotation.getPoint().latitude();
                     annotation.getPoint().longitude();
-                    Snackbar.make(view, "va point: LAT: "+annotation.getPoint().latitude()+" LONG: "+annotation.getPoint().longitude()+ " ID "+annotation.getId(), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "va point: LAT: "+annotation.getPoint().latitude()+" LONG: "+annotation.getPoint().longitude()+ " ID: "+annotation.getId(), Snackbar.LENGTH_SHORT).show();
                     return true;
                 }
             });
         }
 
     }
+
+
+
 
     private final SearchSelectionCallback searchCallback = new SearchSelectionCallback() {
 
