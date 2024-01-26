@@ -22,7 +22,8 @@ public abstract class Result {
                 || this instanceof EventSuccess
                 || this instanceof WeatherSuccess
                 || this instanceof MapSuggestionSuccess
-                || this instanceof MapSearchSuccess;
+                || this instanceof MapSearchSuccess
+                || this instanceof MapReverseSearchSuccess;
     }
 
 
@@ -88,6 +89,19 @@ public abstract class Result {
             return searchResult;
         }
     }
+
+    public static final class MapReverseSearchSuccess extends Result{
+
+        private final SearchResult reverseSearchResult ;
+
+        public MapReverseSearchSuccess(SearchResult reverseSearchResult) {
+            this.reverseSearchResult =  reverseSearchResult;
+        }
+        public SearchResult getData(){
+            return reverseSearchResult;
+        }
+    }
+
 
     public static final class BooleanSuccess extends Result{
         private final boolean value;

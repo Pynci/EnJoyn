@@ -12,6 +12,8 @@ public interface MapCallBack {
     void onSuccessSuggestionFromRemote( List<SearchSuggestion> suggestions);
 
     void onSuccessSearchFromRemote( List<SearchResult> searchResult);
+
+    void onSuccessReverseSearchFromRemote( SearchResult reverseSearchResult);
     void onFailureFromRemote(Exception exception);
 
 

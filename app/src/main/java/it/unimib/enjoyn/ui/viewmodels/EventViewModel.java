@@ -9,6 +9,7 @@ import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
 import android.util.Log;
 
 import com.mapbox.geojson.Point;
+import com.mapbox.search.QueryType;
 import com.mapbox.search.result.SearchSuggestion;
 
 import java.util.List;
@@ -150,6 +151,14 @@ public class EventViewModel extends ViewModel {
     }*/
     public MutableLiveData<Result> getMapSearch( List<SearchSuggestion> suggestion){
         return mapRepository.fetchMapSearch(suggestion);
+//        Log.d("API map", "dentro getMap su viewModel");
+//        if (mapSearchLiveData == null){
+//            fetchMapSearch(suggestion);
+//        }
+//        return mapSearchLiveData;
+    }
+    public MutableLiveData<Result> getMapReverseSearch(  Point point){
+        return mapRepository.fetchMapReverseSearch(point);
 //        Log.d("API map", "dentro getMap su viewModel");
 //        if (mapSearchLiveData == null){
 //            fetchMapSearch(suggestion);

@@ -5,9 +5,11 @@ import static it.unimib.enjoyn.util.Constants.API_ERROR;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-
 import com.mapbox.geojson.Point;
+import com.mapbox.search.QueryType;
 import com.mapbox.search.ResponseInfo;
+import com.mapbox.search.ReverseGeoOptions;
+import com.mapbox.search.SearchCallback;
 import com.mapbox.search.SearchEngine;
 import com.mapbox.search.SearchEngineSettings;
 import com.mapbox.search.SearchMultipleSelectionCallback;
@@ -29,34 +31,60 @@ public class MapRemoteDataSource {
     private SearchEngine searchEngine;
 
 
+
+
+
     public void setMapCallBack(MapCallBack mapCallBack) {
         this.mapCallBack = mapCallBack;
     }
 
-
-
-    public void getMapSuggestion(String searchBarText, Point selfLocation) {
-        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+    public void startSearchEngine(){
         searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
                 new SearchEngineSettings(MAPBOX_DOWNLOADS_TOKEN)
         );
+    }
+    public ReverseGeoOptions getReverseOption(Point point) {
+        List<QueryType> queryTypeList = new ArrayList<>();
+        queryTypeList.add(QueryType.POI);
+        queryTypeList.add(QueryType.ADDRESS);
+        final ReverseGeoOptions optionsReverse = new ReverseGeoOptions.Builder(point)
+                .limit(1)
+                .types(queryTypeList)
+                .build();
+
+        return  optionsReverse;
+    }
+
+    public SearchOptions getSearchOption(Point selfLocation) {
         final SearchOptions options = new SearchOptions.Builder()
                 .limit(4)
                 .proximity(selfLocation)
                 .build();
-        searchEngine.search(searchBarText, options, searchCallback);
+
+        return  options;
+    }
+
+    public void getMapSuggestion(String searchBarText, Point selfLocation) {
+        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+        startSearchEngine();
+
+        searchEngine.search(searchBarText, getSearchOption(selfLocation), searchCallback);
 
     }
 
     public void getMapSearch( List<SearchSuggestion> suggestion) {
         Log.d("API map", "dentro fetchMapSu su DATASOURCE");
-        searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
-                new SearchEngineSettings(MAPBOX_DOWNLOADS_TOKEN)
-        );
+        startSearchEngine();
+
 
 
         searchEngine.select(suggestion, searchMultipleSelectionCallback);
 
+    }
+    public void getMapReverseSearch( Point point) {
+        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+        startSearchEngine();
+        searchEngine.search( getReverseOption(point), searchReverseCallback);
     }
 
     SearchMultipleSelectionCallback searchMultipleSelectionCallback = new SearchMultipleSelectionCallback() {
@@ -105,6 +133,17 @@ public class MapRemoteDataSource {
             } else {
 */
 
+
+        }
+    };
+    private final SearchCallback searchReverseCallback = new SearchCallback() {
+        @Override
+        public void onResults(@NonNull List<SearchResult> list, @NonNull ResponseInfo responseInfo) {
+            mapCallBack.onSuccessReverseSearchFromRemote(list.get(0));
+        }
+
+        @Override
+        public void onError(@NonNull Exception e) {
 
         }
     };

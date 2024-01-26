@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mapbox.geojson.Point;
+import com.mapbox.search.QueryType;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
 
@@ -20,12 +21,13 @@ public class MapRepository implements MapCallBack {
     private final MutableLiveData<Result> mapMutableLiveData;
 
     private final MutableLiveData<Result> mapMutableSearchLiveData;
-
+    private final MutableLiveData<Result> mapMutableReverseSearchLiveData;
     private final MapRemoteDataSource mapRemoteDataSource;
 
     public MapRepository( MapRemoteDataSource mapRemoteDataSource) {
         this.mapMutableLiveData = new MutableLiveData<>();
         this.mapMutableSearchLiveData = new MutableLiveData<>();
+        this.mapMutableReverseSearchLiveData = new MutableLiveData<>();
         this.mapRemoteDataSource = mapRemoteDataSource;
         mapRemoteDataSource.setMapCallBack(this);
     }
@@ -57,6 +59,19 @@ public class MapRepository implements MapCallBack {
     }
 
     @Override
+    public void onSuccessReverseSearchFromRemote(SearchResult reverseSearchResult) {
+        if (  mapMutableReverseSearchLiveData.getValue() != null &&   mapMutableReverseSearchLiveData.getValue().isSuccessful()) {
+            // List<SearchSuggestion> suggestions = ((Result.WeatherSuccess) mapMutableLiveData.getValue()).getData().getWeather();
+
+            Result.MapReverseSearchSuccess result = new Result.MapReverseSearchSuccess(reverseSearchResult);
+            mapMutableReverseSearchLiveData.postValue(result);
+        } else {
+            Result.MapReverseSearchSuccess result = new Result.MapReverseSearchSuccess(reverseSearchResult);
+            mapMutableReverseSearchLiveData.postValue(result);
+        }
+    }
+
+    @Override
     public void onFailureFromRemote(Exception exception) {
 
     }
@@ -75,5 +90,12 @@ public class MapRepository implements MapCallBack {
         mapRemoteDataSource.getMapSearch(suggestion);
 
         return mapMutableSearchLiveData;
+    }
+
+    public MutableLiveData<Result> fetchMapReverseSearch( Point point) {
+        Log.d("API map", "dentro fetchMapSu su Reposity");
+        mapRemoteDataSource.getMapReverseSearch(point);
+
+        return mapMutableReverseSearchLiveData;
     }
 }

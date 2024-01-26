@@ -450,18 +450,25 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
                                .withPoint(point);
                        pointAnnotationManager.create(pointAnnotationOptions);
+                       eventViewModel.getMapReverseSearch(point).observe(getViewLifecycleOwner(), result -> {
+                            if(result.isSuccessful()) {
+                                SearchResult reverseSearchResult = ((Result.MapReverseSearchSuccess) result).getData();
 
-                        List<QueryType> queryTypeList= new ArrayList<>();
-                        queryTypeList.add(QueryType.POI);
-                       queryTypeList.add(QueryType.ADDRESS);
-                       final ReverseGeoOptions optionsReverse = new ReverseGeoOptions.Builder(point)
-                               .limit(1)
-                               .types(queryTypeList)
-                               .build();
-                       searchRequestTask = searchEngine.search(optionsReverse, searchReverseCallback);
+                                if (reverseSearchResult.getId().startsWith("ad")) {
+                                    if (reverseSearchResult.getAddress().getHouseNumber() != null) {
+                                        location.setName(reverseSearchResult.getName() + " " + reverseSearchResult.getAddress().getHouseNumber());
+                                    }
+                                } else {
+                                    location.setName(reverseSearchResult.getName());
+                                }
+                                newEventButton.setText(location.getName());
+
+                            }
+                       });
 
 
-                       //prova(point);
+
+
                        return false;
                    }
                });
