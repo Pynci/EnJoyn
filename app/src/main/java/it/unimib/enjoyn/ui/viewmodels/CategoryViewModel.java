@@ -36,4 +36,8 @@ public class CategoryViewModel extends ViewModel {
     public MutableLiveData<Result> setUserInterests() {
         return interestRepository.createUserInterests(categoriesHolder);
     }
+
+    public MutableLiveData<Result> getInterests() {
+        return interestRepository.getUserInterests();
+    }
 }

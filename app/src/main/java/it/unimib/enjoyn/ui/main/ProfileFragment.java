@@ -1,12 +1,14 @@
 package it.unimib.enjoyn.ui.main;
 
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -18,13 +20,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -91,7 +99,9 @@ public class ProfileFragment extends Fragment {
         TextView propicNameAndSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
         TextView description = view.findViewById(R.id.fragmentProfile_textView_descriptionText);
         ImageButton logout = view.findViewById(R.id.fragmentProfile_imageButton_logOut);
-        Button modifica = view.findViewById(R.id.fragmentProfile_textButton_editProfile);
+        Button modificaProfilo = view.findViewById(R.id.fragmentProfile_textButton_editProfile);
+        Button modificaInteressi = view.findViewById(R.id.fragmentProfile_textButton_EditIInterests);
+        ListView listView = view.findViewById(R.id.fragmentProfile_listView);
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -132,9 +142,50 @@ public class ProfileFragment extends Fragment {
             });
         });
 
-        modifica.setOnClickListener(v -> {
+        modificaProfilo.setOnClickListener(v -> {
             navigateTo(R.id.action_profileFragment_to_profileConfigurationFragment2, false, true);
         });
+
+        modificaInteressi.setOnClickListener(v -> {
+            navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, false);
+        });
+
+
+        Observer<Result> interestsObserver = result -> {
+            if (result.isSuccessful()) {
+                List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
+
+                categoryViewModel
+                        .getAllImages(categoryList)
+                        .observe(this.getViewLifecycleOwner(), result1 -> {
+
+
+                            if (result1 instanceof Result.ImagesReadFromRemote) {
+
+                                List<Uri> imagesNotSorted = ((Result.ImagesReadFromRemote) result1).getImagesUri();
+                                List<Uri> imagesSorted = new ArrayList<>();
+
+                                for (int i = 0; i < categoryList.size(); i++) {
+                                    for (int j = 0; j < imagesNotSorted.size(); j++) {
+
+                                        String tempUri = imagesNotSorted.get(j).toString();
+                                        String tempCategory = categoryList.get(i).getNome().toLowerCase();
+
+                                        if (tempUri.contains(tempCategory)) {
+                                            imagesSorted.add(imagesNotSorted.get(j));
+                                        }
+                                    }
+                                }
+
+                                CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
+                                        categoryList, imagesSorted);
+                                listView.setAdapter(customAdapter);
+                            }
+                        });
+            }
+        };
+
+        categoryViewModel.getInterests().observe(this.getViewLifecycleOwner(), interestsObserver);
     }
 
     private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {

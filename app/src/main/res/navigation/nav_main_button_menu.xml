@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_profileFragment_to_profileConfigurationFragment2"
             app:destination="@id/profileConfigurationFragment2" />
+        <action
+            android:id="@+id/action_profileFragment_to_categoriesSelectionFragment2"
+            app:destination="@id/categoriesSelectionFragment2" />
     </fragment>
     <fragment
         android:id="@+id/todo"
@@ -107,6 +110,15 @@
 
         <action
             android:id="@+id/action_profileConfigurationFragment2_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesSelectionFragment2"
+        android:name="it.unimib.enjoyn.ui.auth.CategoriesSelectionFragment"
+        android:label="fragment_categories_selection"
+        tools:layout="@layout/fragment_categories_selection" >
+        <action
+            android:id="@+id/action_categoriesSelectionFragment2_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

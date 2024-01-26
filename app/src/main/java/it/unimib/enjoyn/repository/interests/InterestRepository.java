@@ -18,17 +18,16 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class InterestRepository implements IInterestRepository, InterestsCallback {
 
-    private final IUserRepository userRepository;
     private final BaseAuthenticationDataSource authenticationDataSource;
     private final BaseInterestRemoteDataSource interestRemoteDataSource;
     private final BaseInterestLocalDataSource interestLocalDataSource;
     private final MutableLiveData<Result> createUserInterestsResult;
     private final MutableLiveData<Result> getCreateUserInterestsResult;
+    private final MutableLiveData<Result> userInterests;
 
     public InterestRepository(Application application, BaseInterestRemoteDataSource interestRemoteDataSource,
                               BaseInterestLocalDataSource interestLocalDataSource,
                               BaseAuthenticationDataSource authenticationDataSource) {
-        userRepository = ServiceLocator.getInstance().getUserRepository(application);
         this.authenticationDataSource = authenticationDataSource;
         this.interestRemoteDataSource = interestRemoteDataSource;
         this.interestLocalDataSource = interestLocalDataSource;
@@ -37,6 +36,7 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
         interestLocalDataSource.setInterestsCallback(this);
         createUserInterestsResult = new MutableLiveData<>();
         getCreateUserInterestsResult = new MutableLiveData<>();
+        userInterests = new MutableLiveData<>();
     }
 
     @Override
@@ -44,6 +44,12 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
         interestRemoteDataSource.storeUserInterests(categoriesHolder, authenticationDataSource.getCurrentUserUID());
         interestLocalDataSource.storeInterests(categoriesHolder.getCategories());
         return createUserInterestsResult;
+    }
+
+    @Override
+    public MutableLiveData<Result> getUserInterests() {
+        interestLocalDataSource.getAllCategories();
+        return userInterests;
     }
 
     @Override
@@ -58,12 +64,12 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
 
     @Override
     public void onSuccessGetInterestsFromLocal(List<Category> list) {
-        getCreateUserInterestsResult.postValue(new Result.CategorySuccess(list));
+        userInterests.postValue(new Result.CategorySuccess(list));
     }
 
     @Override
     public void onFailureGetInterestsFromLocal(Exception e) {
-        getCreateUserInterestsResult.postValue(new Result.Error(e.getMessage()));
+        interestRemoteDataSource.getUserInterests(authenticationDataSource.getCurrentUserUID());
     }
 
     @Override
@@ -74,5 +80,15 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
     @Override
     public void onFailureSaveOnLocal(Exception e) {
         //Al momento non serve fare nulla
+    }
+
+    @Override
+    public void onSuccessGetInterests(List<Category> categoryList) {
+        userInterests.postValue(new Result.CategorySuccess(categoryList));
+    }
+
+    @Override
+    public void onFailureGetInterests(String message) {
+        userInterests.postValue(new Result.Error(message));
     }
 }
