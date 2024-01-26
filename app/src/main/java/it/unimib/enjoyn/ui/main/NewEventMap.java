@@ -13,7 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultCallback;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -50,7 +50,6 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 import com.mapbox.maps.plugin.gestures.GesturesUtils;
-import com.mapbox.maps.plugin.gestures.OnMapClickListener;
 import com.mapbox.geojson.Point;
 
 
@@ -131,15 +130,12 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
 
-    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
-        @Override
-        public void onActivityResult(Boolean result) {
-            if(result){
-                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                        getString(R.string.eventRemoveToDo),
-                        Snackbar.LENGTH_LONG).show();
+    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
+        if(result){
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.eventRemoveToDo),
+                    Snackbar.LENGTH_LONG).show();
 
-            }
         }
     });
 
@@ -186,8 +182,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     }
 };
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -195,17 +190,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
     public NewEventMap() {
-        // Required empty public constructor
+
     }
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment newEventMap.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static NewEventMap newInstance(String param1, String param2) {
         NewEventMap fragment = new NewEventMap();
         Bundle args = new Bundle();
@@ -229,10 +216,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         fragmentNewEventMapBinding = FragmentNewEventMapBinding.inflate(inflater, container, false);
         return fragmentNewEventMapBinding.getRoot();
-        // return inflater.inflate(R.layout.fragment_new_event_map, container, false);
     }
 
     @Override
@@ -301,20 +286,17 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 }
             }
 
-            suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList,  new SuggestionListAdapter.OnItemClickListener() {
-                @Override
-                public void onSuggestionItemClick(EventLocation eventLocation, int position) {
+            suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList, (eventLocation, position) -> {
 
-                    location.setLatitude(searchResultList.get(position).getCoordinate().latitude());
-                    location.setLongitude(searchResultList.get(position).getCoordinate().longitude());
-                    location.setName(searchResultList.get(position).getName());
-                    firstTime= false;
-                    searchBar.setText( searchResultList.get(position).getName());
-                    suggestionListView.setVisibility(View.GONE);
-                    eventSelectionPoint();
-                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                }
+                location.setLatitude(searchResultList.get(position).getCoordinate().latitude());
+                location.setLongitude(searchResultList.get(position).getCoordinate().longitude());
+                location.setName(searchResultList.get(position).getName());
+                firstTime= false;
+                searchBar.setText( searchResultList.get(position).getName());
+                suggestionListView.setVisibility(View.GONE);
+                eventSelectionPoint();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             });
             suggestionListView.setAdapter(suggestionListAdapter);
             suggestionListView.setVisibility(View.VISIBLE);
@@ -354,100 +336,84 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION );
         }
 
-        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-            @Override
-            public void onStyleLoaded(@NonNull Style style) {
-                mapView.getMapboxMap().setCamera(new CameraOptions.Builder().zoom(16.0).build());
-                LocationComponentPlugin locationComponentPlugin = getLocationComponent(mapView);
-                locationComponentPlugin.setEnabled(true);
-                LocationPuck2D locationPuck2D = new LocationPuck2D();
-                locationPuck2D.setBearingImage(AppCompatResources.getDrawable(getContext(), R.drawable.baseline_place_24));
-                locationComponentPlugin.setLocationPuck(locationPuck2D);
+        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, style -> {
+            mapView.getMapboxMap().setCamera(new CameraOptions.Builder().zoom(16.0).build());
+            LocationComponentPlugin locationComponentPlugin = getLocationComponent(mapView);
+            locationComponentPlugin.setEnabled(true);
+            LocationPuck2D locationPuck2D = new LocationPuck2D();
+            locationPuck2D.setBearingImage(AppCompatResources.getDrawable(getContext(), R.drawable.baseline_place_24));
+            locationComponentPlugin.setLocationPuck(locationPuck2D);
+            locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
+            locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
+            getGestures(mapView).addOnMoveListener(onMoveListener);
+
+            searchBar.setOnKeyListener((v, keyCode, event) -> {
+                if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
+                {
+                    suggestionListView.setVisibility(View.GONE);
+                    location.setName(searchResultList.get(0).getName());
+                    location.setLatitude(searchResultList.get(0).getCoordinate().latitude());
+                    location.setLongitude(searchResultList.get(0).getCoordinate().longitude());
+                    eventSelectionPoint();
+                    return true;
+                }
+                return false;
+            });
+
+
+
+            positionButton.setOnClickListener(v -> {
+                // flyToCameraPosition(point);
+                updateCamera(selfLocation);
                 locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
+                positionButton.hide();
+            });
 
-                searchBar.setOnKeyListener(new View.OnKeyListener(){
-                    public boolean onKey(View v, int keyCode, KeyEvent event){
-                        if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
-                        {
-                            suggestionListView.setVisibility(View.GONE);
-                            searchClicked=true;
-                            eventSelectionPoint();
-
-                            return true;
-                        }
-                        return false;
-                    }
-                });
+          GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), point -> {
+              location.setLatitude(point.latitude());
+              location.setLongitude(point.longitude());
+              updateCamera(point);
 
 
+              pointAnnotationManager.deleteAll();
+              PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
+                      .withPoint(point);
+              pointAnnotationManager.create(pointAnnotationOptions);
+              eventViewModel.getMapReverseSearch(point).observe(getViewLifecycleOwner(), result -> {
+                   if(result.isSuccessful()) {
+                       SearchResult reverseSearchResult = ((Result.MapReverseSearchSuccess) result).getData();
 
-                positionButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // flyToCameraPosition(point);
-                        updateCamera(selfLocation);
-                        locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
-                        locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
-                        getGestures(mapView).addOnMoveListener(onMoveListener);
-                        positionButton.hide();
-                    }
-                });
+                       if (reverseSearchResult.getId().startsWith("ad")) {
+                           if (reverseSearchResult.getAddress().getHouseNumber() != null) {
+                               location.setName(reverseSearchResult.getName() + " " + reverseSearchResult.getAddress().getHouseNumber());
+                           }
+                       } else {
+                           location.setName(reverseSearchResult.getName());
+                       }
+                       newEventButton.setText(location.getName());
 
-              GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
-                   @Override
-                   public boolean onMapClick(@NonNull Point point) {
-                       location.setLatitude(point.latitude());
-                       location.setLongitude(point.longitude());
-                       updateCamera(point);
-                       //todo mettere logica per pin sulla mappa da testare (riga 325)
-
-                       pointAnnotationManager.deleteAll();
-                       PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
-                               .withPoint(point);
-                       pointAnnotationManager.create(pointAnnotationOptions);
-                       eventViewModel.getMapReverseSearch(point).observe(getViewLifecycleOwner(), result -> {
-                            if(result.isSuccessful()) {
-                                SearchResult reverseSearchResult = ((Result.MapReverseSearchSuccess) result).getData();
-
-                                if (reverseSearchResult.getId().startsWith("ad")) {
-                                    if (reverseSearchResult.getAddress().getHouseNumber() != null) {
-                                        location.setName(reverseSearchResult.getName() + " " + reverseSearchResult.getAddress().getHouseNumber());
-                                    }
-                                } else {
-                                    location.setName(reverseSearchResult.getName());
-                                }
-                                newEventButton.setText(location.getName());
-
-                            }
-                       });
-                       return false;
                    }
-               });
+              });
+              return false;
+          });
 
 
-                newEventButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            newEventButton.setOnClickListener(v -> {
 
-                        if(location.getLongitude() != 0.0 && location.getLatitude() != 0.0 && location.getName() != null) {
-                            NewEventMapDirections.ActionNewEventMapToNewEventFragment action =
-                                    NewEventMapDirections.actionNewEventMapToNewEventFragment(location);
-                            Navigation.findNavController(view).navigate(action);
-                        } else {
-                            ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
-                            Snackbar.make(view, errorMessagesUtil.getMapErrorMessage(EMPTY_LOCATION), Snackbar.LENGTH_LONG).show();
-                        }
-                        //getParentFragmentManager().popBackStackImmediate();
-                    }
-                });
+                if(location.getLongitude() != 0.0 && location.getLatitude() != 0.0 && location.getName() != null) {
+                    NewEventMapDirections.ActionNewEventMapToNewEventFragment action =
+                            NewEventMapDirections.actionNewEventMapToNewEventFragment(location);
+                    Navigation.findNavController(view).navigate(action);
+                } else {
+                    ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
+                    Snackbar.make(view, errorMessagesUtil.getMapErrorMessage(EMPTY_LOCATION), Snackbar.LENGTH_LONG).show();
+                }
+            });
 
-            }
         });
     }
-
-
 
     private void updateCamera(Point point) {
         MapAnimationOptions animationOptions = new MapAnimationOptions.Builder().duration(1000L).build();
@@ -456,10 +422,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
         getCamera(mapView).easeTo(cameraOptions, animationOptions);
     }
-
-
-
-
 
     @Override
     public void onExplanationNeeded(@NonNull List<String> list) {
@@ -471,19 +433,12 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (permissionsManager != null) {
             permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-
-
-
-
-
 
     public void eventSelectionPoint(){
         if (location != null && !Objects.equals(location.getName(), "")){
