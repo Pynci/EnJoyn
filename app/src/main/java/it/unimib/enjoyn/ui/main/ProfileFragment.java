@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -17,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -91,6 +91,7 @@ public class ProfileFragment extends Fragment {
         TextView propicNameAndSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
         TextView description = view.findViewById(R.id.fragmentProfile_textView_descriptionText);
         ImageButton logout = view.findViewById(R.id.fragmentProfile_imageButton_logOut);
+        Button modifica = view.findViewById(R.id.fragmentProfile_textButton_editProfile);
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -131,5 +132,19 @@ public class ProfileFragment extends Fragment {
                 }
             });
         });
+
+        modifica.setOnClickListener(v -> {
+            navigateTo(R.id.action_profileFragment_to_profileConfigurationFragment2, false, true);
+        });
+    }
+
+    private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromProfileFragment", fromProfileFragment);
+        Navigation.findNavController(requireView()).navigate(destination, bundle);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
     }
 }

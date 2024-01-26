@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -31,6 +32,7 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
@@ -77,6 +79,7 @@ public class ProfileConfigurationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceBundle){
         super.onViewCreated(view, savedInstanceBundle);
 
+        boolean isFromProfileFragment = getArguments().getBoolean("fromProfileFragment");
         ShapeableImageView userImage = view.findViewById(R.id.fragmentProfile_imageView_propic);
         Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
         Button skip = view.findViewById(R.id.propicDescriptionConfiguration_button_skip);
@@ -86,6 +89,10 @@ public class ProfileConfigurationFragment extends Fragment {
         TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
 
         userViewModel.updateProfileConfigurationStatus();
+
+        if(isFromProfileFragment) {
+            skip.setText(R.string.annulla);
+        }
 
         observerAddOptionalData = result -> {
 
@@ -103,7 +110,10 @@ public class ProfileConfigurationFragment extends Fragment {
                 }
 
                 if (allSuccessfull) {
-                    navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false);
+                    if(!isFromProfileFragment)
+                        navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false);
+                    else
+                        navigateTo(R.id.action_profileConfigurationFragment2_to_profileFragment, false);
                 }
             }
         };
@@ -118,8 +128,12 @@ public class ProfileConfigurationFragment extends Fragment {
                     }
                 });
 
-        skip.setOnClickListener(v ->
-                navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false));
+        skip.setOnClickListener(v -> {
+            if(!isFromProfileFragment)
+                navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false);
+            else
+                navigateTo(R.id.action_profileConfigurationFragment2_to_profileFragment, false);
+        });
 
         buttonNext.setOnClickListener(v ->
                 userViewModel.setOptionalUserParameters(nome.getText().toString(), cognome.getText().toString(),
@@ -162,6 +176,27 @@ public class ProfileConfigurationFragment extends Fragment {
                 cognome.setError(null);
             }
         });
+
+        if(isFromProfileFragment) {
+            userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), result -> {
+                if (result.isSuccessful() && result instanceof Result.SingleImageReadFromRemote) {
+                    Glide
+                            .with(this.getContext())
+                            .load(((Result.SingleImageReadFromRemote) result).getUri())
+                            .into(userImage);
+                }
+            });
+
+            userViewModel.getCurrentUser().observe(this.getViewLifecycleOwner(), result -> {
+                if (result.isSuccessful() && result instanceof Result.UserSuccess) {
+
+                    User user = ((Result.UserSuccess) result).getData();
+                    nome.setText(user.getName());
+                    cognome.setText(user.getSurname());
+                    description.setText(user.getDescription());
+                }
+            });
+        }
 
     }
 

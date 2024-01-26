@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_profileFragment_to_authActivity2"
             app:destination="@id/authActivity2" />
+        <action
+            android:id="@+id/action_profileFragment_to_profileConfigurationFragment2"
+            app:destination="@id/profileConfigurationFragment2" />
     </fragment>
     <fragment
         android:id="@+id/todo"
@@ -91,4 +94,19 @@
         android:name="it.unimib.enjoyn.ui.auth.AuthActivity"
         android:label="activity_auth"
         tools:layout="@layout/activity_auth" />
+    <fragment
+        android:id="@+id/profileConfigurationFragment2"
+        android:name="it.unimib.enjoyn.ui.auth.ProfileConfigurationFragment"
+        android:label="fragment_profile_configuration"
+        tools:layout="@layout/fragment_profile_configuration" >
+
+        <argument
+            android:name="isFinishActivity"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
+        <action
+            android:id="@+id/action_profileConfigurationFragment2_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 </navigation>
