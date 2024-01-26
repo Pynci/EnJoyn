@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/eventListItem_imageView_background"
                 android:layout_width="match_parent"
-                android:layout_height="96dp"
+                android:layout_height="124dp"
                 android:adjustViewBounds="true"
                 android:scaleType="center"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -115,24 +115,37 @@
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_place"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:text="@string/Street"
+                app:drawableStartCompat="@drawable/baseline_place_24"
                 android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/discoverSingleEvent_textView_distance"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
 
-            <TextView
-                android:id="@+id/discoverSingleEvent_textView_description"
-                android:layout_width="325dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/fragmentProfile_cardView_description"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/Description"
-                android:textSize="24sp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
                 app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_distance" />
+                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_place">
+
+                <TextView
+                    android:id="@+id/discoverSingleEvent_textView_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_margin="6dp"
+                    android:text="@string/Description"
+                    android:textSize="16sp" />
+
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_distance"
@@ -145,14 +158,14 @@
 
             <Button
                 android:id="@+id/discoverSingleEvent_button_join"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
                 android:text="@string/Join"
-                android:textSize="20sp"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
-                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_description" />
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left" />
 
 
 
