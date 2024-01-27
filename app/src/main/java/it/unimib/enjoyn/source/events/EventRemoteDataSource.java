@@ -49,12 +49,11 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
     @Override
     public void createEvent(Event event){
         String key = dbReference.child(Constants.EVENTS_PATH).push().getKey();
-        Map<String, Object> updateMap = new HashMap<>();
-        updateMap.put(key, event);
 
         dbReference
                 .child(Constants.EVENTS_PATH)
-                .updateChildren(updateMap)
+                .child(key)
+                .setValue(event)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         eventCallback.onRemoteEventCreationSuccess();
@@ -78,14 +77,16 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                 .child(Constants.EVENTS_PATH)
                 .child(key);
 
-        eventReference.updateChildren(updateMap).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                //eventCallback.onSuccessFromRemote();
-            }
-            else{
-                //eventCallback.onRemoteDatabaseFailure(task.getException());
-            }
-        });
+        eventReference
+                .updateChildren(updateMap)
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        //eventCallback.onSuccessFromRemote();
+                    }
+                    else{
+                        //eventCallback.onRemoteDatabaseFailure(task.getException());
+                    }
+                });
     }
 
     }
