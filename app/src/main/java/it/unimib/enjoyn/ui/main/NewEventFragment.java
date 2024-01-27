@@ -87,8 +87,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     private static final String STATE_TEMPERATURE = "temperature";
 
     private static final String STATE_EQUALS = "equals";
-
-    Event newEvent;
     private FragmentNewEventBinding fragmentNewEventBinding;
 
     public NewEventFragment() {
@@ -140,15 +138,11 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         savedInstanceState = new Bundle();
         super.onViewCreated(view, savedInstanceState);
-        //creazione del nuovo evento
-        newEvent = new Event();
+        Event newEvent = new Event();
 
         newEvent.setLocation(NewEventFragmentArgs.fromBundle(getArguments()).getLocation());
         locationName = newEvent.getLocation().getName();
         fragmentNewEventBinding.fragmentNewEventTextViewLocation.setText(locationName);
-
-
-        //Log.d("coordinate", ""+location.getLongitudeToString()+" "+location.getLatitudeToString()+" "+ location.getName());
 
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
@@ -165,10 +159,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
         Log.d("text", title+" "+description);
-        //selectedDate = view.findViewById(R.id.fragmentNewEvent_textView_date);
-        //selectedTime = view.findViewById(R.id.fragmentNewEvent_textView_time);
-        //weather = view.findViewById(R.id.weather);
-        //temperature = view.findViewById(R.id.temperatura);
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
         // latitude and longitude "52.52", "13.41"
@@ -197,46 +187,24 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         });
 
 
+        fragmentNewEventBinding.fragmentNewEventButtonCreateEvent.setOnClickListener(v -> {
+            //TODO da inserire tag categoria
+            title = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextTitle.getText());
+            description = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextDescription.getText());
 
-        //fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(timeWeather);
+            if(title != null && dateWeather != null && timeWeather != null && locationName != null && numberOfPeople != -1 && description != null){
+                newEvent.setTitle(title);
+                newEvent.setDate(dateWeather);
+                newEvent.setTime(timeWeather);
+                newEvent.setPeopleNumber(numberOfPeople);
+                newEvent.setDescription(description);
+                newEvent.setTODO(true);
 
-
-        //iMeteoRepository.fetchMeteo("52.52", "13.41");
-        //weatherAPIdata = getMeteoListWithGSon();
-        //showWeatherOnNewEvent(requireView());
-
-        place = view.findViewById(R.id.fragmentNewEvent_imageButton_pickPlace);
-        place.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Navigation.findNavController(v).navigate(R.id.action_newEventFragment_to_newEventMap);
-
+            } else {
+                ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
+                Snackbar.make(view, errorMessagesUtil.getNewEventErrorMessage(EMPTY_FIELDS), Snackbar.LENGTH_LONG).show();
             }
-        });
 
-        //click on create event
-        fragmentNewEventBinding.fragmentNewEventButtonCreateEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO da inserire tag categoria
-                title = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextTitle.getText());
-                description = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextDescription.getText());
-                numberOfPeople = Integer.parseInt(String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextNumber.getText()));
-
-                if(title != null && dateWeather != null && timeWeather != null && locationName != null && numberOfPeople != -1 && description != null){
-                    newEvent.setTitle(title);
-                    newEvent.setDate(dateWeather);
-                    newEvent.setTime(timeWeather);
-                    newEvent.setPeopleNumber(numberOfPeople);
-                    newEvent.setDescription(description);
-                    newEvent.setTODO(true);
-
-                } else {
-                    ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
-                    Snackbar.make(view, errorMessagesUtil.getNewEventErrorMessage(EMPTY_FIELDS), Snackbar.LENGTH_LONG).show();
-                }
-
-            }
         });
     }
 

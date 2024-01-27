@@ -91,10 +91,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="130dp"
-                tools:text="@string/temperature"
                 app:layout_constraintEnd_toEndOf="@+id/fragmentNewEvent_imageView_meteoIcon"
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_imageView_meteoIcon"
-                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageView_meteoIcon" />
+                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageView_meteoIcon"
+                tools:text="@string/temperature" />
 
             <ImageButton
                 android:id="@+id/fragmentNewEvent_imageButton_datePicker"
@@ -136,40 +136,38 @@
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickTime" />
 
             <TextView
-                android:id="@+id/fragmentNewEvent_TextView_location"
+                android:id="@+id/fragmentNewEvent_textView_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                tools:text="Place"
                 android:ellipsize="end"
                 android:maxLength="30"
                 android:maxLines="1"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageButton_pickPlace"
-                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageButton_pickPlace" />
+                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageButton_pickPlace"
+                tools:text="@string/place" />
 
             <Button
                 android:id="@+id/fragmentNewEvent_button_createEvent"
                 android:layout_width="0dp"
                 android:layout_height="63dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="32dp"
                 android:text="@string/Create_event"
                 app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
-                app:layout_constraintHorizontal_bias="0.25"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageView_people" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_spinner_categories" />
 
             <ImageView
                 android:id="@+id/fragmentNewEvent_imageView_meteoIcon"
                 android:layout_width="174dp"
                 android:layout_height="153dp"
-                android:layout_marginStart="50dp"
                 android:layout_marginTop="-27dp"
+                android:contentDescription="@string/imageWeather"
                 app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
-                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_date"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_description"
-                tools:srcCompat="@drawable/drawable_sun"
-                android:contentDescription="@string/imageWeather"/>
+                tools:srcCompat="@drawable/drawable_sun" />
 
             <EditText
                 android:id="@+id/fragmentNewEvent_editText_description"
@@ -188,29 +186,25 @@
                 app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_title" />
 
-            <ImageView
-                android:id="@+id/fragmentNewEvent_imageView_people"
-                android:layout_width="42dp"
-                android:layout_height="43dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="12dp"
-                android:src="@drawable/baseline_people_outline_24"
-                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace" />
+            <Spinner
+                android:id="@+id/fragmentNewEvent_spinner_categories"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:minHeight="48dp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_category"
+                app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_category" />
 
-            <EditText
-                android:id="@+id/fragmentNewEvent_editText_number"
-                android:layout_width="48dp"
-                android:layout_height="52dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:inputType="number"
-                android:text="@string/one"
-                android:textAlignment="center"
+            <TextView
+                android:id="@+id/fragmentNewEvent_textView_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/category"
                 android:textSize="24sp"
-                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_imageView_people"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace"
+                tools:layout_editor_absoluteX="33dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

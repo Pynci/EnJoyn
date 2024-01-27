@@ -65,6 +65,10 @@ public class EventRepository implements IEventRepository, EventCallback {
         eventLocalDataSource.updateEvent(event);
     }
 
+    public void createEvent(){
+
+    }
+
 
     @Override
     public void onSuccessFromRemote(EventsDatabaseResponse eventDBResponse, long lastUpdate) {
