@@ -21,7 +21,7 @@ public class InterestLocalDataSource extends BaseInterestLocalDataSource{
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Category> categoryList = categoryDao.getAll();
 
-            if(categoryList == null) {
+            if(categoryList.size() == 0) {
                 interestsCallback.onFailureGetInterestsFromLocal(
                         new Exception("Errore nel recupero dei dati richiesti dal room"));
             }

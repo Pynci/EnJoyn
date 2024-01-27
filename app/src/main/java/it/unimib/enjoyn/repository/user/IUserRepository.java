@@ -5,6 +5,7 @@ import android.net.Uri;
 import androidx.lifecycle.MutableLiveData;
 
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 
 public interface IUserRepository {
     MutableLiveData<Result> getCurrentUser();
@@ -22,6 +23,8 @@ public interface IUserRepository {
     MutableLiveData<Result> updateEmailVerificationStatus();
     MutableLiveData<Result> updateProfileConfigurationStatus();
     MutableLiveData<Result> updateCategoriesSelectionStatus();
-
     MutableLiveData<Result> getCurrentUserPropic();
+
+    MutableLiveData<Result> createUserInterests(CategoriesHolder categoriesHolder);
+    MutableLiveData<Result> getUserInterests();
 }

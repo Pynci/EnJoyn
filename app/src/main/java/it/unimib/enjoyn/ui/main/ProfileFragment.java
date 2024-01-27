@@ -107,54 +107,6 @@ public class ProfileFragment extends Fragment {
         Button modificaInteressi = view.findViewById(R.id.fragmentProfile_textButton_EditIInterests);
         ListView listView = view.findViewById(R.id.fragmentProfile_listView);
 
-        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-
-        userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), result -> {
-
-            if(result.isSuccessful() && result instanceof Result.SingleImageReadFromRemote)
-                Glide
-                        .with(this.getContext())
-                        .load(((Result.SingleImageReadFromRemote) result).getUri())
-                        .into(propic);
-        });
-
-        userViewModel.getCurrentUser().observe(this.getViewLifecycleOwner(), result -> {
-
-            if(result.isSuccessful() && result instanceof Result.UserSuccess) {
-
-                User user = ((Result.UserSuccess) result).getData();
-                if(user != null){
-                    propicUsernmame.setText(user.getUsername());
-                    propicNameAndSurname.setText(user.getName() + " " + user.getSurname());
-                    description.setText(user.getDescription());
-                }
-            }
-        });
-
-        logout.setOnClickListener(v -> {
-
-            userViewModel.signOut().observe(this.getViewLifecycleOwner(), result -> {
-                if(result.isSuccessful()) {
-                    navigateTo(R.id.action_profileFragment_to_authActivity2, true,true);
-                }
-                else{
-                    String text = "Impossibile completare l'operazione richiesta";
-                    Snackbar snackbar;
-                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
-                    snackbar.show();
-                }
-            });
-        });
-
-        modificaProfilo.setOnClickListener(v -> {
-            navigateTo(R.id.action_profileFragment_to_profileConfigurationFragment2, false, true);
-        });
-
-        modificaInteressi.setOnClickListener(v -> {
-            navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, false);
-        });
-
-
         Observer<Result> interestsObserver = result -> {
             if (result.isSuccessful()) {
                 List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
@@ -188,6 +140,66 @@ public class ProfileFragment extends Fragment {
                         });
             }
         };
+
+        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), result -> {
+
+            if(result.isSuccessful() && result instanceof Result.SingleImageReadFromRemote)
+                Glide
+                        .with(this.getContext())
+                        .load(((Result.SingleImageReadFromRemote) result).getUri())
+                        .into(propic);
+        });
+
+        userViewModel.getCurrentUser().observe(this.getViewLifecycleOwner(), result -> {
+
+            if(result.isSuccessful() && result instanceof Result.UserSuccess) {
+
+                User user = ((Result.UserSuccess) result).getData();
+                if(user != null){
+
+                    if(user.getUsername() != null)
+                        propicUsernmame.setText(user.getUsername());
+                    else
+                        propicUsernmame.setText("");
+
+                    if(user.getName() != null && user.getSurname() != null)
+                        propicNameAndSurname.setText(user.getName() + " " + user.getSurname());
+                    else
+                        propicNameAndSurname.setText("");
+
+                    if(user.getDescription() != null)
+                        description.setText(user.getDescription());
+                    else
+                        description.setText("");
+                }
+            }
+        });
+
+        logout.setOnClickListener(v -> {
+
+            userViewModel.signOut().observe(this.getViewLifecycleOwner(), result -> {
+                if(result.isSuccessful()) {
+
+                    navigateTo(R.id.action_profileFragment_to_authActivity2, true,true);
+                }
+                else{
+                    String text = "Impossibile completare l'operazione richiesta";
+                    Snackbar snackbar;
+                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                    snackbar.show();
+                }
+            });
+        });
+
+        modificaProfilo.setOnClickListener(v -> {
+            navigateTo(R.id.action_profileFragment_to_profileConfigurationFragment2, false, true);
+        });
+
+        modificaInteressi.setOnClickListener(v -> {
+            navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, false);
+        });
 
         interestsViewModel.getInterests().observe(this.getViewLifecycleOwner(), interestsObserver);
     }
