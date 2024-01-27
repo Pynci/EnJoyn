@@ -14,4 +14,5 @@ public abstract class BaseInterestLocalDataSource {
 
     public abstract void getAllCategories();
     public abstract void storeInterests(List<Category> categoryList);
+    public abstract void deleteUserInterests();
 }

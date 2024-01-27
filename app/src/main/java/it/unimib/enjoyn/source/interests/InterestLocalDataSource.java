@@ -45,4 +45,18 @@ public class InterestLocalDataSource extends BaseInterestLocalDataSource{
             }
         });
     }
+
+    @Override
+    public void deleteUserInterests() {
+        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
+            int rowDeleted = categoryDao.deleteInterests();
+            if(rowDeleted > 0) {
+                interestsCallback.onSuccessDeleteAllInterestsFromLocal();
+            }
+            else {
+                interestsCallback.onFailureDeleteAllInteretsFromLocal(
+                        new Exception("Errore nella cancellazione dei dati dal DB locale"));
+            }
+        });
+    }
 }

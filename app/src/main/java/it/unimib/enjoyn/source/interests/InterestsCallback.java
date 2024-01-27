@@ -15,6 +15,9 @@ public interface InterestsCallback {
     void onSuccessSaveOnLocal();
     void onFailureSaveOnLocal(Exception e);
 
-    void onSuccessGetInterests(List<Category> categoryList);
-    void onFailureGetInterests(String message);
+    void onSuccessGetInterestsFromRemote(List<Category> categoryList);
+    void onFailureGetInterestsFromRemote(String message);
+
+    void onSuccessDeleteAllInterestsFromLocal();
+    void onFailureDeleteAllInteretsFromLocal(Exception e);
 }

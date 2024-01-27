@@ -21,9 +21,11 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
     private final BaseAuthenticationDataSource authenticationDataSource;
     private final BaseInterestRemoteDataSource interestRemoteDataSource;
     private final BaseInterestLocalDataSource interestLocalDataSource;
+
+
     private final MutableLiveData<Result> createUserInterestsResult;
-    private final MutableLiveData<Result> getCreateUserInterestsResult;
     private final MutableLiveData<Result> userInterests;
+    private final MutableLiveData<Result> deleteInterestsResult;
 
     public InterestRepository(Application application, BaseInterestRemoteDataSource interestRemoteDataSource,
                               BaseInterestLocalDataSource interestLocalDataSource,
@@ -35,10 +37,11 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
         interestRemoteDataSource.setInterestsCallback(this);
         interestLocalDataSource.setInterestsCallback(this);
         createUserInterestsResult = new MutableLiveData<>();
-        getCreateUserInterestsResult = new MutableLiveData<>();
         userInterests = new MutableLiveData<>();
+        deleteInterestsResult = new MutableLiveData<>();
     }
 
+    //CRUD
     @Override
     public MutableLiveData<Result> createUserInterests(CategoriesHolder categoriesHolder) {
         interestRemoteDataSource.storeUserInterests(categoriesHolder, authenticationDataSource.getCurrentUserUID());
@@ -52,6 +55,7 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
         return userInterests;
     }
 
+    //CALLBACK
     @Override
     public void onSuccessCreateUsersInterest() {
         createUserInterestsResult.postValue(new Result.Success());
@@ -83,12 +87,22 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
     }
 
     @Override
-    public void onSuccessGetInterests(List<Category> categoryList) {
+    public void onSuccessGetInterestsFromRemote(List<Category> categoryList) {
         userInterests.postValue(new Result.CategorySuccess(categoryList));
     }
 
     @Override
-    public void onFailureGetInterests(String message) {
+    public void onFailureGetInterestsFromRemote(String message) {
         userInterests.postValue(new Result.Error(message));
+    }
+
+    @Override
+    public void onSuccessDeleteAllInterestsFromLocal() {
+        deleteInterestsResult.postValue(new Result.Success());
+    }
+
+    @Override
+    public void onFailureDeleteAllInteretsFromLocal(Exception e) {
+        deleteInterestsResult.postValue(new Result.Error(e.getMessage()));
     }
 }

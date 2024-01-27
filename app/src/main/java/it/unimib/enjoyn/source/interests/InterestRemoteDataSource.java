@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.model.Category;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 import it.unimib.enjoyn.util.Constants;
 
@@ -59,10 +58,9 @@ public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {
                             allCategories.add(temp);
 
                         }
-
-                        interestsCallback.onSuccessGetInterests(allCategories);
+                        interestsCallback.onSuccessGetInterestsFromRemote(allCategories);
                     } else {
-                        interestsCallback.onFailureGetInterests(task.getException().getMessage());
+                        interestsCallback.onFailureGetInterestsFromRemote(task.getException().getMessage());
                     }
                 });
     }

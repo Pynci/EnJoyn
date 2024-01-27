@@ -1,6 +1,7 @@
 package it.unimib.enjoyn.database;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -16,4 +17,7 @@ public interface CategoryDao {
 
     @Insert
     long[] insertAll(List<Category> categoryList);
+
+    @Query("DELETE FROM category")
+    int deleteInterests();
 }
