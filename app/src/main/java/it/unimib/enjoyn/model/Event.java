@@ -116,7 +116,7 @@ public class Event implements Parcelable {
     }
 
     public String getDistanceString(){
-        return Double.toString(distance)+" km";
+        return (distance)+" km";
     }
 
     public boolean isTODO() {
@@ -200,7 +200,7 @@ public class Event implements Parcelable {
 
             peopleNumber++;
 
-        this.peopleNumber=peopleNumber;
+        this.peopleNumber = peopleNumber;
     }
 
     public void decrementPeopleNumber(){

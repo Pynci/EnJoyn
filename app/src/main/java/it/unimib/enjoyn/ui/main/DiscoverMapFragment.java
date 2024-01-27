@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,15 +46,12 @@ import com.mapbox.geojson.Point;
 import com.mapbox.maps.CameraOptions;
 import com.mapbox.maps.EdgeInsets;
 import com.mapbox.maps.MapView;
-import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
 import com.mapbox.maps.extension.style.layers.properties.generated.TextAnchor;
 import com.mapbox.maps.plugin.LocationPuck2D;
 import com.mapbox.maps.plugin.animation.MapAnimationOptions;
-import com.mapbox.maps.plugin.annotation.Annotation;
 import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
 import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
-import com.mapbox.maps.plugin.annotation.OnAnnotationClickListener;
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotation;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
@@ -81,7 +77,6 @@ import com.mapbox.search.ui.view.SearchResultsView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.SuggestionListAdapter;
@@ -91,7 +86,6 @@ import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
-import it.unimib.enjoyn.util.SnackbarBuilder;
 
 public class DiscoverMapFragment extends Fragment implements PermissionsListener {
 
@@ -347,22 +341,21 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
                     fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getPlace());
                     //calcolare distanza
-                    //fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumber());
+                    double eventDistance = 100*(Math.sqrt(Math.pow(selfLocation.latitude() - annotation.getPoint().latitude(),2)
+                            + Math.pow(selfLocation.longitude() - annotation.getPoint().longitude(),2)));
+                    fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText((round(eventDistance,1))+" km");
+
+                    fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(Integer.toString(event.getPeopleNumber()));
                     //fragmentDiscoverMapBinding.eventListItemImageViewEventImage.setImageURI(event.getImageUrl());
                     //mettere immagine meteo
 
 
-                    eventItem.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
-                            Navigation.findNavController(view).navigate(action);
+                    eventItem.setOnClickListener(v -> {
+                        DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
+                        Navigation.findNavController(view).navigate(action);
 
-                        }
                     });
 
-                    //DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
-                    //Navigation.findNavController(view).navigate(action);
                     annotation.getPoint().latitude();
                     annotation.getPoint().longitude();
                     Snackbar.make(view, "va point: LAT: "+annotation.getPoint().latitude()+" LONG: "+annotation.getPoint().longitude()+ " ID: "+annotation.getId(), Snackbar.LENGTH_SHORT).show();
@@ -540,5 +533,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
         }
         super.onDestroy();
     }
+
+
 
 }
