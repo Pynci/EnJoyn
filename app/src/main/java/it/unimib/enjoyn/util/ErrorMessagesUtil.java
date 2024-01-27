@@ -10,7 +10,7 @@ import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
 
 public class ErrorMessagesUtil {
 
-    private Application application;
+    private final Application application;
 
     public ErrorMessagesUtil(Application application){
         this.application = application;

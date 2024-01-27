@@ -70,7 +70,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/imageView3"
+                        android:id="@+id/fragmentDiscoverSingleEvent_ImageView_eventImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/UserImageEvent"
@@ -81,19 +81,17 @@
 
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/fragmentDiscoverSingleEvent_chip_category"
+                android:layout_width="115dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="48dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
                 android:text="@string/Tag"
-                app:layout_constraintBottom_toTopOf="@+id/divider2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider1" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_view_secondDivider" />
 
             <ImageView
-                android:id="@+id/people"
+                android:id="@+id/fragmentDiscoverSingleEvent_imageView_people"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
@@ -111,23 +109,23 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/NumberOfParticipants"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/people"
-                app:layout_constraintEnd_toStartOf="@+id/people"
-                app:layout_constraintTop_toTopOf="@+id/people"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentDiscoverSingleEvent_imageView_people"
+                app:layout_constraintEnd_toStartOf="@+id/fragmentDiscoverSingleEvent_imageView_people"
+                app:layout_constraintTop_toTopOf="@+id/fragmentDiscoverSingleEvent_imageView_people"
                 app:layout_constraintVertical_bias="0.619" />
+
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/Date"
                 android:textSize="20sp"
                 app:drawableStartCompat="@drawable/baseline_calendar_month_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background" />
-
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_hour"
@@ -141,8 +139,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
 
+
             <View
-                android:id="@+id/divider1"
+                android:id="@+id/fragmentDiscoverSingleEvent_view_firstDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
@@ -154,20 +153,19 @@
                 android:id="@+id/discoverSingleEvent_textView_place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/Street"
                 android:textSize="20sp"
                 app:drawableStartCompat="@drawable/baseline_place_24"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider1" />
-
+                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_view_firstDivider" />
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
+                android:layout_marginStart="48dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/km"
                 android:textSize="20sp"
@@ -175,13 +173,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_place" />
 
             <View
-                android:id="@+id/divider2"
+                android:id="@+id/fragmentDiscoverSingleEvent_view_secondDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/md_theme_light_outlineVariant"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_distance" />
+
 
             <Button
                 android:id="@+id/discoverSingleEvent_button_join"
@@ -201,12 +200,12 @@
                 android:id="@+id/fragmentDiscoverSingleEvent_textView_descr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="12dp"
                 android:text="@string/description"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_chip_category" />
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_description"
@@ -222,6 +221,15 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_textView_descr" />
+
+            <ImageView
+                android:id="@+id/fragmentDiscoverSingleEvent_imageView_weather"
+                android:layout_width="153dp"
+                android:layout_height="122dp"
+                android:layout_marginEnd="24dp"
+                android:src="@drawable/drawable_sun"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_view_secondDivider" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

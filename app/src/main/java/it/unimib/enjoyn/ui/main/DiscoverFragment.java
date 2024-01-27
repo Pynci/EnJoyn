@@ -79,7 +79,8 @@ public class DiscoverFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tabLayout = view.findViewById(R.id.discoverFragment_tabLayout);
         viewPager2 = view.findViewById(R.id.discoverFragment_viewPager);
-        viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
+        if(this.getActivity() != null)
+            viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
         viewPager2.setAdapter(viewPagerAdapter);
         viewPager2.setUserInputEnabled(false);
         requireActivity().addMenuProvider(new MenuProvider() {
@@ -117,7 +118,8 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tabLayout.getTabAt(position).select();
+                if(tabLayout.getTabAt(position) != null)
+                    tabLayout.getTabAt(position).select();
             }
         });
 
