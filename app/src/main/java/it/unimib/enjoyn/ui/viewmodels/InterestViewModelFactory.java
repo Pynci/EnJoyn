@@ -6,17 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class CategoryViewModelFactory implements ViewModelProvider.Factory {
+public class InterestViewModelFactory implements ViewModelProvider.Factory {
 
     private final Application application;
 
-    public CategoryViewModelFactory(Application application) {
+    public InterestViewModelFactory(Application application) {
         this.application = application;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new CategoryViewModel(application);
+        return (T) new InterestsViewModel(application);
     }
 }

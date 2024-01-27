@@ -80,7 +80,7 @@ public class ServiceLocator {
         BaseInterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
         BaseAuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
 
-        return new InterestRepository(application, interestDataSource, interestLocalDataSource, authenticationDataSource);
+        return new InterestRepository(interestDataSource, interestLocalDataSource, authenticationDataSource);
     }
 
     public LocalRoomDatabase getEventDao(Application application) { //istanza di event room database

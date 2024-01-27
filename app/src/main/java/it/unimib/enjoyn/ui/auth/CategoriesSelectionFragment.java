@@ -25,13 +25,15 @@ import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
-import it.unimib.enjoyn.ui.viewmodels.CategoryViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class CategoriesSelectionFragment extends Fragment {
 
+    private InterestsViewModel interestsViewModel;
     private CategoryViewModel categoryViewModel;
 
     public CategoriesSelectionFragment() {
@@ -44,9 +46,11 @@ public class CategoriesSelectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categoryViewModel = new ViewModelProvider(
+        interestsViewModel = new ViewModelProvider(
                 requireActivity(),
-                new CategoryViewModelFactory(requireActivity().getApplication())).get(CategoryViewModel.class);
+                new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
+        categoryViewModel = new ViewModelProvider(
+                requireActivity()).get(CategoryViewModel.class);
     }
 
     @Override
@@ -111,7 +115,7 @@ public class CategoriesSelectionFragment extends Fragment {
         });
 
         buttonConfirm.setOnClickListener(v -> {
-            categoryViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
+            interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
                 if (result.isSuccessful()) {
                     Navigation
                             .findNavController(view)

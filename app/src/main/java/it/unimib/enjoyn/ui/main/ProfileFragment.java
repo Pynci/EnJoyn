@@ -37,7 +37,8 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
-import it.unimib.enjoyn.ui.viewmodels.CategoryViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
@@ -45,8 +46,9 @@ import it.unimib.enjoyn.util.SnackbarBuilder;
 
 public class ProfileFragment extends Fragment {
 
-    UserViewModel userViewModel;
-    CategoryViewModel categoryViewModel;
+    private UserViewModel userViewModel;
+    private CategoryViewModel categoryViewModel;
+    private InterestsViewModel interestsViewModel;
 
     public ProfileFragment() {
     }
@@ -65,8 +67,10 @@ public class ProfileFragment extends Fragment {
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         categoryViewModel = new ViewModelProvider(
-                requireActivity(),
-                new CategoryViewModelFactory(requireActivity().getApplication())).get(CategoryViewModel.class);
+                requireActivity()).get(CategoryViewModel.class);
+
+        interestsViewModel = new ViewModelProvider(requireActivity(),
+                new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
     }
 
     @Override
@@ -185,7 +189,7 @@ public class ProfileFragment extends Fragment {
             }
         };
 
-        categoryViewModel.getInterests().observe(this.getViewLifecycleOwner(), interestsObserver);
+        interestsViewModel.getInterests().observe(this.getViewLifecycleOwner(), interestsObserver);
     }
 
     private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {

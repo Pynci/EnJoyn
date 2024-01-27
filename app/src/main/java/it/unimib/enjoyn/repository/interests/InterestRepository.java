@@ -27,7 +27,7 @@ public class InterestRepository implements IInterestRepository, InterestsCallbac
     private final MutableLiveData<Result> userInterests;
     private final MutableLiveData<Result> deleteInterestsResult;
 
-    public InterestRepository(Application application, BaseInterestRemoteDataSource interestRemoteDataSource,
+    public InterestRepository(BaseInterestRemoteDataSource interestRemoteDataSource,
                               BaseInterestLocalDataSource interestLocalDataSource,
                               BaseAuthenticationDataSource authenticationDataSource) {
         this.authenticationDataSource = authenticationDataSource;
