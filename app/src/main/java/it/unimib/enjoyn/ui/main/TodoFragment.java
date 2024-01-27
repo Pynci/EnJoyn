@@ -112,18 +112,19 @@ public class TodoFragment extends Fragment {
 
                     @Override
                     public void onJoinButtonPressed(int position) {
-                        eventList.get(position).setTODO(!eventList.get(position).isTODO());
-                        if(eventList.get(position).isTODO()) {
+                        //eventList.get(position).setTODO(!eventList.get(position).isTODO());
+                        //if(eventList.get(position).isTODO()) {
                             eventList.get(position).incrementPeopleNumber();
-                        }
-                        else{
+                        //}
+                        //else{
                             eventList.get(position).decrementPeopleNumber();
-                        }
+                        //}
                         eventViewModel.updateEvent(eventList.get(position));
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
+        /*
         eventViewModel.getToDoEventLiveData().observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
                 if (result.isSuccessful()) {
@@ -135,11 +136,13 @@ public class TodoFragment extends Fragment {
                             new ErrorMessagesUtil(requireActivity().getApplication());
                     Snackbar.make(view, errorMessagesUtil.
                                     getErrorMessage(((Result.Error)result).getMessage()),
-                            Snackbar.LENGTH_SHORT).show();*/
+                            Snackbar.LENGTH_SHORT).show();
                 }
                // progressBar.setVisibility(View.GONE);
             }
         });
+        */
+
     }
 
 

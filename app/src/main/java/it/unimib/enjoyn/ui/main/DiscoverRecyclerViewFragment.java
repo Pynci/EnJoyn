@@ -111,6 +111,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
                     @Override
                     public void onJoinButtonPressed(int position) {
+                        /*
                         eventList.get(position).setTODO(!eventList.get(position).isTODO());
 
                         if(eventList.get(position).isTODO()) {
@@ -120,6 +121,8 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                             eventList.get(position).decrementPeopleNumber();
                         }
                         eventViewModel.updateEvent(eventList.get(position));
+
+                         */
 
                     }
                 });

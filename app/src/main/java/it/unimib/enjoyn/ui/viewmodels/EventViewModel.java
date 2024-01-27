@@ -54,25 +54,7 @@ public class EventViewModel extends ViewModel {
         return eventLiveData;
     }
 
-    /**
-     * Returns the LiveData object associated with the
-     * list of favorite event to the Fragment/Activity.
-     *
-     * @return The LiveData object associated with the list of favorite event.
-     */
-    public MutableLiveData<Result> getFavoriteEventLiveData() {
-        if (favoriteEventListLiveData == null) {
-            getFavoriteEvent();
-        }
-        return favoriteEventListLiveData;
-    }
 
-    public MutableLiveData<Result> getToDoEventLiveData() {
-        if (toDoEventListLiveData == null) {
-            getToDoEvent();
-        }
-        return toDoEventListLiveData;
-    }
 
     /**
      * Updates the event status.
@@ -96,17 +78,8 @@ public class EventViewModel extends ViewModel {
         eventLiveData = eventRepository.fetchEvent(lastUpdate);
     }
 
-    /**
-     * It uses the Repository to get the list of favorite event
-     * and to associate it with the LiveData object.
-     */
-    private void getFavoriteEvent() {
-        favoriteEventListLiveData = eventRepository.getFavoriteEvent();
-    }
 
-    private void getToDoEvent() {
-        toDoEventListLiveData = eventRepository.getToDoEvent();
-    }
+
 
     public MutableLiveData<Result> createEvent(Event event){
         return eventRepository.createEvent(event);

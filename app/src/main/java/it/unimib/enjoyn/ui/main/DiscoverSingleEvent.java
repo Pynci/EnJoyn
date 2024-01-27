@@ -106,12 +106,14 @@ public class DiscoverSingleEvent extends Fragment {
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getPlace());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewTitle.setText(event.getTitle());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDistance.setText(event.getDistanceString());
-        boolean isTodo = event.isTODO();
+        /*boolean isTodo = event.isTODO();
         if(isTodo){
             fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.remove);
         }else{
             fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.Join);
         }
+
+         */
         //DiscoverSingleEventArgs.fromBundle(getArguments()).getEvent().setDistance(44.44);
 
     }

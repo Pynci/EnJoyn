@@ -51,17 +51,6 @@ public class EventRepository implements IEventRepository, EventCallback {
         return allEventMutableLiveData;
     }
 
-    @Override
-    public MutableLiveData<Result> getFavoriteEvent() {
-        eventLocalDataSource.getFavoriteEvent();
-        return favoriteEventMutableLiveData;
-    }
-
-    @Override
-    public MutableLiveData<Result> getToDoEvent() {
-        eventLocalDataSource.getToDoEvent();
-        return toDoEventMutableLiveData;
-    }
 
     @Override
     public void updateEvent(Event event) {

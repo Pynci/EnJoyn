@@ -109,7 +109,7 @@ public class EventReclyclerViewAdapter extends
         public void onClick(View v) {
 
             if(v.getId() == R.id.eventListItem_button_joinButton){
-                setTextButtonTodoEvent(!eventList.get(getBindingAdapterPosition()).isTODO());
+                //setTextButtonTodoEvent(!eventList.get(getBindingAdapterPosition()).isTODO());
                 onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
 
             }else{
@@ -126,7 +126,7 @@ public class EventReclyclerViewAdapter extends
             textViewPlace.setText(event.getPlace());
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
-            setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
+            //setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
         }
 
 

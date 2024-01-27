@@ -28,20 +28,7 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
         });
     }
 
-    @Override
-    public void getToDoEvent() {
-        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<Event> todoEvent = eventDao.getTodoEvents();
-            eventCallback.onEventToDoStatusChanged(todoEvent);
-        });
-    }
 
-    @Override
-    public void getFavoriteEvent() {
-        LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
-            eventCallback.onEventFavoriteStatusChanged(eventDao.getFavoriteEvents());
-        });
-    }
 
     @Override
     public void updateEvent(Event event) {
@@ -50,7 +37,7 @@ public class EventLocalDataSource  extends BaseEventLocalDataSource{
 
             if (rowUpdatedCounter == 1) {
                 Event updatedEvent = eventDao.getEvent(event.getId());
-                eventCallback.onEventToDoStatusChanged(updatedEvent, eventDao.getTodoEvents());
+                //eventCallback.onEventToDoStatusChanged(updatedEvent);
             } else {
                 eventCallback.onFailureFromLocal(new Exception(UNEXPECTED_ERROR));
             }

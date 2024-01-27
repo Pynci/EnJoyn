@@ -20,12 +20,6 @@ public interface EventsDao {
     @Query("SELECT * FROM event WHERE id = :id")
     Event getEvent(long id);
 
-    @Query("SELECT * FROM event WHERE isFavorite = 1 ORDER BY date, time DESC")
-    List<Event> getFavoriteEvents();
-
-    @Query("SELECT * FROM event WHERE isTODO = 1 ORDER BY date, time ASC")
-    List<Event> getTodoEvents();
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertEventList(List<Event> eventList);
 
@@ -37,10 +31,6 @@ public interface EventsDao {
 
     @Query("DELETE FROM event")
     void deleteAll();
-
-    @Query("DELETE FROM event WHERE isFavorite = 0")
-    void deleteNotFavoriteNews();
-
 
     @Delete
     void deleteAllWithoutQuery(Event... event);

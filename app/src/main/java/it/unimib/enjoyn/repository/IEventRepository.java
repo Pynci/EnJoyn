@@ -11,9 +11,6 @@ public interface IEventRepository {
 
     MutableLiveData<Result> fetchEvent(long lastUpdate);
 
-    MutableLiveData<Result> getFavoriteEvent();
-
-    MutableLiveData<Result> getToDoEvent();
 
     void updateEvent(Event event);
 
