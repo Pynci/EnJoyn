@@ -11,27 +11,27 @@ import it.unimib.enjoyn.repository.interests.InterestRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.MapRemoteDataSource;
-import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
+import it.unimib.enjoyn.source.categories.CategoryRemoteDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
 import it.unimib.enjoyn.source.interests.InterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.InterestRemoteDataSource;
-import it.unimib.enjoyn.source.user.AuthenticationDataSource;
-import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
-import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
-import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
-import it.unimib.enjoyn.source.user.UserLocalDataSource;
-import it.unimib.enjoyn.source.user.UserRemoteDataSource;
+import it.unimib.enjoyn.source.users.AuthenticationDataSource;
+import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
+import it.unimib.enjoyn.source.users.BaseUserLocalDataSource;
+import it.unimib.enjoyn.source.users.BaseUserRemoteDataSource;
+import it.unimib.enjoyn.source.users.UserLocalDataSource;
+import it.unimib.enjoyn.source.users.UserRemoteDataSource;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.WeatherRepository;
 import it.unimib.enjoyn.service.WeatherApiService;
-import it.unimib.enjoyn.source.BaseWeatherRemoteDataSource;
+import it.unimib.enjoyn.source.events.BaseWeatherRemoteDataSource;
 import it.unimib.enjoyn.source.WeatherRemoteDataSource;
-import it.unimib.enjoyn.repository.EventRepositoryWithLiveData;
-import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
-import it.unimib.enjoyn.source.BaseEventLocalDataSource;
-import it.unimib.enjoyn.source.BaseEventRemoteDataSource;
-import it.unimib.enjoyn.source.EventLocalDataSource;
+import it.unimib.enjoyn.repository.EventRepository;
+import it.unimib.enjoyn.repository.IEventRepository;
+import it.unimib.enjoyn.source.events.BaseEventLocalDataSource;
+import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
+import it.unimib.enjoyn.source.events.EventLocalDataSource;
 import it.unimib.enjoyn.source.EventMockRemoteDataSource;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -105,7 +105,7 @@ public class ServiceLocator {
         return new MapRepository(mapRemoteDataSource);
     }
 
-    public IEventRepositoryWithLiveData getEventRepository(Application application){
+    public IEventRepository getEventRepository(Application application){
         BaseEventLocalDataSource eventLocalDataSource;
         BaseEventRemoteDataSource eventRemoteDataSource;
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
@@ -113,6 +113,6 @@ public class ServiceLocator {
         eventRemoteDataSource = new EventMockRemoteDataSource(jsonParserUtil);
         eventLocalDataSource = new EventLocalDataSource(getEventDao(application));
 
-        return new EventRepositoryWithLiveData(eventLocalDataSource, eventRemoteDataSource);
+        return new EventRepository(eventLocalDataSource, eventRemoteDataSource);
     }
 }

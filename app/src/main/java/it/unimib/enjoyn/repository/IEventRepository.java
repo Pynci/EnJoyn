@@ -6,7 +6,7 @@ import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 
 
-public interface IEventRepositoryWithLiveData {
+public interface IEventRepository {
     MutableLiveData<Result> fetchEvent(String category, int page, long lastUpdate);
 
     MutableLiveData<Result> fetchEvent(long lastUpdate);

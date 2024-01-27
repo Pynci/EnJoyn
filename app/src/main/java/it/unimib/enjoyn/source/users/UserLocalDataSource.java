@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.source.user;
+package it.unimib.enjoyn.source.users;
 
 import it.unimib.enjoyn.database.UserDao;
 import it.unimib.enjoyn.database.LocalRoomDatabase;

@@ -5,11 +5,10 @@ import androidx.lifecycle.ViewModel;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
+import it.unimib.enjoyn.repository.IEventRepository;
 import android.util.Log;
 
 import com.mapbox.geojson.Point;
-import com.mapbox.search.QueryType;
 import com.mapbox.search.result.SearchSuggestion;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
 
 public class EventViewModel extends ViewModel {
-    private final IEventRepositoryWithLiveData eventRepositoryWithLiveData;
+    private final IEventRepository eventRepositoryWithLiveData;
     private MutableLiveData<Result> eventLiveData;
     private MutableLiveData<Result> toDoEventListLiveData;
     private MutableLiveData<Result> favoriteEventListLiveData;
@@ -29,7 +28,7 @@ public class EventViewModel extends ViewModel {
     private MutableLiveData<Result> mapSuggestionListLiveData;
     private MutableLiveData<Result> mapSearchLiveData;
 
-    public EventViewModel(IEventRepositoryWithLiveData eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository, MapRepository mapRepository) {
+    public EventViewModel(IEventRepository eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository, MapRepository mapRepository) {
         this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
         this.weatherRepository = iWeatherRepository;
         this.mapRepository = mapRepository;

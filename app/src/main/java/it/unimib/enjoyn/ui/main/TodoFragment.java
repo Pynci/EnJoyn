@@ -31,7 +31,7 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
+import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
@@ -65,7 +65,7 @@ public class TodoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
+        IEventRepository eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
                 requireActivity().getApplication());
         eventList = new ArrayList<>();
 

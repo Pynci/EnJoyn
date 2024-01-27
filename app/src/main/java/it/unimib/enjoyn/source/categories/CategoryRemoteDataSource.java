@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.source.category;
+package it.unimib.enjoyn.source.categories;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;

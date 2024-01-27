@@ -9,9 +9,9 @@ import java.util.List;
 
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.source.category.BaseCategoryRemoteDataSource;
-import it.unimib.enjoyn.source.category.CategoryCallback;
-import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
+import it.unimib.enjoyn.source.categories.BaseCategoryRemoteDataSource;
+import it.unimib.enjoyn.source.categories.CategoryCallback;
+import it.unimib.enjoyn.source.categories.CategoryRemoteDataSource;
 
 public class CategoryRepository implements ICategoryRepository, CategoryCallback {
 

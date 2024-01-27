@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.source.category;
+package it.unimib.enjoyn.source.categories;
 
 public abstract class BaseCategoryRemoteDataSource {
 

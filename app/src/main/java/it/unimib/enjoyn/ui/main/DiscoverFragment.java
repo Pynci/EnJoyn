@@ -18,7 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.ViewPagerAdapter;
-import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
+import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
@@ -51,7 +51,7 @@ public class DiscoverFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //creazione dell'eventViewModel si può svolgere anche in DiscoverMapFragment
-        IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
+        IEventRepository eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
                 requireActivity().getApplication());
         IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
 

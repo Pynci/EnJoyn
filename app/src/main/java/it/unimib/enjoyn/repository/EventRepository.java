@@ -7,18 +7,18 @@ import java.util.List;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.source.BaseEventLocalDataSource;
-import it.unimib.enjoyn.source.BaseEventRemoteDataSource;
-import it.unimib.enjoyn.source.EventCallback;
+import it.unimib.enjoyn.source.events.BaseEventLocalDataSource;
+import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
+import it.unimib.enjoyn.source.events.EventCallback;
 
-public class EventRepositoryWithLiveData implements IEventRepositoryWithLiveData, EventCallback {
+public class EventRepository implements IEventRepository, EventCallback {
     private final MutableLiveData<Result> allEventMutableLiveData;
     private final MutableLiveData<Result> favoriteEventMutableLiveData;
     private final MutableLiveData<Result> toDoEventMutableLiveData;
     private final BaseEventLocalDataSource eventLocalDataSource;
     private final BaseEventRemoteDataSource eventRemoteDataSource;
 
-    public EventRepositoryWithLiveData(BaseEventLocalDataSource eventLocalDataSource, BaseEventRemoteDataSource eventRemoteDataSource) {
+    public EventRepository(BaseEventLocalDataSource eventLocalDataSource, BaseEventRemoteDataSource eventRemoteDataSource) {
         allEventMutableLiveData = new MutableLiveData<>();
         favoriteEventMutableLiveData = new MutableLiveData<>();
         toDoEventMutableLiveData = new MutableLiveData<>();

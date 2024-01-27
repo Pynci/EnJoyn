@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
-import it.unimib.enjoyn.source.user.AuthenticationCallback;
-import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
-import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
-import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
-import it.unimib.enjoyn.source.user.UserCallback;
+import it.unimib.enjoyn.source.users.AuthenticationCallback;
+import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
+import it.unimib.enjoyn.source.users.BaseUserLocalDataSource;
+import it.unimib.enjoyn.source.users.BaseUserRemoteDataSource;
+import it.unimib.enjoyn.source.users.UserCallback;
 
 public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback {
 

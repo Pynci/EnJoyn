@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.source;
+package it.unimib.enjoyn.source.events;
 
 import static it.unimib.enjoyn.util.Constants.UNEXPECTED_ERROR;
 

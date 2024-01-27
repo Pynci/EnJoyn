@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.source.user;
+package it.unimib.enjoyn.source.users;
 
 import android.net.Uri;
 

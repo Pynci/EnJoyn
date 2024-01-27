@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.source;
+package it.unimib.enjoyn.source.events;
 
 //TODO da implementare
 public abstract class BaseEventRemoteDataSource {

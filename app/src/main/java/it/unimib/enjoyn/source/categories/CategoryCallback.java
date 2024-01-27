@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.source.category;
+package it.unimib.enjoyn.source.categories;
 
 import android.net.Uri;
 
