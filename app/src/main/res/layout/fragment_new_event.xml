@@ -191,6 +191,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:entries="@android:array/emailAddressTypes"
                 android:minHeight="48dp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_category"
                 app:layout_constraintEnd_toStartOf="@+id/newEventFragment_guideline_right"
@@ -203,8 +204,8 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/category"
                 android:textSize="24sp"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace"
-                tools:layout_editor_absoluteX="33dp" />
+                app:layout_constraintStart_toStartOf="@+id/newEventFragment_guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

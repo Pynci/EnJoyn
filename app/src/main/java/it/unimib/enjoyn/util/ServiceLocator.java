@@ -12,6 +12,7 @@ import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.MapRemoteDataSource;
 import it.unimib.enjoyn.source.categories.CategoryRemoteDataSource;
+import it.unimib.enjoyn.source.events.EventRemoteDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
 import it.unimib.enjoyn.source.interests.InterestLocalDataSource;
@@ -110,7 +111,7 @@ public class ServiceLocator {
         BaseEventRemoteDataSource eventRemoteDataSource;
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 
-        eventRemoteDataSource = new EventMockRemoteDataSource(jsonParserUtil);
+        eventRemoteDataSource = new EventRemoteDataSource(jsonParserUtil);
         eventLocalDataSource = new EventLocalDataSource(getEventDao(application));
 
         return new EventRepository(eventLocalDataSource, eventRemoteDataSource);

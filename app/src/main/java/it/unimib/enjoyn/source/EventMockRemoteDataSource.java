@@ -2,6 +2,7 @@ package it.unimib.enjoyn.source;
 
 import java.io.IOException;
 
+import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
 import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
 import it.unimib.enjoyn.util.JSONParserUtil;
@@ -42,5 +43,10 @@ public class EventMockRemoteDataSource extends BaseEventRemoteDataSource {
         } else{
             //TODO onFailure
         }
+    }
+
+    @Override
+    public void createEvent(Event event) {
+
     }
 }

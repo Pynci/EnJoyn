@@ -31,7 +31,7 @@ public class Event implements Parcelable {
     @Embedded(prefix = "category_")
     private Category category;
 
-    private int peopleNumber;
+    private int participants;
     @Nullable
     private double distance;
 
@@ -45,7 +45,7 @@ public class Event implements Parcelable {
 
     }
 
-    public Event(long id, String title, String description, String date, String place, String time, boolean confidential, EventLocation location, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Weather weather) {
+    public Event(long id, String title, String description, String date, String place, String time, boolean confidential, EventLocation location, Category category, int participants, double distance, boolean isTODO, boolean isFavorite, Weather weather) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -55,7 +55,7 @@ public class Event implements Parcelable {
         this.confidential = confidential;
         this.location = location;
         this.category = category;
-        this.peopleNumber = peopleNumber;
+        this.participants = participants;
         this.distance = distance;
         this.isTODO = isTODO;
         this.isFavorite = isFavorite;
@@ -98,12 +98,12 @@ public class Event implements Parcelable {
         return category;
     }
 
-    public int getPeopleNumber() {
-        return peopleNumber;
+    public int getParticipants() {
+        return participants;
     }
 
     public String getPeopleNumberString(){
-        return Integer.toString(peopleNumber);
+        return Integer.toString(participants);
     }
 
     public double getDistance() {
@@ -155,8 +155,8 @@ public class Event implements Parcelable {
         this.category = category;
     }
 
-    public void setPeopleNumber(int peopleNumber) {
-        this.peopleNumber = peopleNumber;
+    public void setParticipants(int participants) {
+        this.participants = participants;
     }
 
     public void setDistance(double distance) {
@@ -185,15 +185,15 @@ public class Event implements Parcelable {
 
     public void incrementPeopleNumber(){
 
-            peopleNumber++;
+            participants++;
 
-        this.peopleNumber=peopleNumber;
+        this.participants = participants;
     }
 
     public void decrementPeopleNumber(){
 
-            peopleNumber--;
-            this.peopleNumber=peopleNumber;
+            participants--;
+            this.participants = participants;
     }
 
     //TODO aggiungere parcel di EventLocation
@@ -230,7 +230,7 @@ public class Event implements Parcelable {
         dest.writeByte(this.confidential ? (byte) 1 : (byte) 0);
         dest.writeParcelable(this.location, flags);
         dest.writeParcelable(this.category, flags);
-        dest.writeInt(this.peopleNumber);
+        dest.writeInt(this.participants);
         dest.writeDouble(this.distance);
         dest.writeByte(this.isTODO ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isFavorite ? (byte) 1 : (byte) 0);
@@ -247,7 +247,7 @@ public class Event implements Parcelable {
         this.confidential = source.readByte() != 0;
         this.location = source.readParcelable(EventLocation.class.getClassLoader());
         this.category = source.readParcelable(Category.class.getClassLoader());
-        this.peopleNumber = source.readInt();
+        this.participants = source.readInt();
         this.distance = source.readDouble();
         this.isTODO = source.readByte() != 0;
         this.isFavorite = source.readByte() != 0;
@@ -264,7 +264,7 @@ public class Event implements Parcelable {
         this.confidential = in.readByte() != 0;
         this.location = in.readParcelable(EventLocation.class.getClassLoader());
         this.category = in.readParcelable(Category.class.getClassLoader());
-        this.peopleNumber = in.readInt();
+        this.participants = in.readInt();
         this.distance = in.readDouble();
         this.isTODO = in.readByte() != 0;
         this.isFavorite = in.readByte() != 0;

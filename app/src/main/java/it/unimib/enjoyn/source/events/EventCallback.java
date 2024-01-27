@@ -19,5 +19,8 @@ public interface EventCallback {
     void onEventFavoriteStatusChanged(List<Event> event);
     void onEventFavoriteStatusChanged(Event event, List<Event> eventFavorite);
 
+    void onRemoteEventCreationSuccess();
+    void onRemoteEventCreationFailure(Exception exception);
+
     //void onDeleteToDoEventSuccess(List<Event> eventToDo);
 }

@@ -17,4 +17,5 @@ public interface IEventRepository {
 
     void updateEvent(Event event);
 
+    MutableLiveData<Result> createEvent(Event event);
 }

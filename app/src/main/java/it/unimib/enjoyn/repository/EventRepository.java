@@ -10,11 +10,13 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.source.events.BaseEventLocalDataSource;
 import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
 import it.unimib.enjoyn.source.events.EventCallback;
+import it.unimib.enjoyn.source.events.EventRemoteDataSource;
 
 public class EventRepository implements IEventRepository, EventCallback {
     private final MutableLiveData<Result> allEventMutableLiveData;
     private final MutableLiveData<Result> favoriteEventMutableLiveData;
     private final MutableLiveData<Result> toDoEventMutableLiveData;
+    private final MutableLiveData<Result> eventCreation;
     private final BaseEventLocalDataSource eventLocalDataSource;
     private final BaseEventRemoteDataSource eventRemoteDataSource;
 
@@ -26,6 +28,7 @@ public class EventRepository implements IEventRepository, EventCallback {
         this.eventRemoteDataSource = eventRemoteDataSource;
         this.eventLocalDataSource.setEventCallback(this);
         this.eventRemoteDataSource.setEventCallback(this);
+        eventCreation = new MutableLiveData<>();
     }
 
     @Override
@@ -65,10 +68,11 @@ public class EventRepository implements IEventRepository, EventCallback {
         eventLocalDataSource.updateEvent(event);
     }
 
-    public void createEvent(){
-
+    @Override
+    public MutableLiveData<Result> createEvent(Event event){
+        eventRemoteDataSource.createEvent(event);
+        return eventCreation;
     }
-
 
     @Override
     public void onSuccessFromRemote(EventsDatabaseResponse eventDBResponse, long lastUpdate) {
@@ -127,9 +131,20 @@ public class EventRepository implements IEventRepository, EventCallback {
         }
         toDoEventMutableLiveData.postValue(new Result.EventSuccess(new EventsDatabaseResponse(eventFavorite)));
     }
+
     @Override
     public void onEventFavoriteStatusChanged(List<Event> event) {
         favoriteEventMutableLiveData.postValue(new Result.EventSuccess(new EventsDatabaseResponse(event)));
+    }
+
+    @Override
+    public void onRemoteEventCreationSuccess() {
+        eventCreation.postValue(new Result.Success());
+    }
+
+    @Override
+    public void onRemoteEventCreationFailure(Exception exception) {
+        eventCreation.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
 }

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
@@ -39,6 +41,7 @@ import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
+import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.util.WeatherCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
@@ -88,6 +91,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
     private static final String STATE_EQUALS = "equals";
     private FragmentNewEventBinding fragmentNewEventBinding;
+    private Observer<Result> eventCreationObserver;
 
     public NewEventFragment() {
         // Required empty public constructor
@@ -144,6 +148,20 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         locationName = newEvent.getLocation().getName();
         fragmentNewEventBinding.fragmentNewEventTextViewLocation.setText(locationName);
 
+        eventCreationObserver = result -> {
+            if(result.isSuccessful()){
+                Snackbar
+                        .make(view, "FUNZICA", Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+            else{
+                Snackbar
+                        .make(view, ((Result.Error) result).getMessage(), Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+        };
+
+
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -192,14 +210,14 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             title = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextTitle.getText());
             description = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextDescription.getText());
 
-            if(title != null && dateWeather != null && timeWeather != null && locationName != null && numberOfPeople != -1 && description != null){
+            if(title != null && dateWeather != null && timeWeather != null && locationName != null && description != null){
                 newEvent.setTitle(title);
                 newEvent.setDate(dateWeather);
-                newEvent.setTime(timeWeather);
-                newEvent.setPeopleNumber(numberOfPeople);
+                newEvent.setTime(timeWeather);;
                 newEvent.setDescription(description);
-                newEvent.setTODO(true);
-
+                newEvent.setCategory(new Category("ZioBestia"));
+                // chiamata ai livelli sottostanti per il salvataggio (da ascoltare)
+                eventViewModel.createEvent(newEvent).observe(getViewLifecycleOwner(), eventCreationObserver);
             } else {
                 ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
                 Snackbar.make(view, errorMessagesUtil.getNewEventErrorMessage(EMPTY_FIELDS), Snackbar.LENGTH_LONG).show();

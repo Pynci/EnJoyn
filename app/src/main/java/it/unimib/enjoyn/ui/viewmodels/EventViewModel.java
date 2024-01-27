@@ -17,7 +17,7 @@ import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
 
 public class EventViewModel extends ViewModel {
-    private final IEventRepository eventRepositoryWithLiveData;
+    private final IEventRepository eventRepository;
     private MutableLiveData<Result> eventLiveData;
     private MutableLiveData<Result> toDoEventListLiveData;
     private MutableLiveData<Result> favoriteEventListLiveData;
@@ -28,8 +28,8 @@ public class EventViewModel extends ViewModel {
     private MutableLiveData<Result> mapSuggestionListLiveData;
     private MutableLiveData<Result> mapSearchLiveData;
 
-    public EventViewModel(IEventRepository eventRepositoryWithLiveData, IWeatherRepository iWeatherRepository, MapRepository mapRepository) {
-        this.eventRepositoryWithLiveData = eventRepositoryWithLiveData;
+    public EventViewModel(IEventRepository eventRepository, IWeatherRepository iWeatherRepository, MapRepository mapRepository) {
+        this.eventRepository = eventRepository;
         this.weatherRepository = iWeatherRepository;
         this.mapRepository = mapRepository;
     }
@@ -80,7 +80,7 @@ public class EventViewModel extends ViewModel {
      * @param event The event to be updated.
      */
     public void updateEvent(Event event) {
-        eventRepositoryWithLiveData.updateEvent(event);
+        eventRepository.updateEvent(event);
     }
 
     /**
@@ -88,12 +88,12 @@ public class EventViewModel extends ViewModel {
      * and to associate it with the LiveData object.
      */
     private void fetchEvent(long lastUpdate) {
-        eventLiveData = eventRepositoryWithLiveData.fetchEvent(lastUpdate);
+        eventLiveData = eventRepository.fetchEvent(lastUpdate);
     }
 
     //TODO fare metodo con category effettive
     private void fetchEvent(String category, long lastUpdate) {
-        eventLiveData = eventRepositoryWithLiveData.fetchEvent(lastUpdate);
+        eventLiveData = eventRepository.fetchEvent(lastUpdate);
     }
 
     /**
@@ -101,24 +101,23 @@ public class EventViewModel extends ViewModel {
      * and to associate it with the LiveData object.
      */
     private void getFavoriteEvent() {
-        favoriteEventListLiveData = eventRepositoryWithLiveData.getFavoriteEvent();
+        favoriteEventListLiveData = eventRepository.getFavoriteEvent();
     }
 
     private void getToDoEvent() {
-        toDoEventListLiveData = eventRepositoryWithLiveData.getToDoEvent();
+        toDoEventListLiveData = eventRepository.getToDoEvent();
     }
 
-    /**
-     * Removes the event from the list of favorite event.
-     *
-     * @param event The event to be removed from the list of favorite event.
-     */
+    public MutableLiveData<Result> createEvent(Event event){
+        return eventRepository.createEvent(event);
+    }
+
     public void removeFromFavorite(Event event) {
-        eventRepositoryWithLiveData.updateEvent(event);
+        eventRepository.updateEvent(event);
     }
 
     public void removeFromToDo(Event event) {
-        eventRepositoryWithLiveData.updateEvent(event);
+        eventRepository.updateEvent(event);
     }
 
     public MutableLiveData<Result> getWeather(String latitude, String logitude){
