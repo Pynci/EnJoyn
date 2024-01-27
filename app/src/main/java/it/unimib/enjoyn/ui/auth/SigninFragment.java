@@ -80,7 +80,7 @@ public class SigninFragment extends Fragment {
                         navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
                     }
                     else if(!currentUser.getProfileConfigured()){
-                        navigateTo(R.id.action_signinFragment_to_profileConfigurationFragment, false);
+                        navigateTo(R.id.action_signinFragment_to_profileConfigurationFragment, false, false);
                     }
                     else if(!currentUser.getCategoriesSelectionDone()){
                         navigateTo(R.id.action_signinFragment_to_categoriesSelectionFragment, false);
@@ -173,6 +173,16 @@ public class SigninFragment extends Fragment {
 
     private void navigateTo(int destination, boolean finishActivity) {
         Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
+    }
+
+    private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromProfileFragment", fromProfileFragment);
+        Navigation.findNavController(requireView()).navigate(destination, bundle);
         if (finishActivity) {
             requireActivity().finish();
         }
