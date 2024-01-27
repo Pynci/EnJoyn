@@ -22,6 +22,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -94,6 +95,8 @@ import it.unimib.enjoyn.util.SnackbarBuilder;
 
 public class DiscoverMapFragment extends Fragment implements PermissionsListener {
 
+    Observer<Result> suggestionObserver;
+    Observer<Result> mapSearchObserver;
     EventViewModel eventViewModel;
 
     private FragmentDiscoverMapBinding fragmentDiscoverMapBinding;
@@ -101,7 +104,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     List<Event> eventList;
     Event event;
     MapView mapView;
-    public EventLocation location;
+    //public EventLocation location;
     List<EventLocation> locationList;
     Point selfLocation;
     private SearchEngine searchEngine;
@@ -116,10 +119,12 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     boolean firstTime = false;
     boolean suggestionClicked = false;
     boolean searchClicked = false;
+    List<SearchSuggestion> suggestions;
+    private List<SearchResult> searchResultList = null;
     private ListView suggestionListView;
     private SuggestionListAdapter suggestionListAdapter;
-    private SearchResultsView searchResultsView;
-    private PlaceAutocomplete placeAutocomplete;
+    //private SearchResultsView searchResultsView;
+    //private PlaceAutocomplete placeAutocomplete;
     private TextInputEditText searchBar;
     private PermissionsManager permissionsManager;
     private PointAnnotationManager pointAnnotationManager;
@@ -181,6 +186,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                 .proximity(selfLocation)
                 .build();
 
+
         suggestionListView = view.findViewById(R.id.fragmentDiscoverMap_listView);
         suggestionClicked = false;
         searchClicked = false;
@@ -191,7 +197,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
         mapView = view.findViewById(R.id.fragmentDiscoverMap_mapView);
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
         pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
-        placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
+        //placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
         fragmentDiscoverMapBinding.fragmentDiscoverMapSearchResultView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
 
 
