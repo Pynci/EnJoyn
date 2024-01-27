@@ -172,15 +172,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             permissionsManager.requestLocationPermissions(requireActivity());
 
         }
-        /**searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
-                new SearchEngineSettings(getString(R.string.mapbox_access_token))
-        );
-
-        final SearchOptions options = new SearchOptions.Builder()
-                .limit(4)
-                .proximity(selfLocation)
-                .build();*/
-
 
         suggestionListView = view.findViewById(R.id.fragmentDiscoverMap_listView);
         suggestionClicked = false;
@@ -297,7 +288,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                 locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
-                positionButton.hide();
+                searchBar.setText("");
             });
 
         });
@@ -386,7 +377,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
                     annotation.getPoint().latitude();
                     annotation.getPoint().longitude();
-                    Snackbar.make(view, "va point: LAT: "+annotation.getPoint().latitude()+" LONG: "+annotation.getPoint().longitude()+ " ID: "+annotation.getId(), Snackbar.LENGTH_SHORT).show();
+
                     return true;
                 }
             });

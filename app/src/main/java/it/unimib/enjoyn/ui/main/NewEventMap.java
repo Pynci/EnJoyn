@@ -368,7 +368,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
-                positionButton.hide();
+                searchBar.setText("");
+                newEventButton.setText(R.string.positioningEvent);
             });
 
           GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), point -> {
