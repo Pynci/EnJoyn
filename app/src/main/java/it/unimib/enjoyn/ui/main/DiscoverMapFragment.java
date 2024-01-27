@@ -4,6 +4,7 @@ import static com.mapbox.maps.plugin.animation.CameraAnimationsUtils.getCamera;
 import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
 import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
+import static it.unimib.enjoyn.util.Constants.EMPTY_LOCATION;
 import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
 
 import android.Manifest;
@@ -171,14 +172,14 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             permissionsManager.requestLocationPermissions(requireActivity());
 
         }
-        searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
+        /**searchEngine = SearchEngine.createSearchEngineWithBuiltInDataProviders(
                 new SearchEngineSettings(getString(R.string.mapbox_access_token))
         );
 
         final SearchOptions options = new SearchOptions.Builder()
                 .limit(4)
                 .proximity(selfLocation)
-                .build();
+                .build();*/
 
 
         suggestionListView = view.findViewById(R.id.fragmentDiscoverMap_listView);
@@ -189,15 +190,51 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
         selfLocation = null;
         searchBar = view.findViewById(R.id.fragmentDiscoverMap_TextInputEditText_searchBar);
         mapView = view.findViewById(R.id.fragmentDiscoverMap_mapView);
+
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
         pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
         //placeAutocomplete = PlaceAutocomplete.create(getString(R.string.mapbox_access_token));
         fragmentDiscoverMapBinding.fragmentDiscoverMapSearchResultView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
 
+        suggestionObserver = result -> {
+            if (result.isSuccessful()) {
+                searchResultList = new ArrayList<>();
+                suggestions = ((Result.MapSuggestionSuccess) result).getData();
+                locationList = new ArrayList<>();
+                distanceList = new ArrayList<>();
+                eventViewModel.getMapSearch(suggestions).observe(getViewLifecycleOwner(), mapSearchObserver);
+            }
+            else{
+                Log.d(this.getClass().getSimpleName(), "SIAMO NEL RAMO ELSE DEL SUGGESTIONOBSERVER TATASDJHASJKBDNAJKHSBDAKNSD");
+            }
 
-        // immagine 3d scaricata, da usare per creare pin sulla mappa
-        //bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
-        // Dichiarazione della variabile annotationApi
+        };
+
+        mapSearchObserver = result -> {
+            if(result.isSuccessful()) {
+                searchResultList = ((Result.MapSearchSuccess) result).getData();
+                for (int i = 0; i < searchResultList.size(); i++) {
+                    locationList.add(new EventLocation());
+                    locationList.get(i).setName(searchResultList.get(i).getName());
+                    distance = 100 * (Math.sqrt(Math.pow(selfLocation.latitude() - searchResultList.get(i).getCoordinate().latitude(), 2) + Math.pow(selfLocation.longitude() - searchResultList.get(i).getCoordinate().longitude(), 2)));
+                    distanceList.add(round(distance, 1));
+                }
+            }
+
+            suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList, (eventLocation, position) -> {
+
+                firstTime= false;
+                searchBar.setText( searchResultList.get(position).getName());
+                suggestionListView.setVisibility(View.GONE);
+                eventSelectionPoint(searchResultList.get(position));
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            });
+            suggestionListView.setAdapter(suggestionListAdapter);
+            suggestionListView.setVisibility(View.VISIBLE);
+        };
+
+
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION );
         }
@@ -213,8 +250,13 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(firstTime) {
                     if (s.length() > 3) { //&& !clickSuggestion
-                        searchRequestTask = searchEngine.search(s.toString(), options, searchCallback);
-                        suggestionListView.setVisibility(View.VISIBLE);
+                        searchResultList = new ArrayList<>();
+                        suggestions = new ArrayList<>();
+                        Log.d("TAH", "ASJBDIJAHBNSDHJKABSDHJBASJHDBAUISHEIJQWIEJAJSND");
+                        eventViewModel.getMapSuggestion(s.toString(), selfLocation).observe(getViewLifecycleOwner(), suggestionObserver);
+                        eventItem.setVisibility(View.GONE);
+                        //}
+
                     } else {
                         suggestionListView.setVisibility(View.GONE);
                         //clickSuggestion = false;
@@ -229,54 +271,35 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             }
         });
 
-        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-            @Override
-            public void onStyleLoaded(@NonNull Style style) {
-                mapView.getMapboxMap().setCamera(new CameraOptions.Builder().zoom(16.0).build());
-                LocationComponentPlugin locationComponentPlugin = getLocationComponent(mapView);
-                locationComponentPlugin.setEnabled(true);
-                LocationPuck2D locationPuck2D = new LocationPuck2D();
-                locationPuck2D.setBearingImage(AppCompatResources.getDrawable(getContext(), R.drawable.baseline_place_24));
-                locationComponentPlugin.setLocationPuck(locationPuck2D);
+        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, style -> {
+            mapView.getMapboxMap().setCamera(new CameraOptions.Builder().zoom(16.0).build());
+            LocationComponentPlugin locationComponentPlugin = getLocationComponent(mapView);
+            locationComponentPlugin.setEnabled(true);
+            LocationPuck2D locationPuck2D = new LocationPuck2D();
+            locationPuck2D.setBearingImage(AppCompatResources.getDrawable(getContext(), R.drawable.baseline_place_24));
+            locationComponentPlugin.setLocationPuck(locationPuck2D);
+            locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
+            locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
+            getGestures(mapView).addOnMoveListener(onMoveListener);
+
+            searchBar.setOnKeyListener((v, keyCode, event) -> {
+                if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
+                {
+                    suggestionListView.setVisibility(View.GONE);
+                    return true;
+                }
+                return false;
+            });
+
+
+
+            positionButton.setOnClickListener(v -> {
                 locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
+                positionButton.hide();
+            });
 
-                /*fragmentDiscoverMapBinding.fragmentDiscoverMapTextInputLayoutSearchBar.setOnKeyListener(new View.OnKeyListener() {
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            fragmentDiscoverMapBinding.fragmentDiscoverMapListView.setVisibility(View.GONE);
-                            searchClicked = true;
-
-                            return true;
-                        }
-                        return false;
-                    }
-                });*/
-                positionButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // flyToCameraPosition(point);
-                        updateCamera(selfLocation, 0.0);
-                        locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
-                        locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
-                        getGestures(mapView).addOnMoveListener(onMoveListener);
-
-
-                        positionButton.hide();
-
-                    }
-                });
-
-                GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), new OnMapClickListener() {
-                    @Override
-                    public boolean onMapClick(@NonNull Point point) {
-                        eventItem.setVisibility(View.GONE);
-                        return false;
-                    }
-                });
-
-            }
         });
 
 
@@ -294,6 +317,11 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                                 getEventErrorMessage(VIEW_MODEL_ERROR),
                         Snackbar.LENGTH_SHORT).show();
             }
+        });
+
+        GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), point -> {
+                    eventItem.setVisibility(View.GONE);
+            return false;
         });
 
         Point point = Point.fromLngLat(-122.08497461176863, 37.42241542518461);
@@ -366,96 +394,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
     }
 
-
-
-
-    private final SearchSelectionCallback searchCallback = new SearchSelectionCallback() {
-
-        @Override
-        public void onSuggestions(@NonNull List<SearchSuggestion> suggestions, @NonNull ResponseInfo responseInfo) {
-            if (suggestions.isEmpty()) {
-                Log.i("SearchApiExample", "No suggestions found");
-            } else {
-                Log.i("SearchApi", "Search suggestions: " + suggestions + "\nSelecting first...");
-               /* if(searchClicked)
-                searchRequestTask = searchEngine.select(suggestions.get(0), this);*/
-                //searchResultsView.set(suggestions);
-
-
-                locationList = new ArrayList<>();
-                distanceList = new ArrayList<>();
-
-                for(int i = 0; i<suggestions.size(); i++){
-                    locationList.add(new EventLocation());
-                    locationList.get(i).setName(suggestions.get(i).getName());
-                    searchRequestTask = searchEngine.select(suggestions.get(i), searchCallback);
-                    distance = 100*(Math.sqrt(Math.pow(selfLocation.latitude()-distanceSuggestionLatitude,2) + Math.pow(selfLocation.longitude() -distanceSuggestionsLongitude,2)));
-                    distanceList.add(round(distance,1));
-                    //locationList.get(i).setLatitude(suggestions.get(i).getRequestOptions().getOptions());
-                    //locationList.get(i).setLongitude(suggestions.get(i).getRequestOptions().getOptions().getProximity().longitude());
-                }
-
-
-                suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList,  new SuggestionListAdapter.OnItemClickListener() {
-                    @Override
-                    public void onSuggestionItemClick(EventLocation eventLocation, int position) {
-                        suggestionClicked = true;
-                        searchRequestTask = searchEngine.select(suggestions.get(position), searchCallback);
-
-                        searchBar.setText(suggestions.get(position).getName());
-                        suggestionListView.setVisibility(View.GONE);
-
-                        //clickSuggestion = true;
-                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                    }
-                });
-                suggestionListView.setAdapter(suggestionListAdapter);
-            }
-            searchBar.setOnKeyListener(new View.OnKeyListener(){
-                public boolean onKey(View v, int keyCode, KeyEvent event){
-                    if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
-                    {
-                        searchClicked = true;
-                        searchRequestTask = searchEngine.select(suggestions.get(0), searchCallback);
-                        suggestionListView.setVisibility(View.GONE);
-
-                        return true;
-                    }
-                    return false;
-                }
-            });
-        }
-
-        @Override
-        public void onResult(@NonNull SearchSuggestion suggestion, @NonNull SearchResult result, @NonNull ResponseInfo info) {
-            Log.i("SearchApie", "Search result: " + result);
-            if(suggestionClicked || searchClicked ) {
-                eventSelectionPoint(result);
-                suggestionClicked = false;
-                searchClicked = false;
-            }
-            distanceSuggestionLatitude = result.getCoordinate().latitude();
-            distanceSuggestionsLongitude = result.getCoordinate().longitude();
-
-            //Log.i("SearchApiExample", "Search result: " + location.getName());
-            //Log.i("SearchApiExample", "Search result: " + location.getLatitudeToString());
-            //Log.i("SearchApiExample", "Search result: " + location.getLongitude());
-        }
-
-        @Override
-        public void onResults(@NonNull SearchSuggestion suggestion, @NonNull List<SearchResult> results, @NonNull ResponseInfo responseInfo) {
-            Log.i("SearchApiExample", "Category search results: " + results);
-        }
-
-        @Override
-        public void onError(@NonNull Exception e) {
-            Log.i("SearchApiExample", "Search error: ", e);
-        }
-    };
-
-
-
     private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListener = new OnIndicatorBearingChangedListener() {
         @Override
         public void onIndicatorBearingChanged(double v) {
@@ -467,7 +405,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
         public void onIndicatorPositionChanged(@NonNull Point point) {
             if(positionChanged) {
                 mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
-                // getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
                 DiscoverMapFragment.this.selfLocation = point;
                 positionChanged = false;
             }
