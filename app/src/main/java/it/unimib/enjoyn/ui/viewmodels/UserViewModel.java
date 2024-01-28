@@ -15,6 +15,7 @@ public class UserViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
     MutableLiveData<Result> currentUser;
+    MutableLiveData<Result> propic;
 
     public UserViewModel(IUserRepository userRepository) {
         this.userRepository = userRepository;
@@ -65,7 +66,10 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> getUserPropic() {
-        return userRepository.getCurrentUserPropic();
+        if(propic == null){
+            propic = userRepository.getCurrentUserPropic();
+        }
+        return propic;
     }
 
     public MutableLiveData<Result> setUserNameAndSurname(String name, String surname) {
