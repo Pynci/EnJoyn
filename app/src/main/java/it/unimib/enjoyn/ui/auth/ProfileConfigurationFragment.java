@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -84,6 +85,7 @@ public class ProfileConfigurationFragment extends Fragment {
         Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
         Button skip = view.findViewById(R.id.propicDescriptionConfiguration_button_skip);
         ImageButton imageButtonAddPropic = view.findViewById(R.id.propicDescriptionConfiguration_imageButton_addPropic);
+        TextView username = view.findViewById(R.id.fragmentProfileConfiguration_textView_username);
         EditText cognome = view.findViewById(R.id.propicDescriptionConfiguration_editText_cognome);
         EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
         TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
@@ -177,26 +179,27 @@ public class ProfileConfigurationFragment extends Fragment {
             }
         });
 
-        if(isFromProfileFragment) {
-            userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), result -> {
-                if (result.isSuccessful() && result instanceof Result.SingleImageReadFromRemote) {
-                    Glide
-                            .with(this.getContext())
-                            .load(((Result.SingleImageReadFromRemote) result).getUri())
-                            .into(userImage);
-                }
-            });
+        userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), userResult -> {
+            if(userResult.isSuccessful() && userResult instanceof Result.UserSuccess){
+                User user = ((Result.UserSuccess) userResult).getData();
+                username.setText(user.getUsername());
 
-            userViewModel.getCurrentUser().observe(this.getViewLifecycleOwner(), result -> {
-                if (result.isSuccessful() && result instanceof Result.UserSuccess) {
-
-                    User user = ((Result.UserSuccess) result).getData();
+                if(isFromProfileFragment) {
                     nome.setText(user.getName());
                     cognome.setText(user.getSurname());
                     description.setText(user.getDescription());
+
+                    userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), propicResult -> {
+                        if (propicResult.isSuccessful() && propicResult instanceof Result.SingleImageReadFromRemote) {
+                            Glide
+                                    .with(this.getContext())
+                                    .load(((Result.SingleImageReadFromRemote) propicResult).getUri())
+                                    .into(userImage);
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
 
     }
 
