@@ -14,13 +14,17 @@ import it.unimib.enjoyn.repository.user.IUserRepository;
 public class UserViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
+    MutableLiveData<Result> currentUser;
 
     public UserViewModel(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public MutableLiveData<Result> getCurrentUser(){
-        return userRepository.getCurrentUser();
+        if(currentUser == null){
+            currentUser = userRepository.getCurrentUser();
+        }
+        return currentUser;
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){
