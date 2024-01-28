@@ -95,7 +95,6 @@
                 style="@style/Widget.MaterialComponents.TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:gravity="center_horizontal"
                 android:text="@string/nameSurname"
                 android:textSize="20sp"

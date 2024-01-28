@@ -95,8 +95,8 @@ public class ProfileFragment extends Fragment {
         });
 
         ShapeableImageView propic = view.findViewById(R.id.fragmentProfile_imageView_propic);
-        TextView propicUsernmame = view.findViewById(R.id.fragmentProfile_textView_username);
-        TextView propicNameAndSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
+        TextView username = view.findViewById(R.id.fragmentProfile_textView_username);
+        TextView nameSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
         TextView description = view.findViewById(R.id.fragmentProfile_textView_descriptionText);
         ImageButton logout = view.findViewById(R.id.fragmentProfile_imageButton_logOut);
         Button modificaProfilo = view.findViewById(R.id.fragmentProfile_textButton_editProfile);
@@ -120,8 +120,8 @@ public class ProfileFragment extends Fragment {
 
                 User user = ((Result.UserSuccess) result).getData();
                 if(user != null){
-                    propicUsernmame.setText(user.getUsername());
-                    propicNameAndSurname.setText(user.getName() + " " + user.getSurname());
+                    username.setText(user.getUsername());
+                    nameSurname.setText(user.getName() + " " + user.getSurname());
                     description.setText(user.getDescription());
                 }
             }
