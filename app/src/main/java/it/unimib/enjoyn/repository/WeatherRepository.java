@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.source.events.BaseWeatherRemoteDataSource;
+import it.unimib.enjoyn.source.BaseWeatherRemoteDataSource;
 import it.unimib.enjoyn.util.WeatherCallback;
 
 public class WeatherRepository implements IWeatherRepository, WeatherCallback {

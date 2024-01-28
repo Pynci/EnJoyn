@@ -1,4 +1,4 @@
-package it.unimib.enjoyn.source.events;
+package it.unimib.enjoyn.source;
 
 import it.unimib.enjoyn.util.WeatherCallback;
 

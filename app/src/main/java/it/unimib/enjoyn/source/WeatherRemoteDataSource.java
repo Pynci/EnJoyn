@@ -11,7 +11,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.service.WeatherApiService;
-import it.unimib.enjoyn.source.events.BaseWeatherRemoteDataSource;
 import it.unimib.enjoyn.util.ServiceLocator;
 import retrofit2.Call;
 import retrofit2.Callback;
