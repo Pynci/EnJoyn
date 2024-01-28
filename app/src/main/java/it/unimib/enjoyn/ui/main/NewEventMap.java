@@ -360,13 +360,14 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
             positionButton.setOnClickListener(v -> {
                 // flyToCameraPosition(point);
-                //updateCamera(selfLocation);
+                updateCamera(selfLocation);
                 locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
                 searchBar.setText("");
                 newEventButton.setText(R.string.positioningEvent);
-                location = null;
+                pointAnnotationManager.deleteAll();
+                location = new EventLocation();
             });
 
           GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), point -> {

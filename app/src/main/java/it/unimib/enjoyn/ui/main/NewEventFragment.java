@@ -55,7 +55,7 @@ import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
-
+    private static final String STATE_URI = "uri";
     ImageButton date;
     ImageButton time;
     ImageButton place;
@@ -71,7 +71,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     String locationName;
     ImageView weatherIcon;
     String description;
-    Uri eventImage;
+    Uri eventImage = null;
     int numberOfPeople = -1;
     double temp = -10000;
 
@@ -104,6 +104,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             weatherCode = savedInstanceState.getInt(STATE_CODE);
             temp = savedInstanceState.getDouble(STATE_TEMPERATURE);
             equals = savedInstanceState.getBoolean(STATE_EQUALS);
+            eventImage = savedInstanceState.getParcelable(STATE_URI);
         }
         IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
         weatherAPIdata = new Weather();
@@ -148,6 +149,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         ShapeableImageView image = fragmentNewEventBinding.fragmentNewEventShapeableImageViewEventImage;
         ImageButton photoPicker = fragmentNewEventBinding.fragmentNewEventImageButtonPhotoPicker;
 
+        if(eventImage!= null){
+            image.setImageURI(eventImage);
+            photoPicker.setVisibility(View.GONE);
+        }
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                     // Callback is invoked after the user selects a media item or closes the
@@ -460,6 +465,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         savedInstanceState.putInt(STATE_CODE, weatherCode);
         savedInstanceState.putDouble(STATE_TEMPERATURE, temp);
         savedInstanceState.putBoolean(STATE_EQUALS, equals);
+        savedInstanceState.putParcelable(STATE_URI, eventImage);
         // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
     }
