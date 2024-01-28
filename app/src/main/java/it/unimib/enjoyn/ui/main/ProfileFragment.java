@@ -52,8 +52,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
-        return fragment;
+        return new ProfileFragment();
     }
 
     @Override
