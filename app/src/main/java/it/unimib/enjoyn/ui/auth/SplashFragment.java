@@ -63,7 +63,7 @@ public class SplashFragment extends Fragment {
                         navigateTo(R.id.action_splashFragment_to_propicDescriptionConfigurationFragment, false, false);
                     }
                     else if(!currentUser.getCategoriesSelectionDone()){
-                        navigateTo(R.id.action_splashFragment_to_categoriesSelectionFragment, false);
+                        navigateTo(R.id.action_splashFragment_to_categoriesSelectionFragment, false, false);
                     }
                     else{
                         navigateTo(R.id.action_splashFragment_to_mainButtonMenuActivity, true);

@@ -83,7 +83,7 @@ public class SigninFragment extends Fragment {
                         navigateTo(R.id.action_signinFragment_to_profileConfigurationFragment, false, false);
                     }
                     else if(!currentUser.getCategoriesSelectionDone()){
-                        navigateTo(R.id.action_signinFragment_to_categoriesSelectionFragment, false);
+                        navigateTo(R.id.action_signinFragment_to_categoriesSelectionFragment, false, false);
                     }
                     else{
                         navigateTo(R.id.action_signinFragment_to_mainButtonMenuActivity, true);

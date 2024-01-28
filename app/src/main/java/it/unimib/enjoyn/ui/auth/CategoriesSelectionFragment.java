@@ -51,6 +51,11 @@ public class CategoriesSelectionFragment extends Fragment {
                 new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
         categoryViewModel = new ViewModelProvider(
                 requireActivity()).get(CategoryViewModel.class);
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        UserViewModel userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        userViewModel.updateCategoriesSelectionStatus();
+
     }
 
     @Override
@@ -63,16 +68,16 @@ public class CategoriesSelectionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        boolean isFromProfileFragment = getArguments().getBoolean("fromProfileFragment");
         Button buttonSkip = view.findViewById(R.id.fragmentCategoriesSelection_button_skip);
         Button buttonConfirm = view.findViewById(R.id.fragmentCategoriesSelection_button_confirm);
 
         ListView listView = view.findViewById(R.id.fragmentCategoriesSelection_ListView);
         listView.setDivider(null);
 
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
-        UserViewModel userViewModel = new ViewModelProvider(requireActivity(),
-                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-        userViewModel.updateCategoriesSelectionStatus();
+        if(isFromProfileFragment) {
+            buttonSkip.setText(R.string.annulla);
+        }
 
         Observer<Result> categoriesObserver = result -> {
             if (result.isSuccessful()) {
@@ -109,21 +114,31 @@ public class CategoriesSelectionFragment extends Fragment {
         };
 
         buttonSkip.setOnClickListener(v -> {
-            Navigation
-                    .findNavController(view)
-                    .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
+            if(!isFromProfileFragment)
+                navigateTo(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity, false);
+            else
+                navigateTo(R.id.action_categoriesSelectionFragment2_to_profileFragment, false);
         });
 
         buttonConfirm.setOnClickListener(v -> {
             interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
                 if (result.isSuccessful()) {
-                    Navigation
-                            .findNavController(view)
-                            .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
+
+                    if(!isFromProfileFragment)
+                        navigateTo(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity, false);
+                    else
+                        navigateTo(R.id.action_categoriesSelectionFragment2_to_profileFragment, false);
                 }
             });
         });
 
         categoryViewModel.getAllCategories().observe(this.getViewLifecycleOwner(), categoriesObserver);
+    }
+
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
     }
 }

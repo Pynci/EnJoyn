@@ -113,7 +113,7 @@ public class ProfileConfigurationFragment extends Fragment {
 
                 if (allSuccessfull) {
                     if(!isFromProfileFragment)
-                        navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false);
+                        navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false, false);
                     else
                         navigateTo(R.id.action_profileConfigurationFragment2_to_profileFragment, false);
                 }
@@ -132,7 +132,7 @@ public class ProfileConfigurationFragment extends Fragment {
 
         skip.setOnClickListener(v -> {
             if(!isFromProfileFragment)
-                navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false);
+                navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false, false);
             else
                 navigateTo(R.id.action_profileConfigurationFragment2_to_profileFragment, false);
         });
@@ -205,6 +205,16 @@ public class ProfileConfigurationFragment extends Fragment {
 
     private void navigateTo(int destination, boolean finishActivity) {
         Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
+    }
+
+    private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromProfileFragment", fromProfileFragment);
+        Navigation.findNavController(requireView()).navigate(destination, bundle);
         if (finishActivity) {
             requireActivity().finish();
         }

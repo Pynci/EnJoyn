@@ -98,8 +98,8 @@ public class ProfileFragment extends Fragment {
         });
 
         ShapeableImageView propic = view.findViewById(R.id.fragmentProfile_imageView_propic);
-        TextView propicUsernmame = view.findViewById(R.id.fragmentProfile_textView_username);
-        TextView propicNameAndSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
+        TextView username = view.findViewById(R.id.fragmentProfile_textView_username);
+        TextView nameSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
         TextView description = view.findViewById(R.id.fragmentProfile_textView_descriptionText);
         ImageButton logout = view.findViewById(R.id.fragmentProfile_imageButton_logOut);
         Button modificaProfilo = view.findViewById(R.id.fragmentProfile_textButton_editProfile);
@@ -157,14 +157,14 @@ public class ProfileFragment extends Fragment {
                 if(user != null){
 
                     if(user.getUsername() != null)
-                        propicUsernmame.setText(user.getUsername());
+                        username.setText(user.getUsername());
                     else
-                        propicUsernmame.setText("");
+                        username.setText("");
 
                     if(user.getName() != null && user.getSurname() != null)
-                        propicNameAndSurname.setText(user.getName() + " " + user.getSurname());
+                        nameSurname.setText(user.getName() + " " + user.getSurname());
                     else
-                        propicNameAndSurname.setText("");
+                        nameSurname.setText("");
 
                     if(user.getDescription() != null)
                         description.setText(user.getDescription());
@@ -195,7 +195,7 @@ public class ProfileFragment extends Fragment {
         });
 
         modificaInteressi.setOnClickListener(v -> {
-            navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, false);
+            navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, true);
         });
 
         interestsViewModel.getInterests().observe(this.getViewLifecycleOwner(), interestsObserver);

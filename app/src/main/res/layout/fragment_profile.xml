@@ -132,7 +132,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_textButton_EditIInterests" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_textButton_EditIInterests"
+                tools:ignore="NestedScrolling" />
 
             <Button
                 android:id="@+id/fragmentProfile_textButton_EditIInterests"

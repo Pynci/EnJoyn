@@ -27,4 +27,10 @@ public class InterestsViewModel extends ViewModel {
     public MutableLiveData<Result> getInterests() {
         return interestRepository.getUserInterests();
     }
+
+    /*
+    public MutableLiveData<Result> deleteUserInterests(){
+        return new MutableLiveData<>();
+    }
+     */
 }
