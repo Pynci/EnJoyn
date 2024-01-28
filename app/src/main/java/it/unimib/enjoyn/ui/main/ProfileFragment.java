@@ -106,6 +106,7 @@ public class ProfileFragment extends Fragment {
         Button modificaProfilo = view.findViewById(R.id.fragmentProfile_textButton_editProfile);
         Button modificaInteressi = view.findViewById(R.id.fragmentProfile_textButton_EditIInterests);
         ListView listView = view.findViewById(R.id.fragmentProfile_listView);
+        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         Observer<Result> interestsObserver = result -> {
             if (result.isSuccessful()) {
@@ -114,7 +115,6 @@ public class ProfileFragment extends Fragment {
                 categoryViewModel
                         .getAllImages(categoryList)
                         .observe(this.getViewLifecycleOwner(), result1 -> {
-
 
                             if (result1 instanceof Result.ImagesReadFromRemote) {
 
@@ -140,8 +140,6 @@ public class ProfileFragment extends Fragment {
                         });
             }
         };
-
-        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), result -> {
 
