@@ -20,16 +20,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Category;
@@ -38,6 +43,7 @@ import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IWeatherRepository;
+import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
@@ -64,7 +70,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
     TextView weather;
     TextView temperature;
+    Spinner categorySpinner;
     String hourWeather;
+
     int indexHour = -1;
     int indexMinute = -1;
     int indexDate = -1;
@@ -80,9 +88,13 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     int numberOfPeople = -1;
     double temp = -10000;
 
+    private Category selectedCategory;
+
     private EventViewModel eventViewModel;
     private Weather weatherAPIdata;
 
+    private CategoryViewModel categoryViewModel;
+    private static final String STATE_CATEGORY = "category";
     static final String STATE_TIME ="timeSelected";
     static final String STATE_DATE = "dateSelected";
     private static final String STATE_CODE = "weatherCode";
@@ -120,12 +132,14 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             weatherCode = savedInstanceState.getInt(STATE_CODE);
             temp = savedInstanceState.getDouble(STATE_TEMPERATURE);
             equals = savedInstanceState.getBoolean(STATE_EQUALS);
+            selectedCategory = savedInstanceState.getParcelable(STATE_CATEGORY);
             Log.d("code", ""+weatherCode);
         }
         Log.d("API weather", "su OnCreate");
         IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
         weatherAPIdata = new Weather();
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+        categoryViewModel = new CategoryViewModel(requireActivity().getApplication());
         Log.d("API weather", "su OnCreate dopo tutto");
     }
 
@@ -204,6 +218,35 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             }
         });
 
+        categorySpinner = view.findViewById(R.id.fragmentNewEvent_spinner_categories);
+
+            categoryViewModel.getAllCategories().observe(getViewLifecycleOwner(), result -> {
+                if (result.isSuccessful()) {
+                    List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
+                    ArrayList<String> categoryNameList = new ArrayList<>();
+                    for (Category category : categoryList) {
+                        categoryNameList.add(category.getNome());
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categoryNameList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    categorySpinner.setAdapter(adapter);
+                }
+            });
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCategory = new Category(parent.getItemAtPosition(position).toString());
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
 
         fragmentNewEventBinding.fragmentNewEventButtonCreateEvent.setOnClickListener(v -> {
             //TODO da inserire tag categoria
@@ -215,7 +258,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 newEvent.setDate(dateWeather);
                 newEvent.setTime(timeWeather);;
                 newEvent.setDescription(description);
-                newEvent.setCategory(new Category("ZioBestia"));
+                newEvent.setCategory(selectedCategory);
                 // chiamata ai livelli sottostanti per il salvataggio (da ascoltare)
                 eventViewModel.createEvent(newEvent).observe(getViewLifecycleOwner(), eventCreationObserver);
             } else {
@@ -437,6 +480,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         savedInstanceState.putInt(STATE_CODE, weatherCode);
         savedInstanceState.putDouble(STATE_TEMPERATURE, temp);
         savedInstanceState.putBoolean(STATE_EQUALS, equals);
+        savedInstanceState.putParcelable(STATE_CATEGORY, selectedCategory);
         // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
     }
