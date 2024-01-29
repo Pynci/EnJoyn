@@ -401,6 +401,12 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(dateWeather == null ){
+                    Snackbar
+                            .make(getView(), "scegliere prima la data", Snackbar.LENGTH_SHORT)
+                            .show();
+                    return ;
+                }
                 // on below line we are getting the
                 // instance of our calendar.
                 final Calendar c = Calendar.getInstance();
