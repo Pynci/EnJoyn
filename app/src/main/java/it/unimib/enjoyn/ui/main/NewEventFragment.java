@@ -137,7 +137,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             Log.d("code", ""+weatherCode);
             eventImage = savedInstanceState.getParcelable(STATE_URI);
         }
-        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
+        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository();
         weatherAPIdata = new Weather();
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         categoryViewModel = new CategoryViewModel(requireActivity().getApplication());

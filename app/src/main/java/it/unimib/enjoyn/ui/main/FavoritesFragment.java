@@ -115,7 +115,7 @@ public class FavoritesFragment extends Fragment {
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
-                        startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_favoritesFragment_to_discoverSingleEvent, false);
+                        startActivityBasedOnCondition(MainButtonMenuActivity.class, R.id.action_favoritesFragment_to_fragmentDiscoverSingleEvent, false);
                     }
 
                     @Override

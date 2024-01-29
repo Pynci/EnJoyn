@@ -407,8 +407,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             newEventButton.setOnClickListener(v -> {
 
                 if(location.getLongitude() != 0.0 && location.getLatitude() != 0.0 && location.getName() != null) {
-                    NewEventMapDirections.ActionNewEventMapToNewEventFragment action =
-                            NewEventMapDirections.actionNewEventMapToNewEventFragment(location);
+                    NewEventMapDirections.ActionFragmentNewEventMapToNewEventFragment action =
+                            NewEventMapDirections.actionFragmentNewEventMapToNewEventFragment(location);
                     Navigation.findNavController(view).navigate(action);
                 } else {
                     ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());

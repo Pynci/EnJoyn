@@ -10,7 +10,6 @@ import it.unimib.enjoyn.model.User;
 public interface IEventRepository {
     MutableLiveData<Result> fetchAllEvents();
 
-
     void updateEvent(Event event);
 
     MutableLiveData<Result> createEvent(Event event, User user);

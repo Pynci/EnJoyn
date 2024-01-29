@@ -58,9 +58,9 @@ public class DiscoverFragment extends Fragment {
         //creazione dell'eventViewModel si può svolgere anche in DiscoverMapFragment
         IEventRepository eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
                 requireActivity().getApplication());
-        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
+        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository();
 
-        MapRepository mapRepository = ServiceLocator.getInstance().getMapRepository(requireActivity().getApplication());
+        MapRepository mapRepository = ServiceLocator.getInstance().getMapRepository();
 
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
@@ -93,7 +93,7 @@ public class DiscoverFragment extends Fragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
-                    startActivityBasedOnCondition(R.id.action_discover_to_favoritesFragment, false);
+                    startActivityBasedOnCondition(R.id.action_fragmentDiscover_to_favoritesFragment, false);
                 }
                 return false;
             }

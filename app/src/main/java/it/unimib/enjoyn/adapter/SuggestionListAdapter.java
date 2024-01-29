@@ -23,7 +23,7 @@ public class SuggestionListAdapter extends ArrayAdapter<EventLocation> {
     private final List<Double> distanceList;
     private final int layout;
 
-    private OnItemClickListener onItemClickListener;
+    private final OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener{
 
@@ -42,7 +42,7 @@ public class SuggestionListAdapter extends ArrayAdapter<EventLocation> {
         this.onItemClickListener = onItemClickListener;
     }
 
-    @Override
+    @Override @NonNull
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(layout, parent, false);

@@ -337,7 +337,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
 
                 eventItem.setOnClickListener(v -> {
-                    DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
+                    DiscoverFragmentDirections.ActionFragmentDiscoverToFragmentDiscoverSingleEvent action = DiscoverFragmentDirections.actionFragmentDiscoverToFragmentDiscoverSingleEvent(event);
                     Navigation.findNavController(view).navigate(action);
 
                 });

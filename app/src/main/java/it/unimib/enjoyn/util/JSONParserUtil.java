@@ -70,10 +70,7 @@ public class JSONParserUtil {
 
         JSONObject meteoJSONObject = rootJSONObject.getJSONObject("weather");
 
-        List<Weather> newsList = null;
-        int articlesCount = meteoJSONObject.length();
-
-
+        List<Weather> newsList;
             newsList = new ArrayList<>();
             Weather weather;
             //for (int i = 0; i < articlesCount; i++) {

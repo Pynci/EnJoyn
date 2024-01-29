@@ -30,7 +30,7 @@ public class WeatherRemoteDataSource extends BaseWeatherRemoteDataSource {
         Call<WeatherApiResponse> weatherResponseCall = weatherApiService.getWeather(latitude, longitude, WEATHER_INTERVAL_VALUE, WEATHER_FORECAST_DAYS_VALUE);
         weatherResponseCall.enqueue(new Callback<WeatherApiResponse>() {
             @Override
-            public void onResponse(Call<WeatherApiResponse> call, Response<WeatherApiResponse> response) {
+            public void onResponse(@NonNull Call<WeatherApiResponse> call, @NonNull Response<WeatherApiResponse> response) {
                 if(response.body() != null && response.isSuccessful()){
                     weatherCallback.onSuccessFromRemote(response.body());
                 } else {

@@ -1,18 +1,12 @@
 package it.unimib.enjoyn.repository;
 
 import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
-
 import com.mapbox.geojson.Point;
-import com.mapbox.search.QueryType;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
-
 import java.util.List;
-
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.source.MapRemoteDataSource;
 import it.unimib.enjoyn.util.MapCallBack;
 

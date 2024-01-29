@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main_button_menu"
-    app:startDestination="@id/discover">
+    app:startDestination="@id/fragmentDiscover">
 
     <fragment
-        android:id="@+id/discover"
+        android:id="@+id/fragmentDiscover"
         android:name="it.unimib.enjoyn.ui.main.DiscoverFragment"
         android:label="fragment_discover"
         tools:layout="@layout/fragment_discover" >
         <action
-            android:id="@+id/action_discover_to_favoritesFragment"
+            android:id="@+id/action_fragmentDiscover_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
         <action
-            android:id="@+id/action_discover_to_discoverSingleEvent"
-            app:destination="@id/discoverSingleEvent" />
+            android:id="@+id/action_fragmentDiscover_to_fragmentDiscoverSingleEvent"
+            app:destination="@id/fragmentDiscoverSingleEvent" />
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
@@ -41,17 +41,17 @@
             app:destination="@id/profileConfigurationFragment2" />
     </fragment>
     <fragment
-        android:id="@+id/todo"
+        android:id="@+id/fragmentTodo"
         android:name="it.unimib.enjoyn.ui.main.TodoFragment"
         android:label="fragment_todo"
         tools:layout="@layout/fragment_todo" >
         <action
-            android:id="@+id/action_todo_to_discoverSingleEvent"
-            app:destination="@id/discoverSingleEvent" />
+            android:id="@+id/action_fragmentTodo_to_fragmentDiscoverSingleEvent"
+            app:destination="@id/fragmentDiscoverSingleEvent" />
     </fragment>
     <include app:graph="@navigation/nav_auth" />
     <fragment
-        android:id="@+id/discoverSingleEvent"
+        android:id="@+id/fragmentDiscoverSingleEvent"
         android:name="it.unimib.enjoyn.ui.main.DiscoverSingleEvent"
         android:label="fragment_discover_single_event"
         tools:layout="@layout/fragment_discover_single_event" >
@@ -65,26 +65,26 @@
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" >
         <action
-            android:id="@+id/action_favoritesFragment_to_discoverSingleEvent"
-            app:destination="@id/discoverSingleEvent" />
+            android:id="@+id/action_favoritesFragment_to_fragmentDiscoverSingleEvent"
+            app:destination="@id/fragmentDiscoverSingleEvent" />
     </fragment>
     <fragment
-        android:id="@+id/newEventMap"
+        android:id="@+id/fragmentNewEventMap"
         android:name="it.unimib.enjoyn.ui.main.NewEventMap"
         android:label="fragment_new_event_map"
         tools:layout="@layout/fragment_new_event_map" >
         <action
-            android:id="@+id/action_newEventMap_to_newEventFragment"
+            android:id="@+id/action_fragmentNewEventMap_to_newEventFragment"
             app:destination="@id/newEventFragment" />
     </fragment>
     <fragment
-        android:id="@+id/discoverRecyclerViewFragment3"
+        android:id="@+id/discoverRecyclerViewFragment"
         android:name="it.unimib.enjoyn.ui.main.DiscoverRecyclerViewFragment"
         android:label="fragment_discover_recycler_view"
         tools:layout="@layout/fragment_discover_recycler_view" >
         <action
-            android:id="@+id/action_discoverRecyclerViewFragment3_to_discoverSingleEvent"
-            app:destination="@id/discoverSingleEvent" />
+            android:id="@+id/action_discoverRecyclerViewFragment_to_fragmentDiscoverSingleEvent"
+            app:destination="@id/fragmentDiscoverSingleEvent" />
     </fragment>
     <fragment
         android:id="@+id/profileConfigurationFragment2"
@@ -97,12 +97,12 @@
             android:defaultValue="fromProfile" />
     </fragment>
     <fragment
-        android:id="@+id/discoverMapFragment2"
+        android:id="@+id/discoverMapFragment"
         android:name="it.unimib.enjoyn.ui.main.DiscoverMapFragment"
         android:label="fragment_discover_map"
         tools:layout="@layout/fragment_discover_map" >
         <action
-            android:id="@+id/action_discoverMapFragment2_to_discoverSingleEvent"
-            app:destination="@id/discoverSingleEvent" />
+            android:id="@+id/action_discoverMapFragment_to_fragmentDiscoverSingleEvent"
+            app:destination="@id/fragmentDiscoverSingleEvent" />
     </fragment>
 </navigation>
