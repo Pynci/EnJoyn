@@ -26,7 +26,7 @@ public abstract class LocalRoomDatabase extends RoomDatabase {
     @TypeConverters({StringConverter.class})
     public abstract UserDao userDao();
     @TypeConverters({StringConverter.class})
-    public abstract CategoryDao categoryDao();
+    public abstract InterestDao categoryDao();
 
     private static volatile LocalRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();

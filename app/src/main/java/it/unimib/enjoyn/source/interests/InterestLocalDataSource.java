@@ -3,23 +3,23 @@ package it.unimib.enjoyn.source.interests;
 import java.util.List;
 
 import it.unimib.enjoyn.database.LocalRoomDatabase;
-import it.unimib.enjoyn.database.CategoryDao;
+import it.unimib.enjoyn.database.InterestDao;
 import it.unimib.enjoyn.model.Category;
 
 public class InterestLocalDataSource extends BaseInterestLocalDataSource{
 
-    private final CategoryDao categoryDao;
+    private final InterestDao interestDao;
 
     public InterestLocalDataSource(LocalRoomDatabase localRoomDatabase) {
 
-        categoryDao = localRoomDatabase.categoryDao();
+        interestDao = localRoomDatabase.categoryDao();
     }
 
     @Override
     public void getAllCategories() {
 
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<Category> categoryList = categoryDao.getAll();
+            List<Category> categoryList = interestDao.getAll();
 
             if(categoryList.size() == 0) {
                 interestsCallback.onFailureGetInterestsFromLocal(
@@ -35,7 +35,7 @@ public class InterestLocalDataSource extends BaseInterestLocalDataSource{
     public void storeInterests(List<Category> categoryList) {
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
 
-            long[] rowIds = categoryDao.insertAll(categoryList);
+            long[] rowIds = interestDao.insertAll(categoryList);
             if(rowIds.length == 0) {
                 interestsCallback.onFailureSaveOnLocal(
                         new Exception("Errore nel salvataggio dei dati"));
@@ -49,7 +49,7 @@ public class InterestLocalDataSource extends BaseInterestLocalDataSource{
     @Override
     public void deleteUserInterests() {
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
-            int rowDeleted = categoryDao.deleteInterests();
+            int rowDeleted = interestDao.deleteInterests();
             if(rowDeleted > 0) {
                 interestsCallback.onSuccessDeleteAllInterestsFromLocal();
             }
