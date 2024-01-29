@@ -1,5 +1,6 @@
 package it.unimib.enjoyn.model;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -36,13 +37,16 @@ public class Event implements Parcelable {
     private int weatherCode;
     private double weatherTemperature;
 
-    public Event(){
+    @Embedded
+    private Uri imageUrl;
+
+    public Event() {
 
     }
 
     public Event(long id, String title, String description, String date, String place, String time,
-                 EventLocation location, Category category, int participants,
-                 double distance, int weatherCode, double weatherTemperature) {
+                 EventLocation location, Category category, int participants, double distance, int weatherCode,
+                 double weatherTemperature, Uri imageUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -55,6 +59,15 @@ public class Event implements Parcelable {
         this.distance = distance;
         this.weatherCode = weatherCode;
         this.weatherTemperature = weatherTemperature;
+        this.imageUrl = imageUrl;
+    }
+
+    public Uri getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(Uri imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public long getId() {

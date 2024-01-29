@@ -331,7 +331,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                         + Math.pow(selfLocation.longitude() - annotation.getPoint().longitude(),2)));
                 fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText((round(eventDistance,1))+" km");
 
-                fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(Integer.toString(event.getPeopleNumber()));
+                fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
                 //fragmentDiscoverMapBinding.eventListItemImageViewEventImage.setImageURI(event.getImageUrl());
                 //mettere immagine meteo
 

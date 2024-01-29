@@ -194,10 +194,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         ShapeableImageView image = fragmentNewEventBinding.fragmentNewEventShapeableImageViewEventImage;
         ImageButton photoPicker = fragmentNewEventBinding.fragmentNewEventImageButtonPhotoPicker;
 
-        if(eventImage!= null){
+        /*if(eventImage!= null){
             image.setImageURI(eventImage);
             photoPicker.setVisibility(View.GONE);
-        }
+        }*/
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                     // Callback is invoked after the user selects a media item or closes the
