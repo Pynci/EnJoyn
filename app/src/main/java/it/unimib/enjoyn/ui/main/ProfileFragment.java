@@ -130,6 +130,7 @@ public class ProfileFragment extends Fragment {
                                         }
                                     }
                                 }
+
                                 if(imagesSorted.size() > 0){
                                     CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
                                             categoryList, imagesSorted);
