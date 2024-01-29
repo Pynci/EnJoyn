@@ -219,7 +219,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         });
 
         categorySpinner = view.findViewById(R.id.fragmentNewEvent_spinner_categories);
-
             categoryViewModel.getAllCategories().observe(getViewLifecycleOwner(), result -> {
                 if (result.isSuccessful()) {
                     List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
@@ -230,19 +229,33 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categoryNameList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     categorySpinner.setAdapter(adapter);
+                    categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            selectedCategory = new Category(parent.getItemAtPosition(position).toString());
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                    if(selectedCategory != null){
+                        boolean categoryEquals = true;
+                        for (int i = 0 ; i<categoryNameList.size() && categoryEquals; i++) {
+                            if(categoryNameList.get(i).equals(selectedCategory.getNome())) {
+                                categorySpinner.setSelection(i);
+                                categoryEquals = false;
+                            }
+
+                        }
+
+
+                    }
+
                 }
             });
 
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedCategory = new Category(parent.getItemAtPosition(position).toString());
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
 
 
 
