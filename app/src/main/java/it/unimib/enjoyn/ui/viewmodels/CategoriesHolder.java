@@ -8,7 +8,7 @@ import it.unimib.enjoyn.model.Category;
 
 public class CategoriesHolder {
 
-    List<Category> categoriesSelected;
+    private List<Category> categoriesSelected;
     private static CategoriesHolder instance;
 
     private CategoriesHolder() {
@@ -42,5 +42,9 @@ public class CategoriesHolder {
 
     public List<Category> getCategories() {
         return categoriesSelected;
+    }
+
+    public void refresh() {
+        categoriesSelected.clear();
     }
 }

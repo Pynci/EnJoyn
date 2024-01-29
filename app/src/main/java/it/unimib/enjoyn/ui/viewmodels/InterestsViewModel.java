@@ -31,9 +31,9 @@ public class InterestsViewModel extends ViewModel {
         return interests;
     }
 
-    /*
-    public MutableLiveData<Result> deleteUserInterests(){
-        return new MutableLiveData<>();
+
+    public MutableLiveData<Result> updateUserInserest() {
+        interests = null;
+        return interestRepository.updateUserInterests(categoriesHolder);
     }
-     */
 }

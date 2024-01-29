@@ -27,4 +27,5 @@ public interface IUserRepository {
 
     MutableLiveData<Result> createUserInterests(CategoriesHolder categoriesHolder);
     MutableLiveData<Result> getUserInterests();
+    MutableLiveData<Result> updateUserInterests(CategoriesHolder categoriesHolder);
 }

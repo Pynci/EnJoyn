@@ -35,7 +35,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     private final MutableLiveData<Result> createUserInterestsResult;
     private final MutableLiveData<Result> userInterests;
-    private final MutableLiveData<Result> deleteInterestsResult;
 
     public UserRepository(BaseUserLocalDataSource userLocalDataSource,
                           BaseUserRemoteDataSource userRemoteDataSource,
@@ -63,7 +62,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
         createUserInterestsResult = new MutableLiveData<>();
         userInterests = new MutableLiveData<>();
-        deleteInterestsResult = new MutableLiveData<>();
     }
 
     @Override
@@ -299,7 +297,9 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public MutableLiveData<Result> createUserInterests(CategoriesHolder categoriesHolder) {
         interestRemoteDataSource.storeUserInterests(categoriesHolder, authenticationDataSource.getCurrentUserUID());
+        interestLocalDataSource.deleteUserInterests();
         interestLocalDataSource.storeInterests(categoriesHolder.getCategories());
+        categoriesHolder.refresh();
         return createUserInterestsResult;
     }
 
@@ -307,6 +307,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     public MutableLiveData<Result> getUserInterests() {
         interestLocalDataSource.getAllCategories();
         return userInterests;
+    }
+
+    @Override
+    public MutableLiveData<Result> updateUserInterests(CategoriesHolder categoriesHolder) {
+        return this.createUserInterests(categoriesHolder);
     }
 
     //CALLBACK

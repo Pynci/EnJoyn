@@ -34,7 +34,6 @@ public class InterestLocalDataSource extends BaseInterestLocalDataSource{
     @Override
     public void storeInterests(List<Category> categoryList) {
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
-
             long[] rowIds = interestDao.insertAll(categoryList);
             if(rowIds.length == 0) {
                 interestsCallback.onFailureSaveOnLocal(

@@ -104,10 +104,11 @@ public class CategoriesSelectionFragment extends Fragment {
                                         }
                                     }
                                 }
-
-                                CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
-                                        categoryList, imagesSorted);
-                                listView.setAdapter(customAdapter);
+                                if(imagesSorted.size() > 0){
+                                    CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
+                                            categoryList, imagesSorted);
+                                    listView.setAdapter(customAdapter);
+                                }
                             }
                         });
             }
@@ -121,15 +122,21 @@ public class CategoriesSelectionFragment extends Fragment {
         });
 
         buttonConfirm.setOnClickListener(v -> {
-            interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
-                if (result.isSuccessful()) {
 
-                    if(!isFromProfileFragment)
+            if(!isFromProfileFragment){
+                interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessful()) {
                         navigateTo(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity, false);
-                    else
+                    }
+                });
+            }
+            else{
+                interestsViewModel.updateUserInserest().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessful()) {
                         navigateTo(R.id.action_categoriesSelectionFragment2_to_profileFragment, false);
-                }
-            });
+                    }
+                });
+            }
         });
 
         categoryViewModel.getAllCategories().observe(this.getViewLifecycleOwner(), categoriesObserver);

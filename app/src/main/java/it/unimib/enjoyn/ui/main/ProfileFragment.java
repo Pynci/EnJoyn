@@ -110,7 +110,6 @@ public class ProfileFragment extends Fragment {
         Observer<Result> interestsObserver = result -> {
             if (result.isSuccessful()) {
                 List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
-
                 categoryViewModel
                         .getAllImages(categoryList)
                         .observe(this.getViewLifecycleOwner(), result1 -> {
