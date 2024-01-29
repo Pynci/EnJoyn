@@ -44,13 +44,6 @@ public class DiscoverRecyclerViewFragment extends Fragment {
     public DiscoverRecyclerViewFragment() {
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment Discover.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DiscoverRecyclerViewFragment newInstance() {
 
         return new DiscoverRecyclerViewFragment();

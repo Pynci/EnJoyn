@@ -14,7 +14,7 @@ public abstract class BaseEventRemoteDataSource {
     }
 
     public abstract void getEvent(String category);
-    public abstract void getEvent();
+    public abstract void fetchAllEvents();
     public abstract void createEvent(Event event, User user);
 
     public abstract void updateEvent(String key, Map<String, Object> updateMap);

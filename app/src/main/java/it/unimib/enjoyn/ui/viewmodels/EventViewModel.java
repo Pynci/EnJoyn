@@ -19,7 +19,7 @@ import it.unimib.enjoyn.repository.MapRepository;
 
 public class EventViewModel extends ViewModel {
     private final IEventRepository eventRepository;
-    private MutableLiveData<Result> eventLiveData;
+    private MutableLiveData<Result> allEvents;
     private MutableLiveData<Result> toDoEventListLiveData;
     private MutableLiveData<Result> favoriteEventListLiveData;
     private final IWeatherRepository weatherRepository;
@@ -35,51 +35,28 @@ public class EventViewModel extends ViewModel {
         this.mapRepository = mapRepository;
     }
 
-    /**
-     * Returns the LiveData object associated with the
-     * event list to the Fragment/Activity.
-     *
-     * @return The LiveData object associated with the event list.
-     */
-    public MutableLiveData<Result> getEvent(String category, long lastUpdate) {
-        if (eventLiveData == null) {
-            fetchEvent(category, lastUpdate);
-        }
-        return eventLiveData;
-    }
+//    public MutableLiveData<Result> getEvent(String category, long lastUpdate) {
+//        if (allEvents == null) {
+//            fetchEvent(category, lastUpdate);
+//        }
+//        return allEvents;
+//    }
 
     public MutableLiveData<Result> getEvent(long lastUpdate) {
-        if (eventLiveData == null) {
-            fetchEvent(lastUpdate);
+        if (allEvents == null) {
+            allEvents = eventRepository.fetchAllEvents();
         }
-        return eventLiveData;
+        return allEvents;
     }
 
-
-
-    /**
-     * Updates the event status.
-     *
-     * @param event The event to be updated.
-     */
     public void updateEvent(Event event) {
         eventRepository.updateEvent(event);
     }
 
-    /**
-     * It uses the Repository to download the event list
-     * and to associate it with the LiveData object.
-     */
-    private void fetchEvent(long lastUpdate) {
-        eventLiveData = eventRepository.fetchEvent(lastUpdate);
-    }
-
-    //TODO fare metodo con category effettive
-    private void fetchEvent(String category, long lastUpdate) {
-        eventLiveData = eventRepository.fetchEvent(lastUpdate);
-    }
-
-
+//    //TODO fare metodo con category effettive
+//    private void fetchEvent(String category, long lastUpdate) {
+//        allEvents = eventRepository.fetchAllEvents();
+//    }
 
 
     public MutableLiveData<Result> createEvent(Event event, User eventCreator){

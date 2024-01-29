@@ -1,10 +1,21 @@
 package it.unimib.enjoyn.source.events;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import it.unimib.enjoyn.model.Event;
@@ -18,12 +29,16 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
     private EventsDatabaseResponse eventsDatabaseResponse;
     private final DatabaseReference dbReference;
     private final FirebaseStorage firebaseStorage;
+    private List<Event> eventList;
+    private boolean firstFetch;
 
 
     public EventRemoteDataSource(JSONParserUtil jsonParserUtil) {
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
         firebaseStorage = FirebaseStorage.getInstance(Constants.STORAGE_PATH);
         this.jsonParserUtil = jsonParserUtil;
+        eventList = new ArrayList<>();
+        firstFetch = true;
     }
 
     @Override
@@ -32,19 +47,59 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
     }
 
     @Override
-    public void getEvent() {
-        EventsDatabaseResponse eventDBResponse = null;
-        try {
-            eventDBResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (eventDBResponse != null){
-            eventCallback.onSuccessFromRemote(eventDBResponse, System.currentTimeMillis());
-        } else{
-            //TODO onFailure
-        }
+    public void fetchAllEvents(){
+
+        dbReference
+                .child(Constants.EVENTS_PATH)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Event event = snapshot.getValue(Event.class);
+                        event.setEid(snapshot.getKey());
+                        eventCallback.onRemoteEventAdded(event);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Event event = snapshot.getValue(Event.class);
+                        event.setEid(snapshot.getKey());
+                        eventCallback.onRemoteEventChanged(event);
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        Event event = snapshot.getValue(Event.class);
+                        event.setEid(snapshot.getKey());
+                        eventCallback.onRemoteEventRemoved(event);
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        // per ora niente
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        eventCallback.onRemoteEventFetchFailure(new Exception(error.getMessage()));
+                    }
+                });
     }
+
+//    //Vecchio getEvent()
+//    @Override
+//    public void getEvent() {
+//        EventsDatabaseResponse eventDBResponse = null;
+//        try {
+//            eventDBResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        if (eventDBResponse != null){
+//            eventCallback.onSuccessFromRemote(eventDBResponse, System.currentTimeMillis());
+//        } else{
+//            //TODO onFailure
+//        }
+//    }
 
     @Override
     public void createEvent(Event event, User user){

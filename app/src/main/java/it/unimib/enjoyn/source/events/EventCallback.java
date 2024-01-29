@@ -19,5 +19,11 @@ public interface EventCallback {
     void onRemoteEventAdditionSuccess(Event event, User user);
     void onRemoteEventAdditionFailure(Exception exception);
 
+    void onRemoteEventAdded(Event event);
+    void onRemoteEventChanged(Event event);
+    void onRemoteEventRemoved(Event event);
+    void onRemoteEventFetchFailure(Exception exception);
+
+
     //void onDeleteToDoEventSuccess(List<Event> eventToDo);
 }

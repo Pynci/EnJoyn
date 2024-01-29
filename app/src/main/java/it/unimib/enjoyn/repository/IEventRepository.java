@@ -8,9 +8,7 @@ import it.unimib.enjoyn.model.User;
 
 
 public interface IEventRepository {
-    MutableLiveData<Result> fetchEvent(String category, int page, long lastUpdate);
-
-    MutableLiveData<Result> fetchEvent(long lastUpdate);
+    MutableLiveData<Result> fetchAllEvents();
 
 
     void updateEvent(Event event);
