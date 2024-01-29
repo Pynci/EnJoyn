@@ -107,17 +107,17 @@ public class ProfileFragment extends Fragment {
         ListView listView = view.findViewById(R.id.fragmentProfile_listView);
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
-        Observer<Result> interestsObserver = result -> {
-            if (result.isSuccessful()) {
-                List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
+        Observer<Result> interestsObserver = resultInterest -> {
+            if (resultInterest.isSuccessful()) {
+                List<Category> categoryList = ((Result.CategorySuccess) resultInterest).getCategoryList();
 
                 categoryViewModel
                         .getAllImages(categoryList)
-                        .observe(this.getViewLifecycleOwner(), result1 -> {
+                        .observe(this.getViewLifecycleOwner(), resultImages -> {
 
-                            if (result1 instanceof Result.ImagesReadFromRemote) {
+                            if (resultImages instanceof Result.ImagesReadFromRemote) {
 
-                                List<Uri> imagesNotSorted = ((Result.ImagesReadFromRemote) result1).getImagesUri();
+                                List<Uri> imagesNotSorted = ((Result.ImagesReadFromRemote) resultImages).getImagesUri();
                                 List<Uri> imagesSorted = new ArrayList<>();
 
                                 for (int i = 0; i < categoryList.size(); i++) {
@@ -131,6 +131,7 @@ public class ProfileFragment extends Fragment {
                                         }
                                     }
                                 }
+
                                 if(imagesSorted.size() > 0){
                                     CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
                                             categoryList, imagesSorted);
