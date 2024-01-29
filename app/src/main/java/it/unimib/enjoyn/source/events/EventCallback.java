@@ -5,10 +5,6 @@ import java.util.List;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
 
-/**
- * Interface to send data from DataSource to Repositories
- * that implement INewsRepositoryWithLiveData interface.
- */
 public interface EventCallback {
     void onSuccessFromRemote(EventsDatabaseResponse eventDBResponse, long lastUpdate);
     void onFailureFromRemote(Exception exception);

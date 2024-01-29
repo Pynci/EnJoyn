@@ -26,14 +26,13 @@ import it.unimib.enjoyn.source.users.UserRemoteDataSource;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.WeatherRepository;
 import it.unimib.enjoyn.service.WeatherApiService;
-import it.unimib.enjoyn.source.events.BaseWeatherRemoteDataSource;
+import it.unimib.enjoyn.source.BaseWeatherRemoteDataSource;
 import it.unimib.enjoyn.source.WeatherRemoteDataSource;
 import it.unimib.enjoyn.repository.EventRepository;
 import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.source.events.BaseEventLocalDataSource;
 import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
 import it.unimib.enjoyn.source.events.EventLocalDataSource;
-import it.unimib.enjoyn.source.EventMockRemoteDataSource;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
