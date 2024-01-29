@@ -170,7 +170,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@null"
                 android:contentDescription="@string/buttonToMap"
-                android:src="@drawable/baseline_add_location_24"
+                android:src="@drawable/baseline_place_24"
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickTime" />
 

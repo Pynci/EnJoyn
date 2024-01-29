@@ -53,7 +53,7 @@ public class EventReclyclerViewAdapter extends
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = null;
+        View view;
 
         if(viewType == EVENT_VIEW_TYPE){
             view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.event_list_item, parent, false);
