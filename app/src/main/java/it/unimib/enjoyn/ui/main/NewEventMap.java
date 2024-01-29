@@ -257,8 +257,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
         if(location != null && location.getName()!= null){
             eventSelectionPoint();
-        } else{
+        } else {
             location = new EventLocation();
+            searchBar.setText("");
+
         }
 
         suggestionObserver = result -> {
@@ -292,7 +294,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 location.setLongitude(searchResultList.get(position).getCoordinate().longitude());
                 location.setName(searchResultList.get(position).getName());
                 firstTime= false;
-                searchBar.setText( searchResultList.get(position).getName());
+                searchBar.setText(searchResultList.get(position).getName());
                 suggestionListView.setVisibility(View.GONE);
                 eventSelectionPoint();
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);

@@ -39,6 +39,7 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
+import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.model.Result;
@@ -110,15 +111,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     }
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NewEventFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static NewEventFragment newInstance(String param1, String param2) {
         return new NewEventFragment();
     }
@@ -167,6 +160,12 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 Snackbar
                         .make(view, "FUNZICA", Snackbar.LENGTH_SHORT)
                         .show();
+                EventLocation oldLocation = NewEventFragmentArgs.fromBundle(getArguments()).getLocation();
+                oldLocation.setName(null);
+                oldLocation.setLongitude(-1);
+                oldLocation.setLatitude(-1);
+                getParentFragmentManager().popBackStackImmediate();
+
             }
             else{
                 Snackbar
