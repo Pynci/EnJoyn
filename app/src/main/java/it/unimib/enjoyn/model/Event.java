@@ -16,6 +16,7 @@ public class Event implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
+    private String eid;
     private String title;
 
     private String description;
@@ -193,6 +194,14 @@ public class Event implements Parcelable {
 
             participants--;
             this.participants = participants;
+    }
+
+    public String getEid() {
+        return eid;
+    }
+
+    public void setEid(String eid) {
+        this.eid = eid;
     }
 
     //TODO aggiungere parcel di EventLocation

@@ -1,5 +1,8 @@
 package it.unimib.enjoyn.source.events;
 
+import it.unimib.enjoyn.model.Event;
+import it.unimib.enjoyn.model.User;
+
 public abstract class BaseEventParticipationRemoteDataSource {
     protected EventParticipationCallback eventParticipationCallback;
 
@@ -8,4 +11,5 @@ public abstract class BaseEventParticipationRemoteDataSource {
     }
 
 
+    public abstract void createEventParticipation(Event event, User user);
 }

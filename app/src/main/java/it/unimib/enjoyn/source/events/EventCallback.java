@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
+import it.unimib.enjoyn.model.User;
 
 public interface EventCallback {
     void onSuccessFromRemote(EventsDatabaseResponse eventDBResponse, long lastUpdate);
@@ -15,8 +16,8 @@ public interface EventCallback {
     void onEventFavoriteStatusChanged(List<Event> event);
     void onEventFavoriteStatusChanged(Event event, List<Event> eventFavorite);
 
-    void onRemoteEventCreationSuccess();
-    void onRemoteEventCreationFailure(Exception exception);
+    void onRemoteEventAdditionSuccess(Event event, User user);
+    void onRemoteEventAdditionFailure(Exception exception);
 
     //void onDeleteToDoEventSuccess(List<Event> eventToDo);
 }

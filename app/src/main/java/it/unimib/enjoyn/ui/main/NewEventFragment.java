@@ -45,12 +45,16 @@ import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IWeatherRepository;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.SnackbarBuilder;
@@ -107,6 +111,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     private static final String STATE_EQUALS = "equals";
     private FragmentNewEventBinding fragmentNewEventBinding;
     private Observer<Result> eventCreationObserver;
+    UserViewModel userViewModel;
 
     boolean sameDay = false;
 
@@ -138,6 +143,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         categoryViewModel = new CategoryViewModel(requireActivity().getApplication());
         Log.d("API weather", "su OnCreate dopo tutto");
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
@@ -301,15 +310,20 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             title = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextTitle.getText());
             description = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextDescription.getText());
 
-            if(eventImage != null && title != null && dateWeather != null && timeWeather != null && locationName != null && description != null){
+            if(title != null && dateWeather != null && timeWeather != null && locationName != null && description != null){
                 newEvent.setTitle(title);
                 newEvent.setDate(dateWeather);
                 newEvent.setTime(timeWeather);;
                 newEvent.setDescription(description);
                 newEvent.setCategory(selectedCategory);
-                newEvent.setImageUrl(eventImage);
+                //newEvent.setImageUrl(eventImage);
                 // chiamata ai livelli sottostanti per il salvataggio (da ascoltare)
-                eventViewModel.createEvent(newEvent).observe(getViewLifecycleOwner(), eventCreationObserver);
+                userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
+                    if(result.isSuccessful() || result instanceof Result.UserSuccess){
+                        User currentUser = ((Result.UserSuccess) result).getData();
+                        eventViewModel.createEvent(newEvent, currentUser).observe(getViewLifecycleOwner(), eventCreationObserver);
+                    }
+                });
             } else {
                 ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
                 Snackbar.make(view, errorMessagesUtil.getNewEventErrorMessage(EMPTY_FIELDS), Snackbar.LENGTH_LONG).show();

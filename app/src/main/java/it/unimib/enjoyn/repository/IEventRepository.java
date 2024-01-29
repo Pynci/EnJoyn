@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 
 
 public interface IEventRepository {
@@ -14,5 +15,5 @@ public interface IEventRepository {
 
     void updateEvent(Event event);
 
-    MutableLiveData<Result> createEvent(Event event);
+    MutableLiveData<Result> createEvent(Event event, User user);
 }

@@ -21,6 +21,8 @@ public class Constants {
     public static final String USERS_PATH = "Users";
     public static final String CATEGORIES_PATH = "Categories";
     public static final String EVENTS_PATH = "Events";
+    public static final String EVENTCREATIONS_PATH = "EventCreations";
+    public static final String EVENTPARTICIPATIONS_PATH = "EventParticipations";
 
     public static final String WEATHER_API_BASE_URL = "https://api.open-meteo.com/v1/";
 

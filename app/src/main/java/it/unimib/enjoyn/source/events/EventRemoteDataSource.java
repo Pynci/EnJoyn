@@ -5,11 +5,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.util.Constants;
 import it.unimib.enjoyn.util.JSONParserUtil;
 
@@ -47,7 +47,7 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
     }
 
     @Override
-    public void createEvent(Event event){
+    public void createEvent(Event event, User user){
         String key = dbReference.child(Constants.EVENTS_PATH).push().getKey();
 
         dbReference
@@ -56,22 +56,16 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                 .setValue(event)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        eventCallback.onRemoteEventCreationSuccess();
+                        event.setEid(key);
+                        eventCallback.onRemoteEventAdditionSuccess(event, user);
                     }
                     else{
-                        eventCallback.onRemoteEventCreationFailure(task.getException());
+                        eventCallback.onRemoteEventAdditionFailure(task.getException());
                     }
                 });
     }
 
-    public void createParticipation(){
-
-    }
-
-    public void createCreation(){
-
-    }
-
+    @Override
     public void updateEvent(String key, Map<String, Object> updateMap){
         DatabaseReference eventReference = dbReference
                 .child(Constants.EVENTS_PATH)

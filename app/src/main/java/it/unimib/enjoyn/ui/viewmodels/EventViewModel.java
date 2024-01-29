@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.IEventRepository;
 import android.util.Log;
 
@@ -81,8 +82,8 @@ public class EventViewModel extends ViewModel {
 
 
 
-    public MutableLiveData<Result> createEvent(Event event){
-        return eventRepository.createEvent(event);
+    public MutableLiveData<Result> createEvent(Event event, User eventCreator){
+        return eventRepository.createEvent(event, eventCreator);
     }
 
     public void removeFromFavorite(Event event) {
