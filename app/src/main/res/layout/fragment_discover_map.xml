@@ -1,14 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.DiscoverMapFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.mapbox.maps.MapView
+        android:id="@+id/fragmentDiscoverMap_mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:mapbox_cameraBearing="0.0"
+        app:mapbox_cameraPitch="0.0"
+        app:mapbox_cameraTargetLat="45.464098"
+        app:mapbox_cameraZoom="13.0" />
 
-</FrameLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fragmentDiscoverMap_FloatingActionButton"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="56dp"
+        android:contentDescription="@string/Select"
+        android:src="@drawable/baseline_my_location_24"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentDiscoverMap_cardView_eventItem"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:id="@+id/fragmentDiscoverMap_TextInputLayout_searchBar"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:elevation="4dp"
+        android:hint="@string/search"
+        app:boxCornerRadiusBottomEnd="20sp"
+        app:boxCornerRadiusBottomStart="20sp"
+        app:boxCornerRadiusTopEnd="20sp"
+        app:boxCornerRadiusTopStart="20sp"
+        app:boxStrokeWidth="0sp"
+        app:boxStrokeWidthFocused="0sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/baseline_account_circle_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragmentDiscoverMap_TextInputEditText_searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+        <ListView
+            android:id="@+id/fragmentDiscoverMap_listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragmentDiscoverMap_TextInputLayout_searchBar"
+            android:layout_marginTop="4dp"
+            android:visibility="gone" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.mapbox.search.ui.view.SearchResultsView
+        android:id="@+id/fragmentDiscoverMap_SearchResultView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragmentDiscoverMap_TextInputLayout_searchBar"
+        android:layout_marginHorizontal="16dp"
+        android:elevation="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="22dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/fragmentDiscoverMap_TextInputLayout_searchBar"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fragmentDiscoverMap_cardView_eventItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="48dp"
+        android:visibility="gone"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fragmentDiscoverMap_mapView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:descendantFocusability="blocksDescendants">
+
+            <ImageView
+                android:id="@+id/eventListItem_imageView_background"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/background"
+                android:scaleType="center"
+                app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_eventImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/img_0410" />
+
+            <TextView
+                android:id="@+id/eventListItem_textView_eventTitle"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:maxLength="30"
+                android:maxLines="1"
+                tools:text="Andare a mangiare al Kfc"
+                android:textColor="@color/cardview_light_background"
+                app:layout_constraintEnd_toStartOf="@+id/eventListItem_imageButton_favourite"
+                app:layout_constraintStart_toEndOf="@+id/eventListItem_imageView_eventImage"
+                app:layout_constraintTop_toTopOf="@+id/eventListItem_imageView_background" />
+
+            <TextView
+                android:id="@+id/eventListItem_textView_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                tools:text="30/11/2023"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background" />
+
+            <TextView
+                android:id="@+id/eventListItem_textView_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                tools:text="17:00 - 19:00"
+                app:layout_constraintBaseline_toBaselineOf="@+id/eventListItem_textView_date"
+                app:layout_constraintStart_toEndOf="@+id/eventListItem_textView_date" />
+
+            <TextView
+                android:id="@+id/eventListItem_textView_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLength="30"
+                android:maxLines="1"
+                tools:text="via arrivabene, 29"
+                app:drawableStartCompat="@drawable/baseline_place_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_textView_date" />
+
+            <TextView
+                android:id="@+id/eventListItem_textView_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                tools:text="2 Km"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_textView_place" />
+
+            <Button
+                android:id="@+id/eventListItem_button_joinButton"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/Join"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_weather" />
+
+            <TextView
+                android:id="@+id/eventListItem_textView_peopleNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:drawableEnd="@drawable/baseline_people_outline_24"
+                tools:text="3"
+                app:layout_constraintBottom_toBottomOf="@+id/eventListItem_textView_distance"
+                app:layout_constraintStart_toEndOf="@+id/eventListItem_textView_distance"
+                app:layout_constraintTop_toTopOf="@+id/eventListItem_textView_distance" />
+
+            <ImageView
+                android:id="@+id/eventListItem_imageView_eventImage"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/UserImageEvent"
+                app:layout_constraintBottom_toBottomOf="@+id/eventListItem_textView_eventTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/eventListItem_textView_eventTitle"
+                app:srcCompat="@drawable/baseline_downloading_24" />
+
+            <ImageView
+                android:id="@+id/eventListItem_imageView_weather"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/imageWeather"
+                app:layout_constraintEnd_toEndOf="@+id/eventListItem_button_joinButton"
+                app:layout_constraintStart_toStartOf="@+id/eventListItem_button_joinButton"
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
+                app:srcCompat="@drawable/drawable_thunderstorm" />
+
+            <ImageButton
+                android:id="@+id/eventListItem_imageButton_favourite"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="53dp"
+                android:layout_height="53dp"
+                android:contentDescription="@string/bottonAddToFavorites"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_favorite_border_24" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

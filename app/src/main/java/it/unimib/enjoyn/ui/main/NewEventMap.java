@@ -115,9 +115,6 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     boolean suggestionClicked = false;
 
     boolean searchClicked = false;
-
-
-    private SearchResultsView searchResultsView;
     private TextInputEditText searchBar;
     private PermissionsManager permissionsManager;
     MaterialButton newEventButton;
@@ -214,7 +211,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentNewEventMapBinding = FragmentNewEventMapBinding.inflate(inflater, container, false);
         return fragmentNewEventMapBinding.getRoot();
@@ -223,12 +220,9 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (PermissionsManager.areLocationPermissionsGranted(requireActivity())) {
-
-        } else {
+        if (!PermissionsManager.areLocationPermissionsGranted(requireActivity())) {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
-
         }
 
 
@@ -238,7 +232,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         firstTime = false;
         selfLocation = null;
         eventCoordinates = null;
-        mapView = view.findViewById(R.id.newEventmap_mapView);
+        mapView = view.findViewById(R.id.newEventMap_mapView);
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
         newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
         //TOLTO per barra di ricerca
@@ -249,8 +243,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
         pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
 
-        searchResultsView = view.findViewById(R.id.search_results_view);
-        searchResultsView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
+        fragmentNewEventMapBinding.fragmentNewEventMapSearchResultsView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
 
         // immagine 3d scaricata, da usare per creare pin sulla mappa
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
@@ -298,8 +291,11 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 searchBar.setText(searchResultList.get(position).getName());
                 suggestionListView.setVisibility(View.GONE);
                 eventSelectionPoint();
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                if(getContext()!= null) {
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    if (getView() != null)
+                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                }
             });
             suggestionListView.setAdapter(suggestionListAdapter);
             suggestionListView.setVisibility(View.VISIBLE);
@@ -308,7 +304,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                suggestionListView.setVisibility(View.GONE);
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -318,14 +314,13 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                         suggestions = new ArrayList<>();
                         Log.d("TAH", "ASJBDIJAHBNSDHJKABSDHJBASJHDBAUISHEIJQWIEJAJSND");
                         eventViewModel.getMapSuggestion(s.toString(), selfLocation).observe(getViewLifecycleOwner(), suggestionObserver);
-                                //}
-
                     } else {
                         suggestionListView.setVisibility(View.GONE);
                         //clickSuggestion = false;
                     }
                 } else{
                     firstTime=true;
+                    suggestionListView.setVisibility(View.GONE);
                 }
             }
 
@@ -334,9 +329,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             }
         });
 
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION );
+        if(getContext() != null) {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
         }
 
         mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS, style -> {
@@ -371,7 +367,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
                 getGestures(mapView).addOnMoveListener(onMoveListener);
-                positionButton.hide();
+                searchBar.setText("");
+                newEventButton.setText(R.string.positioningEvent);
+                pointAnnotationManager.deleteAll();
+                location = new EventLocation();
             });
 
           GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), point -> {
@@ -389,9 +388,11 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                        SearchResult reverseSearchResult = ((Result.MapReverseSearchSuccess) result).getData();
 
                        if (reverseSearchResult.getId().startsWith("ad")) {
-                           if (reverseSearchResult.getAddress().getHouseNumber() != null) {
-                               location.setName(reverseSearchResult.getName() + " " + reverseSearchResult.getAddress().getHouseNumber());
-                           }
+                           if (reverseSearchResult.getAddress() != null) {
+                               if (reverseSearchResult.getAddress().getHouseNumber() != null) {
+                                   location.setName(reverseSearchResult.getName() + " " + reverseSearchResult.getAddress().getHouseNumber());
+                               }
+                            }
                        } else {
                            location.setName(reverseSearchResult.getName());
                        }
@@ -437,7 +438,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (permissionsManager != null) {
             permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }

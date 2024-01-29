@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
@@ -29,53 +30,23 @@ public class DiscoverSingleEvent extends Fragment {
 
     private FragmentDiscoverSingleEventBinding fragmentDiscoverSingleEventBinding;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public DiscoverSingleEvent() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DiscoverSingleEvent.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DiscoverSingleEvent newInstance(String param1, String param2) {
-        DiscoverSingleEvent fragment = new DiscoverSingleEvent();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static DiscoverSingleEvent newInstance() {
+        return new DiscoverSingleEvent();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         fragmentDiscoverSingleEventBinding = FragmentDiscoverSingleEventBinding.inflate(inflater, container, false);
         return fragmentDiscoverSingleEventBinding.getRoot();
-     //   return inflater.inflate(R.layout.fragment_discover_single_event, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -106,15 +77,34 @@ public class DiscoverSingleEvent extends Fragment {
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getPlace());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewTitle.setText(event.getTitle());
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDistance.setText(event.getDistanceString());
+        //setWeatherIcon(fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventImageViewWeather, event.getWeatherCode());
         /*boolean isTodo = event.isTODO();
         if(isTodo){
             fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.remove);
         }else{
             fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.Join);
-        }
-
-         */
+        } */
         //DiscoverSingleEventArgs.fromBundle(getArguments()).getEvent().setDistance(44.44);
 
+    }
+
+    public void setWeatherIcon(ImageView weatherIcon, int code){
+        if (code == 0){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_sun);
+        } else if (code >= 1 && code <= 3){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_partlycloudy);
+        } else if (code == 45 || code == 48){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_fog);
+        } else if (code == 51 || code == 53 || code == 55 || code == 56 || code == 57) {
+            weatherIcon.setBackgroundResource(R.drawable.drawable_drizzle);
+        } else if (code == 61 || code == 63 || code == 65 || code == 66 || code == 67 || code == 80 || code == 81 || code == 82){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_rain);
+        } else if (code == 71 || code == 73 || code == 75 || code == 77){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_snowlight);
+        } else if (code == 85 || code == 86){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_snow);
+        } else if (code == 95 || code == 96 || code == 99){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
+        }
     }
 }

@@ -43,6 +43,7 @@ public class Constants {
     public static final String RETROFIT_ERROR = "retrofit_error";
     public static final String EMPTY_LOCATION = "empty_location";
     public static final String EMPTY_FIELDS = "empty fields";
+    public static final String VIEW_MODEL_ERROR ="view model";
     // Constants for encrypted files
 
     public static final String UNEXPECTED_ERROR = "unexpected error";

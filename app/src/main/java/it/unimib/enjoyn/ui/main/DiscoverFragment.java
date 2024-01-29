@@ -4,12 +4,17 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -74,8 +79,25 @@ public class DiscoverFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tabLayout = view.findViewById(R.id.discoverFragment_tabLayout);
         viewPager2 = view.findViewById(R.id.discoverFragment_viewPager);
-        viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
+        if(this.getActivity() != null)
+            viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
         viewPager2.setAdapter(viewPagerAdapter);
+        viewPager2.setUserInputEnabled(false);
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.menu_toolbar, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
+                    startActivityBasedOnCondition(R.id.action_discover_to_favoritesFragment, false);
+                }
+                return false;
+            }
+        });
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -96,10 +118,20 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tabLayout.getTabAt(position).select();
+                if(tabLayout.getTabAt(position) != null)
+                    tabLayout.getTabAt(position).select();
             }
         });
 
+    }
+
+    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+
+        //da utilizzare solo se si passa ad un'altra activity
+        if (finishActivity){
+            requireActivity().finish();
+        }
     }
 
 }

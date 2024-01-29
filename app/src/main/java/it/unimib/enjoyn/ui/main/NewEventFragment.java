@@ -4,8 +4,12 @@ import static it.unimib.enjoyn.util.Constants.EMPTY_FIELDS;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
@@ -29,6 +33,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
@@ -61,10 +66,8 @@ import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
-
+    private static final String STATE_URI = "uri";
     ImageButton date;
-    TextView selectedDate;
-
     ImageButton time;
     ImageButton place;
     TextView selectedTime;
@@ -73,12 +76,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     TextView temperature;
     Spinner categorySpinner;
     String hourWeather;
-
     int indexHour = -1;
     int indexMinute = -1;
     int indexDate = -1;
     boolean equals = false;
-
     String title;
     String dateWeather;
     String timeWeather;
@@ -86,6 +87,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     String locationName;
     ImageView weatherIcon;
     String description;
+    Uri eventImage = null;
     int numberOfPeople = -1;
     double temp = -10000;
 
@@ -114,7 +116,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
 
-    public static NewEventFragment newInstance(String param1, String param2) {
+    public static NewEventFragment newInstance() {
         return new NewEventFragment();
     }
 
@@ -129,8 +131,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             equals = savedInstanceState.getBoolean(STATE_EQUALS);
             selectedCategory = savedInstanceState.getParcelable(STATE_CATEGORY);
             Log.d("code", ""+weatherCode);
+            eventImage = savedInstanceState.getParcelable(STATE_URI);
         }
-        Log.d("API weather", "su OnCreate");
         IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
         weatherAPIdata = new Weather();
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
@@ -139,7 +141,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getViewLifecycleOwner();
         // Inflate the layout for this fragment
@@ -188,6 +190,38 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 return false;
             }
         });
+
+        ShapeableImageView image = fragmentNewEventBinding.fragmentNewEventShapeableImageViewEventImage;
+        ImageButton photoPicker = fragmentNewEventBinding.fragmentNewEventImageButtonPhotoPicker;
+
+        if(eventImage!= null){
+            image.setImageURI(eventImage);
+            photoPicker.setVisibility(View.GONE);
+        }
+        ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                    // Callback is invoked after the user selects a media item or closes the
+                    // photo picker.
+                    if (uri != null) {
+                        image.setImageURI(uri);
+                        photoPicker.setVisibility(View.GONE);
+                        eventImage = uri;
+                        Log.d("PhotoPicker", "Selected URI: " + uri);
+                    } else {
+                        Log.d("PhotoPicker", "No media selected");
+                    }
+                });
+
+        photoPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickMedia.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build());
+
+            }
+        });
+
 
 
 
@@ -267,12 +301,13 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             title = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextTitle.getText());
             description = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextDescription.getText());
 
-            if(title != null && dateWeather != null && timeWeather != null && locationName != null && description != null){
+            if(eventImage != null && title != null && dateWeather != null && timeWeather != null && locationName != null && description != null){
                 newEvent.setTitle(title);
                 newEvent.setDate(dateWeather);
                 newEvent.setTime(timeWeather);;
                 newEvent.setDescription(description);
                 newEvent.setCategory(selectedCategory);
+                newEvent.setImageUrl(eventImage);
                 // chiamata ai livelli sottostanti per il salvataggio (da ascoltare)
                 eventViewModel.createEvent(newEvent).observe(getViewLifecycleOwner(), eventCreationObserver);
             } else {
@@ -390,7 +425,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     }
 
     public void getTime(View view){
-        String[] dateArray = weatherAPIdata.getHour();
         double[] temperatureArray = weatherAPIdata.getTemperature();
 
         time = view.findViewById(R.id.fragmentNewEvent_imageButton_pickTime);
@@ -421,7 +455,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-
                                 // on below line we are setting selected time
                                 // in our text view.
                                 if(sameDay){
@@ -443,9 +476,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 hourWeather = hourOfDay + ":" + minute;
                                 indexHour = hourOfDay*4;
                                 indexMinute = minute/15;
-
-                                String dateHourWeather = dateWeather + "T" + hourWeather;
-
 
                                 assert weatherAPIdata != null;
                                 assert weatherAPIdata.getHour()[indexHour] != null;
@@ -533,6 +563,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         savedInstanceState.putDouble(STATE_TEMPERATURE, temp);
         savedInstanceState.putBoolean(STATE_EQUALS, equals);
         savedInstanceState.putParcelable(STATE_CATEGORY, selectedCategory);
+        savedInstanceState.putParcelable(STATE_URI, eventImage);
         // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
     }

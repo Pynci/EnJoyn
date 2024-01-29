@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import it.unimib.enjoyn.R;
 
@@ -85,6 +87,17 @@ public class ProfileFragment extends Fragment {
                 return false;
             }
         });
+
+        Button modify = view.findViewById(R.id.fragmentProfile_textButton_editProfile);
+
+        modify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileFragmentDirections.ActionProfileFragmentToProfileConfigurationFragment2 action = ProfileFragmentDirections.actionProfileFragmentToProfileConfigurationFragment2();
+                startActivityBasedOnCondition(R.id.action_profileFragment_to_profileConfigurationFragment2, false);
+            }
+        });
+
         /*
         //prova swicth di un cointener
 
@@ -105,5 +118,14 @@ public class ProfileFragment extends Fragment {
         });
 
          */
+    }
+
+    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+
+        //da utilizzare solo se si passa ad un'altra activity
+        if (finishActivity){
+            requireActivity().finish();
+        }
     }
 }
