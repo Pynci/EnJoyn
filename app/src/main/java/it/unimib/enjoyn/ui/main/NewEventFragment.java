@@ -57,7 +57,6 @@ import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
-import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.util.WeatherCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
