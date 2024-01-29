@@ -245,6 +245,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
         searchBar = view.findViewById(R.id.newEventMap_textInputEditText_textSearchBar);
+
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
         pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
 

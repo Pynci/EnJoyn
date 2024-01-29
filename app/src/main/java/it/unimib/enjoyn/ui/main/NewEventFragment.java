@@ -106,6 +106,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     private FragmentNewEventBinding fragmentNewEventBinding;
     private Observer<Result> eventCreationObserver;
 
+    boolean sameDay = false;
+
     public NewEventFragment() {
         // Required empty public constructor
     }
@@ -316,6 +318,28 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
+                                c.get(Calendar.YEAR);
+                                c.get(Calendar.MONTH);
+                                c.get(Calendar.DAY_OF_MONTH);
+
+
+                                if(year< c.get(Calendar.YEAR) ||
+                                        year == c.get(Calendar.YEAR) && monthOfYear <c.get(Calendar.MONTH) ||
+                                        year == c.get(Calendar.YEAR) && monthOfYear == c.get(Calendar.MONTH)
+                                                && dayOfMonth<c.get(Calendar.DAY_OF_MONTH)){
+                                    Snackbar
+                                            .make(getView(), "scelta data passata, riprova", Snackbar.LENGTH_SHORT)
+                                            .show();
+                                    return ;
+                                }
+                                if( year == c.get(Calendar.YEAR) && monthOfYear == c.get(Calendar.MONTH)
+                                        && dayOfMonth == c.get(Calendar.DAY_OF_MONTH)){
+                                    sameDay = true;
+                                } else{
+                                    sameDay = false;
+                                }
+
+
                                 // on below line we are setting date to our text view.
                                 String dayOfMonthString = Integer.toString(dayOfMonth) ;
                                 String monthOfYearString = Integer.toString(monthOfYear+1) ;
@@ -391,8 +415,18 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
+
                                 // on below line we are setting selected time
                                 // in our text view.
+                                if(sameDay){
+                                    if(hourOfDay < c.get(Calendar.HOUR_OF_DAY)||
+                                            hourOfDay < c.get(Calendar.HOUR_OF_DAY) && minute<c.get(Calendar.MINUTE)){
+                                        Snackbar
+                                                .make(getView(), "scelta ora passata, riprova", Snackbar.LENGTH_SHORT)
+                                                .show();
+                                        return ;
+                                    }
+                                }
 
                                 if (minute<10){
                                     timeWeather = hourOfDay+":0"+minute;
