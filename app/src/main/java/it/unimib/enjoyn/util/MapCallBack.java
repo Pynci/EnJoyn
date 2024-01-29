@@ -5,8 +5,6 @@ import com.mapbox.search.result.SearchSuggestion;
 
 import java.util.List;
 
-import it.unimib.enjoyn.model.WeatherApiResponse;
-
 public interface MapCallBack {
 
     void onSuccessSuggestionFromRemote( List<SearchSuggestion> suggestions);

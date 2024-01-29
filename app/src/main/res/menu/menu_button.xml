@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/discover"
+        android:id="@+id/fragmentDiscover"
         android:enabled="true"
         android:icon="@drawable/baseline_explore_24"
         android:title="@string/discoverButton" />
     <item
-        android:id="@+id/todo"
+        android:id="@+id/fragmentTodo"
         android:enabled="true"
         android:icon="@drawable/baseline_outlined_flag_24"
         android:title="@string/todoButton" />
     <item
-        android:id="@+id/newEventMap"
+        android:id="@+id/fragmentNewEventMap"
         android:enabled="true"
         android:icon="@drawable/baseline_add_circle_outline_24"
         android:title="@string/newEventButton" />

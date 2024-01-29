@@ -15,14 +15,10 @@ import com.mapbox.search.SearchEngineSettings;
 import com.mapbox.search.SearchMultipleSelectionCallback;
 import com.mapbox.search.SearchOptions;
 import com.mapbox.search.SearchSelectionCallback;
-import com.mapbox.search.common.IsoCountryCode;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.util.MapCallBack;
 
 public class MapRemoteDataSource {
@@ -47,21 +43,19 @@ public class MapRemoteDataSource {
         List<QueryType> queryTypeList = new ArrayList<>();
         queryTypeList.add(QueryType.POI);
         queryTypeList.add(QueryType.ADDRESS);
-        final ReverseGeoOptions optionsReverse = new ReverseGeoOptions.Builder(point)
+
+        return  new ReverseGeoOptions.Builder(point)
                 .limit(1)
                 .types(queryTypeList)
                 .build();
-
-        return  optionsReverse;
     }
 
     public SearchOptions getSearchOption(Point selfLocation) {
-        final SearchOptions options = new SearchOptions.Builder()
+
+        return  new SearchOptions.Builder()
                 .limit(4)
                 .proximity(selfLocation)
                 .build();
-
-        return  options;
     }
 
     public void getMapSuggestion(String searchBarText, Point selfLocation) {

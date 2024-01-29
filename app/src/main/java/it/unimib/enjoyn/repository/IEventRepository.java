@@ -12,7 +12,6 @@ public interface IEventRepository {
 
     MutableLiveData<Result> fetchEvent(long lastUpdate);
 
-
     void updateEvent(Event event);
 
     MutableLiveData<Result> createEvent(Event event, User user);

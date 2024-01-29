@@ -30,7 +30,6 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
-import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.JSONParserUtil;
@@ -105,8 +104,8 @@ public class TodoFragment extends Fragment {
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
-                        TodoFragmentDirections.ActionTodoToDiscoverSingleEvent action =
-                                TodoFragmentDirections.actionTodoToDiscoverSingleEvent(event);
+                        TodoFragmentDirections.ActionFragmentTodoToFragmentDiscoverSingleEvent action =
+                                TodoFragmentDirections.actionFragmentTodoToFragmentDiscoverSingleEvent(event);
                         Navigation.findNavController(view).navigate(action);
                     }
 

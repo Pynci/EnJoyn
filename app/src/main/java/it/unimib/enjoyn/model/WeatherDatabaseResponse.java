@@ -11,7 +11,7 @@ public class WeatherDatabaseResponse implements Parcelable {
 
     private List<Weather> weatherList;
 
-    public WeatherDatabaseResponse(){};
+    public WeatherDatabaseResponse(){}
     public WeatherDatabaseResponse(List<Weather> weatherList) {
         this.weatherList = weatherList;
     }

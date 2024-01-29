@@ -92,8 +92,8 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
-                        DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action =
-                               DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
+                        DiscoverFragmentDirections.ActionFragmentDiscoverToFragmentDiscoverSingleEvent action =
+                               DiscoverFragmentDirections.actionFragmentDiscoverToFragmentDiscoverSingleEvent(event);
                         //Navigation.findNavController(view).navigate(R.id.action_discover_to_discoverSingleEvent);
                         Navigation.findNavController(view).navigate(action);
                     }

@@ -93,7 +93,7 @@ public class ServiceLocator {
         return LocalRoomDatabase.getDatabase(application);
     }
 
-    public IWeatherRepository getWeatherRepository(Application application){
+    public IWeatherRepository getWeatherRepository(){
         BaseWeatherRemoteDataSource weatherRemoteDataSource;
 
         weatherRemoteDataSource = new WeatherRemoteDataSource();
@@ -101,7 +101,7 @@ public class ServiceLocator {
         return new WeatherRepository(weatherRemoteDataSource);
     }
 
-    public MapRepository getMapRepository(Application application){
+    public MapRepository getMapRepository(){
         MapRemoteDataSource mapRemoteDataSource;
 
         mapRemoteDataSource = new MapRemoteDataSource();

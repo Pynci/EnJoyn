@@ -19,7 +19,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textAlignment="center">
 
 
@@ -94,6 +94,7 @@
                 android:layout_height="75dp"
                 android:layout_marginTop="28dp"
                 android:hint="@string/Title"
+                android:autofillHints=""
                 android:inputType="text"
                 android:orientation="horizontal"
                 android:textAlignment="center"
@@ -129,8 +130,9 @@
                 android:id="@+id/newEventFragment_textView_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="120dp"
                 app:layout_constraintEnd_toEndOf="@+id/fragmentNewEvent_imageView_meteoIcon"
+                app:layout_constraintHorizontal_bias="0.955"
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_imageView_meteoIcon"
                 app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_imageView_meteoIcon"
                 tools:text="@string/temperature" />
@@ -200,11 +202,11 @@
 
             <ImageView
                 android:id="@+id/fragmentNewEvent_imageView_meteoIcon"
-                android:layout_width="174dp"
-                android:layout_height="153dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="167dp"
+                android:layout_height="143dp"
+                android:contentDescription="@string/imageWeather"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
-                app:layout_constraintHorizontal_bias="0.76"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_date"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_editText_description"
                 tools:srcCompat="@drawable/drawable_sun" />
@@ -216,6 +218,7 @@
                 android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="@string/Description"
+                android:autofillHints=""
                 android:inputType="text"
                 android:textAlignment="center"
                 android:textSize="24sp"
