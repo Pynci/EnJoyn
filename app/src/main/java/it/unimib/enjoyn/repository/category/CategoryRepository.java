@@ -40,6 +40,7 @@ public class CategoryRepository implements ICategoryRepository, CategoryCallback
 
     @Override
     public MutableLiveData<Result> readAllImagesFromCategories(List<Category> categoryList) {
+        imagesUri.clear();
         expectedImagesUriSize = categoryList.size();
         for (Category category : categoryList) {
             readImageFromName(category.getNome());

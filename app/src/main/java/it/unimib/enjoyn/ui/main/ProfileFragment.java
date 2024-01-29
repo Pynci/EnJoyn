@@ -131,10 +131,11 @@ public class ProfileFragment extends Fragment {
                                         }
                                     }
                                 }
-
-                                CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
-                                        categoryList, imagesSorted);
-                                listView.setAdapter(customAdapter);
+                                if(imagesSorted.size() > 0){
+                                    CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
+                                            categoryList, imagesSorted);
+                                    listView.setAdapter(customAdapter);
+                                }
                             }
                         });
             }

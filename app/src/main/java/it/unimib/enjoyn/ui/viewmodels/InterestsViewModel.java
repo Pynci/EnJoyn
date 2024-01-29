@@ -13,9 +13,9 @@ public class InterestsViewModel extends ViewModel {
 
     private final IUserRepository interestRepository;
     private final CategoriesHolder categoriesHolder;
+    private MutableLiveData<Result> interests;
 
     public InterestsViewModel(Application application) {
-
         interestRepository = ServiceLocator.getInstance().getUserRepository(application);
         categoriesHolder = CategoriesHolder.getInstance();
     }
@@ -25,7 +25,10 @@ public class InterestsViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> getInterests() {
-        return interestRepository.getUserInterests();
+        if(interests == null){
+            interests = interestRepository.getUserInterests();
+        }
+        return interests;
     }
 
     /*
