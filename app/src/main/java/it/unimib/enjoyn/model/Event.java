@@ -1,5 +1,6 @@
 package it.unimib.enjoyn.model;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -41,11 +42,14 @@ public class Event implements Parcelable {
     @Embedded(prefix = "weather_")
     private Weather weather;
 
+    @Embedded
+    private Uri imageUrl;
+
     public Event(){
 
     }
 
-    public Event(long id, String title, String description, String date, String place, String time, boolean confidential, EventLocation location, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Weather weather) {
+    public Event(long id, String title, String description, String date, String place, String time, boolean confidential, EventLocation location, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Weather weather, Uri imageUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -60,6 +64,7 @@ public class Event implements Parcelable {
         this.isTODO = isTODO;
         this.isFavorite = isFavorite;
         this.weather = weather;
+        this.imageUrl = imageUrl;
     }
 
     public long getId() {
@@ -111,7 +116,7 @@ public class Event implements Parcelable {
     }
 
     public String getDistanceString(){
-        return Double.toString(distance)+" km";
+        return (distance)+" km";
     }
 
     public boolean isTODO() {
@@ -125,6 +130,10 @@ public class Event implements Parcelable {
 
     public Weather getWeather() {
         return weather;
+    }
+
+    public Uri getImageUrl() {
+        return imageUrl;
     }
 
     public void setId(long id) {
@@ -183,11 +192,15 @@ public class Event implements Parcelable {
         this.weather = weather;
     }
 
+    public void setImageUrl(Uri imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public void incrementPeopleNumber(){
 
             peopleNumber++;
 
-        this.peopleNumber=peopleNumber;
+        this.peopleNumber = peopleNumber;
     }
 
     public void decrementPeopleNumber(){

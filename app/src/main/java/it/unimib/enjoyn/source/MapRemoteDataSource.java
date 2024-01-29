@@ -139,7 +139,11 @@ public class MapRemoteDataSource {
     private final SearchCallback searchReverseCallback = new SearchCallback() {
         @Override
         public void onResults(@NonNull List<SearchResult> list, @NonNull ResponseInfo responseInfo) {
-            mapCallBack.onSuccessReverseSearchFromRemote(list.get(0));
+            if (list.size() > 0) {
+                mapCallBack.onSuccessReverseSearchFromRemote(list.get(0));
+            } else {
+                mapCallBack.onFailureFromRemote(new Exception("non trovo luoghi, riprova "));
+            }
         }
 
         @Override

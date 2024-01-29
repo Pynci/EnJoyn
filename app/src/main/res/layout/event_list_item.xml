@@ -127,7 +127,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/eventListItem_textView_eventTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/eventListItem_textView_eventTitle"
-                app:srcCompat="@drawable/the_rock_meme" />
+                app:srcCompat="@drawable/baseline_downloading_24" />
 
             <ImageView
                 android:id="@+id/eventListItem_imageView_weather"

@@ -73,7 +73,7 @@ public class MapRepository implements MapCallBack {
 
     @Override
     public void onFailureFromRemote(Exception exception) {
-
+                //todo errore
     }
 
 

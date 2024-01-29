@@ -6,10 +6,11 @@ import static it.unimib.enjoyn.util.Constants.API_ERROR;
 import static it.unimib.enjoyn.util.Constants.EMPTY_FIELDS;
 import static it.unimib.enjoyn.util.Constants.EMPTY_LOCATION;
 import static it.unimib.enjoyn.util.Constants.RETROFIT_ERROR;
+import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
 
 public class ErrorMessagesUtil {
 
-    private Application application;
+    private final Application application;
 
     public ErrorMessagesUtil(Application application){
         this.application = application;
@@ -44,4 +45,12 @@ public class ErrorMessagesUtil {
         }
     }
 
+    public String getEventErrorMessage(String error){
+        switch (error){
+            case VIEW_MODEL_ERROR:
+                return "error retreiving events";
+            default:
+                return "Unexpected error";
+        }
+    }
 }

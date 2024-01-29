@@ -1,14 +1,18 @@
 package it.unimib.enjoyn.adapter;
 
+import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -29,11 +33,13 @@ public class EventReclyclerViewAdapter extends
 
     private final List<Event> eventList;
 
+    private final Application application;
     private final OnItemClickListener onItemClickListener;
 
-    public EventReclyclerViewAdapter(List<Event> eventList, OnItemClickListener onItemClickListener){
+    public EventReclyclerViewAdapter(List<Event> eventList, Application application, OnItemClickListener onItemClickListener){
         this.eventList = eventList;
         this.onItemClickListener = onItemClickListener;
+        this.application = application;
     }
 
     public int getItemViewType(int position){
@@ -88,6 +94,7 @@ public class EventReclyclerViewAdapter extends
         private final TextView textViewPeopleNumber;
         private final TextView textViewDistance;
         private final Button joinButton;
+        private final ImageView eventImageView;
 
 
         public EventViewHolder(@NonNull View itemView) {
@@ -98,7 +105,7 @@ public class EventReclyclerViewAdapter extends
             textViewPlace = itemView.findViewById(R.id.eventListItem_textView_place);
             textViewPeopleNumber = itemView.findViewById(R.id.eventListItem_textView_peopleNumber);
             textViewDistance = itemView.findViewById(R.id.eventListItem_textView_distance);
-
+            eventImageView = itemView.findViewById(R.id.eventListItem_imageView_eventImage);
             joinButton = itemView.findViewById(R.id.eventListItem_button_joinButton);
             itemView.setOnClickListener(this);
             joinButton.setOnClickListener(this);
@@ -127,6 +134,7 @@ public class EventReclyclerViewAdapter extends
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
             setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
+            Glide.with(application).load(event.getImageUrl()).placeholder(R.drawable.baseline_downloading_24).into(eventImageView);
         }
 
 
