@@ -95,6 +95,7 @@ public class EventReclyclerViewAdapter extends
         private final TextView textViewDistance;
         private final Button joinButton;
         private final ImageView eventImageView;
+        private boolean todo;
 
 
         public EventViewHolder(@NonNull View itemView) {
@@ -116,7 +117,8 @@ public class EventReclyclerViewAdapter extends
         public void onClick(View v) {
 
             if(v.getId() == R.id.eventListItem_button_joinButton){
-                //setTextButtonTodoEvent(!eventList.get(getBindingAdapterPosition()).isTODO());
+                setTextButtonTodoEvent(todo);
+                todo = !todo;
                 onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
 
             }else{
@@ -130,7 +132,7 @@ public class EventReclyclerViewAdapter extends
             textViewTitle.setText(event.getTitle());
             textViewData.setText(event.getDate());
             textViewTime.setText(event.getTime());
-            textViewPlace.setText(event.getPlace());
+            textViewPlace.setText(event.getLocation().getName());
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
             //setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
