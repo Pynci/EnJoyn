@@ -273,17 +273,20 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
 
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
-        //Todo logica eventi
+
         eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(), result -> {
 
             if(result.isSuccessful()){
                 this.eventList.clear();
                 this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
+                pointAnnotationManager.deleteAll();
                 for(int i = 0; i<eventList.size(); i++){
                     Event event = eventList.get(i);
-                    double eventDistance = round(100*(Math.sqrt(Math.pow(selfLocation.latitude() - event.getLocation().getLatitude(),2)
-                            + Math.pow(selfLocation.longitude() - event.getLocation().getLongitude(),2))),1);
-                    event.setDistance(eventDistance);
+                    if(selfLocation != null){
+                        double eventDistance = round(100*(Math.sqrt(Math.pow(selfLocation.latitude() - event.getLocation().getLatitude(),2)
+                                + Math.pow(selfLocation.longitude() - event.getLocation().getLongitude(),2))),1);
+                        event.setDistance(eventDistance);
+                    }
                     eventViewModel.getWeather(event.getLocation().getLatitudeToString(), event.getLocation().getLongitudeToString()).observe(getViewLifecycleOwner(), weatherResult -> {
                         if(result.isSuccessful()){
                             weatherAPIdata = ((Result.WeatherSuccess) weatherResult).getData().getWeather();

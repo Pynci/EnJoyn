@@ -134,7 +134,8 @@ public class EventReclyclerViewAdapter extends
             textViewTitle.setText(event.getTitle());
             textViewData.setText(event.getDate());
             textViewTime.setText(event.getTime());
-            textViewPlace.setText(event.getLocation().getName());
+            if(event.getLocation() != null)
+                textViewPlace.setText(event.getLocation().getName());
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
             setWeatherIcon(weatherImage, event.getWeatherCode());
