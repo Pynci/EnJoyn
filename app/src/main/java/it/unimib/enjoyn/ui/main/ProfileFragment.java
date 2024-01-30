@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         Observer<Result> interestsObserver = result -> {
-            if (result.isSuccessful()) {
+            if (result.isSuccessful() && result instanceof Result.CategorySuccess) {
                 List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
                 categoryViewModel
                         .getAllImages(categoryList)

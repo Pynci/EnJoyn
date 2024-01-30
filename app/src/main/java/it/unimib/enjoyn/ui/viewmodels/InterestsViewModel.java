@@ -30,10 +30,4 @@ public class InterestsViewModel extends ViewModel {
         }
         return interests;
     }
-
-
-    public MutableLiveData<Result> updateUserInserest() {
-        interests = null;
-        return interestRepository.updateUserInterests(categoriesHolder);
-    }
 }

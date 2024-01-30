@@ -29,7 +29,7 @@ public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {
                 .setValue(categoriesHolder.getCategories())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        interestsCallback.onSuccessCreateUsersInterest();
+                        interestsCallback.onSuccessCreateUsersInterest(categoriesHolder);
                     }
                     else{
                         interestsCallback.onFailureCreateUsersInterest(task.getException());

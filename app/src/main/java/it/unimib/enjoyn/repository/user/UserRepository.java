@@ -293,13 +293,10 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         userByEmail.postValue(new Result.UserSuccess(user));
     }
 
-    //CRUD
+    //CRUD INTERESTS
     @Override
     public MutableLiveData<Result> createUserInterests(CategoriesHolder categoriesHolder) {
         interestRemoteDataSource.storeUserInterests(categoriesHolder, authenticationDataSource.getCurrentUserUID());
-        interestLocalDataSource.deleteUserInterests();
-        interestLocalDataSource.storeInterests(categoriesHolder.getCategories());
-        categoriesHolder.refresh();
         return createUserInterestsResult;
     }
 
@@ -309,15 +306,10 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return userInterests;
     }
 
+    //CALLBACK INTERESTS
     @Override
-    public MutableLiveData<Result> updateUserInterests(CategoriesHolder categoriesHolder) {
-        return this.createUserInterests(categoriesHolder);
-    }
-
-    //CALLBACK
-    @Override
-    public void onSuccessCreateUsersInterest() {
-        createUserInterestsResult.postValue(new Result.Success());
+    public void onSuccessCreateUsersInterest(CategoriesHolder categoriesHolder) {
+        interestLocalDataSource.storeInterests(categoriesHolder.getCategories());
     }
 
     @Override
@@ -337,12 +329,12 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onSuccessSaveOnLocal() {
-        //Al momento non serve fare nulla
+        createUserInterestsResult.postValue(new Result.Success());
     }
 
     @Override
     public void onFailureSaveOnLocal(Exception e) {
-        //Al momento non serve fare nulla
+        createUserInterestsResult.postValue(new Result.Error(e.getMessage()));
     }
 
     @Override
