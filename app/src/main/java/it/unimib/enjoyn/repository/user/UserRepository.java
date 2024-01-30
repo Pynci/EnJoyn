@@ -330,6 +330,8 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public void onSuccessSaveOnLocal() {
         createUserInterestsResult.postValue(new Result.Success());
+        CategoriesHolder.getInstance().refresh();
+        getUserInterests();
     }
 
     @Override
