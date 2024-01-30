@@ -21,8 +21,12 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.ViewPagerAdapter;
+import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
@@ -81,8 +85,12 @@ public class DiscoverFragment extends Fragment {
         viewPager2 = view.findViewById(R.id.discoverFragment_viewPager);
         if(this.getActivity() != null)
             viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
+
         viewPager2.setAdapter(viewPagerAdapter);
         viewPager2.setUserInputEnabled(false);
+        List<Event> prova = new ArrayList<>();
+        viewPagerAdapter.setData(prova);
+
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
