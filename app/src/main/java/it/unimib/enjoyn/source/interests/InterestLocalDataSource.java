@@ -16,7 +16,7 @@ public class InterestLocalDataSource extends BaseInterestLocalDataSource{
     }
 
     @Override
-    public void getAllCategories() {
+    public void getAllInterests() {
 
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Category> categoryList = interestDao.getAll();

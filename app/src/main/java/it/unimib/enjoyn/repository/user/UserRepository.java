@@ -302,7 +302,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public MutableLiveData<Result> getUserInterests() {
-        interestLocalDataSource.getAllCategories();
+        interestLocalDataSource.getAllInterests();
         return userInterests;
     }
 
