@@ -37,7 +37,6 @@ public class Event implements Parcelable {
     private double distance;
     private int weatherCode;
     private double weatherTemperature;
-
     @Embedded
     private Uri imageUrl;
 

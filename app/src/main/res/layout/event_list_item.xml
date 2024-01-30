@@ -47,7 +47,7 @@
                 android:maxLines="1"
                 android:text="Andare a mangiare al Kfc"
                 android:textColor="@color/cardview_light_background"
-                app:layout_constraintEnd_toStartOf="@+id/eventListItem_imageButton_favourite"
+                app:layout_constraintEnd_toStartOf="@+id/eventListItem_imageButton_favorite"
                 app:layout_constraintStart_toEndOf="@+id/eventListItem_imageView_eventImage"
                 app:layout_constraintTop_toTopOf="@+id/eventListItem_imageView_background" />
 
@@ -140,7 +140,7 @@
                 app:srcCompat="@drawable/drawable_thunderstorm" />
 
             <ImageButton
-                android:id="@+id/eventListItem_imageButton_favourite"
+                android:id="@+id/eventListItem_imageButton_favorite"
                 style="@style/Widget.Material3.Button"
                 android:layout_width="53dp"
                 android:layout_height="53dp"

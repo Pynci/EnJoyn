@@ -480,11 +480,16 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                     }
                                 }
 
-                                if (minute<10){
-                                    timeWeather = hourOfDay+":0"+minute;
+                                if (hourOfDay < 10 && minute<10){
+                                    timeWeather = "0"+hourOfDay+":0"+minute;
+                                } else if (hourOfDay >= 10 && minute<10) {
+                                    timeWeather = hourOfDay + ":0" + minute;
+                                } else if (hourOfDay < 10 && minute >= 10){
+                                    timeWeather = "0"+hourOfDay+":"+minute;
                                 } else {
-                                    timeWeather = hourOfDay + ":" + minute;
+                                    timeWeather = hourOfDay+":"+minute;
                                 }
+
                                 fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(timeWeather);
                                 hourWeather = hourOfDay + ":" + minute;
                                 indexHour = hourOfDay*4;
@@ -494,11 +499,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 assert weatherAPIdata.getHour()[indexHour] != null;
                                 if(equals){
                                     temp = temperatureArray[indexDate+indexHour+indexMinute];
-                                    String code = weatherAPIdata.getWeather_codeString(indexDate+indexHour+indexMinute);
-                                    weatherCode = Integer.parseInt(code);
+                                    weatherCode = weatherAPIdata.getWeather_code(indexDate+indexHour+indexMinute);
                                     //fragmentNewEventBinding.weather.setText(code);
                                     fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText(temp+ "°C");
-                                    setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, Integer.parseInt(code));
+                                    setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
                                 }
                             }
                         }, hour, minute, false);

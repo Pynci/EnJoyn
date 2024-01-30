@@ -29,6 +29,7 @@ import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +70,7 @@ import com.mapbox.search.ui.view.CommonSearchViewConfiguration;
 import com.mapbox.search.ui.view.SearchResultsView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
@@ -77,6 +79,7 @@ import it.unimib.enjoyn.databinding.FragmentDiscoverMapBinding;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
@@ -107,6 +110,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     private ListView suggestionListView;
     private SuggestionListAdapter suggestionListAdapter;
     private TextInputEditText searchBar;
+    private Weather weatherAPIdata;
     CardView eventItem;
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -275,6 +279,45 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             if(result.isSuccessful()){
                 this.eventList.clear();
                 this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
+                for(int i = 0; i<eventList.size(); i++){
+                    Event event = eventList.get(i);
+                    double eventDistance = round(100*(Math.sqrt(Math.pow(selfLocation.latitude() - event.getLocation().getLatitude(),2)
+                            + Math.pow(selfLocation.longitude() - event.getLocation().getLongitude(),2))),1);
+                    event.setDistance(eventDistance);
+                    eventViewModel.getWeather(event.getLocation().getLatitudeToString(), event.getLocation().getLongitudeToString()).observe(getViewLifecycleOwner(), weatherResult -> {
+                        if(result.isSuccessful()){
+                            weatherAPIdata = ((Result.WeatherSuccess) weatherResult).getData().getWeather();
+                            String[] dateArray = weatherAPIdata.getHour();
+                            double [] temperatureArray = weatherAPIdata.getTemperature();
+
+                            boolean equals = false;
+                            int indexDate = -1;
+                            for(int j = 0;j < dateArray.length && !equals ; j+=96){
+                                if(event.getDate().equals(dateArray[j].substring(0, 10))) {
+                                    indexDate = j;
+                                    equals = true;
+                                }
+                            }
+                            int indexHour = Integer.parseInt(event.getTime().substring(0,2))*4;
+                            int indexMinute = Integer.parseInt(event.getTime().substring(3,5))/15;
+                            if (indexDate != -1){
+                                event.setWeatherTemperature(temperatureArray[indexDate+indexHour+indexMinute]);
+                                event.setWeatherCode(weatherAPIdata.getWeather_code(indexDate+indexHour+indexMinute));
+                            } else {
+                                event.setWeatherCode(-1);
+                            }
+
+                            pointAnnotationManager.create(new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER)
+                                    .withPoint(Point.fromLngLat(event.getLocation().getLongitude(), event.getLocation().getLatitude()))
+                                    .withIconImage(bitmap));
+                        } else {
+                            ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
+                            Snackbar.make(view, errorMessagesUtil.getWeatherErrorMessage(((Result.WeatherError) weatherResult).getMessage()), Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+                    eventList.set(i, event);
+
+                }
             } else {
                 ErrorMessagesUtil errorMessagesUtil =
                         new ErrorMessagesUtil(requireActivity().getApplication());
@@ -289,48 +332,23 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             return false;
         });
 
-        Point point = Point.fromLngLat(-122.08497461176863, 37.42241542518461);
-        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER)
-                .withPoint(point)
-                .withIconImage(bitmap);
-        pointAnnotationManager.create(pointAnnotationOptions);
-
-
-        Point point2 = Point.fromLngLat(-122.08564492453274, 37.42158123915911);
-        pointAnnotationOptions.withTextAnchor(TextAnchor.CENTER)
-                .withPoint(point2)
-                .withIconImage(bitmap);
-        pointAnnotationManager.create(pointAnnotationOptions);
-
-
-        Point point3 = Point.fromLngLat(11.436340722694551,46.28347051230523);
-        pointAnnotationOptions.withTextAnchor(TextAnchor.CENTER)
-                .withPoint(point3)
-                .withIconImage(bitmap);
-        pointAnnotationManager.create(pointAnnotationOptions);
-
-
         eventItem = view.findViewById(R.id.fragmentDiscoverMap_cardView_eventItem);
 
         pointAnnotationManager.addClickListener(new OnPointAnnotationClickListener() {
             @Override
             public boolean onAnnotationClick(@NonNull PointAnnotation annotation) {
-                /*for(int i = 0; i < eventList.size(); i++){
 
-                }*/
                 event = eventList.get((int)annotation.getId());
                 eventItem.setVisibility(View.VISIBLE);
-
                 fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
                 fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
                 fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
-                fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getPlace());
-                //setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
-                //calcolare distanza
-                double eventDistance = 100*(Math.sqrt(Math.pow(selfLocation.latitude() - annotation.getPoint().latitude(),2)
-                        + Math.pow(selfLocation.longitude() - annotation.getPoint().longitude(),2)));
-                fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText((round(eventDistance,1))+" km");
-
+                fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getLocation().getName());
+                Log.d("code", event.getWeatherCode()+"");
+                if(event.getWeatherCode() != -1){
+                    setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
+                }
+                fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText(event.getDistance()+" km");
                 fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
                 //fragmentDiscoverMapBinding.eventListItemImageViewEventImage.setImageURI(event.getImageUrl());
                 //mettere immagine meteo
