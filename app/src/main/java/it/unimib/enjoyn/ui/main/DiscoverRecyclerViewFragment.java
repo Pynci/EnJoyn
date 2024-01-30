@@ -130,6 +130,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
                     }
                 });
+
     }
 
     private void startActivityBasedOnCondition(int destination, boolean finishActivity) {

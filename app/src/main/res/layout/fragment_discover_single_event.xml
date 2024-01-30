@@ -120,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Date"
                 android:textSize="20sp"
                 app:drawableStartCompat="@drawable/baseline_calendar_month_24"
@@ -132,7 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/Time"
                 android:textSize="20sp"
                 app:drawableStartCompat="@drawable/baseline_access_time_24"
@@ -144,7 +144,7 @@
                 android:id="@+id/fragmentDiscoverSingleEvent_view_firstDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/md_theme_light_outlineVariant"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/discoverSingleEvent_textView_hour" />
@@ -154,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Street"
                 android:textSize="20sp"
                 app:drawableStartCompat="@drawable/baseline_place_24"
@@ -166,21 +166,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/km"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_place" />
 
+
             <View
                 android:id="@+id/fragmentDiscoverSingleEvent_view_secondDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/md_theme_light_outlineVariant"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_distance" />
-
 
             <Button
                 android:id="@+id/discoverSingleEvent_button_join"
@@ -201,7 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="32dp"
                 android:text="@string/description"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -228,9 +228,18 @@
                 android:layout_height="122dp"
                 android:layout_marginEnd="24dp"
                 android:contentDescription="@string/imageWeather"
-                android:src="@drawable/drawable_sun"
+                tools:src="@drawable/drawable_sun"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_view_secondDivider" />
+
+            <TextView
+                android:id="@+id/fragmentDiscoverSingleEvent_textView_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                tools:text="@string/temperature"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentDiscoverSingleEvent_imageView_weather"
+                app:layout_constraintEnd_toEndOf="@+id/fragmentDiscoverSingleEvent_imageView_weather" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

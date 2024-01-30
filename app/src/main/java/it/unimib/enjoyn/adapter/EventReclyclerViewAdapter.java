@@ -95,6 +95,7 @@ public class EventReclyclerViewAdapter extends
         private final TextView textViewDistance;
         private final Button joinButton;
         private final ImageView eventImageView;
+        private final ImageView weatherImage;
         private boolean todo;
 
 
@@ -108,6 +109,7 @@ public class EventReclyclerViewAdapter extends
             textViewDistance = itemView.findViewById(R.id.eventListItem_textView_distance);
             eventImageView = itemView.findViewById(R.id.eventListItem_imageView_eventImage);
             joinButton = itemView.findViewById(R.id.eventListItem_button_joinButton);
+            weatherImage = itemView.findViewById(R.id.eventListItem_imageView_weather);
             itemView.setOnClickListener(this);
             joinButton.setOnClickListener(this);
 
@@ -135,6 +137,7 @@ public class EventReclyclerViewAdapter extends
             textViewPlace.setText(event.getLocation().getName());
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
+            setWeatherIcon(weatherImage, event.getWeatherCode());
             //setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
             Glide.with(application).load(event.getImageUrl()).placeholder(R.drawable.baseline_downloading_24).into(eventImageView);
         }
@@ -165,5 +168,24 @@ public class EventReclyclerViewAdapter extends
         }
     }
 
+    public void setWeatherIcon(ImageView weatherIcon, int code){
+        if (code == 0){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_sun);
+        } else if (code >= 1 && code <= 3){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_partlycloudy);
+        } else if (code == 45 || code == 48){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_fog);
+        } else if (code == 51 || code == 53 || code == 55 || code == 56 || code == 57) {
+            weatherIcon.setBackgroundResource(R.drawable.drawable_drizzle);
+        } else if (code == 61 || code == 63 || code == 65 || code == 66 || code == 67 || code == 80 || code == 81 || code == 82){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_rain);
+        } else if (code == 71 || code == 73 || code == 75 || code == 77){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_snowlight);
+        } else if (code == 85 || code == 86){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_snow);
+        } else if (code == 95 || code == 96 || code == 99){
+            weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
+        }
+    }
 
 }
