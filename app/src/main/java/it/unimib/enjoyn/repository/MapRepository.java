@@ -72,10 +72,18 @@ public class MapRepository implements MapCallBack {
     }
 
     @Override
-    public void onFailureFromRemote(Exception exception) {
-                //todo errore
+    public void onFailureReverseFromRemote(Exception exception) {
+                mapMutableReverseSearchLiveData.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
+    @Override
+    public void onFailureSearchFromRemote(Exception exception) {
+        mapMutableSearchLiveData.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
+    @Override
+    public void onFailureSuggestionFromRemote(Exception exception) {
+        mapMutableLiveData.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
 
     public MutableLiveData<Result> fetchMapSu(String searchBarText, Point selfLocation) {
         Log.d("API map", "dentro fetchMapSu su Reposity");

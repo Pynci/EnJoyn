@@ -90,12 +90,15 @@ public class MapRemoteDataSource {
     SearchMultipleSelectionCallback searchMultipleSelectionCallback = new SearchMultipleSelectionCallback() {
         @Override
         public void onResult(@NonNull List<SearchSuggestion> list, @NonNull List<SearchResult> searchResult, @NonNull ResponseInfo responseInfo) {
-            mapCallBack.onSuccessSearchFromRemote(searchResult);
+            if (searchResult.size() > 0) {
+                mapCallBack.onSuccessSearchFromRemote(searchResult);
+            } else {
+                mapCallBack.onFailureSearchFromRemote(new Exception("Non ci sono posti con questo nome"));
+            }
         }
-
         @Override
         public void onError(@NonNull Exception e) {
-
+            mapCallBack.onFailureSearchFromRemote(new Exception("errore API ricerca multipla"));
         }
     };
 
@@ -105,6 +108,7 @@ public class MapRemoteDataSource {
         @Override
         public void onSuggestions(@NonNull List<SearchSuggestion> suggestions, @NonNull ResponseInfo responseInfo) {
             if (suggestions.isEmpty()) {
+                mapCallBack.onFailureSuggestionFromRemote(new Exception("nessun suggerimento disponibile"));
                 Log.i("SearchApiExample", "No suggestions found");
             } else {
                 Log.i("SearchApi", "Search suggestions: " + suggestions + "\nSelecting first...");
@@ -117,12 +121,12 @@ public class MapRemoteDataSource {
         @Override
         public void onError(@NonNull Exception e) {
             //TODO cambiare stringa errore
-            mapCallBack.onFailureFromRemote(new Exception(API_ERROR));
+            mapCallBack.onFailureSuggestionFromRemote(new Exception("errore API suggerimenti"));
         }
 
         @Override
         public void onResults(@NonNull SearchSuggestion searchSuggestion, @NonNull List<SearchResult> list, @NonNull ResponseInfo responseInfo) {
-            mapCallBack.onFailureFromRemote(new Exception(API_ERROR));
+
         }
 
         @Override
@@ -142,7 +146,7 @@ public class MapRemoteDataSource {
             if (list.size() > 0) {
                 mapCallBack.onSuccessReverseSearchFromRemote(list.get(0));
             } else {
-                mapCallBack.onFailureFromRemote(new Exception("non trovo luoghi, riprova "));
+                mapCallBack.onFailureReverseFromRemote(new Exception("non trovo luoghi, riprova "));
             }
         }
 

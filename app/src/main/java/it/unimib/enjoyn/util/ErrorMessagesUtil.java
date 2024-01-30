@@ -31,6 +31,7 @@ public class ErrorMessagesUtil {
         switch (error){
             case EMPTY_LOCATION:
                 return "Location missing";
+
             default:
                 return "Unexpected error";
         }

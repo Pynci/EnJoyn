@@ -147,9 +147,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         public void onIndicatorPositionChanged(@NonNull Point point) {
             if(positionChanged) {
                mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
-               // getGestures(mapView).setFocalPoint(mapView.getMapboxMap().pixelForCoordinate(point));
                 NewEventMap.this.selfLocation = point;
-               // updateCamera(selfLocation,0.0);
                 positionChanged = false;
             }
             else{
@@ -235,7 +233,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         mapView = view.findViewById(R.id.newEventMap_mapView);
         positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
         newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
-        //TOLTO per barra di ricerca
+
 
 
         searchBar = view.findViewById(R.id.newEventMap_textInputEditText_textSearchBar);
@@ -263,7 +261,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                 eventViewModel.getMapSearch(suggestions).observe(getViewLifecycleOwner(), mapSearchObserver);
             }
             else{
-                Log.d(this.getClass().getSimpleName(), "SIAMO NEL RAMO ELSE DEL SUGGESTIONOBSERVER TATASDJHASJKBDNAJKHSBDAKNSD");
+                Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
             }
 
         };
@@ -277,6 +275,8 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                     distance = 100 * (Math.sqrt(Math.pow(selfLocation.latitude() - searchResultList.get(i).getCoordinate().latitude(), 2) + Math.pow(selfLocation.longitude() - searchResultList.get(i).getCoordinate().longitude(), 2)));
                     distanceList.add(round(distance, 1));
                 }
+            }else{
+                Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
             }
 
             suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList, (eventLocation, position) -> {
@@ -306,14 +306,13 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(firstTime) {
-                    if (s.length() > 3) { //&& !clickSuggestion
+                    if (s.length() > 3) {
                         searchResultList = new ArrayList<>();
                         suggestions = new ArrayList<>();
                         Log.d("TAH", "ASJBDIJAHBNSDHJKABSDHJBASJHDBAUISHEIJQWIEJAJSND");
                         eventViewModel.getMapSuggestion(s.toString(), selfLocation).observe(getViewLifecycleOwner(), suggestionObserver);
                     } else {
                         suggestionListView.setVisibility(View.GONE);
-                        //clickSuggestion = false;
                     }
                 } else{
                     firstTime=true;
@@ -343,23 +342,12 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
             getGestures(mapView).addOnMoveListener(onMoveListener);
 
-            searchBar.setOnKeyListener((v, keyCode, event) -> {
-                if((event.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER) )
-                {
-                    suggestionListView.setVisibility(View.GONE);
-                    location.setName(searchResultList.get(0).getName());
-                    location.setLatitude(searchResultList.get(0).getCoordinate().latitude());
-                    location.setLongitude(searchResultList.get(0).getCoordinate().longitude());
-                    eventSelectionPoint();
-                    return true;
-                }
-                return false;
-            });
+            searchBar.setOnKeyListener((v, keyCode, event) ->
+                    (event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER));
 
 
 
             positionButton.setOnClickListener(v -> {
-                // flyToCameraPosition(point);
                 updateCamera(selfLocation);
                 locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener);
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener);
@@ -371,17 +359,17 @@ public class NewEventMap extends Fragment implements PermissionsListener {
             });
 
           GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), point -> {
-              location.setLatitude(point.latitude());
-              location.setLongitude(point.longitude());
-              updateCamera(point);
-
-
-              pointAnnotationManager.deleteAll();
-              PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
-                      .withPoint(point);
-              pointAnnotationManager.create(pointAnnotationOptions);
               eventViewModel.getMapReverseSearch(point).observe(getViewLifecycleOwner(), result -> {
                    if(result.isSuccessful()) {
+                       location.setLatitude(point.latitude());
+                       location.setLongitude(point.longitude());
+                       updateCamera(point);
+
+
+                       pointAnnotationManager.deleteAll();
+                       PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
+                               .withPoint(point);
+                       pointAnnotationManager.create(pointAnnotationOptions);
                        SearchResult reverseSearchResult = ((Result.MapReverseSearchSuccess) result).getData();
 
                        if (reverseSearchResult.getId().startsWith("ad")) {
@@ -395,7 +383,10 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                        }
                        newEventButton.setText(location.getName());
 
+                   }else{
+                       Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
                    }
+
               });
               return false;
           });
@@ -455,10 +446,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the user's current game state.
         savedInstanceState.putParcelable(STATE_LOCATION, location);
-
-        // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
     }
     public static double round(double n, int decimals) {
