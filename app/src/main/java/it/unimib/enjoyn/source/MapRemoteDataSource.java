@@ -2,6 +2,7 @@ package it.unimib.enjoyn.source;
 
 import static it.unimib.enjoyn.util.Constants.API_ERROR;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -141,11 +142,16 @@ public class MapRemoteDataSource {
         }
     };
     private final SearchCallback searchReverseCallback = new SearchCallback() {
+        @SuppressLint("SuspiciousIndentation")
         @Override
         public void onResults(@NonNull List<SearchResult> list, @NonNull ResponseInfo responseInfo) {
+
             if (list.size() > 0) {
+                if(list.size()== 1){
                 mapCallBack.onSuccessReverseSearchFromRemote(list.get(0));
-            } else {
+                }
+            }
+            else {
                 mapCallBack.onFailureReverseFromRemote(new Exception("non trovo luoghi, riprova "));
             }
         }

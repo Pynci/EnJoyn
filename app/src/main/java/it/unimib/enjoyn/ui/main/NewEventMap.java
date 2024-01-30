@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -360,33 +361,34 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
           GesturesUtils.addOnMapClickListener(mapView.getMapboxMap(), point -> {
               eventViewModel.getMapReverseSearch(point).observe(getViewLifecycleOwner(), result -> {
-                   if(result.isSuccessful()) {
-                       location.setLatitude(point.latitude());
-                       location.setLongitude(point.longitude());
-                       updateCamera(point);
+                  if(result!=null) {
+                      if (result.isSuccessful()) {
+                          location.setLatitude(point.latitude());
+                          location.setLongitude(point.longitude());
+                          updateCamera(point);
+                          pointAnnotationManager.deleteAll();
+                          PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
+                                  .withPoint(point);
+                          pointAnnotationManager.create(pointAnnotationOptions);
+                          SearchResult reverseSearchResult = ((Result.MapReverseSearchSuccess) result).getData();
 
+                          if (reverseSearchResult.getId().startsWith("ad")) {
+                              if (reverseSearchResult.getAddress() != null) {
+                                  if (reverseSearchResult.getAddress().getHouseNumber() != null) {
+                                      location.setName(reverseSearchResult.getName() + " " + reverseSearchResult.getAddress().getHouseNumber());
+                                  } else if (reverseSearchResult.getAddress().getStreet() != null) {
+                                      location.setName("strada " + reverseSearchResult.getName() + ", " + reverseSearchResult.getAddress().getPlace());
+                                  }
+                              }
+                          } else {
+                              location.setName(reverseSearchResult.getName());
+                          }
+                          newEventButton.setText(location.getName());
 
-                       pointAnnotationManager.deleteAll();
-                       PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER).withIconImage(bitmap)
-                               .withPoint(point);
-                       pointAnnotationManager.create(pointAnnotationOptions);
-                       SearchResult reverseSearchResult = ((Result.MapReverseSearchSuccess) result).getData();
-
-                       if (reverseSearchResult.getId().startsWith("ad")) {
-                           if (reverseSearchResult.getAddress() != null) {
-                               if (reverseSearchResult.getAddress().getHouseNumber() != null) {
-                                   location.setName(reverseSearchResult.getName() + " " + reverseSearchResult.getAddress().getHouseNumber());
-                               }
-                            }
-                       } else {
-                           location.setName(reverseSearchResult.getName());
-                       }
-                       newEventButton.setText(location.getName());
-
-                   }else{
-                       Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
-                   }
-
+                      } else {
+                          Snackbar.make(view, ((Result.Error) result).getMessage(), Snackbar.LENGTH_SHORT).show();
+                      }
+                  }
               });
               return false;
           });

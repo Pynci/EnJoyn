@@ -5,14 +5,12 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mapbox.geojson.Point;
-import com.mapbox.search.QueryType;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
 
 import java.util.List;
 
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.source.MapRemoteDataSource;
 import it.unimib.enjoyn.util.MapCallBack;
 
@@ -23,6 +21,7 @@ public class MapRepository implements MapCallBack {
     private final MutableLiveData<Result> mapMutableSearchLiveData;
     private final MutableLiveData<Result> mapMutableReverseSearchLiveData;
     private final MapRemoteDataSource mapRemoteDataSource;
+
 
     public MapRepository( MapRemoteDataSource mapRemoteDataSource) {
         this.mapMutableLiveData = new MutableLiveData<>();
@@ -102,6 +101,7 @@ public class MapRepository implements MapCallBack {
 
     public MutableLiveData<Result> fetchMapReverseSearch( Point point) {
         Log.d("API map", "dentro fetchMapSu su Reposity");
+        mapMutableReverseSearchLiveData.setValue(null);
         mapRemoteDataSource.getMapReverseSearch(point);
 
         return mapMutableReverseSearchLiveData;
