@@ -140,7 +140,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository();
         weatherAPIdata = new Weather();
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
-        categoryViewModel = new CategoryViewModel(requireActivity().getApplication());
+        categoryViewModel = new ViewModelProvider(requireActivity()).get(CategoryViewModel.class);
         Log.d("API weather", "su OnCreate dopo tutto");
 
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
