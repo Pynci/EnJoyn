@@ -24,6 +24,8 @@ public abstract class Result {
                 || this instanceof MapSuggestionSuccess
                 || this instanceof MapSearchSuccess
                 || this instanceof MapReverseSearchSuccess;
+                || this instanceof WeatherSuccess
+                || this instanceof SingleImageReadFromRemote;
     }
 
 
@@ -191,6 +193,19 @@ public abstract class Result {
 
         public String getMessage() {
             return message;
+        }
+    }
+
+    public static final class SingleImageReadFromRemote extends Result{
+        private final Uri uri;
+
+        public  SingleImageReadFromRemote(Uri uri) {
+
+            this.uri = uri;
+        }
+
+        public Uri getUri() {
+            return uri;
         }
     }
 }

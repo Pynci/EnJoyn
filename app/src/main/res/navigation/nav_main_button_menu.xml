@@ -37,8 +37,14 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
+            android:id="@+id/action_profileFragment_to_authActivity2"
+            app:destination="@id/authActivity2" />
+        <action
             android:id="@+id/action_profileFragment_to_profileConfigurationFragment2"
             app:destination="@id/profileConfigurationFragment2" />
+        <action
+            android:id="@+id/action_profileFragment_to_categoriesSelectionFragment2"
+            app:destination="@id/categoriesSelectionFragment2" />
     </fragment>
     <fragment
         android:id="@+id/fragmentTodo"
@@ -83,26 +89,36 @@
         android:label="fragment_discover_recycler_view"
         tools:layout="@layout/fragment_discover_recycler_view" >
         <action
-            android:id="@+id/action_discoverRecyclerViewFragment_to_fragmentDiscoverSingleEvent"
+            android:id="@+id/action_discoverRecyclerViewFragment3_to_discoverSingleEvent"
             app:destination="@id/fragmentDiscoverSingleEvent" />
     </fragment>
+    <activity
+        android:id="@+id/authActivity2"
+        android:name="it.unimib.enjoyn.ui.auth.AuthActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
     <fragment
         android:id="@+id/profileConfigurationFragment2"
         android:name="it.unimib.enjoyn.ui.auth.ProfileConfigurationFragment"
         android:label="fragment_profile_configuration"
         tools:layout="@layout/fragment_profile_configuration" >
+
         <argument
-            android:name="origin"
-            app:argType="string"
-            android:defaultValue="fromProfile" />
+            android:name="isFinishActivity"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
+        <action
+            android:id="@+id/action_profileConfigurationFragment2_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/discoverMapFragment"
-        android:name="it.unimib.enjoyn.ui.main.DiscoverMapFragment"
-        android:label="fragment_discover_map"
-        tools:layout="@layout/fragment_discover_map" >
+        android:id="@+id/categoriesSelectionFragment2"
+        android:name="it.unimib.enjoyn.ui.auth.CategoriesSelectionFragment"
+        android:label="fragment_categories_selection"
+        tools:layout="@layout/fragment_categories_selection" >
         <action
-            android:id="@+id/action_discoverMapFragment_to_fragmentDiscoverSingleEvent"
-            app:destination="@id/fragmentDiscoverSingleEvent" />
+            android:id="@+id/action_categoriesSelectionFragment2_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

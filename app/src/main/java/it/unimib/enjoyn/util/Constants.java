@@ -20,6 +20,7 @@ public class Constants {
     public static final String STORAGE_PATH = "gs://enjoyn-9adca.appspot.com";
     public static final String USERS_PATH = "Users";
     public static final String CATEGORIES_PATH = "Categories";
+    public static final String INTERESTS_PATH = "Interests";
     public static final String EVENTS_PATH = "Events";
     public static final String EVENTCREATIONS_PATH = "EventCreations";
     public static final String EVENTPARTICIPATIONS_PATH = "EventParticipations";

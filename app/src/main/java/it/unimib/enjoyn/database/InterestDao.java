@@ -9,11 +9,14 @@ import java.util.List;
 import it.unimib.enjoyn.model.Category;
 
 @Dao
-public interface CategoryDao {
+public interface InterestDao {
 
     @Query("SELECT * FROM category")
     List<Category> getAll();
 
     @Insert
     long[] insertAll(List<Category> categoryList);
+
+    @Query("DELETE FROM category")
+    int deleteInterests();
 }

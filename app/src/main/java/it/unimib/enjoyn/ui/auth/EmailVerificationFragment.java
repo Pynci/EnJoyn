@@ -97,7 +97,7 @@ public class EmailVerificationFragment extends Fragment {
                 User currentUser = ((Result.UserSuccess) result).getData();
                 if(currentUser != null){
                     if(currentUser.getEmailVerified()){
-                        navigateTo(R.id.action_emailVerificationFragment_to_profileConfigurationFragment, false);
+                        navigateTo(R.id.action_emailVerificationFragment_to_profileConfigurationFragment, false, false);
                     }
                     progressBar.setVisibility(View.GONE);
                 }
@@ -131,6 +131,16 @@ public class EmailVerificationFragment extends Fragment {
 
     private void navigateTo(int destination, boolean finishActivity) {
         Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
+    }
+
+    private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromProfileFragment", fromProfileFragment);
+        Navigation.findNavController(requireView()).navigate(destination, bundle);
         if (finishActivity) {
             requireActivity().finish();
         }

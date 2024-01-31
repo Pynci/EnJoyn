@@ -11,4 +11,5 @@ public abstract class BaseInterestRemoteDataSource {
     }
 
     public abstract void storeUserInterests(CategoriesHolder categoriesHolder, String uid);
+    public abstract void getUserInterests(String uid);
 }

@@ -118,4 +118,6 @@
     <string name="image">image</string>
     <string name="UserImageEvent">Immagine scelta dall\'utente per l\'evento</string>
     <string name="peopleNumber">number of people</string>
+    <string name="interests">Interessi</string>
+    <string name="annulla">Annulla</string>
 </resources>

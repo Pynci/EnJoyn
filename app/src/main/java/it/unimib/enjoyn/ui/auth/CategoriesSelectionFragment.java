@@ -25,13 +25,15 @@ import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
-import it.unimib.enjoyn.ui.viewmodels.CategoryViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class CategoriesSelectionFragment extends Fragment {
 
+    private InterestsViewModel interestsViewModel;
     private CategoryViewModel categoryViewModel;
 
     public CategoriesSelectionFragment() {
@@ -44,9 +46,16 @@ public class CategoriesSelectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categoryViewModel = new ViewModelProvider(
+        interestsViewModel = new ViewModelProvider(
                 requireActivity(),
-                new CategoryViewModelFactory(requireActivity().getApplication())).get(CategoryViewModel.class);
+                new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
+        categoryViewModel = new ViewModelProvider(
+                requireActivity()).get(CategoryViewModel.class);
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        UserViewModel userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        userViewModel.updateCategoriesSelectionStatus();
+
     }
 
     @Override
@@ -59,16 +68,16 @@ public class CategoriesSelectionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        boolean isFromProfileFragment = getArguments().getBoolean("fromProfileFragment");
         Button buttonSkip = view.findViewById(R.id.fragmentCategoriesSelection_button_skip);
         Button buttonConfirm = view.findViewById(R.id.fragmentCategoriesSelection_button_confirm);
 
         ListView listView = view.findViewById(R.id.fragmentCategoriesSelection_ListView);
         listView.setDivider(null);
 
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
-        UserViewModel userViewModel = new ViewModelProvider(requireActivity(),
-                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-        userViewModel.updateCategoriesSelectionStatus();
+        if(isFromProfileFragment) {
+            buttonSkip.setText(R.string.annulla);
+        }
 
         Observer<Result> categoriesObserver = result -> {
             if (result.isSuccessful()) {
@@ -95,31 +104,48 @@ public class CategoriesSelectionFragment extends Fragment {
                                         }
                                     }
                                 }
-
-                                CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
-                                        categoryList, imagesSorted);
-                                listView.setAdapter(customAdapter);
+                                if(imagesSorted.size() > 0){
+                                    CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
+                                            categoryList, imagesSorted);
+                                    listView.setAdapter(customAdapter);
+                                }
                             }
                         });
             }
         };
 
         buttonSkip.setOnClickListener(v -> {
-            Navigation
-                    .findNavController(view)
-                    .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
+            if(!isFromProfileFragment)
+                navigateTo(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity, false);
+            else
+                navigateTo(R.id.action_categoriesSelectionFragment2_to_profileFragment, false);
         });
 
         buttonConfirm.setOnClickListener(v -> {
-            categoryViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
-                if (result.isSuccessful()) {
-                    Navigation
-                            .findNavController(view)
-                            .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
-                }
-            });
+
+            if(!isFromProfileFragment){
+                interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessful()) {
+                        navigateTo(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity, false);
+                    }
+                });
+            }
+            else{
+                interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessful()) {
+                        navigateTo(R.id.action_categoriesSelectionFragment2_to_profileFragment, false);
+                    }
+                });
+            }
         });
 
         categoryViewModel.getAllCategories().observe(this.getViewLifecycleOwner(), categoriesObserver);
+    }
+
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
     }
 }

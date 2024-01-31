@@ -4,39 +4,64 @@ import android.net.Uri;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.List;
+
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
-import it.unimib.enjoyn.source.users.AuthenticationCallback;
-import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
-import it.unimib.enjoyn.source.users.BaseUserLocalDataSource;
-import it.unimib.enjoyn.source.users.BaseUserRemoteDataSource;
-import it.unimib.enjoyn.source.users.UserCallback;
+import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
+import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
+import it.unimib.enjoyn.source.interests.InterestsCallback;
+import it.unimib.enjoyn.source.user.AuthenticationCallback;
+import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
+import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
+import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
+import it.unimib.enjoyn.source.user.UserCallback;
+import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 
-public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback {
+public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback, InterestsCallback {
 
     private final BaseUserLocalDataSource userLocalDataSource;
     private final BaseUserRemoteDataSource userRemoteDataSource;
     private final BaseAuthenticationDataSource authenticationDataSource;
+    private final BaseInterestRemoteDataSource interestRemoteDataSource;
+    private final BaseInterestLocalDataSource interestLocalDataSource;
 
     private final MutableLiveData<Result> userByUsername;
     private final MutableLiveData<Result> userByEmail;
     private final MutableLiveData<Result> currentUser;
     private final MutableLiveData<Result> emailSent;
+    private final MutableLiveData<Result> currentUserPropic;
+
+    private final MutableLiveData<Result> createUserInterestsResult;
+    private final MutableLiveData<Result> userInterests;
 
     public UserRepository(BaseUserLocalDataSource userLocalDataSource,
                           BaseUserRemoteDataSource userRemoteDataSource,
-                          BaseAuthenticationDataSource authenticationDataSource){
+                          BaseAuthenticationDataSource authenticationDataSource,
+                          BaseInterestRemoteDataSource interestRemoteDataSource,
+                          BaseInterestLocalDataSource interestLocalDataSource){
+
         this.userLocalDataSource = userLocalDataSource;
         this.userRemoteDataSource = userRemoteDataSource;
         this.authenticationDataSource = authenticationDataSource;
+        this.interestLocalDataSource = interestLocalDataSource;
+        this.interestRemoteDataSource = interestRemoteDataSource;
+
         userLocalDataSource.setUserCallback(this);
         userRemoteDataSource.setUserCallback(this);
         authenticationDataSource.setAuthenticationCallback(this);
+        interestRemoteDataSource.setInterestsCallback(this);
+        interestLocalDataSource.setInterestsCallback(this);
 
         userByUsername = new MutableLiveData<>();
         userByEmail = new MutableLiveData<>();
         currentUser = new MutableLiveData<>();
         emailSent = new MutableLiveData<>();
+        currentUserPropic = new MutableLiveData<>();
+
+        createUserInterestsResult = new MutableLiveData<>();
+        userInterests = new MutableLiveData<>();
     }
 
     @Override
@@ -130,6 +155,11 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return currentUser;
     }
 
+    @Override
+    public MutableLiveData<Result> getCurrentUserPropic() {
+        userRemoteDataSource.getImageByUserId(authenticationDataSource.getCurrentUserUID());
+        return currentUserPropic;
+    }
 
 
     // CALLBACK
@@ -156,7 +186,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public void onLocalUserDeletionSuccess() {
-        currentUser.postValue(new Result.UserSuccess(null));
+        interestLocalDataSource.deleteUserInterests();
     }
 
     @Override
@@ -182,6 +212,16 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public void onGetUserByEmailFailure(Exception exception) {
         userByEmail.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
+
+    @Override
+    public void onGetCurrentUserPropicSuccess(Uri uri) {
+        currentUserPropic.postValue(new Result.SingleImageReadFromRemote(uri));
+    }
+
+    @Override
+    public void onGetCurrentUserPropicFailure(Exception e) {
+        currentUserPropic.postValue(new Result.Error(e.getMessage()));
     }
 
     @Override
@@ -251,6 +291,73 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public void onGetUserByEmailSuccess(User user) {
         userByEmail.postValue(new Result.UserSuccess(user));
+    }
+
+    //CRUD INTERESTS
+    @Override
+    public MutableLiveData<Result> createUserInterests(CategoriesHolder categoriesHolder) {
+        interestRemoteDataSource.storeUserInterests(categoriesHolder, authenticationDataSource.getCurrentUserUID());
+        return createUserInterestsResult;
+    }
+
+    @Override
+    public MutableLiveData<Result> getUserInterests() {
+        interestLocalDataSource.getAllInterests();
+        return userInterests;
+    }
+
+    //CALLBACK INTERESTS
+    @Override
+    public void onSuccessCreateUsersInterest(CategoriesHolder categoriesHolder) {
+        interestLocalDataSource.storeInterests(categoriesHolder.getCategories());
+    }
+
+    @Override
+    public void onFailureCreateUsersInterest(Exception e) {
+        createUserInterestsResult.postValue(new Result.Error(e.getMessage()));
+    }
+
+    @Override
+    public void onSuccessGetInterestsFromLocal(List<Category> list) {
+        userInterests.postValue(new Result.CategorySuccess(list));
+    }
+
+    @Override
+    public void onFailureGetInterestsFromLocal(Exception e) {
+        interestRemoteDataSource.getUserInterests(authenticationDataSource.getCurrentUserUID());
+    }
+
+    @Override
+    public void onSuccessSaveOnLocal() {
+        createUserInterestsResult.postValue(new Result.Success());
+        CategoriesHolder.getInstance().refresh();
+        getUserInterests();
+    }
+
+    @Override
+    public void onFailureSaveOnLocal(Exception e) {
+        createUserInterestsResult.postValue(new Result.Error(e.getMessage()));
+    }
+
+    @Override
+    public void onSuccessGetInterestsFromRemote(List<Category> categoryList) {
+        interestLocalDataSource.storeInterests(categoryList);
+        userInterests.postValue(new Result.CategorySuccess(categoryList));
+    }
+
+    @Override
+    public void onFailureGetInterestsFromRemote(String message) {
+        userInterests.postValue(new Result.Error(message));
+    }
+
+    @Override
+    public void onSuccessDeleteAllInterestsFromLocal() {
+        currentUser.postValue(new Result.UserSuccess(null));
+    }
+
+    @Override
+    public void onFailureDeleteAllInteretsFromLocal(Exception e) {
+        currentUser.postValue(new Result.Error(e.getMessage()));
     }
 
 }

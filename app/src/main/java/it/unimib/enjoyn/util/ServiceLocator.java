@@ -6,8 +6,6 @@ import it.unimib.enjoyn.database.LocalRoomDatabase;
 import it.unimib.enjoyn.repository.MapRepository;
 import it.unimib.enjoyn.repository.category.CategoryRepository;
 import it.unimib.enjoyn.repository.category.ICategoryRepository;
-import it.unimib.enjoyn.repository.interests.IInterestRepository;
-import it.unimib.enjoyn.repository.interests.InterestRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.MapRemoteDataSource;
@@ -66,9 +64,12 @@ public class ServiceLocator {
 
         BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getLocalDatabase(application));
         BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
+        BaseInterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
+        BaseInterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
         AuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
 
-        return new UserRepository(userLocalDataSource, userRemoteDataSource, authenticationDataSource);
+        return new UserRepository(userLocalDataSource, userRemoteDataSource,
+                authenticationDataSource, interestDataSource, interestLocalDataSource);
     }
 
     public ICategoryRepository getCategoryRepository(){
@@ -79,14 +80,6 @@ public class ServiceLocator {
 
     public LocalRoomDatabase getLocalDatabase(Application application) {
         return LocalRoomDatabase.getDatabase(application);
-    }
-
-    public IInterestRepository getInterestRepository(Application application) {
-        BaseInterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
-        BaseInterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
-        BaseAuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
-
-        return new InterestRepository(application, interestDataSource, interestLocalDataSource, authenticationDataSource);
     }
 
     public LocalRoomDatabase getEventDao(Application application) { //istanza di event room database
