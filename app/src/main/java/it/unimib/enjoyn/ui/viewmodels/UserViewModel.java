@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 
 public class UserViewModel extends ViewModel {
@@ -81,7 +80,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> updateEmailVerificationStatus(){
-        return userRepository.updateEmailVerificationStatus();
+        return userRepository.refreshEmailVerificationStatus();
     }
 
     public MutableLiveData<Result> updateProfileConfigurationStatus(){

@@ -20,7 +20,7 @@ public interface IUserRepository {
     MutableLiveData<Result> updatePropic(Uri uri);
     MutableLiveData<Result> updateNameAndSurname(String nome, String cognome);
     MutableLiveData<Result> updateDescription(String description);
-    MutableLiveData<Result> updateEmailVerificationStatus();
+    MutableLiveData<Result> refreshEmailVerificationStatus();
     MutableLiveData<Result> updateProfileConfigurationStatus();
     MutableLiveData<Result> updateCategoriesSelectionStatus();
     MutableLiveData<Result> getCurrentUserPropic();

@@ -47,7 +47,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void getUserByUsername(String username){
+    public void getUserByUsername(String username, Callback callback){
         dbReference
                 .child(Constants.USERS_PATH)
                 .orderByChild("username")
@@ -57,20 +57,21 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         DataSnapshot queryResult = task.getResult();
                         final Iterator<DataSnapshot> iterator = queryResult.getChildren().iterator();
                         if(iterator.hasNext()){
-                            userCallback.onGetUserByUsernameSuccess(iterator.next().getValue(User.class));
+                            User user = iterator.next().getValue(User.class);
+                            callback.onComplete(new Result.UserSuccess(user));
                         }
                         else{
-                            userCallback.onGetUserByUsernameSuccess(null);
+                            callback.onComplete(new Result.UserSuccess(null));
                         }
                     }
                     else{
-                        userCallback.onGetUserByUsernameFailure(task.getException());
+                        callback.onComplete(new Result.Error(Constants.USER_REMOTE_FETCH_ERROR));
                     }
                 });
     }
 
     @Override
-    public void getUserByEmail(String email){
+    public void getUserByEmail(String email, Callback callback){
         dbReference
                 .child(Constants.USERS_PATH)
                 .orderByChild("email")
@@ -80,14 +81,15 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                         DataSnapshot queryResult = task.getResult();
                         final Iterator<DataSnapshot> iterator = queryResult.getChildren().iterator();
                         if(iterator.hasNext()){
-                            userCallback.onGetUserByEmailSuccess(iterator.next().getValue(User.class));
+                            User user = iterator.next().getValue(User.class);
+                            callback.onComplete(new Result.UserSuccess(user));
                         }
                         else{
-                            userCallback.onGetUserByEmailSuccess(null);
+                            callback.onComplete(new Result.UserSuccess(null));
                         }
                     }
                     else{
-                        userCallback.onGetUserByEmailFailure(task.getException());
+                        callback.onComplete(new Result.Error(Constants.USER_REMOTE_FETCH_ERROR));
                     }
                 });
     }
@@ -100,7 +102,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 .get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        User currentUser = task.getResult().getValue(User.class);;
+                        User currentUser = task.getResult().getValue(User.class);
                         callback.onComplete(new Result.UserSuccess(currentUser));
                     }
                     else{
@@ -109,21 +111,21 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
                 });
     }
 
-    public void updateUser(String uid, Map<String, Object> updateMap){
+    public void updateUser(String uid, Map<String, Object> updateMap, Callback callback){
         DatabaseReference userReference = dbReference
                 .child(Constants.USERS_PATH)
                 .child(uid);
 
         userReference.updateChildren(updateMap).addOnCompleteListener(task -> {
             if(task.isSuccessful())
-                userCallback.onRemoteUserUpdateSuccess();
+                callback.onComplete(new Result.Success());
             else
-                userCallback.onRemoteDatabaseFailure(task.getException());
+                callback.onComplete(new Result.Error(Constants.USER_REMOTE_UPDATE_ERROR));
         });
     }
 
     @Override
-    public void updatePropic(String uid, Uri propic) {
+    public void updatePropic(String uid, Uri propic, Callback callback) {
         StorageReference storageRef = firebaseStorage.getReference();
         StorageReference userImageRef = storageRef.child("user_images/" + uid);
 
@@ -132,47 +134,47 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         uploadTask.addOnCompleteListener(task -> {
 
             if (task.isSuccessful()) {
-                userCallback.onRemoteUserUpdateSuccess();
+                callback.onComplete(new Result.Success());
             } else {
-                userCallback.onRemoteDatabaseFailure(task.getException());
+                callback.onComplete(new Result.Error(Constants.USER_REMOTE_UPDATE_ERROR));
             }
         });
     }
 
     @Override
-    public void updateNameAndSurname(String uid, String name, String surname) {
+    public void updateNameAndSurname(String uid, String name, String surname, Callback callback) {
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("name", name);
         updateMap.put("surname", surname);
-        updateUser(uid, updateMap);
+        updateUser(uid, updateMap, callback);
     }
 
     @Override
-    public void updateDescription(String uid, String description) {
+    public void updateDescription(String uid, String description, Callback callback) {
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("description", description);
-        updateUser(uid, updateMap);
+        updateUser(uid, updateMap, callback);
     }
 
     @Override
-    public void updateEmailVerificationStatus(String uid, Boolean status){
+    public void updateEmailVerificationStatus(String uid, Boolean status, Callback callback){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("emailVerified", status);
-        updateUser(uid, updateMap);
+        updateUser(uid, updateMap, callback);
     }
 
     @Override
-    public void updateProfileConfigurationStatus(String uid, Boolean status){
+    public void updateProfileConfigurationStatus(String uid, Boolean status, Callback callback){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("profileConfigured", status);
-        updateUser(uid, updateMap);
+        updateUser(uid, updateMap, callback);
     }
 
     @Override
-    public void updateCategoriesSelectionStatus(String uid, Boolean status){
+    public void updateCategoriesSelectionStatus(String uid, Boolean status, Callback callback){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("categoriesSelectionDone", status);
-        updateUser(uid, updateMap);
+        updateUser(uid, updateMap, callback);
     }
 
     @Override

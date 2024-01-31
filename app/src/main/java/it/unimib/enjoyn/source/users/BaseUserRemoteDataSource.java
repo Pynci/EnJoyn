@@ -15,25 +15,25 @@ public abstract class BaseUserRemoteDataSource {
 
     public abstract void createUser(User user, Callback callback);
 
-    public abstract void getUserByUsername(String username);
+    public abstract void getUserByUsername(String username, Callback callback);
 
-    public abstract void getUserByEmail(String email);
+    public abstract void getUserByEmail(String email, Callback callback);
 
     public abstract void getCurrentUser(String uid, Callback callback);
 
     //public abstract void clearCurrentUser(String uid);
 
-    public abstract void updatePropic(String uid, Uri propic);
+    public abstract void updatePropic(String uid, Uri propic, Callback callback);
 
-    public abstract void updateNameAndSurname(String uid, String name, String surname);
+    public abstract void updateNameAndSurname(String uid, String name, String surname, Callback callback);
 
-    public abstract void updateDescription(String uid, String description);
+    public abstract void updateDescription(String uid, String description, Callback callback);
 
-    public abstract void updateEmailVerificationStatus(String uid, Boolean status);
+    public abstract void updateEmailVerificationStatus(String uid, Boolean status, Callback callback);
 
-    public abstract void updateProfileConfigurationStatus(String uid, Boolean status);
+    public abstract void updateProfileConfigurationStatus(String uid, Boolean status, Callback callback);
 
-    public abstract void updateCategoriesSelectionStatus(String uid, Boolean status);
+    public abstract void updateCategoriesSelectionStatus(String uid, Boolean status, Callback callback);
 
     public abstract void getImageByUserId(String userID);
 }

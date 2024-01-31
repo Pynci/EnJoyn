@@ -9,11 +9,9 @@ import java.util.List;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
-import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
 import it.unimib.enjoyn.source.interests.InterestsCallback;
-import it.unimib.enjoyn.source.users.AuthenticationCallback;
 import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
 import it.unimib.enjoyn.source.users.BaseUserLocalDataSource;
 import it.unimib.enjoyn.source.users.BaseUserRemoteDataSource;
@@ -21,7 +19,7 @@ import it.unimib.enjoyn.source.users.UserCallback;
 import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 import it.unimib.enjoyn.util.Constants;
 
-public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback, InterestsCallback {
+public class UserRepository implements IUserRepository, UserCallback, InterestsCallback {
 
     private final BaseUserLocalDataSource userLocalDataSource;
     private final BaseUserRemoteDataSource userRemoteDataSource;
@@ -52,7 +50,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
         userLocalDataSource.setUserCallback(this);
         userRemoteDataSource.setUserCallback(this);
-        authenticationDataSource.setAuthenticationCallback(this);
         interestRemoteDataSource.setInterestsCallback(this);
         interestLocalDataSource.setInterestsCallback(this);
 
@@ -142,7 +139,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
 
-
+    // SESSION START / STOP
 
     @Override
     public MutableLiveData<Result> refreshSession(){
@@ -153,7 +150,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
             else{
                 String errorMessage = ((Result.Error) result).getMessage();
                 if(errorMessage.equals(Constants.USER_NOT_LOGGED_ERROR)){
-                    currentUser.postValue(new Result.Success());
+                    currentUser.postValue(new Result.UserSuccess(null));
                 }
                 else{
                     currentUser.postValue(result);
@@ -177,68 +174,142 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     private void deleteLocalUser(User user){
         userLocalDataSource.deleteUser(user, result -> {
-
+            //interestLocalDataSource.deleteUserInterests();
         });
     }
 
+
+
     @Override
     public MutableLiveData<Result> getUserByUsername(String username){
-        userRemoteDataSource.getUserByUsername(username);
+        userRemoteDataSource.getUserByUsername(username, userByUsername::postValue);
         return userByUsername;
     }
 
     @Override
     public MutableLiveData<Result> getUserByEmail(String email) {
-        userRemoteDataSource.getUserByEmail(email);
+        userRemoteDataSource.getUserByEmail(email, userByEmail::postValue);
         return userByEmail;
     }
 
+
+
     @Override
     public MutableLiveData<Result> updatePropic(Uri uri) {
-        userRemoteDataSource.updatePropic(authenticationDataSource.getCurrentUserUID(), uri);
+        userRemoteDataSource.updatePropic(authenticationDataSource.getCurrentUserUID(), uri,
+                result -> {
+                    currentUser.postValue(currentUser.getValue());  //notifica
+                });
         return currentUser;
     }
 
     @Override
     public MutableLiveData<Result> updateNameAndSurname(String name, String surname) {
-        userRemoteDataSource.updateNameAndSurname(authenticationDataSource.getCurrentUserUID(), name, surname);
+        userRemoteDataSource.updateNameAndSurname(authenticationDataSource.getCurrentUserUID(), name, surname,
+                result -> {
+                    if(result.isSuccessful()){
+                        User user = ((Result.UserSuccess) currentUser.getValue()).getData();
+                        user.setName(name);
+                        user.setSurname(surname);
+                        updateLocalUser(user);
+                    }
+                    else{
+                        currentUser.postValue(result);
+                    }
+                });
         return currentUser;
     }
+
 
     @Override
     public MutableLiveData<Result> updateDescription(String description) {
-        userRemoteDataSource.updateDescription(authenticationDataSource.getCurrentUserUID(), description);
+        userRemoteDataSource.updateDescription(authenticationDataSource.getCurrentUserUID(), description,
+                result -> {
+                    if(result.isSuccessful()){
+                        User user = ((Result.UserSuccess) currentUser.getValue()).getData();
+                        user.setDescription(description);
+                        updateLocalUser(user);
+                    }
+                    else{
+                        currentUser.postValue(result);
+                    }
+
+                });
         return currentUser;
     }
 
     @Override
-    public MutableLiveData<Result> sendEmailVerification(){
-        authenticationDataSource.sendEmailVerification();
-        return emailSent;
-    }
-
-    @Override
-    public MutableLiveData<Result> sendResetPasswordEmail(String email) {
-        authenticationDataSource.sendResetPasswordEmail(email);
-        return emailSent;
-    }
-
-    @Override
-    public MutableLiveData<Result> updateEmailVerificationStatus(){
-        authenticationDataSource.checkEmailVerification();
+    public MutableLiveData<Result> refreshEmailVerificationStatus(){
+        authenticationDataSource.checkEmailVerification(result -> {
+            if(result.isSuccessful()){
+                User user = ((Result.UserSuccess) currentUser.getValue()).getData();
+                user.setEmailVerified(((Result.BooleanSuccess) result).getData());
+                updateLocalUser(user);
+            }
+            else{
+                currentUser.postValue(result);
+            }
+        });
         return currentUser;
     }
 
     @Override
     public MutableLiveData<Result> updateProfileConfigurationStatus(){
-        userRemoteDataSource.updateProfileConfigurationStatus(authenticationDataSource.getCurrentUserUID(), true);
+        userRemoteDataSource.updateProfileConfigurationStatus(authenticationDataSource.getCurrentUserUID(), true,
+                result -> {
+                    if(result.isSuccessful()){
+                        User user = ((Result.UserSuccess) currentUser.getValue()).getData();
+                        user.setProfileConfigured(true);
+                        updateLocalUser(user);
+                    }
+                    else{
+                        currentUser.postValue(result);
+                    }
+                });
         return currentUser;
     }
 
     @Override
     public MutableLiveData<Result> updateCategoriesSelectionStatus(){
-        userRemoteDataSource.updateCategoriesSelectionStatus(authenticationDataSource.getCurrentUserUID(), true);
+        userRemoteDataSource.updateCategoriesSelectionStatus(authenticationDataSource.getCurrentUserUID(), true,
+                result -> {
+                    if(result.isSuccessful()){
+                        User user = ((Result.UserSuccess) currentUser.getValue()).getData();
+                        user.setCategoriesSelectionDone(true);
+                        updateLocalUser(user);
+                    }
+                    else{
+                        currentUser.postValue(result);
+                    }
+                });
         return currentUser;
+    }
+
+    private void updateLocalUser(User user){
+        userLocalDataSource.updateUser(user, result -> {
+            if(result.isSuccessful()){
+                currentUser.postValue(new Result.UserSuccess(user));
+            }
+            else{
+                currentUser.postValue(result);
+            }
+        });
+    }
+
+
+
+
+
+    @Override
+    public MutableLiveData<Result> sendEmailVerification(){
+        authenticationDataSource.sendEmailVerification(emailSent::postValue);
+        return emailSent;
+    }
+
+    @Override
+    public MutableLiveData<Result> sendResetPasswordEmail(String email) {
+        authenticationDataSource.sendResetPasswordEmail(email, emailSent::postValue);
+        return emailSent;
     }
 
     @Override
@@ -247,38 +318,9 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         return currentUserPropic;
     }
 
-
     // CALLBACK
 
-    @Override
-    public void onRemoteDatabaseFailure(Exception exception) {
-        currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
-    }
 
-    @Override
-    public void onLocalDatabaseFailure(Exception exception) {
-        currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
-    }
-
-    @Override
-    public void onRemoteUserUpdateSuccess() {
-        userRemoteDataSource.getCurrentUser(authenticationDataSource.getCurrentUserUID(), );
-    }
-
-    @Override
-    public void onLocalUserUpdateSuccess(User user) {
-        currentUser.postValue(new Result.UserSuccess(user));
-    }
-
-    @Override
-    public void onGetUserByUsernameFailure(Exception exception) {
-        userByUsername.postValue(new Result.Error(exception.getLocalizedMessage()));
-    }
-
-    @Override
-    public void onGetUserByEmailFailure(Exception exception) {
-        userByEmail.postValue(new Result.Error(exception.getLocalizedMessage()));
-    }
 
     @Override
     public void onGetCurrentUserPropicSuccess(Uri uri) {
@@ -290,35 +332,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
         currentUserPropic.postValue(new Result.Error(e.getMessage()));
     }
 
-    @Override
-    public void onEmailCheckSuccess(Boolean status) {
-        userRemoteDataSource.updateEmailVerificationStatus(authenticationDataSource.getCurrentUserUID(), status);
-    }
-
-    @Override
-    public void onEmailCheckFailure(Exception exception) {
-        currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
-    }
-
-    @Override
-    public void onEmailSendingSuccess() {
-        emailSent.postValue(new Result.Success());
-    }
-
-    @Override
-    public void onEmailSendingFailure(Exception exception) {
-        emailSent.postValue(new Result.Error(exception.getLocalizedMessage()));
-    }
-
-    @Override
-    public void onGetUserByUsernameSuccess(User user){
-        userByUsername.postValue(new Result.UserSuccess(user));
-    }
-
-    @Override
-    public void onGetUserByEmailSuccess(User user) {
-        userByEmail.postValue(new Result.UserSuccess(user));
-    }
 
     //CRUD INTERESTS
     @Override

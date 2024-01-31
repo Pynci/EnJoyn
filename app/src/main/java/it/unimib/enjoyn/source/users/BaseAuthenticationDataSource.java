@@ -3,11 +3,6 @@ package it.unimib.enjoyn.source.users;
 import it.unimib.enjoyn.source.Callback;
 
 public abstract class BaseAuthenticationDataSource {
-    protected AuthenticationCallback authenticationCallback;
-
-    public void setAuthenticationCallback(AuthenticationCallback authenticationCallback){
-        this.authenticationCallback = authenticationCallback;
-    }
 
     public abstract String getCurrentUserUID();
 
@@ -17,8 +12,8 @@ public abstract class BaseAuthenticationDataSource {
     public abstract void refreshSession(Callback callback);
 
     public abstract void signOut(Callback callback);
-    public abstract void sendEmailVerification();
-    public abstract void sendResetPasswordEmail(String email);
+    public abstract void sendEmailVerification(Callback callback);
+    public abstract void sendResetPasswordEmail(String email, Callback callback);
 
-    public abstract void checkEmailVerification();
+    public abstract void checkEmailVerification(Callback callback);
 }

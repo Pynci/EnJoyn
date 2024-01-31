@@ -61,7 +61,10 @@ public class Constants {
     public static final String SIGNIN_ERROR = "SIGNIN_FAILED";
     public static final String SESSION_REFRESH_ERROR = "SESSION_REFRESH_FAILED";
     public static final String USER_LOCAL_FETCH_ERROR = "USER_LOCAL_FETCH_FAILED";
+    public static final String USER_LOCAL_UPDATE_ERROR = "USER_LOCAL_UPDATE_FAILED";
     public static final String USER_LOCAL_CREATION_ERROR = "USER_LOCAL_CREATION_FAILED";
     public static final String USER_LOCAL_DELETION_ERROR = "USER_LOCAL_DELETION_FAILED";
     public static final String USER_REMOTE_FETCH_ERROR = "USER_REMOTE_FETCH_FAILED";
+    public static final String USER_REMOTE_UPDATE_ERROR = "USER_REMOTE_UPDATE_FAILED";
+    public static final String EMAIL_SENDING_ERROR = "EMAIL_SENDING_FAILED";
 }

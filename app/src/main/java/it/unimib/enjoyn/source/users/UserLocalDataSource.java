@@ -42,14 +42,14 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user, Callback callback) {
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             int rowsUpdated = userDao.updateUser(user);
             if(rowsUpdated == 1){
-                userCallback.onLocalUserUpdateSuccess(user);
+                callback.onComplete(new Result.Success());
             }
             else{
-                userCallback.onLocalDatabaseFailure(new Exception("ERRORE AGGIORNAMENTO LOCALE"));
+                callback.onComplete(new Result.Error(Constants.USER_LOCAL_UPDATE_ERROR));
             }
         });
     }

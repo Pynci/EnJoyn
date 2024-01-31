@@ -98,40 +98,39 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     }
 
     @Override
-    public void sendEmailVerification() {
+    public void sendEmailVerification(Callback callback) {
         fbUser.sendEmailVerification().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                authenticationCallback.onEmailSendingSuccess();
+                callback.onComplete(new Result.Success());
             }
             else{
-                authenticationCallback.onEmailSendingFailure(task.getException());
+                callback.onComplete(new Result.Error(Constants.EMAIL_SENDING_ERROR));
             }
         });
     }
 
     @Override
-    public void sendResetPasswordEmail(String email) {
+    public void sendResetPasswordEmail(String email, Callback callback) {
         if (fbUser == null) {
             auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    authenticationCallback.onEmailSendingSuccess();
+                    callback.onComplete(new Result.Success());
                 }
                 else{
-                    authenticationCallback.onEmailSendingFailure(task.getException());
+                    callback.onComplete(new Result.Error(Constants.EMAIL_SENDING_ERROR));
                 }
             });
         }
         else {
-            authenticationCallback.onEmailSendingFailure(new Exception("Impossibile modificare password " +
-                    "se l'utente è ancora autenticato"));
+            callback.onComplete(new Result.Error(Constants.USER_ALREADY_LOGGED_ERROR));
         }
     }
 
     @Override
-    public void checkEmailVerification(){
+    public void checkEmailVerification(Callback callback){
         fbUser
             .reload()
-            .addOnSuccessListener(task -> authenticationCallback.onEmailCheckSuccess(fbUser.isEmailVerified()))
-            .addOnFailureListener(e -> authenticationCallback.onEmailCheckFailure(e));
+            .addOnSuccessListener(task -> callback.onComplete(new Result.BooleanSuccess(fbUser.isEmailVerified())))
+            .addOnFailureListener(e -> callback.onComplete(new Result.Error(Constants.SESSION_REFRESH_ERROR)));
     }
 }
