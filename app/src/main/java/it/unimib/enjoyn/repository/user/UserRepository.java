@@ -108,10 +108,6 @@ public class UserRepository implements IUserRepository, UserCallback, InterestsC
         });
     }
 
-
-
-    // SIGN IN
-
     @Override
     public MutableLiveData<Result> signIn(String email, String password){
         authenticationDataSource.signIn(email, password, result -> {
@@ -137,9 +133,6 @@ public class UserRepository implements IUserRepository, UserCallback, InterestsC
             }
         });
     }
-
-
-    // SESSION START / STOP
 
     @Override
     public MutableLiveData<Result> refreshSession(){
@@ -178,8 +171,6 @@ public class UserRepository implements IUserRepository, UserCallback, InterestsC
         });
     }
 
-
-
     @Override
     public MutableLiveData<Result> getUserByUsername(String username){
         userRemoteDataSource.getUserByUsername(username, userByUsername::postValue);
@@ -191,8 +182,6 @@ public class UserRepository implements IUserRepository, UserCallback, InterestsC
         userRemoteDataSource.getUserByEmail(email, userByEmail::postValue);
         return userByEmail;
     }
-
-
 
     @Override
     public MutableLiveData<Result> updatePropic(Uri uri) {
@@ -296,10 +285,6 @@ public class UserRepository implements IUserRepository, UserCallback, InterestsC
         });
     }
 
-
-
-
-
     @Override
     public MutableLiveData<Result> sendEmailVerification(){
         authenticationDataSource.sendEmailVerification(emailSent::postValue);
@@ -318,8 +303,9 @@ public class UserRepository implements IUserRepository, UserCallback, InterestsC
         return currentUserPropic;
     }
 
-    // CALLBACK
 
+
+    // CALLBACK
 
 
     @Override

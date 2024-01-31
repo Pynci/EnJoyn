@@ -12,7 +12,7 @@ public class InterestLocalDataSource extends BaseInterestLocalDataSource{
 
     public InterestLocalDataSource(LocalRoomDatabase localRoomDatabase) {
 
-        interestDao = localRoomDatabase.categoryDao();
+        interestDao = localRoomDatabase.interestDao();
     }
 
     @Override
