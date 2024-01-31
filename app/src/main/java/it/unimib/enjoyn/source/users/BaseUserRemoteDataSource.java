@@ -3,6 +3,7 @@ package it.unimib.enjoyn.source.users;
 import android.net.Uri;
 
 import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.source.Callback;
 
 public abstract class BaseUserRemoteDataSource {
 
@@ -12,13 +13,13 @@ public abstract class BaseUserRemoteDataSource {
         this.userCallback = userCallback;
     }
 
-    public abstract void createUser(User user);
+    public abstract void createUser(User user, Callback callback);
 
     public abstract void getUserByUsername(String username);
 
     public abstract void getUserByEmail(String email);
 
-    public abstract void getCurrentUser(String uid);
+    public abstract void getCurrentUser(String uid, Callback callback);
 
     //public abstract void clearCurrentUser(String uid);
 

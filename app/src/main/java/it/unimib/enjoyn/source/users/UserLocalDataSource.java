@@ -2,7 +2,10 @@ package it.unimib.enjoyn.source.users;
 
 import it.unimib.enjoyn.database.UserDao;
 import it.unimib.enjoyn.database.LocalRoomDatabase;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.source.Callback;
+import it.unimib.enjoyn.util.Constants;
 
 public class UserLocalDataSource extends BaseUserLocalDataSource {
 
@@ -13,27 +16,27 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
     }
 
     @Override
-    public void getUser(String uid) {
+    public void getUser(String uid, Callback callback) {
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             User user = userDao.getUser(uid);
             if(user != null){
-                userCallback.onLocalUserFetchSuccess(user);
+                callback.onComplete(new Result.UserSuccess(user));
             }
             else{
-                userCallback.onLocalDatabaseFailure(new Exception("ERRORE QUERY LOCALE"));
+                callback.onComplete(new Result.Error(Constants.USER_LOCAL_FETCH_ERROR));
             }
         });
     }
 
     @Override
-    public void insertUser(User user) {
+    public void insertUser(User user, Callback callback) {
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             long rowId = userDao.insertUser(user);
             if(rowId != 0){
-                userCallback.onLocalUserInsertionSuccess(user);
+                callback.onComplete(new Result.Success());
             }
             else{
-                userCallback.onLocalDatabaseFailure(new Exception("ERRORE INSERIMENTO LOCALE"));
+                callback.onComplete(new Result.Error(Constants.USER_LOCAL_CREATION_ERROR));
             }
         });
     }
@@ -52,14 +55,14 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser(User user, Callback callback) {
         LocalRoomDatabase.databaseWriteExecutor.execute(() -> {
             int rowsDeleted = userDao.deleteUser(user);
             if(rowsDeleted == 1){
-                userCallback.onLocalUserDeletionSuccess();
+                callback.onComplete(new Result.Success());
             }
             else{
-                userCallback.onLocalDatabaseFailure(new Exception("ERRORE CANCELLAZIONE LOCALE"));
+                callback.onComplete(new Result.Error(Constants.USER_LOCAL_DELETION_ERROR));
             }
         });
     }

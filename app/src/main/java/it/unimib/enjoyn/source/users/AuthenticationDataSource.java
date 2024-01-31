@@ -5,7 +5,10 @@ import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.source.Callback;
+import it.unimib.enjoyn.util.Constants;
 
 public class AuthenticationDataSource extends BaseAuthenticationDataSource{
 
@@ -28,65 +31,65 @@ public class AuthenticationDataSource extends BaseAuthenticationDataSource{
     }
 
     @Override
-    public void signUp(String email, String password, String username) {
+    public void signUp(String email, String password, String username, Callback callback) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         fbUser = auth.getCurrentUser();
                         if(fbUser != null){
-                            authenticationCallback.onSignUpSuccess(new User(fbUser.getUid(), username, email));
+                            callback.onComplete(new Result.UserSuccess(new User(fbUser.getUid(), username, email)));
                         }
                         else{
-                            authenticationCallback.onAuthFailure(task.getException());
+                            callback.onComplete(new Result.Error(Constants.USER_ALREADY_LOGGED_ERROR));
                         }
                     } else {
-                        authenticationCallback.onAuthFailure(task.getException());
+                        callback.onComplete(new Result.Error(Constants.SIGNUP_ERROR));
                     }
                 });
     }
 
     @Override
-    public void signIn(String email, String password) {
+    public void signIn(String email, String password, Callback callback) {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         fbUser = auth.getCurrentUser();
                         if(fbUser != null){
-                            authenticationCallback.onSignInSuccess(new User(fbUser.getUid(), email));
+                            callback.onComplete(new Result.UserSuccess(new User(fbUser.getUid(), email)));
                         }
                         else{
-                            authenticationCallback.onAuthFailure(task.getException());
+                            callback.onComplete(new Result.Error(Constants.USER_ALREADY_LOGGED_ERROR));
                         }
 
                     }
                     else{
-                        authenticationCallback.onAuthFailure(task.getException());
+                        callback.onComplete(new Result.Error(Constants.SIGNIN_ERROR));
                     }
                 });
     }
 
     @Override
-    public void refreshSession(){
+    public void refreshSession(Callback callback){
         fbUser = auth.getCurrentUser();
         if(fbUser != null){
             fbUser
                     .reload()
-                    .addOnSuccessListener(task -> authenticationCallback.onAlreadySignedIn(fbUser.getUid()))
-                    .addOnFailureListener(e -> authenticationCallback.onAuthFailure(e));
+                    .addOnSuccessListener(task -> callback.onComplete(new Result.Success()))
+                    .addOnFailureListener(e -> callback.onComplete(new Result.Error(Constants.SESSION_REFRESH_ERROR)));
         }
         else{
-            authenticationCallback.onNotLoggedYet();
+            callback.onComplete(new Result.Error(Constants.USER_NOT_LOGGED_ERROR));
         }
     }
 
     @Override
-    public void signOut(){
+    public void signOut(Callback callback){
         FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null) {
                     firebaseAuth.removeAuthStateListener(this);
-                    authenticationCallback.onSignOutSuccess();
+                    callback.onComplete(new Result.Success());
                 }
             }
         };

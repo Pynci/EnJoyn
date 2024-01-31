@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.util.Constants;
 
 public class UserRemoteDataSource extends BaseUserRemoteDataSource{
@@ -29,17 +31,17 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void createUser(User user) {
+    public void createUser(User user, Callback callback) {
         dbReference
                 .child(Constants.USERS_PATH)
                 .child(user.getUid())
                 .setValue(user)
                 .addOnCompleteListener( result -> {
                     if(result.isSuccessful()){
-                        userCallback.onUserCreationSuccess(user);
+                        callback.onComplete(new Result.Success());
                     }
                     else{
-                        userCallback.onRemoteDatabaseFailure(result.getException());
+                        callback.onComplete(new Result.Error("USER_REMOTE_CREATION_FAILED"));
                     }
                 });
     }
@@ -91,18 +93,18 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void getCurrentUser(String uid){
+    public void getCurrentUser(String uid, Callback callback){
         dbReference
                 .child(Constants.USERS_PATH)
                 .child(uid)
                 .get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        User currentUser = task.getResult().getValue(User.class);
-                        userCallback.onRemoteUserFetchSuccess(currentUser);
+                        User currentUser = task.getResult().getValue(User.class);;
+                        callback.onComplete(new Result.UserSuccess(currentUser));
                     }
                     else{
-                        userCallback.onRemoteDatabaseFailure(task.getException());
+                        callback.onComplete(new Result.Error(Constants.USER_REMOTE_FETCH_ERROR));
                     }
                 });
     }

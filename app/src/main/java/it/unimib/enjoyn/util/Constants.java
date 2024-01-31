@@ -50,4 +50,18 @@ public class Constants {
     // Constants for encrypted files
 
     public static final String UNEXPECTED_ERROR = "unexpected error";
+
+
+
+
+    // errori personalizzati
+    public static final String USER_ALREADY_LOGGED_ERROR = "USER_ALREADY_LOGGED";
+    public static final String USER_NOT_LOGGED_ERROR = "USER_NOT_LOGGED";
+    public static final String SIGNUP_ERROR = "SIGNUP_FAILED";
+    public static final String SIGNIN_ERROR = "SIGNIN_FAILED";
+    public static final String SESSION_REFRESH_ERROR = "SESSION_REFRESH_FAILED";
+    public static final String USER_LOCAL_FETCH_ERROR = "USER_LOCAL_FETCH_FAILED";
+    public static final String USER_LOCAL_CREATION_ERROR = "USER_LOCAL_CREATION_FAILED";
+    public static final String USER_LOCAL_DELETION_ERROR = "USER_LOCAL_DELETION_FAILED";
+    public static final String USER_REMOTE_FETCH_ERROR = "USER_REMOTE_FETCH_FAILED";
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
 import it.unimib.enjoyn.source.interests.InterestsCallback;
@@ -18,6 +19,7 @@ import it.unimib.enjoyn.source.users.BaseUserLocalDataSource;
 import it.unimib.enjoyn.source.users.BaseUserRemoteDataSource;
 import it.unimib.enjoyn.source.users.UserCallback;
 import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
+import it.unimib.enjoyn.util.Constants;
 
 public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback, InterestsCallback {
 
@@ -29,7 +31,7 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     private final MutableLiveData<Result> userByUsername;
     private final MutableLiveData<Result> userByEmail;
-    private final MutableLiveData<Result> currentUser;
+    private MutableLiveData<Result> currentUser;
     private final MutableLiveData<Result> emailSent;
     private final MutableLiveData<Result> currentUserPropic;
 
@@ -66,33 +68,117 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
 
     @Override
     public MutableLiveData<Result> getCurrentUser(){
-        userLocalDataSource.getUser(authenticationDataSource.getCurrentUserUID());
+        userLocalDataSource.getUser(authenticationDataSource.getCurrentUserUID(), currentUser::postValue);
         return currentUser;
     }
+
+
+    // SIGNUP
 
     @Override
     public MutableLiveData<Result> signUp(String email, String password, String username) {
-        authenticationDataSource.signUp(email, password, username);
+        authenticationDataSource.signUp(email, password, username, result -> {
+            if(result.isSuccessful()){
+                User user = ((Result.UserSuccess) result).getData();
+                createRemoteUser(user);
+            }
+            else{
+                currentUser.postValue(result);
+            }
+        });
         return currentUser;
     }
 
+    private void createRemoteUser(User user){
+        userRemoteDataSource.createUser(user, result -> {
+            if(result.isSuccessful()){
+                createLocalUser(user);
+            }
+            else{
+                currentUser.postValue(result);
+            }
+        });
+    }
+
+    private void createLocalUser(User user){
+        userLocalDataSource.insertUser(user, result -> {
+            if(result.isSuccessful()){
+                currentUser.postValue(new Result.UserSuccess(user));
+            }
+            else{
+                currentUser.postValue(result);
+            }
+        });
+    }
+
+
+
+    // SIGN IN
 
     @Override
     public MutableLiveData<Result> signIn(String email, String password){
-        authenticationDataSource.signIn(email, password);
+        authenticationDataSource.signIn(email, password, result -> {
+            if(result.isSuccessful()){
+                User user = ((Result.UserSuccess) result).getData();
+                getRemoteUser(user.getUid());
+            }
+            else{
+                currentUser.postValue(result);
+            }
+        });
         return currentUser;
     }
 
+    private void getRemoteUser(String uid){
+        userRemoteDataSource.getCurrentUser(uid, result -> {
+            if(result.isSuccessful()){
+                User user = ((Result.UserSuccess) result).getData();
+                createLocalUser(user);
+            }
+            else{
+                currentUser.postValue(result);
+            }
+        });
+    }
+
+
+
+
     @Override
     public MutableLiveData<Result> refreshSession(){
-        authenticationDataSource.refreshSession();
+        authenticationDataSource.refreshSession(result -> {
+            if(result.isSuccessful()){
+                getCurrentUser();
+            }
+            else{
+                String errorMessage = ((Result.Error) result).getMessage();
+                if(errorMessage.equals(Constants.USER_NOT_LOGGED_ERROR)){
+                    currentUser.postValue(new Result.Success());
+                }
+                else{
+                    currentUser.postValue(result);
+                }
+            }
+        });
         return currentUser;
     }
 
     @Override
     public MutableLiveData<Result> signOut(){
-        authenticationDataSource.signOut();
+        authenticationDataSource.signOut(result -> {
+            if(result instanceof Result.UserSuccess){
+                currentUser = new MutableLiveData<>();
+                User user = ((Result.UserSuccess) currentUser.getValue()).getData();
+                deleteLocalUser(user);
+            }
+        });
         return currentUser;
+    }
+
+    private void deleteLocalUser(User user){
+        userLocalDataSource.deleteUser(user, result -> {
+
+        });
     }
 
     @Override
@@ -175,32 +261,12 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
-    public void onRemoteUserFetchSuccess(User user) {
-        userLocalDataSource.insertUser(user);
-    }
-
-    @Override
     public void onRemoteUserUpdateSuccess() {
-        userRemoteDataSource.getCurrentUser(authenticationDataSource.getCurrentUserUID());
-    }
-
-    @Override
-    public void onLocalUserDeletionSuccess() {
-        interestLocalDataSource.deleteUserInterests();
+        userRemoteDataSource.getCurrentUser(authenticationDataSource.getCurrentUserUID(), );
     }
 
     @Override
     public void onLocalUserUpdateSuccess(User user) {
-        currentUser.postValue(new Result.UserSuccess(user));
-    }
-
-    @Override
-    public void onLocalUserFetchSuccess(User user) {
-        currentUser.postValue(new Result.UserSuccess(user));
-    }
-
-    @Override
-    public void onLocalUserInsertionSuccess(User user) {
         currentUser.postValue(new Result.UserSuccess(user));
     }
 
@@ -225,35 +291,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     }
 
     @Override
-    public void onAuthFailure(Exception exception) {
-        currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
-    }
-
-    @Override
-    public void onSignUpSuccess(User user) {
-        userRemoteDataSource.createUser(user);
-    }
-
-    @Override
-    public void onUserCreationSuccess(User user) {
-        userRemoteDataSource.getCurrentUser(user.getUid());
-    }
-
-    @Override
-    public void onSignInSuccess(User user) {
-        userRemoteDataSource.getCurrentUser(user.getUid());
-    }
-
-    @Override
-    public void onSignOutSuccess() {
-        User user = ((Result.UserSuccess) currentUser.getValue()).getData();
-        if(user != null){
-            userLocalDataSource.deleteUser(((Result.UserSuccess) currentUser.getValue())
-                    .getData());
-        }
-    }
-
-    @Override
     public void onEmailCheckSuccess(Boolean status) {
         userRemoteDataSource.updateEmailVerificationStatus(authenticationDataSource.getCurrentUserUID(), status);
     }
@@ -261,16 +298,6 @@ public class UserRepository implements IUserRepository, UserCallback, Authentica
     @Override
     public void onEmailCheckFailure(Exception exception) {
         currentUser.postValue(new Result.Error(exception.getLocalizedMessage()));
-    }
-
-    @Override
-    public void onAlreadySignedIn(String uid) {
-        userLocalDataSource.getUser(uid);
-    }
-
-    @Override
-    public void onNotLoggedYet() {
-        currentUser.postValue(new Result.UserSuccess(null));
     }
 
     @Override
