@@ -207,4 +207,18 @@ public abstract class Result {
             return uri;
         }
     }
+
+    public static final class MapError extends Result{
+        private final String message;
+
+        public MapError(String message) {
+            this.message = message;
+        }
+
+        public String getMessage(){
+            return message;
+        }
+    }
+
+
 }

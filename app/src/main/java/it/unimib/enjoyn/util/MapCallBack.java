@@ -12,7 +12,10 @@ public interface MapCallBack {
     void onSuccessSearchFromRemote( List<SearchResult> searchResult);
 
     void onSuccessReverseSearchFromRemote( SearchResult reverseSearchResult);
-    void onFailureFromRemote(Exception exception);
 
+    void onFailureReverseFromRemote(Exception e);
 
+    void onFailureSuggestionFromRemote(Exception erroreApiSuggerimenti);
+
+    void onFailureSearchFromRemote(Exception erroreApiRicercaMultipla);
 }
