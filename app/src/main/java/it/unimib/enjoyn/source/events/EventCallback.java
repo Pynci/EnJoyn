@@ -13,9 +13,6 @@ public interface EventCallback {
     void onFailureFromLocal(Exception exception);
     void onEventToDoStatusChanged(Event event, List<Event> eventToDo);
     void onEventToDoStatusChanged(List<Event> event);
-    void onEventFavoriteStatusChanged(List<Event> event);
-    void onEventFavoriteStatusChanged(Event event, List<Event> eventFavorite);
-
     void onRemoteEventAdditionSuccess(Event event, User user);
     void onRemoteEventAdditionFailure(Exception exception);
 

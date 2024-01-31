@@ -23,8 +23,6 @@ public class Event implements Parcelable {
 
     private String date;
 
-    private String place;
-
     private String time;
 
     @Embedded(prefix = "location_")
@@ -44,14 +42,13 @@ public class Event implements Parcelable {
 
     }
 
-    public Event(long id, String title, String description, String date, String place, String time,
+    public Event(long id, String title, String description, String date, String time,
                  EventLocation location, Category category, int participants, double distance, int weatherCode,
                  double weatherTemperature, Uri imageUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.date = date;
-        this.place = place;
         this.time = time;
         this.location = location;
         this.category = category;
@@ -92,10 +89,6 @@ public class Event implements Parcelable {
 
     public EventLocation getLocation() {
         return location;
-    }
-
-    public String getPlace() {
-        return place;
     }
 
     public Category getCategory() {
@@ -151,10 +144,6 @@ public class Event implements Parcelable {
         this.location = location;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -175,11 +164,6 @@ public class Event implements Parcelable {
         this.time = time;
     }
 
-    public void setTODO(boolean TODO) {
-    }
-
-    public void setFavorite(boolean favorite) {
-    }
 
 
     public void incrementPeopleNumber(){
@@ -233,7 +217,6 @@ public class Event implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.description);
         dest.writeString(this.date);
-        dest.writeString(this.place);
         dest.writeString(this.time);
         dest.writeParcelable(this.location, flags);
         dest.writeParcelable(this.category, flags);
@@ -248,7 +231,6 @@ public class Event implements Parcelable {
         this.title = source.readString();
         this.description = source.readString();
         this.date = source.readString();
-        this.place = source.readString();
         this.time = source.readString();
         this.location = source.readParcelable(EventLocation.class.getClassLoader());
         this.category = source.readParcelable(Category.class.getClassLoader());
@@ -263,7 +245,6 @@ public class Event implements Parcelable {
         this.title = in.readString();
         this.description = in.readString();
         this.date = in.readString();
-        this.place = in.readString();
         this.time = in.readString();
         this.location = in.readParcelable(EventLocation.class.getClassLoader());
         this.category = in.readParcelable(Category.class.getClassLoader());

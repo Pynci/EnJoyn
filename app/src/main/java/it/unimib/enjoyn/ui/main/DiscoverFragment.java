@@ -88,8 +88,8 @@ public class DiscoverFragment extends Fragment {
 
         viewPager2.setAdapter(viewPagerAdapter);
         viewPager2.setUserInputEnabled(false);
-        List<Event> prova = new ArrayList<>();
-        viewPagerAdapter.setData(prova);
+        //List<Event> prova = new ArrayList<>();
+        //viewPagerAdapter.setData(prova);
 
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override

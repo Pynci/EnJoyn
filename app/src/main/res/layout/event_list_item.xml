@@ -111,11 +111,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:drawableEnd="@drawable/baseline_people_outline_24"
-                android:text="3"
+                tools:text="3"
                 app:layout_constraintBottom_toBottomOf="@+id/eventListItem_textView_distance"
                 app:layout_constraintStart_toEndOf="@+id/eventListItem_textView_distance"
-                app:layout_constraintTop_toTopOf="@+id/eventListItem_textView_distance" />
+                app:layout_constraintTop_toTopOf="@+id/eventListItem_textView_distance"
+                app:drawableEndCompat="@drawable/baseline_people_outline_24" />
 
             <ImageView
                 android:id="@+id/eventListItem_imageView_eventImage"

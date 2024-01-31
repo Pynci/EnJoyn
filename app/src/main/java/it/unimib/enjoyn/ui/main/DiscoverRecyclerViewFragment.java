@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
@@ -93,7 +94,10 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
                     @Override
                     public void onJoinButtonPressed(int position) {
-                        /*
+                        Event joinEvent = eventList.get(position);
+                        joinEvent.setParticipants(joinEvent.getParticipants()+1);
+                        eventViewModel.updateEvent(joinEvent);
+                    /*
                         eventList.get(position).setTODO(!eventList.get(position).isTODO());
 
                         if(eventList.get(position).isTODO()) {
@@ -133,14 +137,6 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
     }
 
-    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
-        Navigation.findNavController(requireView()).navigate(destination);
-
-        //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
-            requireActivity().finish();
-        }
-    }
 
 
 }

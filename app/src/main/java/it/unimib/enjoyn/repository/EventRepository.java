@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
@@ -70,10 +71,15 @@ public class EventRepository implements IEventRepository, EventCallback, EventCr
 //        return allEventsMutableLiveData;
 //    }
 
-
+/* vecchio updateEvent
     @Override
     public void updateEvent(Event event) {
         eventLocalDataSource.updateEvent(event);
+    }
+ */
+    @Override
+    public void updateEvent(String key, Map<String, Object> updateMap) {
+        eventRemoteDataSource.updateEvent(key, updateMap);
     }
 
     @Override
@@ -96,7 +102,6 @@ public class EventRepository implements IEventRepository, EventCallback, EventCr
         Result.EventError result = new Result.EventError(exception.getMessage());
         allEventsMutableLiveData.postValue(result);
     }
-//TODO da fixare perché risulta  eventList.size = 0
     @Override
     public void onSuccessFromLocal(List<Event> eventList) {
         Result.EventSuccess result = new Result.EventSuccess(new EventsDatabaseResponse(eventList));
@@ -130,24 +135,6 @@ public class EventRepository implements IEventRepository, EventCallback, EventCr
         toDoEventMutableLiveData.postValue(new Result.EventSuccess(new EventsDatabaseResponse(event)));
     }
 
-    @Override
-    public void onEventFavoriteStatusChanged(Event event, List<Event> eventFavorite) {
-        Result allEventResult = allEventsMutableLiveData.getValue();
-
-        if (allEventResult != null && allEventResult.isSuccessful()) {
-            List<Event> oldAllEvent = ((Result.EventSuccess)allEventResult).getData().getEventList();
-            if (oldAllEvent.contains(event)) {
-                oldAllEvent.set(oldAllEvent.indexOf(event), event);
-                allEventsMutableLiveData.postValue(allEventResult);
-            }
-        }
-        toDoEventMutableLiveData.postValue(new Result.EventSuccess(new EventsDatabaseResponse(eventFavorite)));
-    }
-
-    @Override
-    public void onEventFavoriteStatusChanged(List<Event> event) {
-        favoriteEventMutableLiveData.postValue(new Result.EventSuccess(new EventsDatabaseResponse(event)));
-    }
 
     @Override
     public void onRemoteEventAdditionSuccess(Event event, User user) {

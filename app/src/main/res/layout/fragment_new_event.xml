@@ -92,9 +92,9 @@
                 android:id="@+id/fragmentNewEvent_editText_title"
                 android:layout_width="344dp"
                 android:layout_height="75dp"
-                android:layout_marginTop="28dp"
-                android:hint="@string/Title"
+                android:layout_marginTop="16dp"
                 android:autofillHints=""
+                android:hint="@string/Title"
                 android:inputType="text"
                 android:orientation="horizontal"
                 android:textAlignment="center"
@@ -165,11 +165,12 @@
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_datePicker" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/fragmentNewEvent_imageButton_pickPlace"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:background="@null"
                 android:contentDescription="@string/buttonToMap"
                 android:src="@drawable/baseline_place_24"
@@ -180,6 +181,7 @@
                 android:id="@+id/fragmentNewEvent_textView_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:ellipsize="end"
                 android:maxLength="30"
                 android:maxLines="1"
@@ -202,8 +204,8 @@
 
             <ImageView
                 android:id="@+id/fragmentNewEvent_imageView_meteoIcon"
-                android:layout_width="167dp"
-                android:layout_height="143dp"
+                android:layout_width="142dp"
+                android:layout_height="142dp"
                 android:contentDescription="@string/imageWeather"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
                 app:layout_constraintHorizontal_bias="1.0"

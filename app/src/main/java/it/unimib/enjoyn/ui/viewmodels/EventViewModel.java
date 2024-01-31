@@ -12,7 +12,9 @@ import android.util.Log;
 import com.mapbox.geojson.Point;
 import com.mapbox.search.result.SearchSuggestion;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
@@ -50,7 +52,9 @@ public class EventViewModel extends ViewModel {
     }
 
     public void updateEvent(Event event) {
-        eventRepository.updateEvent(event);
+        Map<String, Object> eventMap = new HashMap<>();
+        eventMap.put("participans", event.getParticipants());
+        eventRepository.updateEvent(event.getEid(), eventMap);
     }
 
 //    //TODO fare metodo con category effettive
@@ -63,13 +67,6 @@ public class EventViewModel extends ViewModel {
         return eventRepository.createEvent(event, eventCreator);
     }
 
-    public void removeFromFavorite(Event event) {
-        eventRepository.updateEvent(event);
-    }
-
-    public void removeFromToDo(Event event) {
-        eventRepository.updateEvent(event);
-    }
 
     public MutableLiveData<Result> getWeather(String latitude, String logitude){
         Log.d("API weather", "dentro getWeather su viewModel");
