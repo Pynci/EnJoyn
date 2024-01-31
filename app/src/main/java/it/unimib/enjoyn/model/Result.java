@@ -23,8 +23,7 @@ public abstract class Result {
                 || this instanceof WeatherSuccess
                 || this instanceof MapSuggestionSuccess
                 || this instanceof MapSearchSuccess
-                || this instanceof MapReverseSearchSuccess;
-                || this instanceof WeatherSuccess
+                || this instanceof MapReverseSearchSuccess
                 || this instanceof SingleImageReadFromRemote;
     }
 

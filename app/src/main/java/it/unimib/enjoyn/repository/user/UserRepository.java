@@ -12,11 +12,11 @@ import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
 import it.unimib.enjoyn.source.interests.InterestsCallback;
-import it.unimib.enjoyn.source.user.AuthenticationCallback;
-import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
-import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
-import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
-import it.unimib.enjoyn.source.user.UserCallback;
+import it.unimib.enjoyn.source.users.AuthenticationCallback;
+import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
+import it.unimib.enjoyn.source.users.BaseUserLocalDataSource;
+import it.unimib.enjoyn.source.users.BaseUserRemoteDataSource;
+import it.unimib.enjoyn.source.users.UserCallback;
 import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 
 public class UserRepository implements IUserRepository, UserCallback, AuthenticationCallback, InterestsCallback {

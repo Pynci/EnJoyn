@@ -66,7 +66,7 @@ public class ServiceLocator {
         BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
         BaseInterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
         BaseInterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
-        AuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
+        BaseAuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
 
         return new UserRepository(userLocalDataSource, userRemoteDataSource,
                 authenticationDataSource, interestDataSource, interestLocalDataSource);
