@@ -342,7 +342,14 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             @Override
             public boolean onAnnotationClick(@NonNull PointAnnotation annotation) {
 
-                event = eventList.get((int)annotation.getId());
+                boolean find = false;
+                for(int i = 0; i<eventList.size() && !find; i++){
+                    if(eventList.get(i).getLocation().getLongitude() == annotation.getPoint().longitude() && eventList.get(i).getLocation().getLatitude() == annotation.getPoint().latitude()){
+                        event = eventList.get(i);
+                        find = true;
+                    }
+                }
+                //event = eventList.get((int)annotation.getId());
                 eventItem.setVisibility(View.VISIBLE);
                 fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
                 fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
