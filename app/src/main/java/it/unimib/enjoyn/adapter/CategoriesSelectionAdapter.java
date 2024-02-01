@@ -62,8 +62,12 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
         ShapeableImageView imageViewLeft = rowView.findViewById(R.id.headerImageCard1);
         ShapeableImageView imageViewRight = rowView.findViewById(R.id.headerImageCard2);
 
-        Glide.with(context).load(images.get(position * 2)).into(imageViewLeft);
-        Glide.with(context).load(images.get(position * 2 + 1)).into(imageViewRight);
+        if(position * 2 < images.size()){
+            Glide.with(context).load(images.get(position * 2)).into(imageViewLeft);
+        }
+        if(position * 2 + 1 < images.size()){
+            Glide.with(context).load(images.get(position * 2 + 1)).into(imageViewRight);
+        }
 
         nameCategoryCardLeft.setText(data.get(position * 2).getNome());
         nameCategoryCardRight.setText(data.get(position * 2 + 1).getNome());

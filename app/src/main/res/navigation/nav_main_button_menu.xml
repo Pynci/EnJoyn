@@ -120,5 +120,8 @@
         <action
             android:id="@+id/action_categoriesSelectionFragment2_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_categoriesSelectionFragment2_to_authActivity2"
+            app:destination="@id/authActivity2" />
     </fragment>
 </navigation>

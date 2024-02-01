@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -133,7 +134,7 @@ public class CategoriesSelectionFragment extends Fragment {
             else{
                 interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
                     if (result.isSuccessful()) {
-                        navigateTo(R.id.action_categoriesSelectionFragment2_to_profileFragment, false);
+                        navigateTo(R.id.action_categoriesSelectionFragment2_to_authActivity2, false);
                     }
                 });
             }
