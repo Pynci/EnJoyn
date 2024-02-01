@@ -12,8 +12,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +52,9 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
     @Override
     public void fetchAllEvents(){
 
+        SimpleDateFormat formatoData = new SimpleDateFormat("yyyy-MM-dd");
+        String dataAttuale = formatoData.format(new Date());
+
         dbReference
                 .child(Constants.EVENTS_PATH)
                 .addChildEventListener(new ChildEventListener() {
@@ -56,21 +62,27 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Event event = snapshot.getValue(Event.class);
                         event.setEid(snapshot.getKey());
-                        eventCallback.onRemoteEventAdded(event);
+                        if(event.getDate().compareTo(dataAttuale) > 0){
+                            eventCallback.onRemoteEventAdded(event);
+                        }
                     }
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Event event = snapshot.getValue(Event.class);
                         event.setEid(snapshot.getKey());
-                        eventCallback.onRemoteEventChanged(event);
+                        if(event.getDate().compareTo(dataAttuale) > 0){
+                            eventCallback.onRemoteEventChanged(event);
+                        }
                     }
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                         Event event = snapshot.getValue(Event.class);
                         event.setEid(snapshot.getKey());
-                        eventCallback.onRemoteEventRemoved(event);
+                        if(event.getDate().compareTo(dataAttuale) > 0){
+                            eventCallback.onRemoteEventRemoved(event);
+                        }
                     }
 
                     @Override
