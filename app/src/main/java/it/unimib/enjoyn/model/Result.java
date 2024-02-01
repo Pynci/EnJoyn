@@ -20,7 +20,6 @@ public abstract class Result {
                 || this instanceof Success
                 || this instanceof BooleanSuccess
                 || this instanceof CategorySuccess
-                || this instanceof CategoriesHolderSuccess
                 || this instanceof ImagesReadFromRemote
                 || this instanceof EventSuccess
                 || this instanceof WeatherSuccess
@@ -132,19 +131,6 @@ public abstract class Result {
         }
     }
 
-    public static final class CategoriesHolderSuccess extends Result {
-
-        private final CategoriesHolder categoriesHolder;
-
-        public CategoriesHolderSuccess(CategoriesHolder categoriesHolder) {
-            this.categoriesHolder = categoriesHolder;
-        }
-
-        public CategoriesHolder getCategoriesHolder(){
-            return categoriesHolder;
-        }
-    }
-
     public static final class ImagesReadFromRemote extends Result{
 
         private final List<Uri> imageUri;
@@ -187,7 +173,7 @@ public abstract class Result {
         }
     }
 
-    public static final class WeatherError extends Result{
+    public static final class WeatherError extends Result {
         private final String message;
 
         public WeatherError(String message) {

@@ -289,7 +289,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                         event.setDistance(eventDistance);
                     }
                     eventViewModel.getWeather(event.getLocation().getLatitudeToString(), event.getLocation().getLongitudeToString()).observe(getViewLifecycleOwner(), weatherResult -> {
-                        if(result.isSuccessful()){
+                        if(weatherResult.isSuccessful()){
                             weatherAPIdata = ((Result.WeatherSuccess) weatherResult).getData().getWeather();
                             String[] dateArray = weatherAPIdata.getHour();
                             double [] temperatureArray = weatherAPIdata.getTemperature();
