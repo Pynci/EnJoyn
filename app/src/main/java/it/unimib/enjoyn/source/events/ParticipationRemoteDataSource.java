@@ -1,7 +1,14 @@
 package it.unimib.enjoyn.source.events;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Iterator;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
@@ -20,7 +27,7 @@ public class ParticipationRemoteDataSource implements BaseParticipationRemoteDat
     @Override
     public void createParticipation(Event event, User user, Callback callback){
         dbReference
-                .child(Constants.EVENTPARTICIPATIONS_PATH)
+                .child(Constants.PARTICIPATIONS_PATH)
                 .child(event.getEid())
                 .child(user.getUid())
                 .setValue(user.getUsername())
@@ -33,7 +40,26 @@ public class ParticipationRemoteDataSource implements BaseParticipationRemoteDat
                 });
     }
 
-    public void fetchEventParticipations(Event event){
+    public void fetchEventParticipations(Event event, Callback callback){
+        dbReference
+                .child(Constants.PARTICIPATIONS_PATH)
+                .child(event.getEid())
+                .get()
+                .addOnCompleteListener(task -> {
+                   if(task.isSuccessful()){
+                       Result.ResultList userList = new Result.ResultList();
 
+                       DataSnapshot queryResult = task.getResult();
+                       for (DataSnapshot dataSnapshot : queryResult.getChildren()) {
+                           User user = dataSnapshot.getValue(User.class);
+                           user.setUid(dataSnapshot.getKey());
+                           userList.addResult(new Result.UserSuccess(user));
+                       }
+                       callback.onComplete(userList);
+                   }
+                   else{
+                        callback.onComplete(new Result.Error(Constants.PARTICIPATION_REMOTE_FETCH_ERROR));
+                   }
+                });
     }
 }

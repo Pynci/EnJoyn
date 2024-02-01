@@ -23,7 +23,7 @@ public class Constants {
     public static final String INTERESTS_PATH = "Interests";
     public static final String EVENTS_PATH = "Events";
     public static final String EVENTCREATIONS_PATH = "EventCreations";
-    public static final String EVENTPARTICIPATIONS_PATH = "EventParticipations";
+    public static final String PARTICIPATIONS_PATH = "EventParticipations";
 
     public static final String WEATHER_API_BASE_URL = "https://api.open-meteo.com/v1/";
 
@@ -74,4 +74,5 @@ public class Constants {
     public static final String INTEREST_REMOTE_CREATION_ERROR = "INTEREST_REMOTE_CREATION_ERROR";
     public static final String EVENT_REMOTE_CREATION_ERROR = "EVENT_REMOTE_CREATION_FAILED";
     public static final String PARTICIPATION_REMOTE_CREATION_ERROR = "PARTICIPATION_REMOTE_CREATION_FAILED";
+    public static final String PARTICIPATION_REMOTE_FETCH_ERROR = "PARTICIPATION_REMOTE_FETCH_FAILED";
 }
