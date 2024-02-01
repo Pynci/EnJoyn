@@ -1,6 +1,5 @@
 package it.unimib.enjoyn.model;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -35,17 +34,17 @@ public class Event implements Parcelable {
     private double distance;
     private int weatherCode;
     private double weatherTemperature;
-    @Embedded
-    private Uri imageUrl;
+    private String color;
 
     public Event() {
 
     }
 
-    public Event(long id, String title, String description, String date, String time,
-                 EventLocation location, Category category, int participants, double distance, int weatherCode,
-                 double weatherTemperature, Uri imageUrl) {
+    public Event(long id, String eid, String title, String description, String date, String time,
+                 EventLocation location, Category category, int participants, double distance,
+                 int weatherCode, double weatherTemperature, String color) {
         this.id = id;
+        this.eid = eid;
         this.title = title;
         this.description = description;
         this.date = date;
@@ -56,15 +55,7 @@ public class Event implements Parcelable {
         this.distance = distance;
         this.weatherCode = weatherCode;
         this.weatherTemperature = weatherTemperature;
-        this.imageUrl = imageUrl;
-    }
-
-    public Uri getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(Uri imageUrl) {
-        this.imageUrl = imageUrl;
+        this.color = color;
     }
 
     public long getId() {
@@ -164,7 +155,13 @@ public class Event implements Parcelable {
         this.time = time;
     }
 
+    public String getColor() {
+        return color;
+    }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     public void incrementPeopleNumber(){
 
@@ -214,6 +211,7 @@ public class Event implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
+        dest.writeString(this.eid);
         dest.writeString(this.title);
         dest.writeString(this.description);
         dest.writeString(this.date);
@@ -224,10 +222,12 @@ public class Event implements Parcelable {
         dest.writeDouble(this.distance);
         dest.writeInt(this.weatherCode);
         dest.writeDouble(this.weatherTemperature);
+        dest.writeString(this.color);
     }
 
     public void readFromParcel(Parcel source) {
         this.id = source.readLong();
+        this.eid = source.readString();
         this.title = source.readString();
         this.description = source.readString();
         this.date = source.readString();
@@ -238,10 +238,12 @@ public class Event implements Parcelable {
         this.distance = source.readDouble();
         this.weatherCode = source.readInt();
         this.weatherTemperature = source.readDouble();
+        this.color = source.readString();
     }
 
     protected Event(Parcel in) {
         this.id = in.readLong();
+        this.eid = in.readString();
         this.title = in.readString();
         this.description = in.readString();
         this.date = in.readString();
@@ -252,6 +254,7 @@ public class Event implements Parcelable {
         this.distance = in.readDouble();
         this.weatherCode = in.readInt();
         this.weatherTemperature = in.readDouble();
+        this.color = in.readString();
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {

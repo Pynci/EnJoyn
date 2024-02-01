@@ -31,19 +31,19 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Bundle bundle = new Bundle();
+        /*Bundle bundle = new Bundle();
         Gson gson = new Gson();
 
-        bundle.putString("eventList", gson.toJson(eventList));
+        bundle.putString("eventList", gson.toJson(eventList)); */
         if (position == 1) {
             Fragment recyclerViewFragment = new DiscoverRecyclerViewFragment();
 
-            recyclerViewFragment.setArguments(bundle);
+            //recyclerViewFragment.setArguments(bundle);
             return recyclerViewFragment;
         } else {
             Fragment mapFragment = new DiscoverMapFragment();
 
-            mapFragment.setArguments(bundle);
+            //mapFragment.setArguments(bundle);
             return mapFragment;
         }
 

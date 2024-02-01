@@ -10,11 +10,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+import java.util.Random;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
@@ -62,14 +64,41 @@ public class EventReclyclerViewAdapter extends
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_loading_item, parent, false);
             return new LoadingEventViewHolder(view);
         }
-
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof EventViewHolder){
             ((EventViewHolder) holder).bind(eventList.get(position));
+            /*
+            Random random = new Random();
+            int randomNumber = random.nextInt(4) + 1;
+
+            if (randomNumber % 4 == 0) {
+                ((EventViewHolder) holder).backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(
+                                holder.itemView.getContext(),
+                                R.color.md_theme_dark_error));
+                ((EventViewHolder) holder).joinButton.setBackgroundColor(
+                        ContextCompat.getColor(
+                                holder.itemView.getContext(),
+                                R.color.md_theme_dark_error));
+            } else if (randomNumber % 4 == 1) {
+                ((EventViewHolder) holder).backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_secondary));
+                ((EventViewHolder) holder).joinButton.setBackgroundColor(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_secondary));
+            } else if (randomNumber % 4 == 2){
+                ((EventViewHolder) holder).backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_error));
+                ((EventViewHolder) holder).joinButton.setBackgroundColor(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_error));
+            } else {
+                ((EventViewHolder) holder).backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_surfaceTint));
+                ((EventViewHolder) holder).joinButton.setBackgroundColor(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_surfaceTint));
+            }*/
         } else if (holder instanceof LoadingEventViewHolder) {
             ((LoadingEventViewHolder) holder).activate();
         }
@@ -96,6 +125,7 @@ public class EventReclyclerViewAdapter extends
         private final Button joinButton;
         private final ImageView eventImageView;
         private final ImageView weatherImage;
+        private final ImageView backgroundImage;
         private boolean todo;
 
 
@@ -110,6 +140,8 @@ public class EventReclyclerViewAdapter extends
             eventImageView = itemView.findViewById(R.id.eventListItem_imageView_eventImage);
             joinButton = itemView.findViewById(R.id.eventListItem_button_joinButton);
             weatherImage = itemView.findViewById(R.id.eventListItem_imageView_weather);
+            backgroundImage = itemView.findViewById(R.id.eventListItem_imageView_background);
+
             itemView.setOnClickListener(this);
             joinButton.setOnClickListener(this);
 
@@ -122,6 +154,8 @@ public class EventReclyclerViewAdapter extends
                 setTextButtonTodoEvent(todo);
                 todo = !todo;
                 onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                //backgroundImage.setBackgroundColor(ContextCompat.getColor(v.getContext(),R.color.md_theme_dark_tertiary));
+                //joinButton.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.md_theme_light_error));
 
             }else{
                 onItemClickListener.onEventItemClick(eventList.get(getBindingAdapterPosition()));
@@ -140,7 +174,12 @@ public class EventReclyclerViewAdapter extends
             textViewDistance.setText(event.getDistanceString());
             setWeatherIcon(weatherImage, event.getWeatherCode());
             //setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
-            Glide.with(application).load(event.getImageUrl()).placeholder(R.drawable.baseline_downloading_24).into(eventImageView);
+            //Glide.with(application).load(event.getImageUrl()).placeholder(R.drawable.baseline_downloading_24).into(eventImageView);
+            backgroundImage.setBackgroundColor(
+                    ContextCompat.getColor(itemView.getContext(), R.color.md_theme_light_error));
+            joinButton.setBackgroundColor(
+                    ContextCompat.getColor(itemView.getContext(), R.color.md_theme_light_error));
+
         }
 
 

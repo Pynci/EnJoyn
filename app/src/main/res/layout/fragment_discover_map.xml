@@ -22,7 +22,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="24dp"
         android:contentDescription="@string/Select"
         android:src="@drawable/baseline_my_location_24"
         app:layout_constraintBottom_toTopOf="@+id/fragmentDiscoverMap_cardView_eventItem"
@@ -88,8 +88,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:visibility="gone"
+        android:layout_marginBottom="8dp"
+        android:visibility="visible"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/fragmentDiscoverMap_mapView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,11 +108,12 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/background"
                 android:scaleType="center"
+                android:background="@color/md_theme_dark_inversePrimary"
                 app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_eventImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/img_0410" />
+                 />
 
             <TextView
                 android:id="@+id/eventListItem_textView_eventTitle"
@@ -121,14 +122,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:maxLength="30"
                 android:maxLines="1"
-                tools:text="Andare a mangiare al Kfc"
+
                 android:textColor="@color/cardview_light_background"
-                app:layout_constraintEnd_toStartOf="@+id/eventListItem_imageButton_favorite"
+                app:layout_constraintEnd_toEndOf="@+id/eventListItem_imageView_background"
                 app:layout_constraintStart_toEndOf="@+id/eventListItem_imageView_eventImage"
-                app:layout_constraintTop_toTopOf="@+id/eventListItem_imageView_background" />
+                app:layout_constraintTop_toTopOf="@+id/eventListItem_imageView_background"
+                tools:text="Andare a mangiare al Kfc" />
 
             <TextView
                 android:id="@+id/eventListItem_textView_date"
@@ -136,18 +139,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                tools:text="30/11/2023"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background" />
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
+                tools:text="30/11/2023" />
 
             <TextView
                 android:id="@+id/eventListItem_textView_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                tools:text="17:00 - 19:00"
                 app:layout_constraintBaseline_toBaselineOf="@+id/eventListItem_textView_date"
-                app:layout_constraintStart_toEndOf="@+id/eventListItem_textView_date" />
+                app:layout_constraintStart_toEndOf="@+id/eventListItem_textView_date"
+                tools:text="17:00 - 19:00" />
 
             <TextView
                 android:id="@+id/eventListItem_textView_place"
@@ -158,10 +161,10 @@
                 android:ellipsize="end"
                 android:maxLength="30"
                 android:maxLines="1"
-                tools:text="via arrivabene, 29"
                 app:drawableStartCompat="@drawable/baseline_place_24"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventListItem_textView_date" />
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_textView_date"
+                tools:text="via arrivabene, 29" />
 
             <TextView
                 android:id="@+id/eventListItem_textView_distance"
@@ -169,9 +172,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                tools:text="2 Km"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventListItem_textView_place" />
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_textView_place"
+                tools:text="2 Km" />
 
             <Button
                 android:id="@+id/eventListItem_button_joinButton"
@@ -218,15 +221,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
                 tools:srcCompat="@drawable/drawable_thunderstorm" />
 
-            <ImageButton
-                android:id="@+id/eventListItem_imageButton_favorite"
-                style="@style/Widget.Material3.Button"
-                android:layout_width="53dp"
-                android:layout_height="53dp"
-                android:contentDescription="@string/bottonAddToFavorites"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/baseline_favorite_border_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

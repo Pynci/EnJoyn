@@ -94,10 +94,12 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
                     @Override
                     public void onJoinButtonPressed(int position) {
-                        Event joinEvent = eventList.get(position);
+
+
+                     /* Event joinEvent = eventList.get(position);
                         joinEvent.setParticipants(joinEvent.getParticipants()+1);
                         eventViewModel.updateEvent(joinEvent);
-                    /*
+
                         eventList.get(position).setTODO(!eventList.get(position).isTODO());
 
                         if(eventList.get(position).isTODO()) {

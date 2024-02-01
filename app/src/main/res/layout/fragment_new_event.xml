@@ -183,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:ellipsize="end"
-                android:maxLength="30"
+                android:maxLength="28"
                 android:maxLines="1"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace"
