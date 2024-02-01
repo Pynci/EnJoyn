@@ -10,10 +10,8 @@ import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.MapRemoteDataSource;
 import it.unimib.enjoyn.source.categories.CategoryRemoteDataSource;
-import it.unimib.enjoyn.source.events.BaseEventCreationRemoteDataSource;
-import it.unimib.enjoyn.source.events.BaseEventParticipationRemoteDataSource;
-import it.unimib.enjoyn.source.events.EventCreationRemoteDataSource;
-import it.unimib.enjoyn.source.events.EventParticipationRemoteDataSource;
+import it.unimib.enjoyn.source.events.BaseParticipationRemoteDataSource;
+import it.unimib.enjoyn.source.events.ParticipationRemoteDataSource;
 import it.unimib.enjoyn.source.events.EventRemoteDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
@@ -105,15 +103,13 @@ public class ServiceLocator {
     public IEventRepository getEventRepository(Application application){
         BaseEventLocalDataSource eventLocalDataSource;
         BaseEventRemoteDataSource eventRemoteDataSource;
-        BaseEventCreationRemoteDataSource eventCreationRemoteDataSource;
-        BaseEventParticipationRemoteDataSource eventParticipationRemoteDataSource;
+        BaseParticipationRemoteDataSource eventParticipationRemoteDataSource;
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 
         eventRemoteDataSource = new EventRemoteDataSource(jsonParserUtil);
         eventLocalDataSource = new EventLocalDataSource(getEventDao(application));
-        eventCreationRemoteDataSource = new EventCreationRemoteDataSource();
-        eventParticipationRemoteDataSource = new EventParticipationRemoteDataSource();
+        eventParticipationRemoteDataSource = new ParticipationRemoteDataSource();
 
-        return new EventRepository(eventLocalDataSource, eventRemoteDataSource, eventCreationRemoteDataSource, eventParticipationRemoteDataSource);
+        return new EventRepository(eventLocalDataSource, eventRemoteDataSource, eventParticipationRemoteDataSource);
     }
 }
