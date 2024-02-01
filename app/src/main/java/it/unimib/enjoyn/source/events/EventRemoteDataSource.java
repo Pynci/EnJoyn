@@ -54,7 +54,7 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Event event = snapshot.getValue(Event.class);
                         event.setEid(snapshot.getKey());
-                        if(event.getDate().compareTo(dataAttuale) > 0){
+                        if(event.getDate().compareTo(dataAttuale) >= 0){
                             eventCallback.onRemoteEventAdded(event);
                         }
                     }
@@ -63,7 +63,7 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Event event = snapshot.getValue(Event.class);
                         event.setEid(snapshot.getKey());
-                        if(event.getDate().compareTo(dataAttuale) > 0){
+                        if(event.getDate().compareTo(dataAttuale) >= 0){
                             eventCallback.onRemoteEventChanged(event);
                         }
                     }
@@ -72,7 +72,7 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                         Event event = snapshot.getValue(Event.class);
                         event.setEid(snapshot.getKey());
-                        if(event.getDate().compareTo(dataAttuale) > 0){
+                        if(event.getDate().compareTo(dataAttuale) >= 0){
                             eventCallback.onRemoteEventRemoved(event);
                         }
                     }

@@ -30,7 +30,6 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -72,11 +71,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     private static final String STATE_URI = "uri";
     ImageButton date;
     ImageButton time;
-    ImageButton place;
-    TextView selectedTime;
-
-    TextView weather;
-    TextView temperature;
     Spinner categorySpinner;
     String hourWeather;
     int indexHour = -1;
@@ -91,7 +85,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     ImageView weatherIcon;
     String description;
     Uri eventImage = null;
-    int numberOfPeople = -1;
     double temp = -10000;
 
     private Category selectedCategory;
@@ -137,7 +130,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             Log.d("code", ""+weatherCode);
             eventImage = savedInstanceState.getParcelable(STATE_URI);
         }
-        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository();
+
         weatherAPIdata = new Weather();
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         categoryViewModel = new ViewModelProvider(requireActivity()).get(CategoryViewModel.class);
@@ -220,15 +213,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                     }
                 });
 
-        photoPicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        photoPicker.setOnClickListener(v ->
                 pickMedia.launch(new PickVisualMediaRequest.Builder()
-                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                        .build());
-
-            }
-        });
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build()));
 
 
 
@@ -309,10 +297,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             title = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextTitle.getText());
             description = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextDescription.getText());
 
-            if(title != null && dateWeather != null && timeWeather != null && locationName != null && description != null){
+            if(title != null && dateWeather != null && timeWeather != null && locationName != null){
                 newEvent.setTitle(title);
                 newEvent.setDate(dateWeather);
-                newEvent.setTime(timeWeather);;
+                newEvent.setTime(timeWeather);
                 newEvent.setDescription(description);
                 newEvent.setCategory(selectedCategory);
                 //newEvent.setImageUrl(eventImage);
@@ -337,103 +325,92 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         double[] temperatureArray = weatherAPIdata.getTemperature();
         date = view.findViewById(R.id.fragmentNewEvent_imageButton_datePicker);
 
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // on below line we are getting
-                // the instance of our calendar.
-                final Calendar c = Calendar.getInstance();
+        date.setOnClickListener(v -> {
+            // on below line we are getting
+            // the instance of our calendar.
+            final Calendar c = Calendar.getInstance();
 
-                /*
-                TextView luogo = view.findViewById(R.id.textViewProvaLuogo);
-                Log.d("API weather", newEvent.getPlace());
-                Log.d("API weather", newEvent.getPlace());
-                luogo.setText(newEvent.getPlace() + " e " + newEvent.getPlace());
-                 */
+            /*
+            TextView luogo = view.findViewById(R.id.textViewProvaLuogo);
+            Log.d("API weather", newEvent.getPlace());
+            Log.d("API weather", newEvent.getPlace());
+            luogo.setText(newEvent.getPlace() + " e " + newEvent.getPlace());
+             */
 
-                // on below line we are getting
-                // our day, month and year.
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
+            // on below line we are getting
+            // our day, month and year.
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
 
 
-                // on below line we are creating a variable for date picker dialog.
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        // on below line we are passing context.
-                        date.getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                c.get(Calendar.YEAR);
-                                c.get(Calendar.MONTH);
-                                c.get(Calendar.DAY_OF_MONTH);
+            // on below line we are creating a variable for date picker dialog.
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    // on below line we are passing context.
+                    date.getContext(),
+                    (view1, year1, monthOfYear, dayOfMonth) -> {
+                        c.get(Calendar.YEAR);
+                        c.get(Calendar.MONTH);
+                        c.get(Calendar.DAY_OF_MONTH);
 
 
-                                if(year< c.get(Calendar.YEAR) ||
-                                        year == c.get(Calendar.YEAR) && monthOfYear <c.get(Calendar.MONTH) ||
-                                        year == c.get(Calendar.YEAR) && monthOfYear == c.get(Calendar.MONTH)
-                                                && dayOfMonth<c.get(Calendar.DAY_OF_MONTH)){
-                                    Snackbar
-                                            .make(getView(), "scelta data passata, riprova", Snackbar.LENGTH_SHORT)
-                                            .show();
-                                    return ;
-                                }
-                                if( year == c.get(Calendar.YEAR) && monthOfYear == c.get(Calendar.MONTH)
-                                        && dayOfMonth == c.get(Calendar.DAY_OF_MONTH)){
-                                    sameDay = true;
-                                } else{
-                                    sameDay = false;
-                                }
+                        if(year1 < c.get(Calendar.YEAR) ||
+                                year1 == c.get(Calendar.YEAR) && monthOfYear <c.get(Calendar.MONTH) ||
+                                year1 == c.get(Calendar.YEAR) && monthOfYear == c.get(Calendar.MONTH)
+                                        && dayOfMonth<c.get(Calendar.DAY_OF_MONTH)){
+                            Snackbar
+                                    .make(getView(), "scelta data passata, riprova", Snackbar.LENGTH_SHORT)
+                                    .show();
+                            return ;
+                        }
+                        sameDay = year1 == c.get(Calendar.YEAR) && monthOfYear == c.get(Calendar.MONTH)
+                                && dayOfMonth == c.get(Calendar.DAY_OF_MONTH);
 
 
-                                // on below line we are setting date to our text view.
-                                String dayOfMonthString = Integer.toString(dayOfMonth) ;
-                                String monthOfYearString = Integer.toString(monthOfYear+1) ;
-                                if(dayOfMonth<=9)
-                                    dayOfMonthString= "0" + dayOfMonthString;
-                                if(monthOfYear<=9)
-                                    monthOfYearString= "0" + monthOfYearString;
-                                dateWeather = year + "-" + monthOfYearString + "-" +dayOfMonthString ;
-                                fragmentNewEventBinding.fragmentNewEventTextViewDate.setText(dateWeather);
-                                equals = false;
-                                for( int i = 0;i < dateArray.length && !equals ; i+=96){
-                                    //boolean test = dateWeather.equals(dateArray[i].substring(0, 10));
-                                    //String prova = dateArray[i].substring(0, 10);
-                                    if(dateWeather.equals(dateArray[i].substring(0, 10))) {
-                                        indexDate = i;
-                                        equals = true;
-                                    }
-                                }
-                              /* if(indexDate>0) {
-                                   indexDate += 96;
-                               }*/
-                                if(!equals){
-                                    //fragmentNewEventBinding.weather.setText("meteo non disponibile, troppo lontano , accuratezza di 16 giorni");
-                                    fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText("");
-                                    fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon.setBackgroundResource(0);
-                                    //weatherIcon.setBackgroundResource(0);
-                                }
-                                else {
-                                    if (indexHour >= 0 && indexMinute >= 0) {
-                                        String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
-                                        weatherCode = Integer.parseInt(code);
-                                        temp = temperatureArray[indexDate+indexHour+indexMinute];
-                                       // fragmentNewEventBinding.weather.setText(code);
-                                        fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText(temp+ "°C");
-                                        setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
-                                    }
-                                }
+                        // on below line we are setting date to our text view.
+                        String dayOfMonthString = Integer.toString(dayOfMonth) ;
+                        String monthOfYearString = Integer.toString(monthOfYear+1) ;
+                        if(dayOfMonth<=9)
+                            dayOfMonthString= "0" + dayOfMonthString;
+                        if(monthOfYear<=9)
+                            monthOfYearString= "0" + monthOfYearString;
+                        dateWeather = year1 + "-" + monthOfYearString + "-" +dayOfMonthString ;
+                        fragmentNewEventBinding.fragmentNewEventTextViewDate.setText(dateWeather);
+                        equals = false;
+                        for( int i = 0;i < dateArray.length && !equals ; i+=96){
+                            //boolean test = dateWeather.equals(dateArray[i].substring(0, 10));
+                            //String prova = dateArray[i].substring(0, 10);
+                            if(dateWeather.equals(dateArray[i].substring(0, 10))) {
+                                indexDate = i;
+                                equals = true;
                             }
-                        },
-                        // on below line we are passing year,
-                        // month and day for selected date in our date picker.
-                        year, month, day);
-                // at last we are calling show to
-                // display our date picker dialog.
-                datePickerDialog.show();
-            }
+                        }
+                      /* if(indexDate>0) {
+                           indexDate += 96;
+                       }*/
+                        if(!equals){
+                            //fragmentNewEventBinding.weather.setText("meteo non disponibile, troppo lontano , accuratezza di 16 giorni");
+                            fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText("");
+                            fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon.setBackgroundResource(0);
+                            //weatherIcon.setBackgroundResource(0);
+                        }
+                        else {
+                            if (indexHour >= 0 && indexMinute >= 0) {
+                                String code = weatherAPIdata.getWeather_codeString(indexDate + indexHour + indexMinute);
+                                weatherCode = Integer.parseInt(code);
+                                temp = temperatureArray[indexDate+indexHour+indexMinute];
+                               // fragmentNewEventBinding.weather.setText(code);
+                                fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText(temp+ "°C");
+                                setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
+                            }
+                        }
+                    },
+                    // on below line we are passing year,
+                    // month and day for selected date in our date picker.
+                    year, month, day);
+            // at last we are calling show to
+            // display our date picker dialog.
+            datePickerDialog.show();
         });
     }
 
@@ -445,72 +422,64 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
         // on below line we are adding click
         // listener for our pick date button
-        time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(dateWeather == null ){
-                    Snackbar
-                            .make(getView(), "scegliere prima la data", Snackbar.LENGTH_SHORT)
-                            .show();
-                    return ;
-                }
-                // on below line we are getting the
-                // instance of our calendar.
-                final Calendar c = Calendar.getInstance();
-
-                // on below line we are getting our hour, minute.
-                int hour = c.get(Calendar.HOUR_OF_DAY);
-                int minute = c.get(Calendar.MINUTE);
-
-                // on below line we are initializing our Time Picker Dialog
-                TimePickerDialog timePickerDialog = new TimePickerDialog(time.getContext(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                // on below line we are setting selected time
-                                // in our text view.
-                                if(sameDay){
-                                    if(hourOfDay < c.get(Calendar.HOUR_OF_DAY)||
-                                            hourOfDay < c.get(Calendar.HOUR_OF_DAY) && minute<c.get(Calendar.MINUTE)){
-                                        Snackbar
-                                                .make(getView(), "scelta ora passata, riprova", Snackbar.LENGTH_SHORT)
-                                                .show();
-                                        return ;
-                                    }
-                                }
-
-                                if (hourOfDay < 10 && minute<10){
-                                    timeWeather = "0"+hourOfDay+":0"+minute;
-                                } else if (hourOfDay >= 10 && minute<10) {
-                                    timeWeather = hourOfDay + ":0" + minute;
-                                } else if (hourOfDay < 10 && minute >= 10){
-                                    timeWeather = "0"+hourOfDay+":"+minute;
-                                } else {
-                                    timeWeather = hourOfDay+":"+minute;
-                                }
-
-                                fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(timeWeather);
-                                hourWeather = hourOfDay + ":" + minute;
-                                indexHour = hourOfDay*4;
-                                indexMinute = minute/15;
-
-                                assert weatherAPIdata != null;
-                                assert weatherAPIdata.getHour()[indexHour] != null;
-                                if(equals){
-                                    temp = temperatureArray[indexDate+indexHour+indexMinute];
-                                    weatherCode = weatherAPIdata.getWeather_code(indexDate+indexHour+indexMinute);
-                                    //fragmentNewEventBinding.weather.setText(code);
-                                    fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText(temp+ "°C");
-                                    setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
-                                }
-                            }
-                        }, hour, minute, false);
-                // at last we are calling show to
-                // display our time picker dialog.
-                timePickerDialog.show();
+        time.setOnClickListener(v -> {
+            if(dateWeather == null ){
+                Snackbar
+                        .make(getView(), "scegliere prima la data", Snackbar.LENGTH_SHORT)
+                        .show();
+                return ;
             }
+            // on below line we are getting the
+            // instance of our calendar.
+            final Calendar c = Calendar.getInstance();
 
+            // on below line we are getting our hour, minute.
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // on below line we are initializing our Time Picker Dialog
+            TimePickerDialog timePickerDialog = new TimePickerDialog(time.getContext(),
+                    (view1, hourOfDay, minute1) -> {
+                        // on below line we are setting selected time
+                        // in our text view.
+                        if(sameDay){
+                            if(hourOfDay < c.get(Calendar.HOUR_OF_DAY)||
+                                    hourOfDay < c.get(Calendar.HOUR_OF_DAY) && minute1 <c.get(Calendar.MINUTE)){
+                                Snackbar
+                                        .make(getView(), "scelta ora passata, riprova", Snackbar.LENGTH_SHORT)
+                                        .show();
+                                return ;
+                            }
+                        }
+
+                        if (hourOfDay < 10 && minute1 < 10){
+                            timeWeather = "0"+hourOfDay+":0"+ minute1;
+                        } else if (hourOfDay >= 10 && minute1 < 10) {
+                            timeWeather = hourOfDay + ":0" + minute1;
+                        } else if (hourOfDay < 10){
+                            timeWeather = "0"+hourOfDay+":"+ minute1;
+                        } else {
+                            timeWeather = hourOfDay+":"+ minute1;
+                        }
+
+                        fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(timeWeather);
+                        hourWeather = hourOfDay + ":" + minute1;
+                        indexHour = hourOfDay*4;
+                        indexMinute = minute1 /15;
+
+                        assert weatherAPIdata != null;
+                        assert weatherAPIdata.getHour()[indexHour] != null;
+                        if(equals){
+                            temp = temperatureArray[indexDate+indexHour+indexMinute];
+                            weatherCode = weatherAPIdata.getWeather_code(indexDate+indexHour+indexMinute);
+                            //fragmentNewEventBinding.weather.setText(code);
+                            fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText(temp+ "°C");
+                            setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
+                        }
+                    }, hour, minute, false);
+            // at last we are calling show to
+            // display our time picker dialog.
+            timePickerDialog.show();
         });
     }
 

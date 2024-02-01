@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -288,6 +289,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                                 + Math.pow(selfLocation.longitude() - event.getLocation().getLongitude(),2))),1);
                         event.setDistance(eventDistance);
                     }
+
                     eventViewModel.getWeather(event.getLocation().getLatitudeToString(), event.getLocation().getLongitudeToString()).observe(getViewLifecycleOwner(), weatherResult -> {
                         if(weatherResult.isSuccessful()){
                             weatherAPIdata = ((Result.WeatherSuccess) weatherResult).getData().getWeather();
@@ -361,9 +363,8 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                 }
                 fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText(event.getDistance()+" km");
                 fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
-                //fragmentDiscoverMapBinding.eventListItemImageViewEventImage.setImageURI(event.getImageUrl());
-                //mettere immagine meteo
-
+                //fragmentDiscoverMapBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor()));
+                //fragmentDiscoverMapBinding.eventListItemButtonJoinButton.setBackgroundColor(Color.parseColor(event.getColor()));
 
                 eventItem.setOnClickListener(v -> {
                     DiscoverFragmentDirections.ActionFragmentDiscoverToFragmentDiscoverSingleEvent action = DiscoverFragmentDirections.actionFragmentDiscoverToFragmentDiscoverSingleEvent(event);

@@ -179,23 +179,13 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 };
 
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
-
 
     public NewEventMap() {
 
     }
 
-    public static NewEventMap newInstance(String param1, String param2) {
-        NewEventMap fragment = new NewEventMap();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static NewEventMap newInstance() {
+        return new NewEventMap();
     }
 
 
