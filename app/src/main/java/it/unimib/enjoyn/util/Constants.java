@@ -67,4 +67,9 @@ public class Constants {
     public static final String USER_REMOTE_FETCH_ERROR = "USER_REMOTE_FETCH_FAILED";
     public static final String USER_REMOTE_UPDATE_ERROR = "USER_REMOTE_UPDATE_FAILED";
     public static final String EMAIL_SENDING_ERROR = "EMAIL_SENDING_FAILED";
+    public static final String INTEREST_LOCAL_FETCH_ERROR = "INTEREST_LOCAL_FETCH_FAILED";
+    public static final String INTEREST_LOCAL_CREATION_ERROR = "INTEREST_LOCAL_CREATION_FAILED";
+    public static final String INTEREST_LOCAL_DELETION_ERROR = "INTEREST_LOCAL_DELETION_FAILED";
+    public static final String INTEREST_REMOTE_FETCH_ERROR = "INTEREST_REMOTE_FETCH_ERROR";
+    public static final String INTEREST_REMOTE_CREATION_ERROR = "INTEREST_REMOTE_CREATION_ERROR";
 }

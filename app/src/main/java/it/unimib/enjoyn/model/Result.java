@@ -8,6 +8,8 @@ import com.mapbox.search.result.SearchSuggestion;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
+
 public abstract class Result {
     private Result(){
 
@@ -18,6 +20,7 @@ public abstract class Result {
                 || this instanceof Success
                 || this instanceof BooleanSuccess
                 || this instanceof CategorySuccess
+                || this instanceof CategoriesHolderSuccess
                 || this instanceof ImagesReadFromRemote
                 || this instanceof EventSuccess
                 || this instanceof WeatherSuccess
@@ -126,6 +129,19 @@ public abstract class Result {
 
         public List<Category> getCategoryList() {
             return  categoryList;
+        }
+    }
+
+    public static final class CategoriesHolderSuccess extends Result {
+
+        private final CategoriesHolder categoriesHolder;
+
+        public CategoriesHolderSuccess(CategoriesHolder categoriesHolder) {
+            this.categoriesHolder = categoriesHolder;
+        }
+
+        public CategoriesHolder getCategoriesHolder(){
+            return categoriesHolder;
         }
     }
 

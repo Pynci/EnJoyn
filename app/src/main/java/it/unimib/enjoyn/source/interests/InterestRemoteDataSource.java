@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.model.Category;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 import it.unimib.enjoyn.util.Constants;
 
@@ -20,7 +22,7 @@ public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {
     }
 
     @Override
-    public void storeUserInterests(CategoriesHolder categoriesHolder, String uid) {
+    public void createUserInterests(CategoriesHolder categoriesHolder, String uid, Callback callback) {
 
         firebaseDatabase
                 .getReference()
@@ -29,16 +31,16 @@ public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {
                 .setValue(categoriesHolder.getCategories())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        interestsCallback.onSuccessCreateUsersInterest(categoriesHolder);
+                        callback.onComplete(new Result.CategoriesHolderSuccess(categoriesHolder));
                     }
                     else{
-                        interestsCallback.onFailureCreateUsersInterest(task.getException());
+                        callback.onComplete(new Result.Error(Constants.INTEREST_REMOTE_CREATION_ERROR));
                     }
                 });
     }
 
     @Override
-    public void getUserInterests(String uid) {
+    public void getUserInterests(String uid, Callback callback) {
         firebaseDatabase
                 .getReference()
                 .child(Constants.INTERESTS_PATH)
@@ -58,9 +60,9 @@ public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {
                             allCategories.add(temp);
 
                         }
-                        interestsCallback.onSuccessGetInterestsFromRemote(allCategories);
+                        callback.onComplete(new Result.CategorySuccess(allCategories));
                     } else {
-                        interestsCallback.onFailureGetInterestsFromRemote(task.getException().getMessage());
+                        callback.onComplete(new Result.Error(Constants.INTEREST_REMOTE_FETCH_ERROR));
                     }
                 });
     }

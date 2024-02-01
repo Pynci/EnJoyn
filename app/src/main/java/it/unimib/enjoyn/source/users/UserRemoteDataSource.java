@@ -178,7 +178,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
     }
 
     @Override
-    public void getImageByUserId(String userId) {
+    public void getPropicByUid(String userId, Callback callback) {
 
         StorageReference imageref = firebaseStorage.getReference()
                 .child("user_images")
@@ -187,10 +187,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource{
         imageref
                 .getDownloadUrl()
                 .addOnSuccessListener(uri -> {
-                    userCallback.onGetCurrentUserPropicSuccess(uri);
+                    callback.onComplete(new Result.SingleImageReadFromRemote(uri));
                 })
                 .addOnFailureListener(e -> {
-                    userCallback.onGetCurrentUserPropicFailure(e);
+                    callback.onComplete(new Result.Error(Constants.USER_REMOTE_FETCH_ERROR));
                 });
     }
 

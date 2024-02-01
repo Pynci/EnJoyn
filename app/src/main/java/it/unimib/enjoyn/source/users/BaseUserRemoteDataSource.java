@@ -7,12 +7,6 @@ import it.unimib.enjoyn.source.Callback;
 
 public abstract class BaseUserRemoteDataSource {
 
-    protected UserCallback userCallback;
-
-    public void setUserCallback(UserCallback userCallback) {
-        this.userCallback = userCallback;
-    }
-
     public abstract void createUser(User user, Callback callback);
 
     public abstract void getUserByUsername(String username, Callback callback);
@@ -35,5 +29,5 @@ public abstract class BaseUserRemoteDataSource {
 
     public abstract void updateCategoriesSelectionStatus(String uid, Boolean status, Callback callback);
 
-    public abstract void getImageByUserId(String userID);
+    public abstract void getPropicByUid(String userID, Callback callback);
 }
