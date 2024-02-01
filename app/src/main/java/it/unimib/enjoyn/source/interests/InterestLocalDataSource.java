@@ -9,7 +9,7 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.util.Constants;
 
-public class InterestLocalDataSource extends BaseInterestLocalDataSource{
+public class InterestLocalDataSource implements BaseInterestLocalDataSource{
 
     private final InterestDao interestDao;
 

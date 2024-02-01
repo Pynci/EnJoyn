@@ -7,7 +7,7 @@ import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.util.Constants;
 
-public class UserLocalDataSource extends BaseUserLocalDataSource {
+public class UserLocalDataSource implements BaseUserLocalDataSource {
 
     private final UserDao userDao;
 

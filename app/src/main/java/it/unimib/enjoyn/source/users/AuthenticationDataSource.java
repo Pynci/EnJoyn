@@ -10,7 +10,7 @@ import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.util.Constants;
 
-public class AuthenticationDataSource extends BaseAuthenticationDataSource{
+public class AuthenticationDataSource implements BaseAuthenticationDataSource{
 
     private final FirebaseAuth auth;
     private FirebaseUser fbUser;

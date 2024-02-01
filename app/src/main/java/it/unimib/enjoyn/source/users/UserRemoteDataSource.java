@@ -18,7 +18,7 @@ import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.util.Constants;
 
-public class UserRemoteDataSource extends BaseUserRemoteDataSource{
+public class UserRemoteDataSource implements BaseUserRemoteDataSource{
 
     private final DatabaseReference dbReference;
     private final FirebaseStorage firebaseStorage;

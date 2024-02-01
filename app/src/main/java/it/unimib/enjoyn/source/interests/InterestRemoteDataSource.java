@@ -12,7 +12,7 @@ import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 import it.unimib.enjoyn.util.Constants;
 
-public class InterestRemoteDataSource extends BaseInterestRemoteDataSource {
+public class InterestRemoteDataSource implements BaseInterestRemoteDataSource {
 
     private final FirebaseDatabase firebaseDatabase;
 

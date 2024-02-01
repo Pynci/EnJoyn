@@ -226,18 +226,28 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public MutableLiveData<Result> refreshEmailVerificationStatus(){
-        authenticationDataSource.checkEmailVerification(result -> {
-            if(result.isSuccessful()){
+        authenticationDataSource.checkEmailVerification(refreshResult -> {
+            if(refreshResult.isSuccessful()){
                 User user = ((Result.UserSuccess) currentUser.getValue()).getData();
-                user.setEmailVerified(((Result.BooleanSuccess) result).getData());
-                updateLocalUser(user);
+                user.setEmailVerified(((Result.BooleanSuccess) refreshResult).getData());
+                userRemoteDataSource.updateEmailVerificationStatus(authenticationDataSource.getCurrentUserUID(), user.getEmailVerified(),
+                        result -> {
+                            if(result.isSuccessful()){
+                                updateLocalUser(user);
+                            }
+                            else{
+                                currentUser.postValue(result);
+                            }
+                        });
             }
             else{
-                currentUser.postValue(result);
+                currentUser.postValue(refreshResult);
             }
         });
         return currentUser;
     }
+
+
 
     @Override
     public MutableLiveData<Result> updateProfileConfigurationStatus(){
