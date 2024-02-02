@@ -76,6 +76,7 @@ public class UserRepository implements IUserRepository {
                 currentUser.postValue(result);
             }
         });
+
         return currentUser;
     }
 

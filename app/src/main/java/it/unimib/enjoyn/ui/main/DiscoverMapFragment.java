@@ -53,6 +53,7 @@ import com.mapbox.maps.Style;
 import com.mapbox.maps.extension.style.layers.properties.generated.TextAnchor;
 import com.mapbox.maps.plugin.LocationPuck2D;
 import com.mapbox.maps.plugin.animation.MapAnimationOptions;
+import com.mapbox.maps.plugin.annotation.AnnotationConfig;
 import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
 import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener;
@@ -166,7 +167,8 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
         mapView = view.findViewById(R.id.fragmentDiscoverMap_mapView);
 
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
-        PointAnnotationManager pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
+        AnnotationConfig annotationConfig = new AnnotationConfig();
+        PointAnnotationManager pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, annotationConfig);
         fragmentDiscoverMapBinding.fragmentDiscoverMapSearchResultView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
 
         suggestionObserver = result -> {

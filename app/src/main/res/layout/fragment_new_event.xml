@@ -37,62 +37,12 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="32dp" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/fragmentNewEvent_MaterialCardView"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:layout_marginTop="32dp"
-                app:cardCornerRadius="300dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
-                app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_guideline_left"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/fragmentNewEvent_ShapeableImageView_eventImage"
-                        style="@style/circleImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/propic"
-                        android:src="@drawable/baseline_add_photo_alternate_24"
-                        android:tintMode="src_atop"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageButton
-                        android:id="@+id/fragmentNewEvent_ImageButton_photoPicker"
-                        android:layout_width="76dp"
-                        android:layout_height="71dp"
-                        android:adjustViewBounds="true"
-                        android:background="@null"
-                        android:contentDescription="@string/propic"
-                        android:scaleType="fitCenter"
-                        android:visibility="visible"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/baseline_add_24" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
 
             <EditText
                 android:id="@+id/fragmentNewEvent_editText_title"
                 android:layout_width="344dp"
                 android:layout_height="75dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:autofillHints=""
                 android:hint="@string/Title"
                 android:inputType="text"
@@ -102,7 +52,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_MaterialCardView" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/fragmentNewEvent_textView_date"
@@ -196,11 +146,12 @@
                 android:layout_width="0dp"
                 android:layout_height="63dp"
                 android:layout_marginTop="32dp"
+
                 android:text="@string/Create_event"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_spinner_categories" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_textView_color" />
 
             <ImageView
                 android:id="@+id/fragmentNewEvent_imageView_meteoIcon"
@@ -218,9 +169,9 @@
                 android:layout_width="349dp"
                 android:layout_height="75dp"
                 android:layout_marginTop="16dp"
+                android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/Description"
-                android:autofillHints=""
                 android:inputType="text"
                 android:textAlignment="center"
                 android:textSize="24sp"
@@ -235,12 +186,13 @@
                 android:id="@+id/fragmentNewEvent_spinner_categories"
                 android:layout_width="192dp"
                 android:layout_height="54dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="24dp"
                 android:entries="@android:array/emailAddressTypes"
                 android:minHeight="48dp"
+                android:textAlignment="center"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_category"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
-                app:layout_constraintHorizontal_bias="0.357"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_category" />
 
             <TextView
@@ -248,11 +200,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="48dp"
                 android:text="@string/category"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_imageButton_pickPlace" />
+
+            <TextView
+                android:id="@+id/fragmentNewEvent_textView_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="48dp"
+                android:text="Colore :"
+                android:textSize="24sp"
+
+                app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentNewEvent_textView_category" />
+
+            <Spinner
+                android:id="@+id/fragmentNewEvent_spinner_color"
+                android:layout_width="192dp"
+                android:layout_height="54dp"
+                android:layout_marginStart="40dp"
+                android:textAlignment="center"
+                android:background="@color/md_theme_dark_primary"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_color"
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_color"
+                android:spinnerMode="dialog"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -10,6 +10,8 @@ import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
+import it.unimib.enjoyn.util.ColorObject;
+
 @Entity
 public class Event implements Parcelable {
 
@@ -36,7 +38,9 @@ public class Event implements Parcelable {
     private double distance;
     private int weatherCode;
     private double weatherTemperature;
-    private String color;
+
+    @Embedded(prefix = "color_")
+    private ColorObject color;
 
     public Event() {
 
@@ -44,7 +48,7 @@ public class Event implements Parcelable {
 
     public Event(long id, String eid, String title, String description, String date, String time,
                  EventLocation location, Category category, int participants, double distance,
-                 int weatherCode, double weatherTemperature, String color) {
+                 int weatherCode, double weatherTemperature, ColorObject color) {
         this.id = id;
         this.eid = eid;
         this.title = title;
@@ -157,11 +161,11 @@ public class Event implements Parcelable {
         this.time = time;
     }
 
-    public String getColor() {
+    public ColorObject getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(ColorObject color) {
         this.color = color;
     }
 
@@ -224,7 +228,7 @@ public class Event implements Parcelable {
         dest.writeDouble(this.distance);
         dest.writeInt(this.weatherCode);
         dest.writeDouble(this.weatherTemperature);
-        dest.writeString(this.color);
+        dest.writeParcelable(this.color, flags);
     }
 
     public void readFromParcel(Parcel source) {
@@ -240,7 +244,7 @@ public class Event implements Parcelable {
         this.distance = source.readDouble();
         this.weatherCode = source.readInt();
         this.weatherTemperature = source.readDouble();
-        this.color = source.readString();
+        this.color = source.readParcelable(ColorObject.class.getClassLoader());
     }
 
     protected Event(Parcel in) {
@@ -256,7 +260,7 @@ public class Event implements Parcelable {
         this.distance = in.readDouble();
         this.weatherCode = in.readInt();
         this.weatherTemperature = in.readDouble();
-        this.color = in.readString();
+        this.color = in.readParcelable(ColorObject.class.getClassLoader());
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {
