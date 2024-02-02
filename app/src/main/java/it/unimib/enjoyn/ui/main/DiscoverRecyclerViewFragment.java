@@ -117,7 +117,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
 
-        eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(),
+        eventViewModel.getEvent().observe(getViewLifecycleOwner(),
                 result -> {
                     if (result.isSuccessful()) {
                         int initialSize = this.eventList.size();

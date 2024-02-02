@@ -276,7 +276,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
 
-        eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(), result -> {
+        eventViewModel.getEvent().observe(getViewLifecycleOwner(), result -> {
 
             if(result.isSuccessful()){
                 this.eventList.clear();

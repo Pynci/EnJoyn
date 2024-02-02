@@ -44,7 +44,7 @@ public class EventViewModel extends ViewModel {
 //        return allEvents;
 //    }
 
-    public MutableLiveData<Result> getEvent(long lastUpdate) {
+    public MutableLiveData<Result> getEvent() {
         if (allEvents == null) {
             allEvents = eventRepository.fetchAllEvents();
         }
