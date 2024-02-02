@@ -2,11 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/menuToolbar_favoritesButton"
-        android:icon="@drawable/baseline_favorite_border_24"
-        android:title="@string/favorites"
-        app:showAsAction="ifRoom">
-
-    </item>
+    
 </menu>

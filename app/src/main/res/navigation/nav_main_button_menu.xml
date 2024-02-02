@@ -11,9 +11,6 @@
         android:label="fragment_discover"
         tools:layout="@layout/fragment_discover" >
         <action
-            android:id="@+id/action_fragmentDiscover_to_favoritesFragment"
-            app:destination="@id/favoritesFragment" />
-        <action
             android:id="@+id/action_fragmentDiscover_to_fragmentDiscoverSingleEvent"
             app:destination="@id/fragmentDiscoverSingleEvent" />
     </fragment>
@@ -64,15 +61,6 @@
         <argument
             android:name="event"
             app:argType="it.unimib.enjoyn.model.Event" />
-    </fragment>
-    <fragment
-        android:id="@+id/favoritesFragment"
-        android:name="it.unimib.enjoyn.ui.main.FavoritesFragment"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" >
-        <action
-            android:id="@+id/action_favoritesFragment_to_fragmentDiscoverSingleEvent"
-            app:destination="@id/fragmentDiscoverSingleEvent" />
     </fragment>
     <fragment
         android:id="@+id/fragmentNewEventMap"

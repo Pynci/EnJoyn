@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -81,6 +80,7 @@ import it.unimib.enjoyn.databinding.FragmentNewEventMapBinding;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.util.Constants;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 /**
@@ -92,7 +92,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     Observer<Result> suggestionObserver;
     Observer<Result> mapSearchObserver;
-    private static final String STATE_LOCATION = "location";
+
     private FragmentNewEventMapBinding fragmentNewEventMapBinding;
     MapView mapView;
     public EventLocation location;
@@ -195,7 +195,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         super.onCreate(savedInstanceState);
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         if(savedInstanceState != null){
-            location = savedInstanceState.getParcelable(STATE_LOCATION);
+            location = savedInstanceState.getParcelable(Constants.STATE_LOCATION);
         }
     }
 
@@ -441,7 +441,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putParcelable(STATE_LOCATION, location);
+        savedInstanceState.putParcelable(Constants.STATE_LOCATION, location);
         super.onSaveInstanceState(savedInstanceState);
     }
     public static double round(double n, int decimals) {

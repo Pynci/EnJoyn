@@ -4,7 +4,6 @@ import static com.mapbox.maps.plugin.animation.CameraAnimationsUtils.getCamera;
 import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
 import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
-import static it.unimib.enjoyn.util.Constants.EMPTY_LOCATION;
 import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
 
 import android.Manifest;
@@ -15,7 +14,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -56,8 +54,6 @@ import com.mapbox.maps.plugin.animation.MapAnimationOptions;
 import com.mapbox.maps.plugin.annotation.AnnotationConfig;
 import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
 import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
-import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener;
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotation;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
@@ -72,7 +68,6 @@ import com.mapbox.search.ui.view.CommonSearchViewConfiguration;
 import com.mapbox.search.ui.view.SearchResultsView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
@@ -115,15 +110,12 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     private Weather weatherAPIdata;
     CardView eventItem;
 
-    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
-        @Override
-        public void onActivityResult(Boolean result) {
-            if(result){
-                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                        getString(R.string.eventRemoveToDo),
-                        Snackbar.LENGTH_LONG).show();
+    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
+        if(result){
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.eventRemoveToDo),
+                    Snackbar.LENGTH_LONG).show();
 
-            }
         }
     });
 
@@ -342,43 +334,40 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
         eventItem = view.findViewById(R.id.fragmentDiscoverMap_cardView_eventItem);
 
-        pointAnnotationManager.addClickListener(new OnPointAnnotationClickListener() {
-            @Override
-            public boolean onAnnotationClick(@NonNull PointAnnotation annotation) {
+        pointAnnotationManager.addClickListener(annotation -> {
 
-                boolean find = false;
-                for(int i = 0; i<eventList.size() && !find; i++){
-                    if(eventList.get(i).getLocation().getLongitude() == annotation.getPoint().longitude() && eventList.get(i).getLocation().getLatitude() == annotation.getPoint().latitude()){
-                        event = eventList.get(i);
-                        find = true;
-                    }
+            boolean find = false;
+            for(int i = 0; i<eventList.size() && !find; i++){
+                if(eventList.get(i).getLocation().getLongitude() == annotation.getPoint().longitude() && eventList.get(i).getLocation().getLatitude() == annotation.getPoint().latitude()){
+                    event = eventList.get(i);
+                    find = true;
                 }
-                //event = eventList.get((int)annotation.getId());
-                eventItem.setVisibility(View.VISIBLE);
-                fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
-                fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
-                fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
-                fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getLocation().getName());
-                Log.d("code", event.getWeatherCode()+"");
-                if(event.getWeatherCode() != -1){
-                    setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
-                }
-                fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText(event.getDistance()+" km");
-                fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
-                fragmentDiscoverMapBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
-                fragmentDiscoverMapBinding.eventListItemButtonJoinButton.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+            }
+            //event = eventList.get((int)annotation.getId());
+            eventItem.setVisibility(View.VISIBLE);
+            fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
+            fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
+            fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
+            fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getLocation().getName());
+            Log.d("code", event.getWeatherCode()+"");
+            if(event.getWeatherCode() != -1){
+                setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
+            }
+            fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText(event.getDistance()+" km");
+            fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
+            fragmentDiscoverMapBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+            fragmentDiscoverMapBinding.eventListItemButtonJoinButton.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
 
-                eventItem.setOnClickListener(v -> {
-                    DiscoverFragmentDirections.ActionFragmentDiscoverToFragmentDiscoverSingleEvent action = DiscoverFragmentDirections.actionFragmentDiscoverToFragmentDiscoverSingleEvent(event);
-                    Navigation.findNavController(view).navigate(action);
+            eventItem.setOnClickListener(v -> {
+                DiscoverFragmentDirections.ActionFragmentDiscoverToFragmentDiscoverSingleEvent action = DiscoverFragmentDirections.actionFragmentDiscoverToFragmentDiscoverSingleEvent(event);
+                Navigation.findNavController(view).navigate(action);
 
-                });
+            });
 
-                annotation.getPoint().latitude();
-                annotation.getPoint().longitude();
+            annotation.getPoint().latitude();
+            annotation.getPoint().longitude();
 
-                return true;
-                }
+            return true;
             });
         }
 

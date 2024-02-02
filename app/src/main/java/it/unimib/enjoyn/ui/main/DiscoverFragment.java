@@ -95,9 +95,7 @@ public class DiscoverFragment extends Fragment {
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
-                    startActivityBasedOnCondition(R.id.action_fragmentDiscover_to_favoritesFragment, false);
-                }
+
                 return false;
             }
         });
