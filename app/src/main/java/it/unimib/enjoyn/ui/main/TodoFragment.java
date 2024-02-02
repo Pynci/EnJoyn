@@ -1,6 +1,5 @@
 package it.unimib.enjoyn.ui.main;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,12 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +26,6 @@ import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
-import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
@@ -42,8 +35,6 @@ import it.unimib.enjoyn.util.ServiceLocator;
  */
 public class TodoFragment extends Fragment {
 
-
-    private ProgressBar progressBar;
 
     private EventViewModel eventViewModel;
 
@@ -145,23 +136,6 @@ public class TodoFragment extends Fragment {
     }
 
 
-    private List<Event> getEventListWithGSon() {
-        JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
-        try {
-            /**TODO
-             * sistemare questa parte
-             * */
-
-            Context context = requireActivity().getApplication().getApplicationContext();
-            InputStream inputStream = context.getAssets().open("prova.json"); //apro file
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
-
-            return jsonParserUtil.parseJSONEventFileWithGSon("prova.json").getEventList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
     /*@Override

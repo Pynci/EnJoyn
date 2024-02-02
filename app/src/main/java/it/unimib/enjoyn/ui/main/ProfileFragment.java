@@ -175,29 +175,22 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        logout.setOnClickListener(v -> {
+        logout.setOnClickListener(v -> userViewModel.signOut().observe(this.getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()) {
 
-            userViewModel.signOut().observe(this.getViewLifecycleOwner(), result -> {
-                if(result.isSuccessful()) {
+                navigateTo(R.id.action_profileFragment_to_authActivity2, true,true);
+            }
+            else{
+                String text = "Impossibile completare l'operazione richiesta";
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar.show();
+            }
+        }));
 
-                    navigateTo(R.id.action_profileFragment_to_authActivity2, true,true);
-                }
-                else{
-                    String text = "Impossibile completare l'operazione richiesta";
-                    Snackbar snackbar;
-                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
-                    snackbar.show();
-                }
-            });
-        });
+        modificaProfilo.setOnClickListener(v -> navigateTo(R.id.action_profileFragment_to_profileConfigurationFragment2, false, true));
 
-        modificaProfilo.setOnClickListener(v -> {
-            navigateTo(R.id.action_profileFragment_to_profileConfigurationFragment2, false, true);
-        });
-
-        modificaInteressi.setOnClickListener(v -> {
-            navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, true);
-        });
+        modificaInteressi.setOnClickListener(v -> navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, true));
 
         interestsViewModel.getInterests().observe(this.getViewLifecycleOwner(), interestsObserver);
     }

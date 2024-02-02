@@ -34,7 +34,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@color/champagnePink" />
+                android:background="@color/seed" />
 
             <TextView
                 android:id="@+id/eventListItem_textView_eventTitle"
@@ -126,7 +126,7 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:contentDescription="Immagine scelta dall'utente da API"
+                android:contentDescription="@string/immagine_event_item"
                 app:layout_constraintBottom_toBottomOf="@+id/eventListItem_textView_eventTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/eventListItem_textView_eventTitle"

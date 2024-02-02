@@ -18,7 +18,7 @@
 
     <TextView
         android:textSize="22sp"
-        android:text="Ligth Blue"
+        android:text="@string/ligthBlue"
         android:gravity="center"
         android:textColor="@color/cardview_dark_background"
         android:id="@+id/colorName"
