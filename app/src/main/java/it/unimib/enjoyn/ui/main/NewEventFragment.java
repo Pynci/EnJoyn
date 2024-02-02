@@ -89,6 +89,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     double temp = -10000;
     ColorObject selectedColor;
 
+    Spinner colorSpinner;
+
     private Category selectedCategory;
 
     private EventViewModel eventViewModel;
@@ -148,7 +150,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getViewLifecycleOwner();
-        loadColorSpinner();
+
         // Inflate the layout for this fragment
         fragmentNewEventBinding = FragmentNewEventBinding.inflate(inflater, container, false);
         return fragmentNewEventBinding.getRoot();
@@ -162,7 +164,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         savedInstanceState = new Bundle();
         super.onViewCreated(view, savedInstanceState);
         Event newEvent = new Event();
-
         newEvent.setLocation(NewEventFragmentArgs.fromBundle(getArguments()).getLocation());
         locationName = newEvent.getLocation().getName();
         fragmentNewEventBinding.fragmentNewEventTextViewLocation.setText(locationName);
@@ -199,12 +200,13 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             }
         });
 
+         colorSpinner = view.findViewById(R.id.fragmentNewEvent_spinner_color);
         if(selectedColor != null){
             boolean colorEquals = true;
             ColorList colorList = new ColorList();
             for (int i = 0 ; i<colorList.basicColors().size() && colorEquals; i++) {
                 if(colorList.basicColors().get(i).equals(selectedColor.getHex())) {
-                    fragmentNewEventBinding.fragmentNewEventSpinnerColor.setSelection(i);
+                    colorSpinner.setSelection(i);
                     colorEquals = false;
                 }
 
@@ -212,6 +214,21 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
         }
+
+            selectedColor = new ColorList().getDefaultColor();
+
+            colorSpinner.setAdapter(new SpinnerColorSelectionAdapter(getContext(), new ColorList().basicColors()));
+            colorSpinner.setSelection(new ColorList().colorPosition(selectedColor), false);
+            colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedColor = new ColorList().basicColors().get(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
 
 
 
@@ -269,18 +286,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
                         }
                     });
-                    if(selectedCategory != null){
-                        boolean categoryEquals = true;
-                        for (int i = 0 ; i<categoryNameList.size() && categoryEquals; i++) {
-                            if(categoryNameList.get(i).equals(selectedCategory.getNome())) {
-                                categorySpinner.setSelection(i);
-                                categoryEquals = false;
-                            }
 
-                        }
-
-
-                    }
 
                 }
             });
@@ -316,6 +322,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             }
 
         });
+
     }
 
     public void getDate(View view){
@@ -411,6 +418,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             // display our date picker dialog.
             datePickerDialog.show();
         });
+
+
     }
 
     public void getTime(View view){
@@ -481,21 +490,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             timePickerDialog.show();
         });
     }
-    private void loadColorSpinner() {
-        selectedColor = new ColorList().getDefaultColor();
-        fragmentNewEventBinding.fragmentNewEventSpinnerColor.setAdapter(new SpinnerColorSelectionAdapter(getContext(), new ColorList().basicColors()));
-        fragmentNewEventBinding.fragmentNewEventSpinnerColor.setSelection(new ColorList().colorPosition(selectedColor), false);
-        fragmentNewEventBinding.fragmentNewEventSpinnerColor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedColor = new ColorList().basicColors().get(position);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
 
     public void setWeatherIcon(ImageView weatherIcon, int code){
         if (code == 0){

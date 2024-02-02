@@ -68,7 +68,7 @@ public class SpinnerColorSelectionAdapter extends ArrayAdapter<ColorObject> {
             }
 
             if (colorBlob != null && colorBlob.getBackground() != null) {
-                colorBlob.getBackground().setTint(Color.parseColor(colorObject.getHexHash()));
+                colorBlob.getBackground().setTint(Color.parseColor(colorObject.getHex()));
             }
 
             return view;
