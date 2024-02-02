@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.util;
 
+import android.net.Uri;
+
 import androidx.room.TypeConverter;
 
 import java.lang.*;
@@ -39,6 +41,16 @@ public class StringConverter {
     @TypeConverter
     public String[] StringTOStringArray(String string) {
         return toStringArray(string);
+    }
+
+    @TypeConverter
+    public String uriToString(Uri uri){
+        return uri.toString();
+    }
+
+    @TypeConverter
+    public Uri stringToUri(String string){
+        return Uri.parse(string);
     }
 
     public String toString(int[] array) {

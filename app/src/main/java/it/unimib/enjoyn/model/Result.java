@@ -8,8 +8,6 @@ import com.mapbox.search.result.SearchSuggestion;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
-
 public abstract class Result {
     private Result(){
 
@@ -26,7 +24,8 @@ public abstract class Result {
                 || this instanceof MapSuggestionSuccess
                 || this instanceof MapSearchSuccess
                 || this instanceof MapReverseSearchSuccess
-                || this instanceof SingleImageReadFromRemote;
+                || this instanceof SingleImageReadFromRemote
+                || this instanceof UserListSuccess;
     }
 
 
@@ -144,20 +143,35 @@ public abstract class Result {
         }
     }
 
+    public static final class UserListSuccess extends Result {
+        private final List<User> users;
+
+        public UserListSuccess(){
+            users = new ArrayList<>();
+        }
+        public void addUser(User user){
+            users.add(user);
+        }
+
+        public List<User> getUsers(){
+            return users;
+        }
+    }
+
     public static final class ResultList extends Result {
 
-        private final List<Result> messages;
+        private final List<Result> results;
 
         public ResultList() {
-            messages = new ArrayList<>();
+            results = new ArrayList<>();
         }
 
         public void addResult(Result result) {
-            messages.add(result);
+            results.add(result);
         }
 
         public List<Result> getResults() {
-            return messages;
+            return results;
         }
     }
 
@@ -207,18 +221,6 @@ public abstract class Result {
 
         public Uri getUri() {
             return uri;
-        }
-    }
-
-    public static final class MapError extends Result{
-        private final String message;
-
-        public MapError(String message) {
-            this.message = message;
-        }
-
-        public String getMessage(){
-            return message;
         }
     }
 

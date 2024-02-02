@@ -8,7 +8,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
@@ -26,11 +28,16 @@ public class ParticipationRemoteDataSource implements BaseParticipationRemoteDat
 
     @Override
     public void createParticipation(Event event, User user, Callback callback){
-        dbReference
+        DatabaseReference userReference =
+            dbReference
                 .child(Constants.PARTICIPATIONS_PATH)
                 .child(event.getEid())
-                .child(user.getUid())
-                .setValue(user.getUsername())
+                .child(user.getUid());
+
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("username", user.getUsername());
+
+        userReference.updateChildren(updateMap)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         callback.onComplete(new Result.Success());
@@ -47,13 +54,13 @@ public class ParticipationRemoteDataSource implements BaseParticipationRemoteDat
                 .get()
                 .addOnCompleteListener(task -> {
                    if(task.isSuccessful()){
-                       Result.ResultList userList = new Result.ResultList();
+                       Result.UserListSuccess userList = new Result.UserListSuccess();
 
                        DataSnapshot queryResult = task.getResult();
                        for (DataSnapshot dataSnapshot : queryResult.getChildren()) {
                            User user = dataSnapshot.getValue(User.class);
                            user.setUid(dataSnapshot.getKey());
-                           userList.addResult(new Result.UserSuccess(user));
+                           userList.addUser(user);
                        }
                        callback.onComplete(userList);
                    }
