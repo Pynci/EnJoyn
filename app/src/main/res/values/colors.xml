@@ -63,4 +63,14 @@
     <color name="md_theme_dark_surfaceTint">#91CDFF</color>
     <color name="md_theme_dark_outlineVariant">#42474E</color>
     <color name="md_theme_dark_scrim">#000000</color>
+
+    <color name="champagnePink">#EDDCD2</color>
+    <color name="mistyRose">#FDE2E4</color>
+    <color name="mimiPink">#FAD2E1</color>
+    <color name="ligthCyan">#C5DEDD</color>
+    <color name="mintCream">#DBE7E4</color>
+    <color name="aliceBlue">#D6E2E9</color>
+    <color name="columbiaBlue">#BCD4E6</color>
+    <color name="powderBlue">#99C1DE</color>
+
 </resources>
