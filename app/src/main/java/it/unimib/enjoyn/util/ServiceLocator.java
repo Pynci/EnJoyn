@@ -104,12 +104,17 @@ public class ServiceLocator {
         BaseEventLocalDataSource eventLocalDataSource;
         BaseEventRemoteDataSource eventRemoteDataSource;
         BaseParticipationRemoteDataSource eventParticipationRemoteDataSource;
+        BaseAuthenticationDataSource authenticationDataSource;
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 
         eventRemoteDataSource = new EventRemoteDataSource(jsonParserUtil);
         eventLocalDataSource = new EventLocalDataSource(getEventDao(application));
         eventParticipationRemoteDataSource = new ParticipationRemoteDataSource();
+        authenticationDataSource = new AuthenticationDataSource();
 
-        return new EventRepository(eventLocalDataSource, eventRemoteDataSource, eventParticipationRemoteDataSource);
+        return new EventRepository(eventLocalDataSource,
+                eventRemoteDataSource,
+                eventParticipationRemoteDataSource,
+                authenticationDataSource);
     }
 }

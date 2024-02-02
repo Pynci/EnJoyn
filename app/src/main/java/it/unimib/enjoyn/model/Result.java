@@ -57,6 +57,18 @@ public abstract class Result {
         }
     }
 
+    public static final class SingleEventSuccess extends Result{
+        private final Event event;
+
+        public SingleEventSuccess(Event event){
+            this.event = event;
+        }
+
+        public Event getEvent() {
+            return event;
+        }
+    }
+
     public static final class WeatherSuccess extends Result{
 
         private final WeatherResponse weatherResponse;

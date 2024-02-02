@@ -14,12 +14,12 @@ import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.source.events.BaseEventLocalDataSource;
 import it.unimib.enjoyn.source.events.BaseParticipationRemoteDataSource;
 import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
-import it.unimib.enjoyn.source.events.EventCallback;
+import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
 
-public class EventRepository implements IEventRepository, EventCallback {
+public class EventRepository implements IEventRepository {
     private final MutableLiveData<Result> allEventsMutableLiveData;
     private final MutableLiveData<Result> favoriteEventMutableLiveData;
-    private final MutableLiveData<Result> toDoEventMutableLiveData;
+    private final MutableLiveData<Result> toDoEventsMutableLiveData;
     private final MutableLiveData<Result> eventCreation;
     private final MutableLiveData<Result> eventParticipation;
     private final List<Event> eventsList;
@@ -27,17 +27,18 @@ public class EventRepository implements IEventRepository, EventCallback {
     private final BaseEventLocalDataSource eventLocalDataSource;
     private final BaseEventRemoteDataSource eventRemoteDataSource;
     private final BaseParticipationRemoteDataSource eventParticipationRemoteDataSource;
+    private final BaseAuthenticationDataSource authenticationDataSource;
 
     public EventRepository(BaseEventLocalDataSource eventLocalDataSource,
                            BaseEventRemoteDataSource eventRemoteDataSource,
-                           BaseParticipationRemoteDataSource eventParticipationRemoteDataSource) {
+                           BaseParticipationRemoteDataSource eventParticipationRemoteDataSource,
+                           BaseAuthenticationDataSource authenticationDataSource) {
         allEventsMutableLiveData = new MutableLiveData<>();
         favoriteEventMutableLiveData = new MutableLiveData<>();
-        toDoEventMutableLiveData = new MutableLiveData<>();
+        toDoEventsMutableLiveData = new MutableLiveData<>();
         this.eventLocalDataSource = eventLocalDataSource;
         this.eventRemoteDataSource = eventRemoteDataSource;
-        this.eventLocalDataSource.setEventCallback(this);
-        this.eventRemoteDataSource.setEventCallback(this);
+        this.authenticationDataSource = authenticationDataSource;
         this.eventParticipationRemoteDataSource = eventParticipationRemoteDataSource;
         eventCreation = new MutableLiveData<>();
         eventsList = new ArrayList<>();
@@ -46,8 +47,66 @@ public class EventRepository implements IEventRepository, EventCallback {
 
     @Override
     public MutableLiveData<Result> fetchAllEvents() {
-        eventRemoteDataSource.fetchAllEvents();
+        eventRemoteDataSource.fetchAllEvents(authenticationDataSource.getCurrentUserUID(),
+                result -> {
+                    Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    addEvent(event, allEventsMutableLiveData);
+                },
+                result -> {
+                    Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    Event oldEvent = findOldEvent(event);
+                    changeEvent(event, oldEvent, allEventsMutableLiveData);
+                },
+                result -> {
+                    Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    removeEvent(event, allEventsMutableLiveData);
+                },
+                allEventsMutableLiveData::postValue);
         return allEventsMutableLiveData;
+    }
+
+    public MutableLiveData<Result> fetchTodoEvents(){
+        eventRemoteDataSource.fetchAllEvents(authenticationDataSource.getCurrentUserUID(),
+                result -> {
+                    Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    eventParticipationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
+                        resultTodo -> {
+                            if(resultTodo.isSuccessful() && ((Result.BooleanSuccess) resultTodo).getData()){
+                                addEvent(event, toDoEventsMutableLiveData);
+                            }
+                        });
+                },
+                result -> {
+                    Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    Event oldEvent = findOldEvent(event);
+                    changeEvent(event, oldEvent, toDoEventsMutableLiveData);
+                },
+                result -> {
+                    Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    removeEvent(event, toDoEventsMutableLiveData);
+                },
+                toDoEventsMutableLiveData::postValue);
+        return toDoEventsMutableLiveData;
+    }
+
+    private void removeEvent(Event event, MutableLiveData<Result> mutableLiveData) {
+        eventsList.remove(event);
+        mutableLiveData.postValue(
+                new Result.EventSuccess(new EventsDatabaseResponse(eventsList)));
+    }
+
+    private void changeEvent(Event event, Event oldEvent, MutableLiveData<Result> mutableLiveData) {
+        if(oldEvent != null){
+            replaceEvent(oldEvent, event);
+            mutableLiveData.postValue(
+                    new Result.EventSuccess(new EventsDatabaseResponse(eventsList)));
+        }
+    }
+
+    private void addEvent(Event event, MutableLiveData<Result> mutableLiveData) {
+        eventsList.add(event);
+        mutableLiveData.postValue(
+                new Result.EventSuccess(new EventsDatabaseResponse(eventsList)));
     }
 
     @Override
@@ -90,52 +149,7 @@ public class EventRepository implements IEventRepository, EventCallback {
 
         return null;
     }
-
-
-    // callbacks
-
-    @Override
-    public void onSuccessFromLocal(List<Event> eventList) {
-        Result.EventSuccess result = new Result.EventSuccess(new EventsDatabaseResponse(eventList));
-        allEventsMutableLiveData.postValue(result);
-    }
-
-    @Override
-    public void onFailureFromLocal(Exception exception) {
-        Result.EventError resultError = new Result.EventError(exception.getMessage());
-        allEventsMutableLiveData.postValue(resultError);
-        favoriteEventMutableLiveData.postValue(resultError);
-        toDoEventMutableLiveData.postValue(resultError);
-    }
-
-    @Override
-    public void onRemoteEventAdded(Event event) {
-        eventsList.add(event);
-        allEventsMutableLiveData.postValue(
-                new Result.EventSuccess(new EventsDatabaseResponse(eventsList)));
-    }
-
-    @Override
-    public void onRemoteEventChanged(Event event) {
-        Event oldEvent = findOldEvent(event);
-        if(oldEvent != null){
-            replaceEvent(oldEvent, event);
-            allEventsMutableLiveData.postValue(
-                    new Result.EventSuccess(new EventsDatabaseResponse(eventsList)));
-        }
-    }
-
-    @Override
-    public void onRemoteEventRemoved(Event event) {
-        eventsList.remove(event);
-        allEventsMutableLiveData.postValue(
-                new Result.EventSuccess(new EventsDatabaseResponse(eventsList)));
-    }
-
-    @Override
-    public void onRemoteEventFetchFailure(Exception exception) {
-        allEventsMutableLiveData.postValue(new Result.Error(exception.getLocalizedMessage()));
-    }
+    
 
     private Event findOldEvent(Event newEvent){
         for(Event event : eventsList){

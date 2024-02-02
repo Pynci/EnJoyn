@@ -6,14 +6,11 @@ import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.source.Callback;
 
-public abstract class BaseEventRemoteDataSource {
-    protected EventCallback eventCallback;
+public interface BaseEventRemoteDataSource {
 
-    public void setEventCallback(EventCallback eventCallback) {
-        this.eventCallback = eventCallback;
-    }
+    void fetchAllEvents(String uid, Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback);
 
-    public abstract void fetchAllEvents();
-    public abstract void createEvent(Event event, User user, Callback callback);
-    public abstract void updateEvent(String key, Map<String, Object> updateMap);
+    void createEvent(Event event, User user, Callback callback);
+
+    void updateEvent(String key, Map<String, Object> updateMap);
 }

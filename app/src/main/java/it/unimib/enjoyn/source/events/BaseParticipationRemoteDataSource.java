@@ -6,4 +6,6 @@ import it.unimib.enjoyn.source.Callback;
 
 public interface BaseParticipationRemoteDataSource {
     void createParticipation(Event event, User user, Callback callback);
+
+    void isTodo(Event event, String uid, Callback callback);
 }

@@ -24,7 +24,7 @@ import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.util.Constants;
 import it.unimib.enjoyn.util.JSONParserUtil;
 
-public class EventRemoteDataSource extends BaseEventRemoteDataSource{
+public class EventRemoteDataSource implements BaseEventRemoteDataSource{
     private final JSONParserUtil jsonParserUtil;
     private EventsDatabaseResponse eventsDatabaseResponse;
     private final DatabaseReference dbReference;
@@ -42,7 +42,11 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
     }
 
     @Override
-    public void fetchAllEvents(){
+    public void fetchAllEvents(String uid,
+                               Callback addedCallback,
+                               Callback changedCallback,
+                               Callback removedCallback,
+                               Callback cancelledCallback){
 
         SimpleDateFormat formatoData = new SimpleDateFormat("yyyy-MM-dd");
         String dataAttuale = formatoData.format(new Date());
@@ -55,7 +59,7 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                         Event event = snapshot.getValue(Event.class);
                         event.setEid(snapshot.getKey());
                         if(event.getDate().compareTo(dataAttuale) >= 0){
-                            eventCallback.onRemoteEventAdded(event);
+                            addedCallback.onComplete(new Result.SingleEventSuccess(event));
                         }
                     }
 
@@ -64,7 +68,7 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                         Event event = snapshot.getValue(Event.class);
                         event.setEid(snapshot.getKey());
                         if(event.getDate().compareTo(dataAttuale) >= 0){
-                            eventCallback.onRemoteEventChanged(event);
+                            changedCallback.onComplete(new Result.SingleEventSuccess(event));
                         }
                     }
 
@@ -73,18 +77,18 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                         Event event = snapshot.getValue(Event.class);
                         event.setEid(snapshot.getKey());
                         if(event.getDate().compareTo(dataAttuale) >= 0){
-                            eventCallback.onRemoteEventRemoved(event);
+                            removedCallback.onComplete(new Result.SingleEventSuccess(event));
                         }
                     }
 
                     @Override
                     public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        // per ora niente
+                        // per ora niente, in caso aggiungere una callback
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        eventCallback.onRemoteEventFetchFailure(new Exception(error.getMessage()));
+                        cancelledCallback.onComplete(new Result.Error(Constants.EVENT_REMOTE_FETCH_ERROR));
                     }
                 });
     }

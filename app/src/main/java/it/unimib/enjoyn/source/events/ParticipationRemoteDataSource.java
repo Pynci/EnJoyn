@@ -1,15 +1,10 @@
 package it.unimib.enjoyn.source.events;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import it.unimib.enjoyn.model.Event;
@@ -67,6 +62,28 @@ public class ParticipationRemoteDataSource implements BaseParticipationRemoteDat
                    else{
                         callback.onComplete(new Result.Error(Constants.PARTICIPATION_REMOTE_FETCH_ERROR));
                    }
+                });
+    }
+
+    @Override
+    public void isTodo(Event event, String uid, Callback callback){
+        dbReference
+                .child(Constants.PARTICIPATIONS_PATH)
+                .child(event.getEid())
+                .child(uid)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        if(task.getResult().exists()){
+                            callback.onComplete(new Result.BooleanSuccess(true));
+                        }
+                        else{
+                            callback.onComplete(new Result.BooleanSuccess(false));
+                        }
+                    }
+                    else{
+                        callback.onComplete(new Result.Error(Constants.PARTICIPATION_REMOTE_FETCH_ERROR));
+                    }
                 });
     }
 }
