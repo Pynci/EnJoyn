@@ -146,6 +146,7 @@
                 android:layout_width="0dp"
                 android:layout_height="63dp"
                 android:layout_marginTop="32dp"
+
                 android:text="@string/Create_event"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -185,12 +186,13 @@
                 android:id="@+id/fragmentNewEvent_spinner_categories"
                 android:layout_width="192dp"
                 android:layout_height="54dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="24dp"
                 android:entries="@android:array/emailAddressTypes"
                 android:minHeight="48dp"
+                android:textAlignment="center"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_category"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
-                app:layout_constraintHorizontal_bias="0.357"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_category" />
 
             <TextView
@@ -221,10 +223,11 @@
                 android:layout_width="192dp"
                 android:layout_height="54dp"
                 android:layout_marginStart="40dp"
+                android:textAlignment="center"
                 android:background="@color/md_theme_dark_primary"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_color"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_color"
-                android:spinnerMode="dropdown"/>
+                android:spinnerMode="dialog"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

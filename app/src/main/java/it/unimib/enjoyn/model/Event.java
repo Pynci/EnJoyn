@@ -228,7 +228,7 @@ public class Event implements Parcelable {
         dest.writeDouble(this.distance);
         dest.writeInt(this.weatherCode);
         dest.writeDouble(this.weatherTemperature);
-        //dest.writeString(this.color);
+        dest.writeParcelable(this.color, flags);
     }
 
     public void readFromParcel(Parcel source) {
@@ -244,7 +244,7 @@ public class Event implements Parcelable {
         this.distance = source.readDouble();
         this.weatherCode = source.readInt();
         this.weatherTemperature = source.readDouble();
-       // this.color = source.readString();
+        this.color = source.readParcelable(ColorObject.class.getClassLoader());
     }
 
     protected Event(Parcel in) {
@@ -260,7 +260,7 @@ public class Event implements Parcelable {
         this.distance = in.readDouble();
         this.weatherCode = in.readInt();
         this.weatherTemperature = in.readDouble();
-      //  this.color = in.readString();
+        this.color = in.readParcelable(ColorObject.class.getClassLoader());
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {

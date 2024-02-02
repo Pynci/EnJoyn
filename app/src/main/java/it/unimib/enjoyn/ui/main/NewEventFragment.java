@@ -215,6 +215,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
         }
 
+
             selectedColor = new ColorList().getDefaultColor();
 
             colorSpinner.setAdapter(new SpinnerColorSelectionAdapter(getContext(), new ColorList().basicColors()));
@@ -286,7 +287,18 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
                         }
                     });
+                    if(selectedCategory!= null){
+                        boolean categoryEquals = true;
+                        for (int i = 0 ; i< categoryNameList.size() &&  categoryEquals; i++) {
+                            if(categoryNameList.get(i).equals(selectedCategory.getNome())) {
+                                categorySpinner.setSelection(i);
+                                categoryEquals = false;
+                            }
 
+                        }
+
+
+                    }
 
                 }
             });
@@ -558,7 +570,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         savedInstanceState.putBoolean(STATE_EQUALS, equals);
         savedInstanceState.putParcelable(STATE_CATEGORY, selectedCategory);
         savedInstanceState.putParcelable(STATE_URI, eventImage);
-        savedInstanceState.putParcelable(STATE_COLOR, (Parcelable) selectedColor);
+        savedInstanceState.putParcelable(STATE_COLOR, selectedColor);
         // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
     }

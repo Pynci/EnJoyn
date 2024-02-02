@@ -26,13 +26,5 @@
         android:layout_height="match_parent"
         android:layout_weight="1"/>
 
-    <TextView
-        android:textSize="22sp"
-        android:text="#000000"
-        android:gravity="center"
-        android:textColor="@color/cardview_dark_background"
-        android:id="@+id/colorHex"
-        android:layout_width="120dp"
-        android:layout_height="match_parent" />
 
 </LinearLayout>

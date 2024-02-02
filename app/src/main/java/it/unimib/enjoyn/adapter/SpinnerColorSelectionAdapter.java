@@ -50,7 +50,6 @@ public class SpinnerColorSelectionAdapter extends ArrayAdapter<ColorObject> {
             }
 
             TextView colorNameItem = view.findViewById(R.id.colorName);
-            TextView colorHexItem = view.findViewById(R.id.colorHex);
             TextView colorNameBG = view.findViewById(R.id.colorNameBG);
             View colorBlob = view.findViewById(R.id.colorBlob);
 
@@ -63,9 +62,7 @@ public class SpinnerColorSelectionAdapter extends ArrayAdapter<ColorObject> {
                 colorNameItem.setText(colorObject.getName());
             }
 
-            if (colorHexItem != null) {
-                colorHexItem.setText(colorObject.getHex());
-            }
+
 
             if (colorBlob != null && colorBlob.getBackground() != null) {
                 colorBlob.getBackground().setTint(Color.parseColor(colorObject.getHex()));
