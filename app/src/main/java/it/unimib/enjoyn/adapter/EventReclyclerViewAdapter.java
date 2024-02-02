@@ -13,10 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
-import java.util.Random;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
@@ -123,7 +120,6 @@ public class EventReclyclerViewAdapter extends
         private final TextView textViewPeopleNumber;
         private final TextView textViewDistance;
         private final Button joinButton;
-        private final ImageView eventImageView;
         private final ImageView weatherImage;
         private final ImageView backgroundImage;
         private boolean todo;
@@ -137,7 +133,6 @@ public class EventReclyclerViewAdapter extends
             textViewPlace = itemView.findViewById(R.id.eventListItem_textView_place);
             textViewPeopleNumber = itemView.findViewById(R.id.eventListItem_textView_peopleNumber);
             textViewDistance = itemView.findViewById(R.id.eventListItem_textView_distance);
-            eventImageView = itemView.findViewById(R.id.eventListItem_imageView_eventImage);
             joinButton = itemView.findViewById(R.id.eventListItem_button_joinButton);
             weatherImage = itemView.findViewById(R.id.eventListItem_imageView_weather);
             backgroundImage = itemView.findViewById(R.id.eventListItem_imageView_background);
@@ -175,10 +170,12 @@ public class EventReclyclerViewAdapter extends
             setWeatherIcon(weatherImage, event.getWeatherCode());
             //setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
             //Glide.with(application).load(event.getImageUrl()).placeholder(R.drawable.baseline_downloading_24).into(eventImageView);
+            String colore = event.getColor().getName();
             backgroundImage.setBackgroundColor(
-                    ContextCompat.getColor(itemView.getContext(), R.color.md_theme_light_error));
+                    ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor() ));
+
             joinButton.setBackgroundColor(
-                    ContextCompat.getColor(itemView.getContext(), R.color.md_theme_light_error));
+                    ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor() ));
 
         }
 
