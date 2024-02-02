@@ -7,9 +7,7 @@ import android.app.TimePickerDialog;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
@@ -17,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,13 +25,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 
-import com.google.android.material.imageview.ShapeableImageView;
+
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
@@ -41,6 +39,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.adapter.SpinnerColorSelectionAdapter;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
@@ -48,12 +47,13 @@ import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.model.WeatherApiResponse;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
+import it.unimib.enjoyn.util.ColorList;
+import it.unimib.enjoyn.util.ColorObject;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.WeatherCallback;
@@ -69,6 +69,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
     private static final String STATE_URI = "uri";
+    private static final String STATE_COLOR = "color";
     ImageButton date;
     ImageButton time;
     Spinner categorySpinner;
@@ -86,6 +87,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     String description;
     Uri eventImage = null;
     double temp = -10000;
+    ColorObject selectedColor;
 
     private Category selectedCategory;
 
@@ -127,6 +129,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             temp = savedInstanceState.getDouble(STATE_TEMPERATURE);
             equals = savedInstanceState.getBoolean(STATE_EQUALS);
             selectedCategory = savedInstanceState.getParcelable(STATE_CATEGORY);
+            selectedColor = savedInstanceState.getParcelable(STATE_COLOR);
             Log.d("code", ""+weatherCode);
             eventImage = savedInstanceState.getParcelable(STATE_URI);
         }
@@ -145,10 +148,14 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getViewLifecycleOwner();
+        loadColorSpinner();
         // Inflate the layout for this fragment
         fragmentNewEventBinding = FragmentNewEventBinding.inflate(inflater, container, false);
         return fragmentNewEventBinding.getRoot();
     }
+
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -192,31 +199,23 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             }
         });
 
-        ShapeableImageView image = fragmentNewEventBinding.fragmentNewEventShapeableImageViewEventImage;
-        ImageButton photoPicker = fragmentNewEventBinding.fragmentNewEventImageButtonPhotoPicker;
+        if(selectedColor != null){
+            boolean colorEquals = true;
+            ColorList colorList = new ColorList();
+            for (int i = 0 ; i<colorList.basicColors().size() && colorEquals; i++) {
+                if(colorList.basicColors().get(i).equals(selectedColor.getHex())) {
+                    fragmentNewEventBinding.fragmentNewEventSpinnerColor.setSelection(i);
+                    colorEquals = false;
+                }
 
-        /*if(eventImage!= null){
-            image.setImageURI(eventImage);
-            photoPicker.setVisibility(View.GONE);
-        }*/
-        ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
-                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                    // Callback is invoked after the user selects a media item or closes the
-                    // photo picker.
-                    if (uri != null) {
-                        image.setImageURI(uri);
-                        photoPicker.setVisibility(View.GONE);
-                        eventImage = uri;
-                        Log.d("PhotoPicker", "Selected URI: " + uri);
-                    } else {
-                        Log.d("PhotoPicker", "No media selected");
-                    }
-                });
+            }
 
-        photoPicker.setOnClickListener(v ->
-                pickMedia.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build()));
+
+        }
+
+
+
+
 
 
 
@@ -291,7 +290,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
 
-
         fragmentNewEventBinding.fragmentNewEventButtonCreateEvent.setOnClickListener(v -> {
             //TODO da inserire tag categoria
             title = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextTitle.getText());
@@ -303,6 +301,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 newEvent.setTime(timeWeather);
                 newEvent.setDescription(description);
                 newEvent.setCategory(selectedCategory);
+                newEvent.setColor(selectedColor);
                 //newEvent.setImageUrl(eventImage);
                 // chiamata ai livelli sottostanti per il salvataggio (da ascoltare)
                 userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
@@ -482,7 +481,21 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             timePickerDialog.show();
         });
     }
+    private void loadColorSpinner() {
+        selectedColor = new ColorList().getDefaultColor();
+        fragmentNewEventBinding.fragmentNewEventSpinnerColor.setAdapter(new SpinnerColorSelectionAdapter(getContext(), new ColorList().basicColors()));
+        fragmentNewEventBinding.fragmentNewEventSpinnerColor.setSelection(new ColorList().colorPosition(selectedColor), false);
+        fragmentNewEventBinding.fragmentNewEventSpinnerColor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedColor = new ColorList().basicColors().get(position);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
 
     public void setWeatherIcon(ImageView weatherIcon, int code){
         if (code == 0){
@@ -550,7 +563,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         savedInstanceState.putBoolean(STATE_EQUALS, equals);
         savedInstanceState.putParcelable(STATE_CATEGORY, selectedCategory);
         savedInstanceState.putParcelable(STATE_URI, eventImage);
+        savedInstanceState.putParcelable(STATE_COLOR, (Parcelable) selectedColor);
         // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
     }
+
 }
