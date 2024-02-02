@@ -3,27 +3,24 @@ package it.unimib.enjoyn.source.events;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventsDatabaseResponse;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.util.Constants;
 import it.unimib.enjoyn.util.JSONParserUtil;
 
@@ -42,11 +39,6 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
         this.jsonParserUtil = jsonParserUtil;
         eventList = new ArrayList<>();
         firstFetch = true;
-    }
-
-    @Override
-    public void getEvent(String category) {
-
     }
 
     @Override
@@ -97,24 +89,8 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                 });
     }
 
-//    //Vecchio getEvent()
-//    @Override
-//    public void getEvent() {
-//        EventsDatabaseResponse eventDBResponse = null;
-//        try {
-//            eventDBResponse = jsonParserUtil.parseJSONEventFileWithGSon("prova.json");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        if (eventDBResponse != null){
-//            eventCallback.onSuccessFromRemote(eventDBResponse, System.currentTimeMillis());
-//        } else{
-//            //TODO onFailure
-//        }
-//    }
-
     @Override
-    public void createEvent(Event event, User user){
+    public void createEvent(Event event, User user, Callback callback){
         String key = dbReference.child(Constants.EVENTS_PATH).push().getKey();
 
         dbReference
@@ -124,10 +100,10 @@ public class EventRemoteDataSource extends BaseEventRemoteDataSource{
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         event.setEid(key);
-                        eventCallback.onRemoteEventAdditionSuccess(event, user);
+                        callback.onComplete(new Result.Success());
                     }
                     else{
-                        eventCallback.onRemoteEventAdditionFailure(task.getException());
+                        callback.onComplete(new Result.Error(Constants.EVENT_REMOTE_CREATION_ERROR));
                     }
                 });
     }

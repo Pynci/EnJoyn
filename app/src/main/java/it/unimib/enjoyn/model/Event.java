@@ -17,7 +17,9 @@ public class Event implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
+
     private String eid;
+
     private String title;
 
     private String description;

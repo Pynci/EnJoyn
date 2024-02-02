@@ -4,8 +4,8 @@ import java.util.Map;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.source.Callback;
 
-//TODO da implementare
 public abstract class BaseEventRemoteDataSource {
     protected EventCallback eventCallback;
 
@@ -13,9 +13,7 @@ public abstract class BaseEventRemoteDataSource {
         this.eventCallback = eventCallback;
     }
 
-    public abstract void getEvent(String category);
     public abstract void fetchAllEvents();
-    public abstract void createEvent(Event event, User user);
-
+    public abstract void createEvent(Event event, User user, Callback callback);
     public abstract void updateEvent(String key, Map<String, Object> updateMap);
 }
