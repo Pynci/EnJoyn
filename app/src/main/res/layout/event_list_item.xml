@@ -29,29 +29,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:adjustViewBounds="true"
+                android:background="@color/champagnePink"
                 android:scaleType="center"
-                app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_eventImage"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:background="@color/champagnePink" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/eventListItem_textView_eventTitle"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:maxLength="30"
                 android:maxLines="1"
-                tools:text="Andare a mangiare al Kfc"
                 android:textColor="@color/cardview_dark_background"
-                app:layout_constraintEnd_toEndOf="@+id/eventListItem_imageView_background"
-                app:layout_constraintStart_toEndOf="@+id/eventListItem_imageView_eventImage"
-                app:layout_constraintTop_toTopOf="@+id/eventListItem_imageView_background" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/eventListItem_imageView_background"
+                tools:text="Andare a mangiare al Kfc" />
 
             <TextView
                 android:id="@+id/eventListItem_textView_date"
@@ -119,18 +117,6 @@
                 app:layout_constraintStart_toEndOf="@+id/eventListItem_textView_distance"
                 app:layout_constraintTop_toTopOf="@+id/eventListItem_textView_distance"
                 app:drawableEndCompat="@drawable/baseline_people_outline_24" />
-
-            <ImageView
-                android:id="@+id/eventListItem_imageView_eventImage"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
-                android:contentDescription="Immagine scelta dall'utente da API"
-                app:layout_constraintBottom_toBottomOf="@+id/eventListItem_textView_eventTitle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/eventListItem_textView_eventTitle"
-                app:srcCompat="@drawable/baseline_downloading_24" />
 
             <ImageView
                 android:id="@+id/eventListItem_imageView_weather"

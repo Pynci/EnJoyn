@@ -90,14 +90,10 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menu.clear();
-                menuInflater.inflate(R.menu.menu_toolbar, menu);
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
-                    startActivityBasedOnCondition(R.id.action_fragmentDiscover_to_favoritesFragment, false);
-                }
                 return false;
             }
         });

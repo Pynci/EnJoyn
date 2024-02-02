@@ -14,7 +14,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.Material3.Dark"
         app:popupTheme="@style/ThemeOverlay.Material3.Light"
-        app:menu="@menu/menu_toolbar"
+        app:menu="@menu/menu_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

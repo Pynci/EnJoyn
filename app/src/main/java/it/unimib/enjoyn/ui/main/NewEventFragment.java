@@ -14,8 +14,6 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -132,7 +130,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             equals = savedInstanceState.getBoolean(STATE_EQUALS);
             selectedCategory = savedInstanceState.getParcelable(STATE_CATEGORY);
             selectedColor = savedInstanceState.getParcelable(STATE_COLOR);
-            Log.d("code", ""+weatherCode);
             eventImage = savedInstanceState.getParcelable(STATE_URI);
         }
 
