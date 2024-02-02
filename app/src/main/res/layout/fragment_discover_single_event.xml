@@ -27,56 +27,28 @@
                 android:layout_height="199dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/background"
-                android:foreground="#30111111"
                 android:scaleType="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.518"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/img_0410" />
+                android:background="@color/seed"
+               />
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_title"
                 android:layout_width="315dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="32dp"
                 android:text="@string/ActivityName"
                 android:textColor="@color/md_theme_light_onBackground"
                 android:textColorHighlight="@color/md_theme_dark_background"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/fragmentDiscoverSingleEvent_materialCardView_eventImage"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/fragmentDiscoverSingleEvent_materialCardView_eventImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_weight="1"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="300dp"
                 app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_background"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintStart_toStartOf="parent" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/fragmentDiscoverSingleEvent_ImageView_eventImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/UserImageEvent"
-                        app:srcCompat="@drawable/baseline_camera_alt_24" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
 
 
             <com.google.android.material.chip.Chip
@@ -188,6 +160,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="@string/Join"
                 android:textSize="24sp"
+                android:textColor="@color/md_theme_dark_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

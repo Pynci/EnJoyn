@@ -1,5 +1,6 @@
 package it.unimib.enjoyn.ui.main;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -79,13 +80,9 @@ public class DiscoverSingleEvent extends Fragment {
         setWeatherIcon(fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventImageViewWeather, event.getWeatherCode());
         fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventTextViewTemperature.setText(event.getWeatherTemperature()+"°");
         fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventChipCategory.setText(event.getCategory().getNome());
-        /*boolean isTodo = event.isTODO();
-        if(isTodo){
-            fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.remove);
-        }else{
-            fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.Join);
-        } */
-        //DiscoverSingleEventArgs.fromBundle(getArguments()).getEvent().setDistance(44.44);
+
+        fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+        fragmentDiscoverSingleEventBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
 
     }
 

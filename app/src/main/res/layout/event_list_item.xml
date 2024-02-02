@@ -34,7 +34,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@color/md_theme_dark_inversePrimary" />
+                android:background="@color/champagnePink" />
 
             <TextView
                 android:id="@+id/eventListItem_textView_eventTitle"
@@ -48,7 +48,7 @@
                 android:maxLength="30"
                 android:maxLines="1"
                 tools:text="Andare a mangiare al Kfc"
-                android:textColor="@color/cardview_light_background"
+                android:textColor="@color/cardview_dark_background"
                 app:layout_constraintEnd_toEndOf="@+id/eventListItem_imageView_background"
                 app:layout_constraintStart_toEndOf="@+id/eventListItem_imageView_eventImage"
                 app:layout_constraintTop_toTopOf="@+id/eventListItem_imageView_background" />
@@ -104,6 +104,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
                 android:text="@string/Join"
+                android:textColor="@color/md_theme_dark_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_weather" />

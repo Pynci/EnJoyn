@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -14,9 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
@@ -88,7 +83,6 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                     public void onEventItemClick(Event event) {
                         DiscoverFragmentDirections.ActionFragmentDiscoverToFragmentDiscoverSingleEvent action =
                                DiscoverFragmentDirections.actionFragmentDiscoverToFragmentDiscoverSingleEvent(event);
-                        //Navigation.findNavController(view).navigate(R.id.action_discover_to_discoverSingleEvent);
                         Navigation.findNavController(view).navigate(action);
                     }
 

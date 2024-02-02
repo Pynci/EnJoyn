@@ -154,7 +154,6 @@ public class EventReclyclerViewAdapter extends
 
             }else{
                 onItemClickListener.onEventItemClick(eventList.get(getBindingAdapterPosition()));
-                //Navigation.findNavController(v).navigate(R.id.action_discover_to_discoverSingleEvent);
             }
         }
 
