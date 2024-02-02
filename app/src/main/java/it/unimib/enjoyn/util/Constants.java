@@ -50,9 +50,9 @@ public class Constants {
     // Constants for encrypted files
 
     public static final String UNEXPECTED_ERROR = "unexpected error";
-
-
-
+    public static final String DATE_BEFORE_ERROR = "Riprova, hai scelto una data passata";
+    public static final String TIME_BEFORE_DATE_ERROR = "Scegli prima la data";
+    public static final String STATE_LOCATION = "location";
 
     // errori personalizzati
     public static final String USER_ALREADY_LOGGED_ERROR = "USER_ALREADY_LOGGED";

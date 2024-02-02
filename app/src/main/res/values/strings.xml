@@ -121,4 +121,7 @@
     <string name="interests">Interessi</string>
     <string name="annulla">Annulla</string>
     <string name="addUser">Aggiungi</string>
+    <string name="ligthBlue">Ligth Blue</string>
+    <string name="immagine_event_item">Immagine event Item</string>
+    <string name="color">Colore :</string>
 </resources>

@@ -14,6 +14,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,6 +53,7 @@ import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ColorList;
 import it.unimib.enjoyn.util.ColorObject;
+import it.unimib.enjoyn.util.Constants;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.WeatherCallback;
@@ -130,6 +132,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             equals = savedInstanceState.getBoolean(STATE_EQUALS);
             selectedCategory = savedInstanceState.getParcelable(STATE_CATEGORY);
             selectedColor = savedInstanceState.getParcelable(STATE_COLOR);
+            Log.d("code", ""+weatherCode);
             eventImage = savedInstanceState.getParcelable(STATE_URI);
         }
 
@@ -306,7 +309,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
         fragmentNewEventBinding.fragmentNewEventButtonCreateEvent.setOnClickListener(v -> {
-            //TODO da inserire tag categoria
+
             title = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextTitle.getText());
             description = String.valueOf(fragmentNewEventBinding.fragmentNewEventEditTextDescription.getText());
 
@@ -317,6 +320,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 newEvent.setDescription(description);
                 newEvent.setCategory(selectedCategory);
                 newEvent.setColor(selectedColor);
+                newEvent.setParticipants(1);
                 //newEvent.setImageUrl(eventImage);
                 // chiamata ai livelli sottostanti per il salvataggio (da ascoltare)
                 userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
@@ -374,7 +378,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 year1 == c.get(Calendar.YEAR) && monthOfYear == c.get(Calendar.MONTH)
                                         && dayOfMonth<c.get(Calendar.DAY_OF_MONTH)){
                             Snackbar
-                                    .make(getView(), "scelta data passata, riprova", Snackbar.LENGTH_SHORT)
+                                    .make(getView(), Constants.DATE_BEFORE_ERROR, Snackbar.LENGTH_SHORT)
                                     .show();
                             return ;
                         }
@@ -442,7 +446,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         time.setOnClickListener(v -> {
             if(dateWeather == null ){
                 Snackbar
-                        .make(getView(), "scegliere prima la data", Snackbar.LENGTH_SHORT)
+                        .make(getView(), Constants.TIME_BEFORE_DATE_ERROR, Snackbar.LENGTH_SHORT)
                         .show();
                 return ;
             }
@@ -463,7 +467,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                             if(hourOfDay < c.get(Calendar.HOUR_OF_DAY)||
                                     hourOfDay < c.get(Calendar.HOUR_OF_DAY) && minute1 <c.get(Calendar.MINUTE)){
                                 Snackbar
-                                        .make(getView(), "scelta ora passata, riprova", Snackbar.LENGTH_SHORT)
+                                        .make(getView(), Constants.DATE_BEFORE_ERROR, Snackbar.LENGTH_SHORT)
                                         .show();
                                 return ;
                             }
@@ -519,32 +523,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         } else if (code == 95 || code == 96 || code == 99){
             weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
         }
-    }
-    private Weather getMeteoListWithGSon() {
-        JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
-        try {
-            /*TODO
-             * sistemare questa parte
-            */
-            /*
-            Context context = requireActivity().getApplication().getApplicationContext();
-            InputStream inputStream = context.getAssets().open("weather.json"); //apro file
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream)); //estraggo json
-
-            assert jsonParserUtil.parseJSONMeteoFileWithGSon(bufferedReader) != null;
-
-            List<Weather> meteoList = jsonParserUtil.parseJSONFileWithJSONObjectArray("weather.json").getMeteoList();
-
-            return meteoList;
-
-             */
-            WeatherApiResponse response = jsonParserUtil.parseJSONFileAPIMeteo("meteoCompleto.json");
-
-            return response.getWeather();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 

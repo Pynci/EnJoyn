@@ -1,14 +1,12 @@
 package it.unimib.enjoyn.ui.main;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -95,18 +93,6 @@ public class FriendsFragment extends Fragment {
         recyclerViewFriendsList.setAdapter(userRecyclerViewAdapter);
     }
 
-    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination, boolean finishActivity) {
-        if (true) {
-            Navigation.findNavController(requireView()).navigate(destination);
-        } else {
-            Intent intent = new Intent(requireContext(), destinationActivity);
-            startActivity(intent);
-        }
-        //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
-            requireActivity().finish();
-        }
-    }
 
     private List<User> getUserListWithGSon() {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());

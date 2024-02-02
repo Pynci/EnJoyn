@@ -53,7 +53,7 @@ public class EventViewModel extends ViewModel {
 
     public void updateEvent(Event event) {
         Map<String, Object> eventMap = new HashMap<>();
-        eventMap.put("participans", event.getParticipants());
+        eventMap.put("participants", event.getParticipants());
         eventRepository.updateEvent(event.getEid(), eventMap);
     }
 

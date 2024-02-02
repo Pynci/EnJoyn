@@ -3,6 +3,7 @@ package it.unimib.enjoyn.repository;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,8 +69,21 @@ public class EventRepository implements IEventRepository, EventCallback {
     }
 
     public MutableLiveData<Result> joinEvent(Event event, User user){
-        eventParticipationRemoteDataSource.createParticipation(event, user, eventParticipation::postValue);
+        eventParticipationRemoteDataSource.createParticipation(event, user, result -> {
+            if(result.isSuccessful()){
+                newParticipant(event);
+            }
+            else{
+                eventParticipation.postValue(result);
+            }
+        });
         return eventParticipation;
+    }
+
+    private void newParticipant(Event event){
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put("participants", event.getParticipants()+1);
+        eventRemoteDataSource.updateEvent(event.getEid(), updateMap);
     }
 
     public MutableLiveData<Result> fetchEventParticipations(Event event){

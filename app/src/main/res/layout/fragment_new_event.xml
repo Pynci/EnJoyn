@@ -166,8 +166,8 @@
 
             <EditText
                 android:id="@+id/fragmentNewEvent_editText_description"
-                android:layout_width="349dp"
-                android:layout_height="75dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
                 android:ems="10"
@@ -212,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="48dp"
-                android:text="Colore :"
+                android:text="@string/color"
                 android:textSize="24sp"
 
                 app:layout_constraintStart_toStartOf="@+id/fragmentNewEvent_guideline_left"
