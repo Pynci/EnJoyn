@@ -120,4 +120,5 @@
     <string name="peopleNumber">number of people</string>
     <string name="interests">Interessi</string>
     <string name="annulla">Annulla</string>
+    <string name="addUser">Aggiungi</string>
 </resources>
