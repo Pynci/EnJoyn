@@ -55,7 +55,7 @@ public class EventRepository implements IEventRepository {
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
                     Event oldEvent = findOldEvent(event);
-                    changeEvent(event, oldEvent, allEventsMutableLiveData);
+                    replaceEvent(event, oldEvent, allEventsMutableLiveData);
                 },
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
@@ -79,7 +79,7 @@ public class EventRepository implements IEventRepository {
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
                     Event oldEvent = findOldEvent(event);
-                    changeEvent(event, oldEvent, toDoEventsMutableLiveData);
+                    replaceEvent(event, oldEvent, toDoEventsMutableLiveData);
                 },
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
@@ -95,7 +95,7 @@ public class EventRepository implements IEventRepository {
                 new Result.EventSuccess(new EventsDatabaseResponse(eventsList)));
     }
 
-    private void changeEvent(Event event, Event oldEvent, MutableLiveData<Result> mutableLiveData) {
+    private void replaceEvent(Event event, Event oldEvent, MutableLiveData<Result> mutableLiveData) {
         if(oldEvent != null){
             replaceEvent(oldEvent, event);
             mutableLiveData.postValue(
@@ -108,6 +108,8 @@ public class EventRepository implements IEventRepository {
         mutableLiveData.postValue(
                 new Result.EventSuccess(new EventsDatabaseResponse(eventsList)));
     }
+
+
 
     @Override
     public void updateEvent(String key, Map<String, Object> updateMap) {
