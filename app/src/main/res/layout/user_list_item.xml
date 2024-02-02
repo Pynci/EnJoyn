@@ -16,6 +16,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="0dp"
+        android:contentDescription="@string/propic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +30,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="32dp"
         android:text="@string/username"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -42,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/insertName"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/userListItem_imageView_userPhoto"
         app:layout_constraintTop_toBottomOf="@+id/userListItem_textView_username" />
 
@@ -52,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/surname"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/userListItem_textView_name"
         app:layout_constraintStart_toEndOf="@+id/userListItem_textView_name" />
 

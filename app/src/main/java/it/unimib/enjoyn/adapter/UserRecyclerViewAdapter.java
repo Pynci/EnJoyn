@@ -26,8 +26,8 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     }
 
     private final UserRecyclerViewAdapter.OnItemClickListener onItemClickListener;
-    private Context context;
-    private List<User> usersList;
+    private final Context context;
+    private final List<User> usersList;
 
     public UserRecyclerViewAdapter(List<User> users, OnItemClickListener onItemClickListener, Context context) {
         this.usersList = users;
