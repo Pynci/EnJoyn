@@ -57,7 +57,7 @@
         app:layout_constraintStart_toEndOf="@+id/userListItem_textView_name" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/userListItem_button_addUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"

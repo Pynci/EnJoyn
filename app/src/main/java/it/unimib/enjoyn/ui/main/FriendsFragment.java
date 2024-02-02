@@ -113,7 +113,12 @@ public class FriendsFragment extends Fragment {
                     @Override
                     public void onUserItemClick(User user) {
                     }
-                });
+
+                    @Override
+                    public void onAddUserClick(User user) {
+
+                    }
+                },this.getContext() );
         recyclerViewFriendsList.setLayoutManager(layoutManager);
         recyclerViewFriendsList.setAdapter(userRecyclerViewAdapter);
     }
