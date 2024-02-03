@@ -27,11 +27,15 @@ import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
 import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
+import it.unimib.enjoyn.util.ServiceLocator;
 
 
 public class DiscoverRecyclerViewFragment extends Fragment {
@@ -39,9 +43,11 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
     private EventViewModel eventViewModel;
     private InterestsViewModel interestsViewModel;
+    private UserViewModel userViewModel;
     private List<Event> eventList;
     private List<Category> categoryList;
     private List<Event> interestedEventList;
+    private User user;
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
 
@@ -57,8 +63,11 @@ public class DiscoverRecyclerViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         interestsViewModel = new ViewModelProvider(requireActivity(), new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         eventList = new ArrayList<>();
         interestedEventList = new ArrayList<>();
@@ -101,23 +110,20 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                     @Override
                     public void onJoinButtonPressed(int position) {
 
-
-                     /* Event joinEvent = eventList.get(position);
-                        joinEvent.setParticipants(joinEvent.getParticipants()+1);
-                        eventViewModel.updateEvent(joinEvent);
-
-                        eventList.get(position).setTODO(!eventList.get(position).isTODO());
-
-                        if(eventList.get(position).isTODO()) {
-                            eventList.get(position).incrementPeopleNumber();
-                        }
-                        else{
-                            eventList.get(position).decrementPeopleNumber();
-                        }
-                        eventViewModel.updateEvent(eventList.get(position));
-
-                         */
-
+                        Event event = eventList.get(position);
+                        Log.d("event", event.isTodo()+"");
+                        userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
+                            if(result.isSuccessful()){
+                                user = ((Result.UserSuccess) result).getData();
+                                if(event.isTodo()){
+                                    eventViewModel.leaveEvent(event, user);
+                                } else {
+                                    eventViewModel.joinEvent(event, user);
+                                }
+                            }
+                        });
+                        event.setTodo(!event.isTodo());
+                        eventsRecyclerViewAdapter.notifyItemChanged(position);
                     }
                 } );
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);

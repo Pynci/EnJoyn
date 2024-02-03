@@ -22,7 +22,6 @@ import it.unimib.enjoyn.repository.MapRepository;
 public class EventViewModel extends ViewModel {
     private final IEventRepository eventRepository;
     private MutableLiveData<Result> allEvents;
-    private MutableLiveData<Result> toDoEventListLiveData;
     private final IWeatherRepository weatherRepository;
     private final MapRepository mapRepository;
     private MutableLiveData<Result> weatherListLiveData;
@@ -56,10 +55,13 @@ public class EventViewModel extends ViewModel {
 //        eventRepository.updateEvent(event.getEid(), eventMap);
 //    }
 
-//    //TODO fare metodo con category effettive
-//    private void fetchEvent(String category, long lastUpdate) {
-//        allEvents = eventRepository.fetchAllEvents();
-//    }
+    public MutableLiveData<Result> joinEvent(Event event, User user){
+        return eventRepository.joinEvent(event, user);
+    }
+
+    public MutableLiveData<Result> leaveEvent(Event event, User user){
+        return eventRepository.leaveEvent(event, user);
+    }
 
 
     public MutableLiveData<Result> createEvent(Event event, User eventCreator){

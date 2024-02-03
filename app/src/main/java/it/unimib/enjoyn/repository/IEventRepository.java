@@ -12,6 +12,10 @@ import it.unimib.enjoyn.model.User;
 public interface IEventRepository {
     MutableLiveData<Result> fetchAllEvents();
 
+    MutableLiveData<Result> joinEvent(Event event, User user);
+
+    MutableLiveData<Result> leaveEvent(Event event, User user);
+
 //    void updateEvent(String key, Map<String, Object> updateMap);
 
     MutableLiveData<Result> createEvent(Event event, User user);

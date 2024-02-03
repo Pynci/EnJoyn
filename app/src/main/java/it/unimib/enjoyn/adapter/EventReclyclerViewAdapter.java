@@ -1,6 +1,7 @@
 package it.unimib.enjoyn.adapter;
 
 import android.app.Application;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,7 +126,6 @@ public class EventReclyclerViewAdapter extends
         private final Button joinButton;
         private final ImageView weatherImage;
         private final ImageView backgroundImage;
-        private boolean todo;
 
 
         public EventViewHolder(@NonNull View itemView) {
@@ -149,8 +149,12 @@ public class EventReclyclerViewAdapter extends
         public void onClick(View v) {
 
             if(v.getId() == R.id.eventListItem_button_joinButton){
-                setTextButtonTodoEvent(todo);
+
+
+                //setTextButtonTodoEvent(eventList.get(getAdapterPosition()).isTodo());
+
                 onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                Log.d("index", getLayoutPosition()+" ");
                 //backgroundImage.setBackgroundColor(ContextCompat.getColor(v.getContext(),R.color.md_theme_dark_tertiary));
                 //joinButton.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.md_theme_light_error));
 
@@ -169,7 +173,7 @@ public class EventReclyclerViewAdapter extends
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
             setWeatherIcon(weatherImage, event.getWeatherCode());
-            setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTodo());
+            setTextButtonTodoEvent(event.isTodo());
             String color = event.getColor().getName();
 //            backgroundImage.setBackgroundColor(
 //                    ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor()));
@@ -182,10 +186,10 @@ public class EventReclyclerViewAdapter extends
 
         public void setTextButtonTodoEvent(boolean isTodo){
             if(isTodo){
-                joinButton.setText(R.string.Join);
+                joinButton.setText(R.string.remove);
             }
             else{
-                joinButton.setText(R.string.remove);
+                joinButton.setText(R.string.Join);
             }
         }
 
