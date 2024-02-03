@@ -18,15 +18,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
-import it.unimib.enjoyn.repository.IEventRepository;
+import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
-import it.unimib.enjoyn.util.ServiceLocator;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,8 +57,6 @@ public class TodoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IEventRepository eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
-                requireActivity().getApplication());
         eventList = new ArrayList<>();
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
@@ -104,34 +104,38 @@ public class TodoFragment extends Fragment {
                     public void onJoinButtonPressed(int position) {
                         //eventList.get(position).setTODO(!eventList.get(position).isTODO());
                         //if(eventList.get(position).isTODO()) {
-                            eventList.get(position).incrementPeopleNumber();
+                            //eventList.get(position).incrementPeopleNumber();
                         //}
                         //else{
                             eventList.get(position).decrementPeopleNumber();
                         //}
                         eventViewModel.updateEvent(eventList.get(position));
+
+                        eventsRecyclerViewAdapter.notifyDataSetChanged();
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
-        /*
-        eventViewModel.getToDoEventLiveData().observe(getViewLifecycleOwner(), result -> {
+
+        eventViewModel.getTodoEvents().observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
                 if (result.isSuccessful()) {
-                    eventList.clear();
-                    eventList.addAll(((Result.EventSuccess)result).getData().getEventList());
+                    int initialSize = this.eventList.size();
+                    this.eventList.clear();
+                    this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
+                    eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
                     eventsRecyclerViewAdapter.notifyDataSetChanged();
+
                 } else {
-                  /*  ErrorMessagesUtil errorMessagesUtil =
+                    ErrorMessagesUtil errorMessagesUtil =
                             new ErrorMessagesUtil(requireActivity().getApplication());
-                    Snackbar.make(view, errorMessagesUtil.
-                                    getErrorMessage(((Result.Error)result).getMessage()),
+                    Snackbar.make(view, errorMessagesUtil.getEventErrorMessage(((Result.Error)result).getMessage()),
                             Snackbar.LENGTH_SHORT).show();
                 }
                // progressBar.setVisibility(View.GONE);
             }
         });
-        */
+
 
     }
 

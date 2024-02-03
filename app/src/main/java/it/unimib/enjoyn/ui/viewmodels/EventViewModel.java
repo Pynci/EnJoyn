@@ -23,7 +23,6 @@ public class EventViewModel extends ViewModel {
     private final IEventRepository eventRepository;
     private MutableLiveData<Result> allEvents;
     private MutableLiveData<Result> toDoEventListLiveData;
-    private MutableLiveData<Result> favoriteEventListLiveData;
     private final IWeatherRepository weatherRepository;
     private final MapRepository mapRepository;
     private MutableLiveData<Result> weatherListLiveData;
@@ -49,6 +48,13 @@ public class EventViewModel extends ViewModel {
             allEvents = eventRepository.fetchAllEvents();
         }
         return allEvents;
+    }
+
+    public MutableLiveData<Result> getTodoEvents(){
+        if (toDoEventListLiveData == null){
+            toDoEventListLiveData = eventRepository.fetchTodoEvents();
+        }
+        return toDoEventListLiveData;
     }
 
     public void updateEvent(Event event) {

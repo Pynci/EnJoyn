@@ -107,7 +107,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                          */
 
                     }
-                });
+                } );
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
 

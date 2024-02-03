@@ -35,10 +35,12 @@ public class EventReclyclerViewAdapter extends
     private final Application application;
     private final OnItemClickListener onItemClickListener;
 
+
     public EventReclyclerViewAdapter(List<Event> eventList, Application application, OnItemClickListener onItemClickListener){
         this.eventList = eventList;
         this.onItemClickListener = onItemClickListener;
         this.application = application;
+
     }
 
     public int getItemViewType(int position){
@@ -146,8 +148,8 @@ public class EventReclyclerViewAdapter extends
         public void onClick(View v) {
 
             if(v.getId() == R.id.eventListItem_button_joinButton){
-                setTextButtonTodoEvent(todo);
-                todo = !todo;
+                //setTextButtonTodoEvent(todo);
+                //todo = !todo;
                 onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
                 //backgroundImage.setBackgroundColor(ContextCompat.getColor(v.getContext(),R.color.md_theme_dark_tertiary));
                 //joinButton.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.md_theme_light_error));
@@ -168,8 +170,7 @@ public class EventReclyclerViewAdapter extends
             textViewDistance.setText(event.getDistanceString());
             setWeatherIcon(weatherImage, event.getWeatherCode());
             //setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
-            //Glide.with(application).load(event.getImageUrl()).placeholder(R.drawable.baseline_downloading_24).into(eventImageView);
-            String colore = event.getColor().getName();
+            String color = event.getColor().getName();
             backgroundImage.setBackgroundColor(
                     ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor() ));
 
@@ -179,7 +180,7 @@ public class EventReclyclerViewAdapter extends
         }
 
 
-        private void setTextButtonTodoEvent(boolean isTodo){
+        public void setTextButtonTodoEvent(boolean isTodo){
             if(isTodo){
                 joinButton.setText(R.string.Join);
             }
