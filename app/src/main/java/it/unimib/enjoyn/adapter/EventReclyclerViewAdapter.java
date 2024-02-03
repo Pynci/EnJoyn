@@ -1,6 +1,8 @@
 package it.unimib.enjoyn.adapter;
 
 import android.app.Application;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +21,7 @@ import java.util.Random;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.util.ColorObject;
 
 public class EventReclyclerViewAdapter extends
         RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -171,9 +175,11 @@ public class EventReclyclerViewAdapter extends
             setWeatherIcon(weatherImage, event.getWeatherCode());
             setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTodo());
             String color = event.getColor().getName();
+
+            setColorEvent(textViewPlace, backgroundImage, joinButton, event.getColor(), itemView);
+
 //            backgroundImage.setBackgroundColor(
 //                    ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor()));
-//
 //            joinButton.setBackgroundColor(
 //                    ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor()));
 
@@ -223,6 +229,72 @@ public class EventReclyclerViewAdapter extends
         } else if (code == 95 || code == 96 || code == 99){
             weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
         }
+    }
+
+    public void setColorEvent(TextView textViewPlace, ImageView backgroundImage, Button joinButton, ColorObject color, View itemView){
+
+        switch (color.getHex()){
+            case "#80FFDB":
+                backgroundImage.setBackgroundColor(
+                    ContextCompat.getColor(itemView.getContext(), R.color.Aquamarine));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Aquamarine));
+
+
+                break;
+            case "#72EFDD":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Turquoise));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Turquoise));
+                break;
+            case "#64DFDF":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Tiffany_Blue));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Tiffany_Blue));
+                break;
+            case "#56CFE1":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Sky_blue));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Sky_blue));
+                break;
+            case "#48BFE3":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Aero));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Aero));
+                break;
+            case "#4EA8DE":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Picton_Blue));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Picton_Blue));
+                break;
+            case "#5390D9":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.United_Nations_Blue));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.United_Nations_Blue));
+                break;
+            case "#5E60CE":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
+
+                break;
+        }
+
     }
 
 }

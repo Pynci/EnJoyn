@@ -7,25 +7,15 @@ public class ColorObject implements Parcelable {
     private String name;
     private String hex;
     private String contrastHex;
-    private int idColor;
 
     public ColorObject() {
     }
 
-    public ColorObject(String name, String hex, String contrastHex, int idColor) {
+    public ColorObject(String name, String hex, String contrastHex) {
         this.name = name;
         this.hex = hex;
         this.contrastHex = contrastHex;
-        this.idColor = idColor;
     }
-
-    protected ColorObject(Parcel in, int idColor) {
-        name = in.readString();
-        hex = in.readString();
-        contrastHex = in.readString();
-        this.idColor = idColor;
-    }
-
 
 
     public String getHexHash() {
@@ -60,13 +50,6 @@ public class ColorObject implements Parcelable {
         this.contrastHex = contrastHex;
     }
 
-    public int getIdColor() {
-        return idColor;
-    }
-
-    public void setIdColor(int idColor) {
-        this.idColor = idColor;
-    }
 
     @Override
     public int describeContents() {
@@ -78,21 +61,18 @@ public class ColorObject implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.hex);
         dest.writeString(this.contrastHex);
-        dest.writeInt(this.idColor);
     }
 
     public void readFromParcel(Parcel source) {
         this.name = source.readString();
         this.hex = source.readString();
         this.contrastHex = source.readString();
-        this.idColor = source.readInt();
     }
 
     protected ColorObject(Parcel in) {
         this.name = in.readString();
         this.hex = in.readString();
         this.contrastHex = in.readString();
-        this.idColor = in.readInt();
     }
 
     public static final Creator<ColorObject> CREATOR = new Creator<ColorObject>() {
