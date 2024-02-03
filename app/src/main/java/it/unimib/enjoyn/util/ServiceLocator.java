@@ -30,9 +30,7 @@ import it.unimib.enjoyn.source.BaseWeatherRemoteDataSource;
 import it.unimib.enjoyn.source.WeatherRemoteDataSource;
 import it.unimib.enjoyn.repository.EventRepository;
 import it.unimib.enjoyn.repository.IEventRepository;
-import it.unimib.enjoyn.source.events.BaseEventLocalDataSource;
 import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
-import it.unimib.enjoyn.source.events.EventLocalDataSource;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -80,10 +78,6 @@ public class ServiceLocator {
         return LocalRoomDatabase.getDatabase(application);
     }
 
-    public LocalRoomDatabase getEventDao(Application application) { //istanza di event room database
-        return LocalRoomDatabase.getDatabase(application);
-    }
-
     public IWeatherRepository getWeatherRepository(){
         BaseWeatherRemoteDataSource weatherRemoteDataSource;
 
@@ -101,18 +95,16 @@ public class ServiceLocator {
     }
 
     public IEventRepository getEventRepository(Application application){
-        BaseEventLocalDataSource eventLocalDataSource;
         BaseEventRemoteDataSource eventRemoteDataSource;
         BaseParticipationRemoteDataSource eventParticipationRemoteDataSource;
         BaseAuthenticationDataSource authenticationDataSource;
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 
         eventRemoteDataSource = new EventRemoteDataSource(jsonParserUtil);
-        eventLocalDataSource = new EventLocalDataSource(getEventDao(application));
         eventParticipationRemoteDataSource = new ParticipationRemoteDataSource();
         authenticationDataSource = new AuthenticationDataSource();
 
-        return new EventRepository(eventLocalDataSource,
+        return new EventRepository(
                 eventRemoteDataSource,
                 eventParticipationRemoteDataSource,
                 authenticationDataSource);

@@ -50,11 +50,11 @@ public class EventViewModel extends ViewModel {
         return allEvents;
     }
 
-    public void updateEvent(Event event) {
-        Map<String, Object> eventMap = new HashMap<>();
-        eventMap.put("participants", event.getParticipants());
-        eventRepository.updateEvent(event.getEid(), eventMap);
-    }
+//    public void updateEvent(Event event) {
+//        Map<String, Object> eventMap = new HashMap<>();
+//        eventMap.put("participants", event.getParticipants());
+//        eventRepository.updateEvent(event.getEid(), eventMap);
+//    }
 
 //    //TODO fare metodo con category effettive
 //    private void fetchEvent(String category, long lastUpdate) {

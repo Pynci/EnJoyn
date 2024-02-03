@@ -42,6 +42,24 @@ public class ParticipationRemoteDataSource implements BaseParticipationRemoteDat
                 });
     }
 
+    @Override
+    public void deleteParticipation(Event event, User user, Callback callback){
+        dbReference
+            .child(Constants.PARTICIPATIONS_PATH)
+            .child(event.getEid())
+            .child(user.getUid())
+            .removeValue()
+            .addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    callback.onComplete(new Result.Success());
+                }
+                else{
+                    callback.onComplete(new Result.Error(Constants.PARTICIPATION_REMOTE_DELETION_ERROR));
+                }
+            });
+    }
+
+    // per implementazioni future..
     public void fetchEventParticipations(Event event, Callback callback){
         dbReference
                 .child(Constants.PARTICIPATIONS_PATH)

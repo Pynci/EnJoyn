@@ -113,7 +113,7 @@ public class EventRemoteDataSource implements BaseEventRemoteDataSource{
     }
 
     @Override
-    public void updateEvent(String key, Map<String, Object> updateMap){
+    public void updateEvent(String key, Map<String, Object> updateMap, Callback callback){
         DatabaseReference eventReference = dbReference
                 .child(Constants.EVENTS_PATH)
                 .child(key);
@@ -122,10 +122,10 @@ public class EventRemoteDataSource implements BaseEventRemoteDataSource{
                 .updateChildren(updateMap)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        //eventCallback.onSuccessFromRemote();
+                        callback.onComplete(new Result.Success());
                     }
                     else{
-                        //eventCallback.onRemoteDatabaseFailure(task.getException());
+                        callback.onComplete(new Result.Error(Constants.EVENT_REMOTE_UPDATE_ERROR));
                     }
                 });
     }

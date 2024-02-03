@@ -12,5 +12,5 @@ public interface BaseEventRemoteDataSource {
 
     void createEvent(Event event, User user, Callback callback);
 
-    void updateEvent(String key, Map<String, Object> updateMap);
+    void updateEvent(String key, Map<String, Object> updateMap, Callback callback);
 }
