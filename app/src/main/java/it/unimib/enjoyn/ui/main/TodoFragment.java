@@ -107,7 +107,7 @@ public class TodoFragment extends Fragment {
                             //eventList.get(position).incrementPeopleNumber();
                         //}
                         //else{
-                            eventList.get(position).decrementPeopleNumber();
+                            //eventList.get(position).decrementPeopleNumber();
                         //}
 //                        eventViewModel.updateEvent(eventList.get(position));
 

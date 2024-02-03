@@ -3,50 +3,35 @@ package it.unimib.enjoyn.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
-import androidx.room.Embedded;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.database.Exclude;
 
 import java.util.Objects;
 
 import it.unimib.enjoyn.util.ColorObject;
 
-@Entity
 public class Event implements Parcelable {
-
-    @PrimaryKey(autoGenerate = true)
-    private long id;
     private String eid;
     private String title;
     private String description;
     private String date;
     private String time;
-    @Embedded(prefix = "location_")
     private EventLocation location;
-    @Embedded(prefix = "category_")
     private Category category;
     private int participants;
     @Exclude
     private boolean isTodo;
-    @Nullable
     private double distance;
     private int weatherCode;
     private double weatherTemperature;
-
-    @Embedded(prefix = "color_")
     private ColorObject color;
 
     public Event() {
 
     }
 
-    public Event(long id, String eid, String title, String description, String date, String time,
+    public Event(String eid, String title, String description, String date, String time,
                  EventLocation location, Category category, int participants, double distance,
                  int weatherCode, double weatherTemperature, ColorObject color) {
-        this.id = id;
         this.eid = eid;
         this.title = title;
         this.description = description;
@@ -59,10 +44,6 @@ public class Event implements Parcelable {
         this.weatherCode = weatherCode;
         this.weatherTemperature = weatherTemperature;
         this.color = color;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getTitle() {
@@ -106,7 +87,7 @@ public class Event implements Parcelable {
     }
 
     public String getDistanceString(){
-        return Double.toString(distance)+" km";
+        return distance +" km";
     }
 
 
@@ -124,10 +105,6 @@ public class Event implements Parcelable {
 
     public void setWeatherTemperature(double weatherTemperature) {
         this.weatherTemperature = weatherTemperature;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setTitle(String title) {
@@ -176,16 +153,11 @@ public class Event implements Parcelable {
     }
 
     public void incrementPeopleNumber(){
-
-            participants++;
-
-        this.participants = participants;
+        participants++;
     }
 
     public void decrementPeopleNumber(){
-
-            participants--;
-            this.participants = participants;
+        participants--;
     }
 
     public String getEid() {
@@ -201,7 +173,10 @@ public class Event implements Parcelable {
         if (this == o) return true;
         if (!(o instanceof Event)) return false;
         Event event = (Event) o;
-        return  Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title) && Objects.equals(description, event.description) && Objects.equals(date, event.date) && Objects.equals(time, event.time) && Objects.equals(location, event.location) && Objects.equals(category, event.category);
+        return  Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title)
+                && Objects.equals(description, event.description) && Objects.equals(date, event.date)
+                && Objects.equals(time, event.time) && Objects.equals(location, event.location)
+                && Objects.equals(category, event.category);
     }
 
     @Override
@@ -217,7 +192,6 @@ public class Event implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
         dest.writeString(this.eid);
         dest.writeString(this.title);
         dest.writeString(this.description);
@@ -233,7 +207,6 @@ public class Event implements Parcelable {
     }
 
     public void readFromParcel(Parcel source) {
-        this.id = source.readLong();
         this.eid = source.readString();
         this.title = source.readString();
         this.description = source.readString();
@@ -249,7 +222,6 @@ public class Event implements Parcelable {
     }
 
     protected Event(Parcel in) {
-        this.id = in.readLong();
         this.eid = in.readString();
         this.title = in.readString();
         this.description = in.readString();
