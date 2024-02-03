@@ -50,13 +50,6 @@ public class EventViewModel extends ViewModel {
         return allEvents;
     }
 
-    public MutableLiveData<Result> getTodoEvents(){
-        if (toDoEventListLiveData == null){
-            toDoEventListLiveData = eventRepository.fetchTodoEvents();
-        }
-        return toDoEventListLiveData;
-    }
-
     public void updateEvent(Event event) {
         Map<String, Object> eventMap = new HashMap<>();
         eventMap.put("participants", event.getParticipants());

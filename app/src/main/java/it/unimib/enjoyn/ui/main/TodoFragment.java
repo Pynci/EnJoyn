@@ -117,7 +117,7 @@ public class TodoFragment extends Fragment {
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
 
-        eventViewModel.getTodoEvents().observe(getViewLifecycleOwner(), result -> {
+        eventViewModel.getEvent().observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
                 if (result.isSuccessful()) {
                     int initialSize = this.eventList.size();

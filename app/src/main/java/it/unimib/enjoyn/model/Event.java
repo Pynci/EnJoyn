@@ -8,6 +8,8 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.Objects;
 
 import it.unimib.enjoyn.util.ColorObject;
@@ -17,23 +19,18 @@ public class Event implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
-
     private String eid;
-
     private String title;
-
     private String description;
-
     private String date;
-
     private String time;
-
     @Embedded(prefix = "location_")
     private EventLocation location;
     @Embedded(prefix = "category_")
     private Category category;
-
     private int participants;
+    @Exclude
+    private boolean isTodo;
     @Nullable
     private double distance;
     private int weatherCode;
@@ -94,6 +91,10 @@ public class Event implements Parcelable {
 
     public int getParticipants() {
         return participants;
+    }
+
+    public boolean isTodo() {
+        return isTodo;
     }
 
     public String getPeopleNumberString(){
@@ -161,6 +162,11 @@ public class Event implements Parcelable {
         this.time = time;
     }
 
+
+    public void setTodo(boolean todo) {
+        isTodo = todo;
+    }
+
     public ColorObject getColor() {
         return color;
     }
@@ -190,11 +196,6 @@ public class Event implements Parcelable {
         this.eid = eid;
     }
 
-    //TODO aggiungere parcel di EventLocation
-
-
-    /*TODO
-    quando prendiamo da db Firebase aggiungere peopleNumber*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

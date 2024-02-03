@@ -50,53 +50,37 @@ public class EventRepository implements IEventRepository {
         eventRemoteDataSource.fetchAllEvents(authenticationDataSource.getCurrentUserUID(),
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    eventParticipationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
+                            resultTodo -> {
+                                if(resultTodo.isSuccessful()){
+                                    event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                }
+                            });
                     addEvent(event, allEventsMutableLiveData);
                 },
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
                     Event oldEvent = findOldEvent(event);
+                    eventParticipationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
+                            resultTodo -> {
+                                if(resultTodo.isSuccessful()){
+                                    event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                }
+                            });
                     replaceEvent(event, oldEvent, allEventsMutableLiveData);
                 },
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    eventParticipationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
+                            resultTodo -> {
+                                if(resultTodo.isSuccessful()){
+                                    event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                }
+                            });
                     removeEvent(event, allEventsMutableLiveData);
                 },
                 allEventsMutableLiveData::postValue);
         return allEventsMutableLiveData;
-    }
-
-    public MutableLiveData<Result> fetchTodoEvents(){
-        eventRemoteDataSource.fetchAllEvents(authenticationDataSource.getCurrentUserUID(),
-                result -> {
-                    Event event = ((Result.SingleEventSuccess) result).getEvent();
-                    eventParticipationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
-                        resultTodo -> {
-                            if(resultTodo.isSuccessful() && ((Result.BooleanSuccess) resultTodo).getData()){
-                                addEvent(event, toDoEventsMutableLiveData);
-                            }
-                        });
-                },
-                result -> {
-                    Event event = ((Result.SingleEventSuccess) result).getEvent();
-                    Event oldEvent = findOldEvent(event);
-                    eventParticipationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
-                            resultTodo -> {
-                                if(resultTodo.isSuccessful() && ((Result.BooleanSuccess) resultTodo).getData()){
-                                    replaceEvent(event, oldEvent, toDoEventsMutableLiveData);
-                                }
-                            });
-                },
-                result -> {
-                    Event event = ((Result.SingleEventSuccess) result).getEvent();
-                    eventParticipationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
-                            resultTodo -> {
-                                if(resultTodo.isSuccessful() && ((Result.BooleanSuccess) resultTodo).getData()){
-                                    removeEvent(event, toDoEventsMutableLiveData);
-                                }
-                            });
-                },
-                toDoEventsMutableLiveData::postValue);
-        return toDoEventsMutableLiveData;
     }
 
     private void removeEvent(Event event, MutableLiveData<Result> mutableLiveData) {
