@@ -20,8 +20,11 @@ public class Event implements Parcelable {
     private int participants;
     @Exclude
     private boolean isTodo;
+    @Exclude
     private double distance;
+    @Exclude
     private int weatherCode;
+    @Exclude
     private double weatherTemperature;
     private ColorObject color;
 
@@ -86,6 +89,7 @@ public class Event implements Parcelable {
         return distance;
     }
 
+    @Exclude
     public String getDistanceString(){
         return distance +" km";
     }
