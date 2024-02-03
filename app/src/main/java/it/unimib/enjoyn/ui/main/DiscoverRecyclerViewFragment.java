@@ -111,7 +111,6 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                     public void onJoinButtonPressed(int position) {
 
                         Event event = eventList.get(position);
-                        Log.d("event", event.isTodo()+"");
                         userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
                             if(result.isSuccessful()){
                                 user = ((Result.UserSuccess) result).getData();
@@ -122,8 +121,8 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                                 }
                             }
                         });
-                        event.setTodo(!event.isTodo());
-                        eventsRecyclerViewAdapter.notifyItemChanged(position);
+                        //event.setTodo(!event.isTodo());
+                        eventsRecyclerViewAdapter.notifyDataSetChanged();
                     }
                 } );
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);

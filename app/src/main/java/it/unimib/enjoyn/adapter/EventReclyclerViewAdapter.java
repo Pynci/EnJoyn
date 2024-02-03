@@ -151,7 +151,7 @@ public class EventReclyclerViewAdapter extends
             if(v.getId() == R.id.eventListItem_button_joinButton){
 
 
-                //setTextButtonTodoEvent(eventList.get(getAdapterPosition()).isTodo());
+                setTextButtonTodoEvent(eventList.get(getAdapterPosition()).isTodo());
 
                 onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
                 Log.d("index", getLayoutPosition()+" ");
