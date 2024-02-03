@@ -149,8 +149,7 @@ public class EventReclyclerViewAdapter extends
         public void onClick(View v) {
 
             if(v.getId() == R.id.eventListItem_button_joinButton){
-                //setTextButtonTodoEvent(todo);
-                //todo = !todo;
+                setTextButtonTodoEvent(todo);
                 onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
                 //backgroundImage.setBackgroundColor(ContextCompat.getColor(v.getContext(),R.color.md_theme_dark_tertiary));
                 //joinButton.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.md_theme_light_error));
@@ -170,7 +169,7 @@ public class EventReclyclerViewAdapter extends
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
             setWeatherIcon(weatherImage, event.getWeatherCode());
-            //setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
+            setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTodo());
             String color = event.getColor().getName();
 //            backgroundImage.setBackgroundColor(
 //                    ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor()));

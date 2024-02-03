@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,13 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 
@@ -33,7 +38,10 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
 
     private EventViewModel eventViewModel;
+    private InterestsViewModel interestsViewModel;
     private List<Event> eventList;
+    private List<Category> categoryList;
+    private List<Event> interestedEventList;
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
 
@@ -50,7 +58,11 @@ public class DiscoverRecyclerViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+        interestsViewModel = new ViewModelProvider(requireActivity(), new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
+
         eventList = new ArrayList<>();
+        interestedEventList = new ArrayList<>();
+        categoryList = new ArrayList<>();
     }
 
     @Override
@@ -77,7 +89,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                 LinearLayoutManager.VERTICAL, false);
 
 
-        eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList, requireActivity().getApplication(),
+        eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(interestedEventList, requireActivity().getApplication(),
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
@@ -111,25 +123,48 @@ public class DiscoverRecyclerViewFragment extends Fragment {
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
 
-        eventViewModel.getEvent().observe(getViewLifecycleOwner(),
+        interestsViewModel.getInterests().observe(getViewLifecycleOwner(),
                 result -> {
-                    if (result.isSuccessful()) {
-                        int initialSize = this.eventList.size();
-                        this.eventList.clear();
-                        this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
-                        eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
-                        eventsRecyclerViewAdapter.notifyDataSetChanged();
+                    if (result.isSuccessful()){
+                        this.categoryList.clear();
+                        this.categoryList.addAll(((Result.CategorySuccess) result).getCategoryList());
 
-                    } else {
+                        eventViewModel.getEvent().observe(getViewLifecycleOwner(),
+                                resultEvent -> {
+                                    if (result.isSuccessful()) {
+                                        this.eventList.clear();
+                                        this.eventList.addAll(((Result.EventSuccess) resultEvent).getData().getEventList());
+                                        Boolean find;
+                                        int initialSize = this.interestedEventList.size();
+                                        this.interestedEventList.clear();
+                                        for (Event event: eventList) {
+                                            find = false;
+                                            for (int i = 0; i<categoryList.size() && !find; i++){
+                                                if (categoryList.get(i).equals(event.getCategory())){
+                                                    interestedEventList.add(event);
+                                                    find = true;
+                                                }
+                                            }
+                                        }
+                                        eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.interestedEventList.size());
+                                        eventsRecyclerViewAdapter.notifyDataSetChanged();
 
-                        ErrorMessagesUtil errorMessagesUtil =
-                                new ErrorMessagesUtil(requireActivity().getApplication());
-                        Snackbar.make(view, errorMessagesUtil.
-                                        getEventErrorMessage(VIEW_MODEL_ERROR),
-                                Snackbar.LENGTH_SHORT).show();
+                                    } else {
 
+                                        ErrorMessagesUtil errorMessagesUtil =
+                                                new ErrorMessagesUtil(requireActivity().getApplication());
+                                        Snackbar.make(view, errorMessagesUtil.
+                                                        getEventErrorMessage(VIEW_MODEL_ERROR),
+                                                Snackbar.LENGTH_SHORT).show();
+
+                                    }
+                                });
                     }
-                });
+        });
+
+
+
+
 
     }
 
