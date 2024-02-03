@@ -79,11 +79,21 @@ public class EventRepository implements IEventRepository {
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
                     Event oldEvent = findOldEvent(event);
-                    replaceEvent(event, oldEvent, toDoEventsMutableLiveData);
+                    eventParticipationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
+                            resultTodo -> {
+                                if(resultTodo.isSuccessful() && ((Result.BooleanSuccess) resultTodo).getData()){
+                                    replaceEvent(event, oldEvent, toDoEventsMutableLiveData);
+                                }
+                            });
                 },
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
-                    removeEvent(event, toDoEventsMutableLiveData);
+                    eventParticipationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
+                            resultTodo -> {
+                                if(resultTodo.isSuccessful() && ((Result.BooleanSuccess) resultTodo).getData()){
+                                    removeEvent(event, toDoEventsMutableLiveData);
+                                }
+                            });
                 },
                 toDoEventsMutableLiveData::postValue);
         return toDoEventsMutableLiveData;
@@ -144,7 +154,7 @@ public class EventRepository implements IEventRepository {
     private void newParticipant(Event event){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("participants", event.getParticipants()+1);
-        eventRemoteDataSource.updateEvent(event.getEid(), updateMap);
+        updateEvent(event.getEid(), updateMap);
     }
 
     public MutableLiveData<Result> fetchEventParticipations(Event event){
