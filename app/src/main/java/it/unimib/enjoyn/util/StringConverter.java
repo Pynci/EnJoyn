@@ -43,16 +43,6 @@ public class StringConverter {
         return toStringArray(string);
     }
 
-    @TypeConverter
-    public String uriToString(Uri uri){
-        return uri.toString();
-    }
-
-    @TypeConverter
-    public Uri stringToUri(String string){
-        return Uri.parse(string);
-    }
-
     public String toString(int[] array) {
         String string = "";
 
