@@ -2,6 +2,7 @@ package it.unimib.enjoyn.ui.main;
 
 import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
+import it.unimib.enjoyn.util.SnackbarBuilder;
 
 
 public class DiscoverRecyclerViewFragment extends Fragment {
@@ -89,6 +91,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.discoverRecyclerView_recyclerview_event);
 
@@ -107,7 +110,16 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
                     @Override
                     public void onJoinButtonPressed(int position) {
-
+                        if(eventList.get(position).isTodo()){
+                            Snackbar snackbar;
+                            snackbar = SnackbarBuilder.buildOkSnackbar("evento rimosso", view, getContext(), currentTheme);
+                            snackbar.show();
+                            //R.string.eventRemoveToDo
+                        } else {
+                            Snackbar snackbar;
+                            snackbar = SnackbarBuilder.buildOkSnackbar("evento aggiunto", view, getContext(), currentTheme);
+                            snackbar.show();
+                        }
                     }
 
 

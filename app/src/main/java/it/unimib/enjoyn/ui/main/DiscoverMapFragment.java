@@ -155,7 +155,9 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             PermissionsManager permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
         }
-
+        joinButtom = view.findViewById(R.id.eventListItem_button_joinButton);
+        eventItem = view.findViewById(R.id.fragmentDiscoverMap_cardView_eventItem);
+        eventItem.setVisibility(View.GONE);
         suggestionListView = view.findViewById(R.id.fragmentDiscoverMap_listView);
         suggestionClicked = false;
         searchClicked = false;
@@ -339,8 +341,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             return false;
         });
 
-        eventItem = view.findViewById(R.id.fragmentDiscoverMap_cardView_eventItem);
-        joinButtom = view.findViewById(R.id.eventListItem_button_joinButton);
+
 
         pointAnnotationManager.addClickListener(annotation -> {
 
@@ -372,26 +373,35 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
             });
 
+            if(event.isTodo()){
+                joinButtom.setText(R.string.remove);
+            }
+            else{
+                joinButtom.setText(R.string.Join);
+            }
+
 
             joinButtom.setOnClickListener(v -> {
-                if(event.isTodo()){
-                    joinButtom.setText(R.string.remove);
-                }
-                else{
-                    joinButtom.setText(R.string.Join);
-                }
+
                 userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
                     if (result.isSuccessful()) {
                         user = ((Result.UserSuccess) result).getData();
                         if (event.isTodo()) {
-                            eventViewModel.leaveEvent(event, user);
+                            eventViewModel.leaveEvent(event, user).observe(getViewLifecycleOwner(), result1 -> {
+                                joinButtom.setText(R.string.Join);
+                                fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(String.valueOf(event.getParticipants()-1));
+                                event.setTodo(!event.isTodo());
+                            });
 
                         } else {
-                            eventViewModel.joinEvent(event, user);
+                            eventViewModel.joinEvent(event, user).observe(getViewLifecycleOwner(), result1 -> {
+                                joinButtom.setText(R.string.remove);
+                                fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(String.valueOf(event.getParticipants()+1));
+                                event.setTodo(!event.isTodo());
+                            });
 
                         }
 
-                        //event.setTodo(!event.isTodo());
                     }
                 });
 

@@ -45,7 +45,7 @@ public class TodoFragment extends Fragment {
 
 
     private EventViewModel eventViewModel;
-    private UserViewModel userViewModel;
+   // private UserViewModel userViewModel;
     private List<Event> eventList;
     private List<Event> todoEventList;
     private User user;
@@ -68,8 +68,8 @@ public class TodoFragment extends Fragment {
         eventList = new ArrayList<>();
         todoEventList = new ArrayList<>();
 
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
-        userViewModel = new ViewModelProvider(requireActivity(), new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        //IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        //userViewModel = new ViewModelProvider(requireActivity(), new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
 
     }
