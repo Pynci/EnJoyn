@@ -45,7 +45,6 @@ public class MainButtonMenuActivity extends AppCompatActivity {
                 ).build();
 
 
-
         // For the Toolbar
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 

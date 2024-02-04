@@ -68,4 +68,7 @@ public class Category implements Parcelable {
     public void setId(int id) {
         this.id = id;
     }
+    public boolean equals(Category category){
+        return this.nome.equals(category.getNome());
+    }
 }

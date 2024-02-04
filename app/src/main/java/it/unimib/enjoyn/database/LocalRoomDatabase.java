@@ -17,12 +17,10 @@ import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.util.StringConverter;
 
-@Database(entities = {Event.class, User.class, Category.class}, version = 1)
+@Database(entities = {User.class, Category.class}, version = 1)
 
 @TypeConverters({StringConverter.class})
 public abstract class LocalRoomDatabase extends RoomDatabase {
-    @TypeConverters({StringConverter.class})
-    public abstract EventsDao eventDao();
     @TypeConverters({StringConverter.class})
     public abstract UserDao userDao();
     @TypeConverters({StringConverter.class})
