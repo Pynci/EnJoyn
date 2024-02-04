@@ -36,7 +36,7 @@ public class MainButtonMenuActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.activityMainButtonMenu_bottomNavigation);
 
 
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+        /*AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.fragmentDiscover,
                 R.id.fragmentTodo,
                 R.id.fragmentNewEventMap,
@@ -44,9 +44,11 @@ public class MainButtonMenuActivity extends AppCompatActivity {
                 R.id.profileFragment
                 ).build();
 
+         */
+
 
         // For the Toolbar
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 
         // For the BottomNavigationView

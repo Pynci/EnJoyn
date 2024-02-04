@@ -51,7 +51,6 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
 
-
             <com.google.android.material.chip.Chip
                 android:id="@+id/fragmentDiscoverSingleEvent_chip_category"
                 android:layout_width="wrap_content"
@@ -59,8 +58,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/Tag"
+                android:backgroundTint="@color/seed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/fragmentDiscoverSingleEvent_imageView_people"
@@ -79,11 +79,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
                 android:text="@string/NumberOfParticipants"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/fragmentDiscoverSingleEvent_chip_category"
-                app:layout_constraintStart_toEndOf="@+id/fragmentDiscoverSingleEvent_chip_category"
-                app:layout_constraintTop_toTopOf="@+id/fragmentDiscoverSingleEvent_chip_category" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
 
 
             <TextView
