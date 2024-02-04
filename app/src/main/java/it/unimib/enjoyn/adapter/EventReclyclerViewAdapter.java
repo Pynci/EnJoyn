@@ -165,16 +165,23 @@ public class EventReclyclerViewAdapter extends
                     if(result.isSuccessful()){
                         User user = ((Result.UserSuccess) result).getData();
                         if(event.isTodo()){
-                            eventViewModel.leaveEvent(event, user);
+                            eventViewModel.leaveEvent(event, user).observe((LifecycleOwner) context, result1 -> {
+                                if(getBindingAdapterPosition() != -1)
+                                setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
+                               // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                            });
                         } else {
-                            eventViewModel.joinEvent(event, user);
+                            eventViewModel.joinEvent(event, user).observe((LifecycleOwner) context, result1 -> {
+                                if(getBindingAdapterPosition() != -1)
+                                setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
+                               // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                            });
                         }
+
                     }
                 });
 
-                setTextButtonTodoEvent(eventList.get(getAdapterPosition()).isTodo());
 
-                onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
                 Log.d("index", getLayoutPosition()+" ");
                 //backgroundImage.setBackgroundColor(ContextCompat.getColor(v.getContext(),R.color.md_theme_dark_tertiary));
                 //joinButton.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.md_theme_light_error));

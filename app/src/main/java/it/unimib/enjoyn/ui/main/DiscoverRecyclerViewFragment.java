@@ -108,20 +108,9 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                     @Override
                     public void onJoinButtonPressed(int position) {
 
-//                        Event event = eventList.get(position);
-//                        userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
-//                            if(result.isSuccessful()){
-//                                user = ((Result.UserSuccess) result).getData();
-//                                if(event.isTodo()){
-//                                    eventViewModel.leaveEvent(event, user);
-//                                } else {
-//                                    eventViewModel.joinEvent(event, user);
-//                                }
-//                            }
-//                        });
-                        //event.setTodo(!event.isTodo());
-                        //eventsRecyclerViewAdapter.notifyDataSetChanged();
                     }
+
+
                 } );
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);

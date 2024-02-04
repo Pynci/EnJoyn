@@ -122,7 +122,7 @@ public class TodoFragment extends Fragment {
                         //}
 //                        eventViewModel.updateEvent(eventList.get(position));
 
-                        Event event = eventList.get(position);
+ /*                       Event event = eventList.get(position);
                         userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
                             if(result.isSuccessful()){
                                 user = ((Result.UserSuccess) result).getData();
@@ -133,7 +133,7 @@ public class TodoFragment extends Fragment {
                                 }
                             }
                         });
-                        eventsRecyclerViewAdapter.notifyDataSetChanged();
+                        eventsRecyclerViewAdapter.notifyDataSetChanged();*/
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
