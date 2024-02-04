@@ -42,8 +42,7 @@ public class EventRemoteDataSource implements BaseEventRemoteDataSource{
     }
 
     @Override
-    public void fetchAllEvents(String uid,
-                               Callback addedCallback,
+    public void fetchAllEvents(Callback addedCallback,
                                Callback changedCallback,
                                Callback removedCallback,
                                Callback cancelledCallback){
@@ -89,6 +88,42 @@ public class EventRemoteDataSource implements BaseEventRemoteDataSource{
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         cancelledCallback.onComplete(new Result.Error(Constants.EVENT_REMOTE_FETCH_ERROR));
+                    }
+                });
+    }
+
+    public void fetchSingleEvent(Event event,
+                                 Callback addedCallback,
+                                 Callback changedCallback,
+                                 Callback removedCallback,
+                                 Callback cancelledCallback){
+        dbReference
+                .child(Constants.EVENTS_PATH)
+                .child(event.getEid())
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        // per ora niente, in caso aggiungere una callback
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
     }

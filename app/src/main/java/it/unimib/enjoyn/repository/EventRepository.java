@@ -16,7 +16,8 @@ import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
 import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
 
 public class EventRepository implements IEventRepository {
-    private final MutableLiveData<Result> allEventsMutableLiveData;
+    private final MutableLiveData<Result> allEvents;
+    private final MutableLiveData<Result> singleEvent;
     private final MutableLiveData<Result> eventCreation;
     private final MutableLiveData<Result> eventLeaveParticipation;
     private final MutableLiveData<Result> eventJoinParticipation;
@@ -29,7 +30,7 @@ public class EventRepository implements IEventRepository {
     public EventRepository(BaseEventRemoteDataSource eventRemoteDataSource,
                            BaseParticipationRemoteDataSource participationRemoteDataSource,
                            BaseAuthenticationDataSource authenticationDataSource) {
-        allEventsMutableLiveData = new MutableLiveData<>();
+        allEvents = new MutableLiveData<>();
         this.eventRemoteDataSource = eventRemoteDataSource;
         this.authenticationDataSource = authenticationDataSource;
         this.participationRemoteDataSource = participationRemoteDataSource;
@@ -37,20 +38,21 @@ public class EventRepository implements IEventRepository {
         eventsList = new ArrayList<>();
         eventLeaveParticipation = new MutableLiveData<>();
         eventJoinParticipation = new MutableLiveData<>();
+        singleEvent = new MutableLiveData<>();
     }
 
     @Override
     public MutableLiveData<Result> fetchAllEvents() {
-        eventRemoteDataSource.fetchAllEvents(authenticationDataSource.getCurrentUserUID(),
+        eventRemoteDataSource.fetchAllEvents(
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
                     participationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
                             resultTodo -> {
                                 if(resultTodo.isSuccessful()){
                                     event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                    addEvent(event, allEvents);
                                 }
                             });
-                    addEvent(event, allEventsMutableLiveData);
                 },
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
@@ -59,9 +61,9 @@ public class EventRepository implements IEventRepository {
                             resultTodo -> {
                                 if(resultTodo.isSuccessful()){
                                     event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                    replaceEvent(event, oldEvent, allEvents);
                                 }
                             });
-                    replaceEvent(event, oldEvent, allEventsMutableLiveData);
                 },
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
@@ -69,12 +71,16 @@ public class EventRepository implements IEventRepository {
                             resultTodo -> {
                                 if(resultTodo.isSuccessful()){
                                     event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                    removeEvent(event, allEvents);
                                 }
                             });
-                    removeEvent(event, allEventsMutableLiveData);
                 },
-                allEventsMutableLiveData::postValue);
-        return allEventsMutableLiveData;
+                allEvents::postValue);
+        return allEvents;
+    }
+
+    public MutableLiveData<Result> fetchSingleEvent(Event event){
+        return null;
     }
 
     private void removeEvent(Event event, MutableLiveData<Result> mutableLiveData) {
