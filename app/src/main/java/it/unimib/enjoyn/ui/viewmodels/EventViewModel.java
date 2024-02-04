@@ -7,7 +7,6 @@ import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.IEventRepository;
-import android.util.Log;
 
 import com.mapbox.geojson.Point;
 import com.mapbox.search.result.SearchSuggestion;
@@ -30,13 +29,6 @@ public class EventViewModel extends ViewModel {
         this.mapRepository = mapRepository;
     }
 
-//    public MutableLiveData<Result> getEvent(String category, long lastUpdate) {
-//        if (allEvents == null) {
-//            fetchEvent(category, lastUpdate);
-//        }
-//        return allEvents;
-//    }
-
     public MutableLiveData<Result> getAllEvents() {
         if (allEvents == null) {
             allEvents = eventRepository.fetchAllEvents();
@@ -47,12 +39,6 @@ public class EventViewModel extends ViewModel {
     public MutableLiveData<Result> refreshEvent(Event event){
         return eventRepository.fetchSingleEvent(event);
     }
-
-//    public void updateEvent(Event event) {
-//        Map<String, Object> eventMap = new HashMap<>();
-//        eventMap.put("participants", event.getParticipants());
-//        eventRepository.updateEvent(event.getEid(), eventMap);
-//    }
 
     public MutableLiveData<Result> joinEvent(Event event, User user){
         return eventRepository.joinEvent(event, user);
@@ -69,7 +55,6 @@ public class EventViewModel extends ViewModel {
 
 
     public MutableLiveData<Result> getWeather(String latitude, String logitude){
-        Log.d("API weather", "dentro getWeather su viewModel");
         if (weatherListLiveData == null){
             fetchWeather(latitude, logitude);
         }
@@ -77,44 +62,18 @@ public class EventViewModel extends ViewModel {
     }
 
     private void fetchWeather(String latitude, String longitude){
-        Log.d("API weather", "dentro fetchWeather su viewModel");
         weatherListLiveData = weatherRepository.fetchWeather(latitude, longitude);
     }
 
-    //TODO per quando ricerchi dalla barra
     public MutableLiveData<Result> getMapSuggestion(String searchBarText, Point selfLocation){
-        Log.d("API map", "dentro getMap su viewModel");
-       // if (mapSuggestionListLiveData == null){
         return  mapRepository.fetchMapSu(searchBarText, selfLocation);
-        //fetchMapSuggestion(searchBarText);
-        //}
-      //  return mapSuggestionListLiveData;
     }
 
-    /*private void fetchMapSuggestion(String searchBarText){
-        Log.d("API map", "dentro fetchMapSuggestion su viewModel");
-        mapSuggestionListLiveData = mapRepository.fetchMapSu(searchBarText);
-    }*/
     public MutableLiveData<Result> getMapSearch( List<SearchSuggestion> suggestion){
         return mapRepository.fetchMapSearch(suggestion);
-//        Log.d("API map", "dentro getMap su viewModel");
-//        if (mapSearchLiveData == null){
-//            fetchMapSearch(suggestion);
-//        }
-//        return mapSearchLiveData;
     }
     public MutableLiveData<Result> getMapReverseSearch(  Point point){
         return mapRepository.fetchMapReverseSearch(point);
-//        Log.d("API map", "dentro getMap su viewModel");
-//        if (mapSearchLiveData == null){
-//            fetchMapSearch(suggestion);
-//        }
-//        return mapSearchLiveData;
     }
-//
-//    private void fetchMapSearch(List<SearchSuggestion> suggestion ){
-//        Log.d("API map", "dentro fetchMapSuggestion su viewModel");
-//        mapSearchLiveData = mapRepository.fetchMapSearch(suggestion);
-//    }
 
 }
