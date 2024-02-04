@@ -100,7 +100,7 @@ public class ServiceLocator {
         BaseAuthenticationDataSource authenticationDataSource;
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 
-        eventRemoteDataSource = new EventRemoteDataSource(jsonParserUtil);
+        eventRemoteDataSource = new EventRemoteDataSource();
         eventParticipationRemoteDataSource = new ParticipationRemoteDataSource();
         authenticationDataSource = new AuthenticationDataSource();
 

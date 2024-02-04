@@ -8,37 +8,24 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import it.unimib.enjoyn.model.Event;
-import it.unimib.enjoyn.model.EventsDatabaseResponse;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.util.Constants;
-import it.unimib.enjoyn.util.JSONParserUtil;
 
 public class EventRemoteDataSource implements BaseEventRemoteDataSource{
-    private final JSONParserUtil jsonParserUtil;
-    private EventsDatabaseResponse eventsDatabaseResponse;
     private final DatabaseReference dbReference;
-    private final FirebaseStorage firebaseStorage;
-    private List<Event> eventList;
-    private boolean firstFetch;
 
 
-    public EventRemoteDataSource(JSONParserUtil jsonParserUtil) {
+    public EventRemoteDataSource() {
         dbReference = FirebaseDatabase.getInstance(Constants.DATABASE_PATH).getReference();
-        firebaseStorage = FirebaseStorage.getInstance(Constants.STORAGE_PATH);
-        this.jsonParserUtil = jsonParserUtil;
-        eventList = new ArrayList<>();
-        firstFetch = true;
     }
 
     @Override
@@ -92,38 +79,25 @@ public class EventRemoteDataSource implements BaseEventRemoteDataSource{
                 });
     }
 
+    @Override
     public void fetchSingleEvent(Event event,
-                                 Callback addedCallback,
-                                 Callback changedCallback,
-                                 Callback removedCallback,
-                                 Callback cancelledCallback){
+                                 Callback dataChangeCallback, Callback cancelledCallback){
         dbReference
                 .child(Constants.EVENTS_PATH)
                 .child(event.getEid())
-                .addChildEventListener(new ChildEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        // per ora niente, in caso aggiungere una callback
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Event event = snapshot.getValue(Event.class);
+                        if(event != null){
+                            event.setEid(snapshot.getKey());
+                        }
+                        dataChangeCallback.onComplete(new Result.SingleEventSuccess(event));
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        cancelledCallback.onComplete(new Result.Error(Constants.EVENT_REMOTE_FETCH_ERROR));
                     }
                 });
     }

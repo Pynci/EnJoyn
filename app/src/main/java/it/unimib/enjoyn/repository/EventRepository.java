@@ -17,7 +17,8 @@ import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
 
 public class EventRepository implements IEventRepository {
     private final MutableLiveData<Result> allEvents;
-    private final MutableLiveData<Result> singleEvent;
+    private MutableLiveData<Result> singleEvent;
+    private Event currentlyObservedEvent;
     private final MutableLiveData<Result> eventCreation;
     private final MutableLiveData<Result> eventLeaveParticipation;
     private final MutableLiveData<Result> eventJoinParticipation;
@@ -79,8 +80,36 @@ public class EventRepository implements IEventRepository {
         return allEvents;
     }
 
-    public MutableLiveData<Result> fetchSingleEvent(Event event){
-        return null;
+    /*
+    Piazza nel livedata ritornato un SingleEventSuccess contenente l'evento con
+    i dati aggiornati ad ogni cambio nel nodo firebase.
+    Se l'evento viene rimosso o non esiste, nel livedata ci piazza un SingleEventSuccess
+    contenente null.
+     */
+    public MutableLiveData<Result> fetchSingleEvent(Event eventToObserve){
+        if(currentlyObservedEvent != null){
+            singleEvent = new MutableLiveData<>();
+        }
+        currentlyObservedEvent = eventToObserve;
+        eventRemoteDataSource.fetchSingleEvent(eventToObserve,
+                result -> {
+                    Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    if(event != null && event.equals(currentlyObservedEvent)){
+                        participationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
+                                resultTodo -> {
+                                    if(resultTodo.isSuccessful()){
+                                        event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                        singleEvent.postValue(new Result.SingleEventSuccess(event));
+                                    }
+                                });
+                    }
+                    else{
+                        singleEvent.postValue(new Result.SingleEventSuccess(null));
+                    }
+                },
+                singleEvent::postValue
+        );
+        return singleEvent;
     }
 
     private void removeEvent(Event event, MutableLiveData<Result> mutableLiveData) {
