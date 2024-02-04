@@ -107,6 +107,8 @@ public class ProfileFragment extends Fragment {
         ListView listView = view.findViewById(R.id.fragmentProfile_listView);
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
+        listView.setDivider(null);
+
         Observer<Result> interestsObserver = result -> {
             if (result.isSuccessful() && result instanceof Result.CategorySuccess) {
                 List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
