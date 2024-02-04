@@ -354,18 +354,13 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             }
             //event = eventList.get((int)annotation.getId());
             eventItem.setVisibility(View.VISIBLE);
-            fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
-            fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
-            fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
-            fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getLocation().getName());
+            setEventParameters();
             Log.d("code", event.getWeatherCode()+"");
             if(event.getWeatherCode() != -1){
                 setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
             }
             fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText(event.getDistance()+" km");
-            fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
-            fragmentDiscoverMapBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
-            fragmentDiscoverMapBinding.eventListItemButtonJoinButton.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+
 
             eventItem.setOnClickListener(v -> {
                 DiscoverFragmentDirections.ActionFragmentDiscoverToFragmentDiscoverSingleEvent action = DiscoverFragmentDirections.actionFragmentDiscoverToFragmentDiscoverSingleEvent(event);
@@ -380,6 +375,15 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                 joinButton.setText(R.string.Join);
             }
 
+            eventViewModel.refreshEvent(event).observe(getViewLifecycleOwner(), result -> {
+                if(result.isSuccessful()){
+                    event = ((Result.SingleEventSuccess) result).getEvent();
+                    setEventParameters();
+                }
+                else{
+                    //TODO mettere snackbar
+                }
+            });
 
             joinButton.setOnClickListener(v -> {
 
@@ -389,15 +393,11 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                         if (event.isTodo()) {
                             eventViewModel.leaveEvent(event, user).observe(getViewLifecycleOwner(), result1 -> {
                                 joinButton.setText(R.string.Join);
-                                fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(String.valueOf(event.getParticipants()-1));
-                                event.setTodo(!event.isTodo());
                             });
 
                         } else {
                             eventViewModel.joinEvent(event, user).observe(getViewLifecycleOwner(), result1 -> {
                                 joinButton.setText(R.string.remove);
-                                fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(String.valueOf(event.getParticipants()+1));
-                                event.setTodo(!event.isTodo());
                             });
 
                         }
@@ -414,6 +414,16 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             });
 
         }
+
+    private void setEventParameters() {
+        fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
+        fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
+        fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
+        fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getLocation().getName());
+        fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
+        fragmentDiscoverMapBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+        fragmentDiscoverMapBinding.eventListItemButtonJoinButton.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+    }
 
     private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListener = new OnIndicatorBearingChangedListener() {
         @Override
@@ -502,4 +512,5 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
         }
     }
+
 }
