@@ -407,9 +407,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
             });
 
-
-
-
             annotation.getPoint().latitude();
             annotation.getPoint().longitude();
 

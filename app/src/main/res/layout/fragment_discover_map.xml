@@ -109,7 +109,6 @@
                 android:contentDescription="@string/background"
                 android:scaleType="center"
                 android:background="@color/md_theme_dark_inversePrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_eventImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
