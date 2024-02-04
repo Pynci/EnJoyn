@@ -150,9 +150,12 @@ public class UserRepository implements IUserRepository {
     @Override
     public MutableLiveData<Result> signOut(){
         authenticationDataSource.signOut(result -> {
-            if(result instanceof Result.UserSuccess){
+            if(result.isSuccessful()){
                 User user = ((Result.UserSuccess) currentUser.getValue()).getData();
                 deleteLocalUser(user);
+            }
+            else{
+                currentUser.postValue(result);
             }
         });
         return currentUser;
