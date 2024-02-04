@@ -18,7 +18,8 @@ import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
 public class EventRepository implements IEventRepository {
     private final MutableLiveData<Result> allEventsMutableLiveData;
     private final MutableLiveData<Result> eventCreation;
-    private final MutableLiveData<Result> eventParticipation;
+    private final MutableLiveData<Result> eventLeaveParticipation;
+    private final MutableLiveData<Result> eventJoinParticipation;
     private final List<Event> eventsList;
 
     private final BaseEventRemoteDataSource eventRemoteDataSource;
@@ -34,7 +35,8 @@ public class EventRepository implements IEventRepository {
         this.participationRemoteDataSource = participationRemoteDataSource;
         eventCreation = new MutableLiveData<>();
         eventsList = new ArrayList<>();
-        eventParticipation = new MutableLiveData<>();
+        eventLeaveParticipation = new MutableLiveData<>();
+        eventJoinParticipation = new MutableLiveData<>();
     }
 
     @Override
@@ -114,16 +116,16 @@ public class EventRepository implements IEventRepository {
                 addParticipant(event);
             }
             else{
-                eventParticipation.postValue(result);
+                eventJoinParticipation.postValue(result);
             }
         });
-        return eventParticipation;
+        return eventJoinParticipation;
     }
 
     private void addParticipant(Event event){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("participants", event.getParticipants()+1);
-        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, eventParticipation::postValue);
+        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, eventJoinParticipation::postValue);
     }
 
     public MutableLiveData<Result> leaveEvent(Event event, User user){
@@ -132,16 +134,16 @@ public class EventRepository implements IEventRepository {
                 removeParticipant(event);
             }
             else{
-                eventParticipation.postValue(result);
+                eventLeaveParticipation.postValue(result);
             }
         });
-        return eventParticipation;
+        return eventLeaveParticipation;
     }
 
     private void removeParticipant(Event event){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("participants", event.getParticipants()-1);
-        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, eventParticipation::postValue);
+        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, eventLeaveParticipation::postValue);
     }
 
     private Event findOldEvent(Event newEvent){

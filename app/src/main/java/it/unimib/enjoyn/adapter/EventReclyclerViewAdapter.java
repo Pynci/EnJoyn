@@ -167,14 +167,14 @@ public class EventReclyclerViewAdapter extends
                         if(event.isTodo()){
                             eventViewModel.leaveEvent(event, user).observe((LifecycleOwner) context, result1 -> {
                                 if(getBindingAdapterPosition() != -1)
-                                setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
-                               // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                                    setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
+                                // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
                             });
                         } else {
                             eventViewModel.joinEvent(event, user).observe((LifecycleOwner) context, result1 -> {
                                 if(getBindingAdapterPosition() != -1)
-                                setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
-                               // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                                    setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
+                                // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
                             });
                         }
 
