@@ -320,8 +320,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 newEvent.setDescription(description);
                 newEvent.setCategory(selectedCategory);
                 newEvent.setColor(selectedColor);
-                newEvent.setParticipants(1);
-                //newEvent.setImageUrl(eventImage);
+                //newEvent.setParticipants(1);
+
                 // chiamata ai livelli sottostanti per il salvataggio (da ascoltare)
                 userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
                     if(result.isSuccessful() || result instanceof Result.UserSuccess){

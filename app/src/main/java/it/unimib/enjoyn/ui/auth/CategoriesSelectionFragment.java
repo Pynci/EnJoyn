@@ -21,6 +21,7 @@ import java.util.List;
 
 import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentCategoriesSelectionBinding;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -33,6 +34,7 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class CategoriesSelectionFragment extends Fragment {
 
+    private FragmentCategoriesSelectionBinding fragmentCategoriesSelectionBinding;
     private InterestsViewModel interestsViewModel;
     private CategoryViewModel categoryViewModel;
 
@@ -61,7 +63,8 @@ public class CategoriesSelectionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_categories_selection, container, false);
+        fragmentCategoriesSelectionBinding = FragmentCategoriesSelectionBinding.inflate(inflater, container, false);
+        return fragmentCategoriesSelectionBinding.getRoot();
     }
 
     @Override
@@ -69,10 +72,10 @@ public class CategoriesSelectionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         boolean isFromProfileFragment = getArguments().getBoolean("fromProfileFragment");
-        Button buttonSkip = view.findViewById(R.id.fragmentCategoriesSelection_button_skip);
-        Button buttonConfirm = view.findViewById(R.id.fragmentCategoriesSelection_button_confirm);
+        Button buttonSkip = fragmentCategoriesSelectionBinding.fragmentCategoriesSelectionButtonSkip;
+        Button buttonConfirm = fragmentCategoriesSelectionBinding.fragmentCategoriesSelectionButtonConfirm;
 
-        ListView listView = view.findViewById(R.id.fragmentCategoriesSelection_ListView);
+        ListView listView = fragmentCategoriesSelectionBinding.fragmentCategoriesSelectionListView;
         listView.setDivider(null);
 
         if(isFromProfileFragment) {

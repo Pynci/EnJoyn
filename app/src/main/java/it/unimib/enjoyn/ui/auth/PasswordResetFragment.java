@@ -20,12 +20,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentPasswordResetBinding;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 
 public class PasswordResetFragment extends Fragment {
 
+    private FragmentPasswordResetBinding fragmentPasswordResetBinding;
     private Observer<Result> emailRecoverPasswordObserver;
     private UserViewModel userViewModel;
 
@@ -46,16 +48,16 @@ public class PasswordResetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_password_reset, container, false);
+        fragmentPasswordResetBinding = FragmentPasswordResetBinding.inflate(inflater, container, false);
+        return fragmentPasswordResetBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        TextInputLayout textInputEmail = view.findViewById(R.id.fragmentPasswordReset_textInputLayout_email);
-        TextInputEditText emailProvided = view.findViewById(R.id.fragmentPasswordReset_textInputEditText_email);
-        Button buttonNext = view.findViewById(R.id.fragmentPasswordReset_button_next);
+        TextInputLayout textInputEmail = fragmentPasswordResetBinding.fragmentPasswordResetTextInputLayoutEmail;
+        TextInputEditText emailProvided = fragmentPasswordResetBinding.fragmentPasswordResetTextInputEditTextEmail;
+        Button buttonNext = fragmentPasswordResetBinding.fragmentPasswordResetButtonNext;
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         emailRecoverPasswordObserver = result -> {

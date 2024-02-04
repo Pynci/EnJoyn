@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentEmailVerificationBinding;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -31,6 +32,7 @@ import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 
 public class EmailVerificationFragment extends Fragment {
 
+    private FragmentEmailVerificationBinding fragmentEmailVerificationBinding;
     private UserViewModel userViewModel;
     private Observer<Result> emailVerificationSendingObserver;
     private Observer<Result> emailVerificationStatusObserver;
@@ -63,17 +65,18 @@ public class EmailVerificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_email_verification, container, false);
+        fragmentEmailVerificationBinding = FragmentEmailVerificationBinding.inflate(inflater, container, false);
+        return fragmentEmailVerificationBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceBundle) {
         super.onViewCreated(view, savedInstanceBundle);
 
-        Button buttonForNewEmail = view.findViewById(R.id.fragmentConfirmEmailMessage_button_newEmail);
-        Button buttonToLogin = view.findViewById(R.id.fragmentConfirmEmailMessage_button_buttonToLogin);
-        Button buttonRefresh = view.findViewById(R.id.fragmentConfirmEmailMessage_button_refresh);
-        ProgressBar progressBar = view.findViewById(R.id.fragmentConfirmEmailMessage_progressBar);
+        Button buttonForNewEmail = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageButtonNewEmail;
+        Button buttonToLogin = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageButtonButtonToLogin;
+        Button buttonRefresh = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageButtonRefresh;
+        ProgressBar progressBar = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageProgressBar;
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 

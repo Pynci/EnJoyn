@@ -19,6 +19,7 @@ import android.widget.EditText;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+import it.unimib.enjoyn.databinding.FragmentSigninBinding;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -29,6 +30,7 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class SigninFragment extends Fragment {
 
+    private FragmentSigninBinding fragmentSigninBinding;
     private UserViewModel userViewModel;
     private Observer<Result> signInObserver;
 
@@ -48,7 +50,8 @@ public class SigninFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_signin, container, false);
+       fragmentSigninBinding = FragmentSigninBinding.inflate(inflater, container, false);
+       return fragmentSigninBinding.getRoot();
     }
 
 
@@ -58,15 +61,15 @@ public class SigninFragment extends Fragment {
 
         // Widgets
 
-        Button buttonRegister = view.findViewById(R.id.fragmentLogin_button_register);
-        Button buttonLogin = view.findViewById(R.id.fragmentLogin_button_login);
-        Button buttonForgottenPassword = view.findViewById(R.id.fragmentLogin_button_forgottenPassword);
+        Button buttonRegister = fragmentSigninBinding.fragmentLoginButtonRegister;
+        Button buttonLogin = fragmentSigninBinding.fragmentLoginButtonLogin;
+        Button buttonForgottenPassword = fragmentSigninBinding.fragmentLoginButtonForgottenPassword;
 
-        TextInputLayout textInputEmail = view.findViewById(R.id.fragmentLogin_textInputLayout_email);
-        EditText editTextEmail = view.findViewById(R.id.fragmentLogin_textInputEditText_email);
+        TextInputLayout textInputEmail = fragmentSigninBinding.fragmentLoginTextInputLayoutEmail;
+        EditText editTextEmail = fragmentSigninBinding.fragmentLoginTextInputEditTextEmail;
 
-        TextInputLayout textInputPassword = view.findViewById(R.id.fragmentLogin_textInputLayout_password);
-        EditText editTextPassword = view.findViewById(R.id.fragmentLogin_textInputEditText_password);
+        TextInputLayout textInputPassword = fragmentSigninBinding.fragmentLoginTextInputLayoutPassword;
+        EditText editTextPassword = fragmentSigninBinding.fragmentLoginTextInputEditTextPassword;
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 

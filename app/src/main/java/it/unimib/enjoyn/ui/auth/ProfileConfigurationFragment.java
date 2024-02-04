@@ -32,6 +32,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentProfileConfigurationBinding;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -41,6 +42,7 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class ProfileConfigurationFragment extends Fragment {
 
+    private FragmentProfileConfigurationBinding fragmentProfileConfigurationBinding;
     private UserViewModel userViewModel;
     private Uri currentURI;
     private Observer<Result> observerAddOptionalData;
@@ -73,7 +75,8 @@ public class ProfileConfigurationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile_configuration, container, false);
+        fragmentProfileConfigurationBinding = FragmentProfileConfigurationBinding.inflate(inflater, container,false);
+        return fragmentProfileConfigurationBinding.getRoot();
     }
 
     @Override
@@ -81,14 +84,14 @@ public class ProfileConfigurationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceBundle);
 
         boolean isFromProfileFragment = getArguments().getBoolean("fromProfileFragment");
-        ShapeableImageView userImage = view.findViewById(R.id.fragmentProfile_imageView_propic);
-        Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
-        Button skip = view.findViewById(R.id.propicDescriptionConfiguration_button_skip);
-        ImageButton imageButtonAddPropic = view.findViewById(R.id.propicDescriptionConfiguration_imageButton_addPropic);
-        TextView username = view.findViewById(R.id.fragmentProfileConfiguration_textView_username);
-        EditText cognome = view.findViewById(R.id.propicDescriptionConfiguration_editText_cognome);
-        EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
-        TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
+        ShapeableImageView userImage = fragmentProfileConfigurationBinding.fragmentProfileImageViewPropic;
+        Button buttonNext = fragmentProfileConfigurationBinding.propicDescriptionConfigurationButtonNext;
+        Button skip = fragmentProfileConfigurationBinding.propicDescriptionConfigurationButtonSkip;
+        ImageButton imageButtonAddPropic = fragmentProfileConfigurationBinding.propicDescriptionConfigurationImageButtonAddPropic;
+        TextView username = fragmentProfileConfigurationBinding.fragmentProfileConfigurationTextViewUsername;
+        EditText cognome = fragmentProfileConfigurationBinding.propicDescriptionConfigurationEditTextCognome;
+        EditText nome = fragmentProfileConfigurationBinding.propicDescriptionConfigurationEditTextNome;
+        TextInputEditText description = fragmentProfileConfigurationBinding.propicDescriptionConfigurationTextInputEditTextDescription;
 
         userViewModel.updateProfileConfigurationStatus();
 
