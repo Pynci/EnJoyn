@@ -81,7 +81,8 @@ public class EventRemoteDataSource implements BaseEventRemoteDataSource{
 
     @Override
     public void fetchSingleEvent(Event event,
-                                 Callback dataChangeCallback, Callback cancelledCallback){
+                                 Callback dataChangeCallback,
+                                 Callback cancelledCallback){
         dbReference
                 .child(Constants.EVENTS_PATH)
                 .child(event.getEid())

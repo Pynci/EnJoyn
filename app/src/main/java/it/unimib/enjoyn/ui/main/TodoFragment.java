@@ -28,13 +28,8 @@ import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
-import it.unimib.enjoyn.repository.user.IUserRepository;
-import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
-import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
-import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
-import it.unimib.enjoyn.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -139,7 +134,7 @@ public class TodoFragment extends Fragment {
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
 
-        eventViewModel.getEvent().observe(getViewLifecycleOwner(), result -> {
+        eventViewModel.getAllEvents().observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
                 if (result.isSuccessful()) {
 

@@ -13,7 +13,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,7 +132,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                         this.categoryList.clear();
                         this.categoryList.addAll(((Result.CategorySuccess) result).getCategoryList());
 
-                        eventViewModel.getEvent().observe(getViewLifecycleOwner(),
+                        eventViewModel.getAllEvents().observe(getViewLifecycleOwner(),
                                 resultEvent -> {
                                     if (result.isSuccessful()) {
                                         this.eventList.clear();

@@ -12,9 +12,7 @@ import android.util.Log;
 import com.mapbox.geojson.Point;
 import com.mapbox.search.result.SearchSuggestion;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
@@ -25,9 +23,6 @@ public class EventViewModel extends ViewModel {
     private final IWeatherRepository weatherRepository;
     private final MapRepository mapRepository;
     private MutableLiveData<Result> weatherListLiveData;
-
-    private MutableLiveData<Result> mapSuggestionListLiveData;
-    private MutableLiveData<Result> mapSearchLiveData;
 
     public EventViewModel(IEventRepository eventRepository, IWeatherRepository iWeatherRepository, MapRepository mapRepository) {
         this.eventRepository = eventRepository;
@@ -42,11 +37,15 @@ public class EventViewModel extends ViewModel {
 //        return allEvents;
 //    }
 
-    public MutableLiveData<Result> getEvent() {
+    public MutableLiveData<Result> getAllEvents() {
         if (allEvents == null) {
             allEvents = eventRepository.fetchAllEvents();
         }
         return allEvents;
+    }
+
+    public MutableLiveData<Result> refreshEvent(Event event){
+        return eventRepository.fetchSingleEvent(event);
     }
 
 //    public void updateEvent(Event event) {

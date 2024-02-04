@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
@@ -40,6 +39,7 @@ public class DiscoverSingleEvent extends Fragment {
     private FragmentDiscoverSingleEventBinding fragmentDiscoverSingleEventBinding;
     private EventViewModel eventViewModel;
     private UserViewModel userViewModel;
+    private Event event;
 
     public DiscoverSingleEvent() {
         // Required empty public constructor
@@ -63,6 +63,7 @@ public class DiscoverSingleEvent extends Fragment {
         return fragmentDiscoverSingleEventBinding.getRoot();
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -81,26 +82,21 @@ public class DiscoverSingleEvent extends Fragment {
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
-        Event event = DiscoverSingleEventArgs.fromBundle(getArguments()).getEvent();
-
-        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewNumberOfParticipants.setText(event.getPeopleNumberString());
-        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDate.setText(event.getDate());
-        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDescription.setText(event.getDescription());
-        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewHour.setText(event.getTime());
-        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getLocation().getName());
-        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewTitle.setText(event.getTitle());
+        event = DiscoverSingleEventArgs.fromBundle(getArguments()).getEvent();
+        setEventParameters();
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDistance.setText(event.getDistanceString());
         setWeatherIcon(fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventImageViewWeather, event.getWeatherCode());
         fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventTextViewTemperature.setText(event.getWeatherTemperature()+"°");
-        fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventChipCategory.setText(event.getCategory().getNome());
-        fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
-        fragmentDiscoverSingleEventBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
-        if(event.isTodo()){
-            fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.remove);
-        } else {
-            fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.Join);
-        }
 
+        eventViewModel.refreshEvent(event).observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()){
+                event = ((Result.SingleEventSuccess) result).getEvent();
+                setEventParameters();
+            }
+            else{
+                //TODO mettere snackbar
+            }
+        });
 
         fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setOnClickListener(listener -> {
             if(getContext() != null){
@@ -111,8 +107,6 @@ public class DiscoverSingleEvent extends Fragment {
                             eventViewModel.leaveEvent(event, user).observe((LifecycleOwner) getContext(), result1 -> {
                                 if(result1.isSuccessful()){
                                     fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.Join);
-                                    fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewNumberOfParticipants.setText(String.valueOf(event.getParticipants()-1));
-                                    event.setTodo(!event.isTodo());
                                 }
 
                             });
@@ -120,8 +114,6 @@ public class DiscoverSingleEvent extends Fragment {
                             eventViewModel.joinEvent(event, user).observe((LifecycleOwner) getContext(), result2 -> {
                                 if(result2.isSuccessful()){
                                     fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.remove);
-                                    fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewNumberOfParticipants.setText(String.valueOf(event.getParticipants()+1));
-                                    event.setTodo(!event.isTodo());
                                 }
 
                             });
@@ -132,6 +124,23 @@ public class DiscoverSingleEvent extends Fragment {
             }
         });
 
+    }
+
+    private void setEventParameters() {
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewNumberOfParticipants.setText(event.getPeopleNumberString());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDate.setText(event.getDate());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDescription.setText(event.getDescription());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewHour.setText(event.getTime());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setText(event.getLocation().getName());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewTitle.setText(event.getTitle());
+        fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventChipCategory.setText(event.getCategory().getNome());
+        fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+        fragmentDiscoverSingleEventBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+        if(event.isTodo()){
+            fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.remove);
+        } else {
+            fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setText(R.string.Join);
+        }
     }
 
     public void setWeatherIcon(ImageView weatherIcon, int code){

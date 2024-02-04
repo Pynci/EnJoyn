@@ -86,6 +86,7 @@ public class EventRepository implements IEventRepository {
     Se l'evento viene rimosso o non esiste, nel livedata ci piazza un SingleEventSuccess
     contenente null.
      */
+    @Override
     public MutableLiveData<Result> fetchSingleEvent(Event eventToObserve){
         if(currentlyObservedEvent != null){
             singleEvent = new MutableLiveData<>();
