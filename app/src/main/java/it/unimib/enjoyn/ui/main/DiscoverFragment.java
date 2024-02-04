@@ -27,8 +27,11 @@ import it.unimib.enjoyn.adapter.ViewPagerAdapter;
 import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 
@@ -39,8 +42,8 @@ import it.unimib.enjoyn.util.ServiceLocator;
  */
 public class DiscoverFragment extends Fragment {
 
-    EventViewModel eventViewModel;
-
+    private EventViewModel eventViewModel;
+    private UserViewModel userViewModel;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     ViewPagerAdapter viewPagerAdapter;
@@ -62,10 +65,13 @@ public class DiscoverFragment extends Fragment {
         IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository();
 
         MapRepository mapRepository = ServiceLocator.getInstance().getMapRepository();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
 
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
                 new EventViewModelFactory(eventRepositoryWithLiveData, weatherRepository, mapRepository)).get(EventViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override

@@ -33,7 +33,6 @@ import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
 import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
-import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
 
@@ -66,8 +65,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         interestsViewModel = new ViewModelProvider(requireActivity(), new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
-        userViewModel = new ViewModelProvider(requireActivity(),
-                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         eventList = new ArrayList<>();
         interestedEventList = new ArrayList<>();

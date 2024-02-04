@@ -151,7 +151,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/md_theme_light_outlineVariant"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_distance" />
+                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_place" />
 
             <Button
                 android:id="@+id/discoverSingleEvent_button_join"

@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -76,8 +77,10 @@ import it.unimib.enjoyn.databinding.FragmentDiscoverMapBinding;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 public class DiscoverMapFragment extends Fragment implements PermissionsListener {
@@ -108,7 +111,10 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     private SuggestionListAdapter suggestionListAdapter;
     private TextInputEditText searchBar;
     private Weather weatherAPIdata;
+    private UserViewModel userViewModel;
+    private User user;
     CardView eventItem;
+    Button joinButtom;
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
         if(result){
@@ -129,6 +135,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         eventList = new ArrayList<>();
     }
 
@@ -333,6 +340,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
         });
 
         eventItem = view.findViewById(R.id.fragmentDiscoverMap_cardView_eventItem);
+        joinButtom = view.findViewById(R.id.eventListItem_button_joinButton);
 
         pointAnnotationManager.addClickListener(annotation -> {
 
@@ -364,11 +372,40 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
             });
 
+
+            joinButtom.setOnClickListener(v -> {
+                if(event.isTodo()){
+                    joinButtom.setText(R.string.remove);
+                }
+                else{
+                    joinButtom.setText(R.string.Join);
+                }
+                userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessful()) {
+                        user = ((Result.UserSuccess) result).getData();
+                        if (event.isTodo()) {
+                            eventViewModel.leaveEvent(event, user);
+
+                        } else {
+                            eventViewModel.joinEvent(event, user);
+
+                        }
+
+                        //event.setTodo(!event.isTodo());
+                    }
+                });
+
+            });
+
+
+
+
             annotation.getPoint().latitude();
             annotation.getPoint().longitude();
 
             return true;
             });
+
         }
 
     private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListener = new OnIndicatorBearingChangedListener() {
