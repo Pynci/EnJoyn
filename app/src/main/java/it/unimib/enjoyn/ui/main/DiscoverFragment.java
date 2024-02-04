@@ -132,13 +132,6 @@ public class DiscoverFragment extends Fragment {
 
     }
 
-    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
-        Navigation.findNavController(requireView()).navigate(destination);
 
-        //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
-            requireActivity().finish();
-        }
-    }
 
 }
