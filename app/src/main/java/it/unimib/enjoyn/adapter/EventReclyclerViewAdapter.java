@@ -1,6 +1,7 @@
 package it.unimib.enjoyn.adapter;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.Random;
 
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 
 public class EventReclyclerViewAdapter extends
         RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -34,15 +40,19 @@ public class EventReclyclerViewAdapter extends
 
     private final List<Event> eventList;
 
-    private final Application application;
+    private final Context context;
     private final OnItemClickListener onItemClickListener;
+    private final EventViewModel eventViewModel;
+    private final UserViewModel userViewModel;
 
 
-    public EventReclyclerViewAdapter(List<Event> eventList, Application application, OnItemClickListener onItemClickListener){
+
+    public EventReclyclerViewAdapter(List<Event> eventList, Context context, OnItemClickListener onItemClickListener){
         this.eventList = eventList;
         this.onItemClickListener = onItemClickListener;
-        this.application = application;
-
+        this.context = context;
+        eventViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(EventViewModel.class);
+        userViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(UserViewModel.class);
     }
 
     public int getItemViewType(int position){
@@ -150,6 +160,17 @@ public class EventReclyclerViewAdapter extends
 
             if(v.getId() == R.id.eventListItem_button_joinButton){
 
+                Event event = eventList.get(getBindingAdapterPosition());
+                userViewModel.getCurrentUser().observe((LifecycleOwner) context, result -> {
+                    if(result.isSuccessful()){
+                        User user = ((Result.UserSuccess) result).getData();
+                        if(event.isTodo()){
+                            eventViewModel.leaveEvent(event, user);
+                        } else {
+                            eventViewModel.joinEvent(event, user);
+                        }
+                    }
+                });
 
                 setTextButtonTodoEvent(eventList.get(getAdapterPosition()).isTodo());
 
