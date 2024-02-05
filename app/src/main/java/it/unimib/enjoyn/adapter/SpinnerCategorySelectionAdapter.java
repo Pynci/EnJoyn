@@ -22,8 +22,8 @@ public class SpinnerCategorySelectionAdapter extends ArrayAdapter {
 
     private LayoutInflater layoutInflater;
 
-    public SpinnerCategorySelectionAdapter(@NonNull Context context, int resource, @NonNull List<String> categoryNomeList) {
-        super(context, resource, categoryNomeList);
+    public SpinnerCategorySelectionAdapter(@NonNull Context context, @NonNull List<String> categoryNomeList) {
+        super(context,0, categoryNomeList);
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -31,13 +31,18 @@ public class SpinnerCategorySelectionAdapter extends ArrayAdapter {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View cv = convertView;
         if (cv == null) {
-            cv = layoutInflater.inflate(R.layout.color_spinner_item, parent, false);
+            cv = layoutInflater.inflate(R.layout.category_spinner_item, parent, false);
         }
         return getViewInternal(cv, position);
     }
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = layoutInflater.inflate(R.layout.category_spinner_bg, parent, false);
+        return getViewInternal(view, position);
+    }
 
     private View getViewInternal(View view, int position) {
-        HashMap<String, Integer> categoryVectorDrawableHashMap = new CategoryList().categoryVectorDrawableHashMap();
+      //  HashMap<String, Integer> categoryVectorDrawableHashMap = new CategoryList().categoryVectorDrawableHashMap();
 
         String nome = (String) getItem(position);
         if (nome == null) {
@@ -46,13 +51,23 @@ public class SpinnerCategorySelectionAdapter extends ArrayAdapter {
 
         TextView categoryName = view.findViewById(R.id.textView_Category_Name);
         ImageView imageCategory = view.findViewById(R.id.imageView_Category_Image);
+        TextView categoryNameBG = view.findViewById(R.id.textView_Category_Name_BG);
+        ImageView imageCategoryBG = view.findViewById(R.id.imageView_Category_Image_BG);
 
         if (categoryName != null) {
             categoryName.setText(nome);
         }
 
+        if(categoryNameBG!= null){
+            categoryNameBG.setText(nome);
+
+        }
         if (imageCategory != null) {
             setCategoryImage(imageCategory, nome);
+            //imageCategory.setBackgroundResource(categoryVectorDrawableHashMap.get(nome));
+        }
+        if (imageCategoryBG != null) {
+            setCategoryImage(imageCategoryBG, nome);
             //imageCategory.setBackgroundResource(categoryVectorDrawableHashMap.get(nome));
         }
 

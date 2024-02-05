@@ -186,13 +186,12 @@
                 android:id="@+id/fragmentNewEvent_spinner_categories"
                 android:layout_width="192dp"
                 android:layout_height="54dp"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:entries="@android:array/emailAddressTypes"
                 android:minHeight="48dp"
+                android:spinnerMode="dropdown"
                 android:textAlignment="center"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_category"
-                app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_category" />
 
             <TextView

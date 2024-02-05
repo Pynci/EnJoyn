@@ -277,7 +277,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                         categoryNameList.add(category.getNome());
                     }
 
-                    categorySpinner.setAdapter(new SpinnerCategorySelectionAdapter(getContext(),0, categoryNameList));
+                    categorySpinner.setAdapter(new SpinnerCategorySelectionAdapter(getContext(), categoryNameList));
                     categorySpinner.setSelection(new CategoryList().categoryPosition(categoryList, selectedCategory));
                     categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override

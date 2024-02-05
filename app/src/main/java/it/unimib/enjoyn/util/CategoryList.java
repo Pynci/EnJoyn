@@ -28,7 +28,7 @@ public class CategoryList {
         return 0;
     }
 
-    public HashMap<String, Integer> categoryVectorDrawableHashMap() {
+  /*  public HashMap<String, Integer> categoryVectorDrawableHashMap() {
         HashMap<String, Integer> categoryVectorDrawableHashMap = new HashMap<>();
 
         categoryVectorDrawableHashMap.put("Passeggiata", R.drawable.passeggiata);
@@ -40,5 +40,5 @@ public class CategoryList {
         categoryVectorDrawableHashMap.put("Sport", R.drawable.sport);
 
         return categoryVectorDrawableHashMap;
-    }
+    }*/
 }
