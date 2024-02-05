@@ -26,6 +26,7 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
@@ -78,19 +79,18 @@ public class EmailVerificationFragment extends Fragment {
         Button buttonRefresh = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageButtonRefresh;
         ProgressBar progressBar = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageProgressBar;
 
+        ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         emailVerificationSendingObserver = result -> {
             if(result.isSuccessful()){
-                String text = "È stata inviata una nuova mail di conferma";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildOkSnackbar(R.string.new_email_sent, view, getContext(), currentTheme);
                 snackbar.show();
             }
             else{
-                String text = "Si è verificato un errore nell'invio della mail di conferma";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -112,9 +112,8 @@ public class EmailVerificationFragment extends Fragment {
                 navigateTo(R.id.action_emailVerificationFragment_to_signinFragment, false);
             }
             else{
-                String text = "Si è verificato un errore durante il logout";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.logout_error, view, getContext(), currentTheme);
                 snackbar.show();
             }
         };

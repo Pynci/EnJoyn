@@ -133,7 +133,7 @@ public class CategoriesSelectionFragment extends Fragment {
             if(!isFromProfileFragment){
                 interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
                     if (result.isSuccessful()) {
-                        navigateTo(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity, false);
+                        navigateTo(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity, true);
                     }
                 });
             }

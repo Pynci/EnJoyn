@@ -118,7 +118,7 @@ public class ProfileConfigurationFragment extends Fragment {
                     if(!isFromProfileFragment)
                         navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false, false);
                     else
-                        navigateTo(R.id.action_profileConfigurationFragment2_to_profileFragment, false);
+                        getParentFragmentManager().popBackStackImmediate();
                 }
             }
         };
@@ -137,7 +137,7 @@ public class ProfileConfigurationFragment extends Fragment {
             if(!isFromProfileFragment)
                 navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false, false);
             else
-                navigateTo(R.id.action_profileConfigurationFragment2_to_profileFragment, false);
+                getParentFragmentManager().popBackStackImmediate();
         });
 
         buttonNext.setOnClickListener(v ->
