@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,7 +129,7 @@ public class ProfileConfigurationFragment extends Fragment {
                         userImage.setImageURI(uri);
                         currentURI = uri;
                     } else {
-                        Log.d("PhotoPicker", "No media selected");
+
                     }
                 });
 

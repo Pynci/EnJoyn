@@ -8,7 +8,9 @@ public class ColorObject implements Parcelable {
     private String hex;
     private String contrastHex;
 
+    public ColorObject( ) {
 
+    }
 
     public ColorObject(String name, String hex, String contrastHex) {
         this.name = name;
