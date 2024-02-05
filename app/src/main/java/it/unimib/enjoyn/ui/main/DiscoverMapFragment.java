@@ -28,14 +28,12 @@ import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -74,7 +72,7 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.SuggestionListAdapter;
 import it.unimib.enjoyn.databinding.FragmentDiscoverMapBinding;
-import it.unimib.enjoyn.model.Category;
+
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Result;
@@ -356,7 +354,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             }
             eventItem.setVisibility(View.VISIBLE);
             setEventParameters();
-            Log.d("code", event.getWeatherCode()+"");
+
             if(event.getWeatherCode() != -1){
                 imageConverter.setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
             }

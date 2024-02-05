@@ -7,8 +7,6 @@ import static it.unimib.enjoyn.util.Constants.NO_PLACES_AVAILABLE;
 import static it.unimib.enjoyn.util.Constants.PLACE_NOT_FOUND_ERROR;
 import static it.unimib.enjoyn.util.Constants.SUGGESTIONS_NOT_FOUND;
 
-import android.annotation.SuppressLint;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import com.mapbox.geojson.Point;

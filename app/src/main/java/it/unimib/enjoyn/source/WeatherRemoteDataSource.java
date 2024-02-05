@@ -5,7 +5,6 @@ import static it.unimib.enjoyn.util.Constants.WEATHER_FORECAST_DAYS_VALUE;
 import static it.unimib.enjoyn.util.Constants.RETROFIT_ERROR;
 import static it.unimib.enjoyn.util.Constants.WEATHER_INTERVAL_VALUE;
 
-import android.util.Log;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -40,7 +39,6 @@ public class WeatherRemoteDataSource extends BaseWeatherRemoteDataSource {
 
             @Override
             public void onFailure(@NonNull Call<WeatherApiResponse> call, @NonNull Throwable t) {
-                Log.d("ERRORE",  t.getLocalizedMessage(), t);
                 weatherCallback.onFailureFromRemote(new Exception(RETROFIT_ERROR));
             }
         });
