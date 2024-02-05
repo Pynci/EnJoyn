@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/textView_Category_Name"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Passeggiata"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -111,7 +111,7 @@
     <string name="positioningEvent">Seleziona il luogo</string>
     <string name="Location">località</string>
     <string name="km">km</string>
-    <string name="category">Categoria</string>
+    <string name="category">Categoria :</string>
     <string name="place">Luogo</string>
     <string name="save">Salva</string>
     <string name="background">background</string>
