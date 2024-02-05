@@ -138,7 +138,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_background"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/pranzo" />
+                tools:srcCompat="@drawable/cibo" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

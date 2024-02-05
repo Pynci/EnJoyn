@@ -1,8 +1,5 @@
 package it.unimib.enjoyn.adapter;
 
-import android.app.Application;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,6 +27,7 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.util.ImageConverter;
 
 public class EventReclyclerViewAdapter extends
         RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -88,33 +85,6 @@ public class EventReclyclerViewAdapter extends
         if (holder instanceof EventViewHolder){
             ((EventViewHolder) holder).bind(eventList.get(position));
 
-//            Random random = new Random();
-//            int randomNumber = random.nextInt(4) + 1;
-//
-//            if (randomNumber % 4 == 0) {
-//                ((EventViewHolder) holder).backgroundImage.setBackgroundColor(
-//                        ContextCompat.getColor(
-//                                holder.itemView.getContext(),
-//                                R.color.md_theme_dark_error));
-//                ((EventViewHolder) holder).joinButton.setBackgroundColor(
-//                        ContextCompat.getColor(
-//                                holder.itemView.getContext(),
-//                                R.color.md_theme_dark_error));
-//            } else if (randomNumber % 4 == 1) {
-//                ((EventViewHolder) holder).backgroundImage.setBackgroundColor(
-//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_secondary));
-//                ((EventViewHolder) holder).joinButton.setBackgroundColor(
-//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_secondary));
-//            } else if (randomNumber % 4 == 2){
-//                ((EventViewHolder) holder).backgroundImage.setBackgroundColor(
-//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_error));
-//                ((EventViewHolder) holder).joinButton.setBackgroundColor(
-//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_error));
-//            } else {
-//                ((EventViewHolder) holder).backgroundImage.setBackgroundColor(
-//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_surfaceTint));
-//                ((EventViewHolder) holder).joinButton.setBackgroundColor(
-//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.md_theme_light_surfaceTint));
 //            }
         } else if (holder instanceof LoadingEventViewHolder) {
             ((LoadingEventViewHolder) holder).activate();
@@ -143,6 +113,7 @@ public class EventReclyclerViewAdapter extends
         private final ImageView weatherImage;
         private final ImageView backgroundImage;
         private final ImageView categoryImage;
+        private ImageConverter imageConverter;
 
 
 
@@ -158,6 +129,8 @@ public class EventReclyclerViewAdapter extends
             weatherImage = itemView.findViewById(R.id.eventListItem_imageView_weather);
             backgroundImage = itemView.findViewById(R.id.eventListItem_imageView_background);
             categoryImage = itemView.findViewById(R.id.eventListItem_imageView_categoryVector);
+
+            imageConverter = new ImageConverter();
 
             itemView.setOnClickListener(this);
             joinButton.setOnClickListener(this);
@@ -209,17 +182,13 @@ public class EventReclyclerViewAdapter extends
                 textViewPlace.setText(event.getLocation().getName());
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
-            setWeatherIcon(weatherImage, event.getWeatherCode());
+            imageConverter.setWeatherIcon(weatherImage, event.getWeatherCode());
             setTextButtonTodoEvent(event.isTodo());
             String color = event.getColor().getName();
 
-            setColorEvent(textViewPlace, backgroundImage, joinButton, event.getColor(), itemView);
-            setCategoryImage(categoryImage, event.getCategory());
+            imageConverter.setColorEvent(textViewPlace, backgroundImage, joinButton, event.getColor(), itemView);
+            imageConverter.setCategoryImage(categoryImage, event.getCategory().getNome());
 
-//            backgroundImage.setBackgroundColor(
-//                    ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor()));
-//            joinButton.setBackgroundColor(
-//                    ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor()));
 
         }
 
@@ -249,116 +218,5 @@ public class EventReclyclerViewAdapter extends
         }
     }
 
-    public void setWeatherIcon(ImageView weatherIcon, int code){
-        if (code == 0){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_sun);
-        } else if (code >= 1 && code <= 3){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_partlycloudy);
-        } else if (code == 45 || code == 48){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_fog);
-        } else if (code == 51 || code == 53 || code == 55 || code == 56 || code == 57) {
-            weatherIcon.setBackgroundResource(R.drawable.drawable_drizzle);
-        } else if (code == 61 || code == 63 || code == 65 || code == 66 || code == 67 || code == 80 || code == 81 || code == 82){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_rain);
-        } else if (code == 71 || code == 73 || code == 75 || code == 77){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_snowlight);
-        } else if (code == 85 || code == 86){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_snow);
-        } else if (code == 95 || code == 96 || code == 99){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
-        }
-    }
-
-    public void setColorEvent(TextView textViewPlace, ImageView backgroundImage, Button joinButton, ColorObject color, View itemView){
-
-        switch (color.getHex()){
-            case "#80FFDB":
-                backgroundImage.setBackgroundColor(
-                    ContextCompat.getColor(itemView.getContext(), R.color.Aquamarine));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Aquamarine));
-
-
-                break;
-            case "#72EFDD":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Turquoise));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Turquoise));
-                break;
-            case "#64DFDF":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Tiffany_Blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Tiffany_Blue));
-                break;
-            case "#56CFE1":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Sky_blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Sky_blue));
-                break;
-            case "#48BFE3":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Aero));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Aero));
-                break;
-            case "#4EA8DE":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Picton_Blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Picton_Blue));
-                break;
-            case "#5390D9":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.United_Nations_Blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.United_Nations_Blue));
-                break;
-            case "#5E60CE":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
-
-                break;
-        }
-    }
-
-    public void setCategoryImage(ImageView imageView, Category category){
-        switch (category.getNome()){
-            case "Passeggiata":
-                imageView.setBackgroundResource(R.drawable.passeggiata);
-                break;
-            case "Viaggi":
-                imageView.setBackgroundResource(R.drawable.viaggi);
-                break;
-            case "Pranzo":
-                imageView.setBackgroundResource(R.drawable.pranzo);
-                break;
-            case "Videogiochi":
-                imageView.setBackgroundResource(R.drawable.videogiochi);
-                break;
-            case "Shopping":
-                imageView.setBackgroundResource(R.drawable.shopping);
-                break;
-            case "Cinema":
-                imageView.setBackgroundResource(R.drawable.cinema);
-                break;
-            case "Sport":
-                imageView.setBackgroundResource(R.drawable.sport);
-                break;
-        }
-
-    }
 
 }

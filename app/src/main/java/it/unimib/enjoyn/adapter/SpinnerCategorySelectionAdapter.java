@@ -10,13 +10,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import java.util.HashMap;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.model.Category;
-import it.unimib.enjoyn.util.CategoryList;
-import it.unimib.enjoyn.util.ColorObject;
+import it.unimib.enjoyn.util.ImageConverter;
 
 public class SpinnerCategorySelectionAdapter extends ArrayAdapter {
 
@@ -53,6 +50,7 @@ public class SpinnerCategorySelectionAdapter extends ArrayAdapter {
         ImageView imageCategory = view.findViewById(R.id.imageView_Category_Image);
         TextView categoryNameBG = view.findViewById(R.id.textView_Category_Name_BG);
         ImageView imageCategoryBG = view.findViewById(R.id.imageView_Category_Image_BG);
+        ImageConverter imageConverter = new ImageConverter();
 
         if (categoryName != null) {
             categoryName.setText(nome);
@@ -63,41 +61,16 @@ public class SpinnerCategorySelectionAdapter extends ArrayAdapter {
 
         }
         if (imageCategory != null) {
-            setCategoryImage(imageCategory, nome);
+            imageConverter.setCategoryImage(imageCategory, nome);
             //imageCategory.setBackgroundResource(categoryVectorDrawableHashMap.get(nome));
         }
         if (imageCategoryBG != null) {
-            setCategoryImage(imageCategoryBG, nome);
+            imageConverter.setCategoryImage(imageCategoryBG, nome);
             //imageCategory.setBackgroundResource(categoryVectorDrawableHashMap.get(nome));
         }
 
         return view;
     }
 
-    public void setCategoryImage(ImageView imageView, String nomeCategory){
-        switch (nomeCategory){
-            case "Passeggiata":
-                imageView.setBackgroundResource(R.drawable.passeggiata);
-                break;
-            case "Viaggi":
-                imageView.setBackgroundResource(R.drawable.viaggi);
-                break;
-            case "Pranzo":
-                imageView.setBackgroundResource(R.drawable.pranzo);
-                break;
-            case "Videogiochi":
-                imageView.setBackgroundResource(R.drawable.videogiochi);
-                break;
-            case "Shopping":
-                imageView.setBackgroundResource(R.drawable.shopping);
-                break;
-            case "Cinema":
-                imageView.setBackgroundResource(R.drawable.cinema);
-                break;
-            case "Sport":
-                imageView.setBackgroundResource(R.drawable.sport);
-                break;
-        }
 
-    }
 }

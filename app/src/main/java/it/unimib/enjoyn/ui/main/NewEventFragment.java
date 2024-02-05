@@ -57,6 +57,7 @@ import it.unimib.enjoyn.util.ColorList;
 import it.unimib.enjoyn.util.ColorObject;
 import it.unimib.enjoyn.util.Constants;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
+import it.unimib.enjoyn.util.ImageConverter;
 import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.WeatherCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
@@ -110,8 +111,8 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     private FragmentNewEventBinding fragmentNewEventBinding;
     private Observer<Result> eventCreationObserver;
     UserViewModel userViewModel;
-
     boolean sameDay = false;
+    ImageConverter imageConverter;
 
     public NewEventFragment() {
         // Required empty public constructor
@@ -169,6 +170,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         newEvent.setLocation(NewEventFragmentArgs.fromBundle(getArguments()).getLocation());
         locationName = newEvent.getLocation().getName();
         fragmentNewEventBinding.fragmentNewEventTextViewLocation.setText(locationName);
+        imageConverter = new ImageConverter();
 
         eventCreationObserver = result -> {
             if(result.isSuccessful()){
@@ -258,7 +260,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                 if(timeWeather != null)
                     fragmentNewEventBinding.fragmentNewEventTextViewTime.setText(timeWeather);
                 if(weatherCode != -1)
-                    setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
+                    imageConverter.setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
                 if(temp != -10000)
                     fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText(temp + "°C");
 
@@ -422,7 +424,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                                 temp = temperatureArray[indexDate+indexHour+indexMinute];
                                // fragmentNewEventBinding.weather.setText(code);
                                 fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText(temp+ "°C");
-                                setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
+                                imageConverter.setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
                             }
                         }
                     },
@@ -497,7 +499,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                             weatherCode = weatherAPIdata.getWeather_code(indexDate+indexHour+indexMinute);
                             //fragmentNewEventBinding.weather.setText(code);
                             fragmentNewEventBinding.newEventFragmentTextViewTemperature.setText(temp+ "°C");
-                            setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
+                            imageConverter.setWeatherIcon(fragmentNewEventBinding.fragmentNewEventImageViewMeteoIcon, weatherCode);
                         }
                     }, hour, minute, false);
             // at last we are calling show to
@@ -507,25 +509,6 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
     }
 
 
-    public void setWeatherIcon(ImageView weatherIcon, int code){
-        if (code == 0){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_sun);
-        } else if (code >= 1 && code <= 3){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_partlycloudy);
-        } else if (code == 45 || code == 48){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_fog);
-        } else if (code == 51 || code == 53 || code == 55 || code == 56 || code == 57) {
-            weatherIcon.setBackgroundResource(R.drawable.drawable_drizzle);
-        } else if (code == 61 || code == 63 || code == 65 || code == 66 || code == 67 || code == 80 || code == 81 || code == 82){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_rain);
-        } else if (code == 71 || code == 73 || code == 75 || code == 77){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_snowlight);
-        } else if (code == 85 || code == 86){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_snow);
-        } else if (code == 95 || code == 96 || code == 99){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
-        }
-    }
 
 
     @Override
