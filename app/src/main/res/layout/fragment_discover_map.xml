@@ -109,7 +109,7 @@
                 android:contentDescription="@string/background"
                 android:scaleType="center"
                 android:background="@color/md_theme_dark_inversePrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_eventImage"
+                app:layout_constraintBottom_toBottomOf="@+id/eventListItemMap_imageView_CategoryVector"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -129,7 +129,7 @@
 
                 android:textColor="@color/cardview_light_background"
                 app:layout_constraintEnd_toEndOf="@+id/eventListItem_imageView_background"
-                app:layout_constraintStart_toEndOf="@+id/eventListItem_imageView_eventImage"
+                app:layout_constraintStart_toEndOf="@+id/eventListItemMap_imageView_CategoryVector"
                 app:layout_constraintTop_toTopOf="@+id/eventListItem_imageView_background"
                 tools:text="Andare a mangiare al Kfc" />
 
@@ -200,7 +200,7 @@
                 tools:text="3" />
 
             <ImageView
-                android:id="@+id/eventListItem_imageView_eventImage"
+                android:id="@+id/eventListItemMap_imageView_CategoryVector"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="4dp"
@@ -209,7 +209,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/eventListItem_textView_eventTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/eventListItem_textView_eventTitle"
-                app:srcCompat="@drawable/baseline_downloading_24" />
+                tools:srcCompat="@drawable/baseline_downloading_24" />
 
             <ImageView
                 android:id="@+id/eventListItem_imageView_weather"
