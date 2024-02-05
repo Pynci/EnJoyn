@@ -1,14 +1,10 @@
 package it.unimib.enjoyn.source.interests;
 
+import it.unimib.enjoyn.source.Callback;
 import it.unimib.enjoyn.ui.viewmodels.CategoriesHolder;
 
-public abstract class BaseInterestRemoteDataSource {
+public interface BaseInterestRemoteDataSource {
 
-    protected InterestsCallback interestsCallback;
-
-    public void setInterestsCallback(InterestsCallback interestsCallback){
-        this.interestsCallback = interestsCallback;
-    }
-
-    public abstract void storeUserInterests(CategoriesHolder categoriesHolder, String uid);
+    void createUserInterests(CategoriesHolder categoriesHolder, String uid, Callback callback);
+    void getUserInterests(String uid, Callback callback);
 }

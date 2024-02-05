@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.ui.auth;
 
+import static it.unimib.enjoyn.util.Constants.EMAIL_RESET_PASSWORD_SENDING_ERROR;
+
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -20,12 +22,15 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentPasswordResetBinding;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 
 public class PasswordResetFragment extends Fragment {
 
+    private FragmentPasswordResetBinding fragmentPasswordResetBinding;
     private Observer<Result> emailRecoverPasswordObserver;
     private UserViewModel userViewModel;
 
@@ -46,17 +51,18 @@ public class PasswordResetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_password_reset, container, false);
+        fragmentPasswordResetBinding = FragmentPasswordResetBinding.inflate(inflater, container, false);
+        return fragmentPasswordResetBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        TextInputLayout textInputEmail = view.findViewById(R.id.fragmentPasswordReset_textInputLayout_email);
-        TextInputEditText emailProvided = view.findViewById(R.id.fragmentPasswordReset_textInputEditText_email);
-        Button buttonNext = view.findViewById(R.id.fragmentPasswordReset_button_next);
+        TextInputLayout textInputEmail = fragmentPasswordResetBinding.fragmentPasswordResetTextInputLayoutEmail;
+        TextInputEditText emailProvided = fragmentPasswordResetBinding.fragmentPasswordResetTextInputEditTextEmail;
+        Button buttonNext = fragmentPasswordResetBinding.fragmentPasswordResetButtonNext;
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
 
         emailRecoverPasswordObserver = result -> {
             if (result.isSuccessful()){
@@ -65,9 +71,8 @@ public class PasswordResetFragment extends Fragment {
                         .navigate(R.id.action_passwordResetFragment_to_loginFragment);
             }
             else {
-                String text = "Impossibile completare l'operazione richiesta";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -103,16 +108,14 @@ public class PasswordResetFragment extends Fragment {
                         .sendResetPasswordEmail(String.valueOf(emailProvided.getText()))
                         .observe(this.requireActivity(), emailRecoverPasswordObserver);
 
-                String text = "Inviata una mail di ripristino password all'indirizzo specificato";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildOkSnackbar(R.string.email_sent_to_specified_address, view, getContext(), currentTheme);
                 snackbar.show();
             }
             else{
 
                 Snackbar snackbar;
-                String text = "Impossibile inviare la mail di ripristino password";
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(EMAIL_RESET_PASSWORD_SENDING_ERROR), view, getContext(), currentTheme);
                 snackbar.show();
             }
         });

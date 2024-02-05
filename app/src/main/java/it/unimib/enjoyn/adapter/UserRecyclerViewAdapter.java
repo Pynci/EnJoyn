@@ -1,8 +1,10 @@
 package it.unimib.enjoyn.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,15 +21,18 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
         void onUserItemClick(User user);
 
+        void onAddUserClick(User user);
+
     }
 
     private final UserRecyclerViewAdapter.OnItemClickListener onItemClickListener;
+    private final Context context;
+    private final List<User> usersList;
 
-    private List<User> usersList;
-
-    public UserRecyclerViewAdapter(List<User> users, OnItemClickListener onItemClickListener) {
+    public UserRecyclerViewAdapter(List<User> users, OnItemClickListener onItemClickListener, Context context) {
         this.usersList = users;
         this.onItemClickListener = onItemClickListener;
+        this.context = context;
     }
 
     @NonNull
@@ -57,8 +62,9 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         private final TextView textViewUsername;
         private final TextView textViewName;
         private final TextView textViewSurname;
+        private final ImageView imageView;
 
-        /**TODO  aggiungere immagine nell'adapter*/
+        /*TODO  aggiungere immagine nell'adapter*/
 
 
         public NewViewHolder(@NonNull View itemView) {
@@ -66,6 +72,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             textViewUsername = itemView.findViewById(R.id.userListItem_textView_username);
             textViewName = itemView.findViewById(R.id.userListItem_textView_name);
             textViewSurname = itemView.findViewById(R.id.userListItem_textView_surname);
+            imageView = itemView.findViewById(R.id.userListItem_imageView_userPhoto);
 
             itemView.setOnClickListener(this);
 
@@ -80,6 +87,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             textViewUsername.setText(user.getUsername());
             textViewName.setText((user.getName()));
             textViewSurname.setText(user.getSurname());
+            //imageView.setImageURI();
         }
     }
 }

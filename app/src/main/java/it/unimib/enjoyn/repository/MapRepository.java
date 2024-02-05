@@ -1,18 +1,12 @@
 package it.unimib.enjoyn.repository;
 
 import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
-
 import com.mapbox.geojson.Point;
-import com.mapbox.search.QueryType;
 import com.mapbox.search.result.SearchResult;
 import com.mapbox.search.result.SearchSuggestion;
-
 import java.util.List;
-
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.source.MapRemoteDataSource;
 import it.unimib.enjoyn.util.MapCallBack;
 
@@ -23,6 +17,7 @@ public class MapRepository implements MapCallBack {
     private final MutableLiveData<Result> mapMutableSearchLiveData;
     private final MutableLiveData<Result> mapMutableReverseSearchLiveData;
     private final MapRemoteDataSource mapRemoteDataSource;
+
 
     public MapRepository( MapRemoteDataSource mapRemoteDataSource) {
         this.mapMutableLiveData = new MutableLiveData<>();
@@ -72,10 +67,18 @@ public class MapRepository implements MapCallBack {
     }
 
     @Override
-    public void onFailureFromRemote(Exception exception) {
-                //todo errore
+    public void onFailureReverseFromRemote(Exception exception) {
+                mapMutableReverseSearchLiveData.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
+    @Override
+    public void onFailureSearchFromRemote(Exception exception) {
+        mapMutableSearchLiveData.postValue(new Result.Error(exception.getLocalizedMessage()));
     }
 
+    @Override
+    public void onFailureSuggestionFromRemote(Exception exception) {
+        mapMutableLiveData.postValue(new Result.Error(exception.getLocalizedMessage()));
+    }
 
     public MutableLiveData<Result> fetchMapSu(String searchBarText, Point selfLocation) {
         Log.d("API map", "dentro fetchMapSu su Reposity");
@@ -94,6 +97,7 @@ public class MapRepository implements MapCallBack {
 
     public MutableLiveData<Result> fetchMapReverseSearch( Point point) {
         Log.d("API map", "dentro fetchMapSu su Reposity");
+        mapMutableReverseSearchLiveData.setValue(null);
         mapRemoteDataSource.getMapReverseSearch(point);
 
         return mapMutableReverseSearchLiveData;

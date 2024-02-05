@@ -21,16 +21,19 @@ import androidx.navigation.Navigation;
 import com.google.android.material.snackbar.Snackbar;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentEmailVerificationBinding;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 
 public class EmailVerificationFragment extends Fragment {
 
+    private FragmentEmailVerificationBinding fragmentEmailVerificationBinding;
     private UserViewModel userViewModel;
     private Observer<Result> emailVerificationSendingObserver;
     private Observer<Result> emailVerificationStatusObserver;
@@ -63,31 +66,31 @@ public class EmailVerificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_email_verification, container, false);
+        fragmentEmailVerificationBinding = FragmentEmailVerificationBinding.inflate(inflater, container, false);
+        return fragmentEmailVerificationBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceBundle) {
         super.onViewCreated(view, savedInstanceBundle);
 
-        Button buttonForNewEmail = view.findViewById(R.id.fragmentConfirmEmailMessage_button_newEmail);
-        Button buttonToLogin = view.findViewById(R.id.fragmentConfirmEmailMessage_button_buttonToLogin);
-        Button buttonRefresh = view.findViewById(R.id.fragmentConfirmEmailMessage_button_refresh);
-        ProgressBar progressBar = view.findViewById(R.id.fragmentConfirmEmailMessage_progressBar);
+        Button buttonForNewEmail = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageButtonNewEmail;
+        Button buttonToLogin = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageButtonButtonToLogin;
+        Button buttonRefresh = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageButtonRefresh;
+        ProgressBar progressBar = fragmentEmailVerificationBinding.fragmentConfirmEmailMessageProgressBar;
 
+        ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         emailVerificationSendingObserver = result -> {
             if(result.isSuccessful()){
-                String text = "È stata inviata una nuova mail di conferma";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildOkSnackbar(R.string.new_email_sent, view, getContext(), currentTheme);
                 snackbar.show();
             }
             else{
-                String text = "Si è verificato un errore nell'invio della mail di conferma";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -97,7 +100,7 @@ public class EmailVerificationFragment extends Fragment {
                 User currentUser = ((Result.UserSuccess) result).getData();
                 if(currentUser != null){
                     if(currentUser.getEmailVerified()){
-                        navigateTo(R.id.action_emailVerificationFragment_to_profileConfigurationFragment, false);
+                        navigateTo(R.id.action_emailVerificationFragment_to_profileConfigurationFragment, false, false);
                     }
                     progressBar.setVisibility(View.GONE);
                 }
@@ -109,9 +112,8 @@ public class EmailVerificationFragment extends Fragment {
                 navigateTo(R.id.action_emailVerificationFragment_to_signinFragment, false);
             }
             else{
-                String text = "Si è verificato un errore durante il logout";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.logout_error, view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -131,6 +133,16 @@ public class EmailVerificationFragment extends Fragment {
 
     private void navigateTo(int destination, boolean finishActivity) {
         Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
+    }
+
+    private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromProfileFragment", fromProfileFragment);
+        Navigation.findNavController(requireView()).navigate(destination, bundle);
         if (finishActivity) {
             requireActivity().finish();
         }

@@ -1,6 +1,7 @@
 package it.unimib.enjoyn.adapter;
 
-import android.app.Application;
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.util.ColorObject;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.util.ImageConverter;
 
 public class EventReclyclerViewAdapter extends
         RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -33,13 +43,19 @@ public class EventReclyclerViewAdapter extends
 
     private final List<Event> eventList;
 
-    private final Application application;
+    private final Context context;
     private final OnItemClickListener onItemClickListener;
+    private final EventViewModel eventViewModel;
+    private final UserViewModel userViewModel;
 
-    public EventReclyclerViewAdapter(List<Event> eventList, Application application, OnItemClickListener onItemClickListener){
+
+
+    public EventReclyclerViewAdapter(List<Event> eventList, Context context, OnItemClickListener onItemClickListener){
         this.eventList = eventList;
         this.onItemClickListener = onItemClickListener;
-        this.application = application;
+        this.context = context;
+        eventViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(EventViewModel.class);
+        userViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(UserViewModel.class);
     }
 
     public int getItemViewType(int position){
@@ -53,7 +69,7 @@ public class EventReclyclerViewAdapter extends
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = null;
+        View view;
 
         if(viewType == EVENT_VIEW_TYPE){
             view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.event_list_item, parent, false);
@@ -62,14 +78,14 @@ public class EventReclyclerViewAdapter extends
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_loading_item, parent, false);
             return new LoadingEventViewHolder(view);
         }
-
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof EventViewHolder){
             ((EventViewHolder) holder).bind(eventList.get(position));
+
+//            }
         } else if (holder instanceof LoadingEventViewHolder) {
             ((LoadingEventViewHolder) holder).activate();
         }
@@ -94,7 +110,11 @@ public class EventReclyclerViewAdapter extends
         private final TextView textViewPeopleNumber;
         private final TextView textViewDistance;
         private final Button joinButton;
-        private final ImageView eventImageView;
+        private final ImageView weatherImage;
+        private final ImageView backgroundImage;
+        private final ImageView categoryImage;
+        private ImageConverter imageConverter;
+
 
 
         public EventViewHolder(@NonNull View itemView) {
@@ -105,8 +125,13 @@ public class EventReclyclerViewAdapter extends
             textViewPlace = itemView.findViewById(R.id.eventListItem_textView_place);
             textViewPeopleNumber = itemView.findViewById(R.id.eventListItem_textView_peopleNumber);
             textViewDistance = itemView.findViewById(R.id.eventListItem_textView_distance);
-            eventImageView = itemView.findViewById(R.id.eventListItem_imageView_eventImage);
             joinButton = itemView.findViewById(R.id.eventListItem_button_joinButton);
+            weatherImage = itemView.findViewById(R.id.eventListItem_imageView_weather);
+            backgroundImage = itemView.findViewById(R.id.eventListItem_imageView_background);
+            categoryImage = itemView.findViewById(R.id.eventListItem_imageView_categoryVector);
+
+            imageConverter = new ImageConverter();
+
             itemView.setOnClickListener(this);
             joinButton.setOnClickListener(this);
 
@@ -116,12 +141,33 @@ public class EventReclyclerViewAdapter extends
         public void onClick(View v) {
 
             if(v.getId() == R.id.eventListItem_button_joinButton){
-                setTextButtonTodoEvent(!eventList.get(getBindingAdapterPosition()).isTODO());
-                onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+
+                Event event = eventList.get(getBindingAdapterPosition());
+                userViewModel.getCurrentUser().observe((LifecycleOwner) context, result -> {
+                    if(result.isSuccessful()){
+                        User user = ((Result.UserSuccess) result).getData();
+                        if(event.isTodo()){
+                            eventViewModel.leaveEvent(event, user).observe((LifecycleOwner) context, result1 -> {
+                                if(getBindingAdapterPosition() != -1){
+                                    setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
+                                    //onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                                }
+                            });
+                        } else {
+                            eventViewModel.joinEvent(event, user).observe((LifecycleOwner) context, result1 -> {
+                                if(getBindingAdapterPosition() != -1){
+                                    setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
+                                    //onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                                }
+                            });
+                        }
+
+                    }
+                });
+
 
             }else{
                 onItemClickListener.onEventItemClick(eventList.get(getBindingAdapterPosition()));
-                //Navigation.findNavController(v).navigate(R.id.action_discover_to_discoverSingleEvent);
             }
         }
 
@@ -130,20 +176,27 @@ public class EventReclyclerViewAdapter extends
             textViewTitle.setText(event.getTitle());
             textViewData.setText(event.getDate());
             textViewTime.setText(event.getTime());
-            textViewPlace.setText(event.getPlace());
+            if(event.getLocation() != null)
+                textViewPlace.setText(event.getLocation().getName());
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
-            setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTODO());
-            Glide.with(application).load(event.getImageUrl()).placeholder(R.drawable.baseline_downloading_24).into(eventImageView);
+            imageConverter.setWeatherIcon(weatherImage, event.getWeatherCode());
+            setTextButtonTodoEvent(event.isTodo());
+            
+
+            imageConverter.setColorEvent(textViewPlace, backgroundImage, joinButton, event.getColor(), itemView);
+            imageConverter.setCategoryImage(categoryImage, event.getCategory().getNome());
+
+
         }
 
 
-        private void setTextButtonTodoEvent(boolean isTodo){
+        public void setTextButtonTodoEvent(boolean isTodo){
             if(isTodo){
-                joinButton.setText(R.string.Join);
+                joinButton.setText(R.string.remove);
             }
             else{
-                joinButton.setText(R.string.remove);
+                joinButton.setText(R.string.Join);
             }
         }
 

@@ -63,4 +63,22 @@
     <color name="md_theme_dark_surfaceTint">#91CDFF</color>
     <color name="md_theme_dark_outlineVariant">#42474E</color>
     <color name="md_theme_dark_scrim">#000000</color>
+
+    <color name="Aquamarine">#80FFDB</color>
+    <color name="Turquoise">#72EFDD</color>
+    <color name="Tiffany_Blue">#64DFDF</color>
+    <color name="Sky_blue">#56CFE1</color>
+    <color name="Aero">#48BFE3</color>
+    <color name="Picton_Blue">#4EA8DE</color>
+    <color name="United_Nations_Blue">#5390D9</color>
+    <!--<color name="Slate_blue">#5E60CE</color>-->
+
+    <color name="Pomp_and_Power"> #805D93</color>
+    <color name="Blush"> #CE6A85</color>
+    <color name="Coral"> #FF8C61</color>
+    <color name="Olivine"> #9EBD6E</color>
+    <color name="Shamrock_green"> #169873</color>
+    <color name="Light_Blue"> #348AA7</color>
+    <color name="Blue"> #355691</color>
+
 </resources>

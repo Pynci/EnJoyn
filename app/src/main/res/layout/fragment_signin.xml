@@ -15,22 +15,21 @@
 
         <ImageView
             android:id="@+id/fragmentLogin_imageView_appIcon"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="75dp"
+            android:layout_width="275dp"
+            android:layout_height="282dp"
+            android:layout_marginTop="16dp"
             android:contentDescription="@string/appLogo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher_foreground" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragmentLogin_textInputLayout_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="40dp"
             app:boxBackgroundColor="@android:color/transparent"
             app:boxCornerRadiusBottomEnd="30dp"

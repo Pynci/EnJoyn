@@ -4,7 +4,6 @@ import static com.mapbox.maps.plugin.animation.CameraAnimationsUtils.getCamera;
 import static com.mapbox.maps.plugin.gestures.GesturesUtils.getGestures;
 import static com.mapbox.maps.plugin.locationcomponent.LocationComponentUtils.getLocationComponent;
 
-import static it.unimib.enjoyn.util.Constants.EMPTY_LOCATION;
 import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
 
 import android.Manifest;
@@ -12,9 +11,9 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -29,11 +28,13 @@ import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -51,10 +52,9 @@ import com.mapbox.maps.Style;
 import com.mapbox.maps.extension.style.layers.properties.generated.TextAnchor;
 import com.mapbox.maps.plugin.LocationPuck2D;
 import com.mapbox.maps.plugin.animation.MapAnimationOptions;
+import com.mapbox.maps.plugin.annotation.AnnotationConfig;
 import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
 import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
-import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener;
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotation;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
@@ -74,11 +74,16 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.SuggestionListAdapter;
 import it.unimib.enjoyn.databinding.FragmentDiscoverMapBinding;
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
+import it.unimib.enjoyn.util.ImageConverter;
 
 public class DiscoverMapFragment extends Fragment implements PermissionsListener {
 
@@ -107,17 +112,19 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     private ListView suggestionListView;
     private SuggestionListAdapter suggestionListAdapter;
     private TextInputEditText searchBar;
+    private Weather weatherAPIdata;
+    private UserViewModel userViewModel;
+    private User user;
     CardView eventItem;
+    Button joinButton;
+    ImageConverter imageConverter;
 
-    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
-        @Override
-        public void onActivityResult(Boolean result) {
-            if(result){
-                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                        getString(R.string.eventRemoveToDo),
-                        Snackbar.LENGTH_LONG).show();
+    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
+        if(result){
+            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.eventRemoveToDo),
+                    Snackbar.LENGTH_LONG).show();
 
-            }
         }
     });
 
@@ -131,6 +138,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         eventList = new ArrayList<>();
     }
 
@@ -150,18 +158,23 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             PermissionsManager permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
         }
-
-        suggestionListView = view.findViewById(R.id.fragmentDiscoverMap_listView);
+        joinButton = fragmentDiscoverMapBinding.eventListItemButtonJoinButton;
+        eventItem = fragmentDiscoverMapBinding.fragmentDiscoverMapCardViewEventItem;
+        eventItem.setVisibility(View.GONE);
+        suggestionListView = fragmentDiscoverMapBinding.fragmentDiscoverMapListView;
         suggestionClicked = false;
         searchClicked = false;
         firstTime = false;
-        positionButton = view.findViewById(R.id.fragmentDiscoverMap_FloatingActionButton);
+        positionButton = fragmentDiscoverMapBinding.fragmentDiscoverMapFloatingActionButton;
         selfLocation = null;
-        searchBar = view.findViewById(R.id.fragmentDiscoverMap_TextInputEditText_searchBar);
-        mapView = view.findViewById(R.id.fragmentDiscoverMap_mapView);
+        searchBar = fragmentDiscoverMapBinding.fragmentDiscoverMapTextInputEditTextSearchBar;
+        mapView = fragmentDiscoverMapBinding.fragmentDiscoverMapMapView;
+
+        imageConverter = new ImageConverter();
 
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
-        PointAnnotationManager pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
+        AnnotationConfig annotationConfig = new AnnotationConfig();
+        PointAnnotationManager pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, annotationConfig);
         fragmentDiscoverMapBinding.fragmentDiscoverMapSearchResultView.initialize(new SearchResultsView.Configuration( new CommonSearchViewConfiguration()));
 
         suggestionObserver = result -> {
@@ -173,8 +186,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                 eventViewModel.getMapSearch(suggestions).observe(getViewLifecycleOwner(), mapSearchObserver);
             }
             else{
-                ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
-                Snackbar.make(view, errorMessagesUtil.getMapErrorMessage(EMPTY_LOCATION), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
             }
 
         };
@@ -188,6 +200,8 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     distance = 100 * (Math.sqrt(Math.pow(selfLocation.latitude() - searchResultList.get(i).getCoordinate().latitude(), 2) + Math.pow(selfLocation.longitude() - searchResultList.get(i).getCoordinate().longitude(), 2)));
                     distanceList.add(round(distance, 1));
                 }
+            }else{
+                Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
             }
 
             suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList, (eventLocation, position) -> {
@@ -269,12 +283,55 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
 
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
-        //Todo logica eventi
-        eventViewModel.getEvent(Long.parseLong("0")).observe(getViewLifecycleOwner(), result -> {
+
+        eventViewModel.getAllEvents().observe(getViewLifecycleOwner(), result -> {
 
             if(result.isSuccessful()){
                 this.eventList.clear();
                 this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
+                pointAnnotationManager.deleteAll();
+                for(int i = 0; i<eventList.size(); i++){
+                    Event event = eventList.get(i);
+                    if(selfLocation != null){
+                        double eventDistance = round(100*(Math.sqrt(Math.pow(selfLocation.latitude() - event.getLocation().getLatitude(),2)
+                                + Math.pow(selfLocation.longitude() - event.getLocation().getLongitude(),2))),1);
+                        event.setDistance(eventDistance);
+                    }
+
+                    eventViewModel.getWeather(event.getLocation().getLatitudeToString(), event.getLocation().getLongitudeToString()).observe(getViewLifecycleOwner(), weatherResult -> {
+                        if(weatherResult.isSuccessful()){
+                            weatherAPIdata = ((Result.WeatherSuccess) weatherResult).getData().getWeather();
+                            String[] dateArray = weatherAPIdata.getHour();
+                            double [] temperatureArray = weatherAPIdata.getTemperature();
+
+                            boolean equals = false;
+                            int indexDate = -1;
+                            for(int j = 0;j < dateArray.length && !equals ; j+=96){
+                                if(event.getDate().equals(dateArray[j].substring(0, 10))) {
+                                    indexDate = j;
+                                    equals = true;
+                                }
+                            }
+                            int indexHour = Integer.parseInt(event.getTime().substring(0,2))*4;
+                            int indexMinute = Integer.parseInt(event.getTime().substring(3,5))/15;
+                            if (indexDate != -1){
+                                event.setWeatherTemperature(temperatureArray[indexDate+indexHour+indexMinute]);
+                                event.setWeatherCode(weatherAPIdata.getWeather_code(indexDate+indexHour+indexMinute));
+                            } else {
+                                event.setWeatherCode(-1);
+                            }
+
+                            pointAnnotationManager.create(new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER)
+                                    .withPoint(Point.fromLngLat(event.getLocation().getLongitude(), event.getLocation().getLatitude()))
+                                    .withIconImage(bitmap));
+                        } else {
+                            ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
+                            Snackbar.make(view, errorMessagesUtil.getWeatherErrorMessage(((Result.WeatherError) weatherResult).getMessage()), Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+                    eventList.set(i, event);
+
+                }
             } else {
                 ErrorMessagesUtil errorMessagesUtil =
                         new ErrorMessagesUtil(requireActivity().getApplication());
@@ -289,66 +346,90 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             return false;
         });
 
-        Point point = Point.fromLngLat(-122.08497461176863, 37.42241542518461);
-        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions().withTextAnchor(TextAnchor.CENTER)
-                .withPoint(point)
-                .withIconImage(bitmap);
-        pointAnnotationManager.create(pointAnnotationOptions);
 
 
-        Point point2 = Point.fromLngLat(-122.08564492453274, 37.42158123915911);
-        pointAnnotationOptions.withTextAnchor(TextAnchor.CENTER)
-                .withPoint(point2)
-                .withIconImage(bitmap);
-        pointAnnotationManager.create(pointAnnotationOptions);
+        pointAnnotationManager.addClickListener(annotation -> {
+
+            boolean find = false;
+            for(int i = 0; i<eventList.size() && !find; i++){
+                if(eventList.get(i).getLocation().getLongitude() == annotation.getPoint().longitude() && eventList.get(i).getLocation().getLatitude() == annotation.getPoint().latitude()){
+                    event = eventList.get(i);
+                    find = true;
+                }
+            }
+            //event = eventList.get((int)annotation.getId());
+            eventItem.setVisibility(View.VISIBLE);
+            setEventParameters();
+            Log.d("code", event.getWeatherCode()+"");
+            if(event.getWeatherCode() != -1){
+                imageConverter.setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
+            }
+            imageConverter.setCategoryImage(fragmentDiscoverMapBinding.eventListItemMapImageViewCategoryVector, event.getCategory().getNome());
+            fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText(event.getDistance()+" km");
 
 
-        Point point3 = Point.fromLngLat(11.436340722694551,46.28347051230523);
-        pointAnnotationOptions.withTextAnchor(TextAnchor.CENTER)
-                .withPoint(point3)
-                .withIconImage(bitmap);
-        pointAnnotationManager.create(pointAnnotationOptions);
+            eventItem.setOnClickListener(v -> {
+                DiscoverFragmentDirections.ActionFragmentDiscoverToFragmentDiscoverSingleEvent action = DiscoverFragmentDirections.actionFragmentDiscoverToFragmentDiscoverSingleEvent(event);
+                Navigation.findNavController(view).navigate(action);
 
+            });
 
-        eventItem = view.findViewById(R.id.fragmentDiscoverMap_cardView_eventItem);
+            if(event.isTodo()){
+                joinButton.setText(R.string.remove);
+            }
+            else{
+                joinButton.setText(R.string.Join);
+            }
 
-        pointAnnotationManager.addClickListener(new OnPointAnnotationClickListener() {
-            @Override
-            public boolean onAnnotationClick(@NonNull PointAnnotation annotation) {
-                /*for(int i = 0; i < eventList.size(); i++){
-
-                }*/
-                event = eventList.get((int)annotation.getId());
-                eventItem.setVisibility(View.VISIBLE);
-
-                fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
-                fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
-                fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
-                fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getPlace());
-                //setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
-                //calcolare distanza
-                double eventDistance = 100*(Math.sqrt(Math.pow(selfLocation.latitude() - annotation.getPoint().latitude(),2)
-                        + Math.pow(selfLocation.longitude() - annotation.getPoint().longitude(),2)));
-                fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText((round(eventDistance,1))+" km");
-
-                fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(Integer.toString(event.getPeopleNumber()));
-                //fragmentDiscoverMapBinding.eventListItemImageViewEventImage.setImageURI(event.getImageUrl());
-                //mettere immagine meteo
-
-
-                eventItem.setOnClickListener(v -> {
-                    DiscoverFragmentDirections.ActionDiscoverToDiscoverSingleEvent action = DiscoverFragmentDirections.actionDiscoverToDiscoverSingleEvent(event);
-                    Navigation.findNavController(view).navigate(action);
-
-                });
-
-                annotation.getPoint().latitude();
-                annotation.getPoint().longitude();
-
-                return true;
+            eventViewModel.refreshEvent(event).observe(getViewLifecycleOwner(), result -> {
+                if(result.isSuccessful()){
+                    event = ((Result.SingleEventSuccess) result).getEvent();
+                    setEventParameters();
+                }
+                else{
+                    //TODO mettere snackbar
                 }
             });
+
+            joinButton.setOnClickListener(v -> {
+
+                userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessful()) {
+                        user = ((Result.UserSuccess) result).getData();
+                        if (event.isTodo()) {
+                            eventViewModel.leaveEvent(event, user).observe(getViewLifecycleOwner(), result1 -> {
+                                joinButton.setText(R.string.Join);
+                            });
+
+                        } else {
+                            eventViewModel.joinEvent(event, user).observe(getViewLifecycleOwner(), result1 -> {
+                                joinButton.setText(R.string.remove);
+                            });
+
+                        }
+
+                    }
+                });
+
+            });
+
+            annotation.getPoint().latitude();
+            annotation.getPoint().longitude();
+
+            return true;
+            });
+
         }
+
+    private void setEventParameters() {
+        fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
+        fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
+        fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
+        fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getLocation().getName());
+        fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
+        fragmentDiscoverMapBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+        fragmentDiscoverMapBinding.eventListItemButtonJoinButton.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+    }
 
     private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListener = new OnIndicatorBearingChangedListener() {
         @Override
@@ -418,23 +499,5 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
         getCamera(mapView).easeTo(cameraOptions, animationOptions);
     }
 
-    public void setWeatherIcon(ImageView weatherIcon, int code){
-        if (code == 0){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_sun);
-        } else if (code >= 1 && code <= 3){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_partlycloudy);
-        } else if (code == 45 || code == 48){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_fog);
-        } else if (code == 51 || code == 53 || code == 55 || code == 56 || code == 57) {
-            weatherIcon.setBackgroundResource(R.drawable.drawable_drizzle);
-        } else if (code == 61 || code == 63 || code == 65 || code == 66 || code == 67 || code == 80 || code == 81 || code == 82){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_rain);
-        } else if (code == 71 || code == 73 || code == 75 || code == 77){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_snowlight);
-        } else if (code == 85 || code == 86){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_snow);
-        } else if (code == 95 || code == 96 || code == 99){
-            weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
-        }
-    }
+
 }

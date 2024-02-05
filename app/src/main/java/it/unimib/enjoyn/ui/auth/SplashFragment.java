@@ -60,10 +60,10 @@ public class SplashFragment extends Fragment {
                         navigateTo(R.id.action_splashFragment_to_confirmEmailMessageFragment, false);
                     }
                     else if(!currentUser.getProfileConfigured()){
-                        navigateTo(R.id.action_splashFragment_to_propicDescriptionConfigurationFragment, false);
+                        navigateTo(R.id.action_splashFragment_to_propicDescriptionConfigurationFragment, false, false);
                     }
                     else if(!currentUser.getCategoriesSelectionDone()){
-                        navigateTo(R.id.action_splashFragment_to_categoriesSelectionFragment, false);
+                        navigateTo(R.id.action_splashFragment_to_categoriesSelectionFragment, false, false);
                     }
                     else{
                         navigateTo(R.id.action_splashFragment_to_mainButtonMenuActivity, true);
@@ -81,6 +81,16 @@ public class SplashFragment extends Fragment {
 
     private void navigateTo(int destination, boolean finishActivity) {
         Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
+    }
+
+    private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromProfileFragment", fromProfileFragment);
+        Navigation.findNavController(requireView()).navigate(destination, bundle);
         if (finishActivity) {
             requireActivity().finish();
         }

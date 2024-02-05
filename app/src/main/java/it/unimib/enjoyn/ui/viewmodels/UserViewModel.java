@@ -13,13 +13,18 @@ import it.unimib.enjoyn.repository.user.IUserRepository;
 public class UserViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
+    MutableLiveData<Result> currentUser;
+    MutableLiveData<Result> propic;
 
     public UserViewModel(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public MutableLiveData<Result> getCurrentUser(){
-        return userRepository.getCurrentUser();
+        if(currentUser == null){
+            currentUser = userRepository.getCurrentUser();
+        }
+        return currentUser;
     }
 
     public MutableLiveData<Result> signUp(String email, String password, String username){
@@ -59,6 +64,13 @@ public class UserViewModel extends ViewModel {
         return userRepository.updatePropic(uri);
     }
 
+    public MutableLiveData<Result> getUserPropic() {
+        if(propic == null){
+            propic = userRepository.getCurrentUserPropic();
+        }
+        return propic;
+    }
+
     public MutableLiveData<Result> setUserNameAndSurname(String name, String surname) {
         return userRepository.updateNameAndSurname(name, surname);
     }
@@ -68,7 +80,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> updateEmailVerificationStatus(){
-        return userRepository.updateEmailVerificationStatus();
+        return userRepository.refreshEmailVerificationStatus();
     }
 
     public MutableLiveData<Result> updateProfileConfigurationStatus(){

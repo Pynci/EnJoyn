@@ -22,10 +22,12 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.R;
 
+import it.unimib.enjoyn.databinding.FragmentSignupBinding;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
@@ -33,6 +35,7 @@ import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 // TODO: sistemare la presentazione degli errori all'utente ed eventuali stringhe hardcodate
 public class SignupFragment extends Fragment {
 
+    private FragmentSignupBinding fragmentSignupBinding;
     private UserViewModel userViewModel;
     private Observer<Result> signUpObserver;
     private Observer<Result> emailVerificationSendingObserver;
@@ -63,7 +66,8 @@ public class SignupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_signup, container, false);
+        fragmentSignupBinding = FragmentSignupBinding.inflate(inflater, container, false);
+        return fragmentSignupBinding.getRoot();
     }
 
     @Override
@@ -72,20 +76,22 @@ public class SignupFragment extends Fragment {
 
         //Widgets
 
-        Button buttonRegister = view.findViewById(R.id.fragmentRegister_button_register);
-        Button buttonLogin = view.findViewById(R.id.fragmentRegister_button_login);
+        Button buttonRegister = fragmentSignupBinding.fragmentRegisterButtonRegister;
+        Button buttonLogin = fragmentSignupBinding.fragmentRegisterButtonLogin;
 
-        TextInputLayout textInputEmail = view.findViewById(R.id.fragmentRegister_textInputLayout_email);
-        EditText editTextEmail = view.findViewById(R.id.fragmentRegister_textInputEditText_email);
+        TextInputLayout textInputEmail = fragmentSignupBinding.fragmentRegisterTextInputLayoutEmail;
+        EditText editTextEmail = fragmentSignupBinding.fragmentRegisterTextInputEditTextEmail;
 
-        TextInputLayout textInputPassword = view.findViewById(R.id.fragmentRegister_textInputLayout_password);
-        EditText editTextPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_password);
+        TextInputLayout textInputPassword = fragmentSignupBinding.fragmentRegisterTextInputLayoutPassword;
+        EditText editTextPassword = fragmentSignupBinding.fragmentRegisterTextInputEditTextPassword;
 
-        TextInputLayout textInputConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputLayout_confirmPassword);
-        EditText editTextConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_confirmPassword);
+        TextInputLayout textInputConfirmPassword = fragmentSignupBinding.fragmentRegisterTextInputLayoutConfirmPassword;
+        EditText editTextConfirmPassword = fragmentSignupBinding.fragmentRegisterTextInputEditTextConfirmPassword;
 
-        TextInputLayout textInputUsername = view.findViewById(R.id.fragmentRegister_textInputLayout_username);
-        EditText editTextUsername = view.findViewById(R.id.fragmentRegister_textInputEditText_username);
+        TextInputLayout textInputUsername = fragmentSignupBinding.fragmentRegisterTextInputLayoutUsername;
+        EditText editTextUsername = fragmentSignupBinding.fragmentRegisterTextInputEditTextUsername;
+
+        ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -99,9 +105,9 @@ public class SignupFragment extends Fragment {
                 }
             }
             else{
-                String text = "Errore nella registrazione: " + ((Result.Error) result).getMessage();
+
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -110,15 +116,13 @@ public class SignupFragment extends Fragment {
             if(result.isSuccessful()){
                 navigateTo(R.id.action_registerFragment_to_emailVerificationFragment, false);
 
-                String text = "Registrazione avvenuta correttamente";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildOkSnackbar(R.string.signup_successful, view, getContext(), currentTheme);
                 snackbar.show();
             }
             else{
-                String text = "Errore nell'invio della mail di conferma";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -134,9 +138,8 @@ public class SignupFragment extends Fragment {
                 }
             }
             else{
-                String text = "Si è verificato un errore: " + ((Result.Error) result).getMessage();
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -152,9 +155,8 @@ public class SignupFragment extends Fragment {
                 }
             }
             else{
-                String text = "Si è verificato un errore: " + ((Result.Error) result).getMessage();
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -272,7 +274,7 @@ public class SignupFragment extends Fragment {
             String username = String.valueOf(editTextUsername.getText());
             String email = String.valueOf(editTextEmail.getText());
             String password = String.valueOf(editTextPassword.getText());
-            String confirmPassword = String.valueOf(editTextPassword.getText());
+            String confirmPassword = String.valueOf(editTextConfirmPassword.getText());
 
             if(userViewModel.checkUsername(username).equals("ok") &&
                     userViewModel.checkEmail(email).equals("ok") &&
@@ -284,22 +286,19 @@ public class SignupFragment extends Fragment {
                 }
                 else if(!isUsernameOK){
 
-                    String text = "Username già in uso";
                     Snackbar snackbar;
-                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                    snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.usernameAlreadyInUse, view, getContext(), currentTheme);
                     snackbar.show();
                 }
                 else {
-                    String text = "Email già in uso";
                     Snackbar snackbar;
-                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                    snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.emailAlreadyInUse, view, getContext(), currentTheme);
                     snackbar.show();
                 }
             }
             else{
-                String text = "Registrazione fallita";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.signup_failed, view, getContext(), currentTheme);
                 snackbar.show();
             }
 

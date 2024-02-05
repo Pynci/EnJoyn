@@ -21,18 +21,24 @@ import java.util.List;
 
 import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentCategoriesSelectionBinding;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
-import it.unimib.enjoyn.ui.viewmodels.CategoryViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class CategoriesSelectionFragment extends Fragment {
 
+    private FragmentCategoriesSelectionBinding fragmentCategoriesSelectionBinding;
+    private InterestsViewModel interestsViewModel;
     private CategoryViewModel categoryViewModel;
+    private UserViewModel userViewModel;
+
 
     public CategoriesSelectionFragment() {
     }
@@ -44,31 +50,41 @@ public class CategoriesSelectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categoryViewModel = new ViewModelProvider(
+        interestsViewModel = new ViewModelProvider(
                 requireActivity(),
-                new CategoryViewModelFactory(requireActivity().getApplication())).get(CategoryViewModel.class);
+                new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
+        categoryViewModel = new ViewModelProvider(
+                requireActivity()).get(CategoryViewModel.class);
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_categories_selection, container, false);
+        fragmentCategoriesSelectionBinding = FragmentCategoriesSelectionBinding.inflate(inflater, container, false);
+        return fragmentCategoriesSelectionBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button buttonSkip = view.findViewById(R.id.fragmentCategoriesSelection_button_skip);
-        Button buttonConfirm = view.findViewById(R.id.fragmentCategoriesSelection_button_confirm);
+        boolean isFromProfileFragment = getArguments().getBoolean("fromProfileFragment");
+        Button buttonSkip = fragmentCategoriesSelectionBinding.fragmentCategoriesSelectionButtonSkip;
+        Button buttonConfirm = fragmentCategoriesSelectionBinding.fragmentCategoriesSelectionButtonConfirm;
 
-        ListView listView = view.findViewById(R.id.fragmentCategoriesSelection_ListView);
+        ListView listView = fragmentCategoriesSelectionBinding.fragmentCategoriesSelectionListView;
         listView.setDivider(null);
 
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
-        UserViewModel userViewModel = new ViewModelProvider(requireActivity(),
-                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-        userViewModel.updateCategoriesSelectionStatus();
+        if(isFromProfileFragment) {
+            buttonSkip.setText(R.string.annulla);
+        }
+        else{
+            userViewModel.updateCategoriesSelectionStatus();
+        }
 
         Observer<Result> categoriesObserver = result -> {
             if (result.isSuccessful()) {
@@ -95,31 +111,48 @@ public class CategoriesSelectionFragment extends Fragment {
                                         }
                                     }
                                 }
-
-                                CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
-                                        categoryList, imagesSorted);
-                                listView.setAdapter(customAdapter);
+                                if(imagesSorted.size() > 0){
+                                    CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
+                                            categoryList, imagesSorted);
+                                    listView.setAdapter(customAdapter);
+                                }
                             }
                         });
             }
         };
 
         buttonSkip.setOnClickListener(v -> {
-            Navigation
-                    .findNavController(view)
-                    .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
+            if(!isFromProfileFragment)
+                navigateTo(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity, false);
+            else
+                navigateTo(R.id.action_categoriesSelectionFragment2_to_profileFragment, false);
         });
 
         buttonConfirm.setOnClickListener(v -> {
-            categoryViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
-                if (result.isSuccessful()) {
-                    Navigation
-                            .findNavController(view)
-                            .navigate(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity);
-                }
-            });
+
+            if(!isFromProfileFragment){
+                interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessful()) {
+                        navigateTo(R.id.action_categoriesSelectionFragment_to_mainButtonMenuActivity, true);
+                    }
+                });
+            }
+            else{
+                interestsViewModel.setUserInterests().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessful()) {
+                        navigateTo(R.id.action_categoriesSelectionFragment2_to_authActivity2, false);
+                    }
+                });
+            }
         });
 
         categoryViewModel.getAllCategories().observe(this.getViewLifecycleOwner(), categoriesObserver);
+    }
+
+    private void navigateTo(int destination, boolean finishActivity) {
+        Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
     }
 }

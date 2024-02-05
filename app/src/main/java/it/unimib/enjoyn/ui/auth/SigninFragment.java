@@ -19,6 +19,7 @@ import android.widget.EditText;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+import it.unimib.enjoyn.databinding.FragmentSigninBinding;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -29,6 +30,7 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class SigninFragment extends Fragment {
 
+    private FragmentSigninBinding fragmentSigninBinding;
     private UserViewModel userViewModel;
     private Observer<Result> signInObserver;
 
@@ -48,7 +50,8 @@ public class SigninFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_signin, container, false);
+       fragmentSigninBinding = FragmentSigninBinding.inflate(inflater, container, false);
+       return fragmentSigninBinding.getRoot();
     }
 
 
@@ -58,15 +61,15 @@ public class SigninFragment extends Fragment {
 
         // Widgets
 
-        Button buttonRegister = view.findViewById(R.id.fragmentLogin_button_register);
-        Button buttonLogin = view.findViewById(R.id.fragmentLogin_button_login);
-        Button buttonForgottenPassword = view.findViewById(R.id.fragmentLogin_button_forgottenPassword);
+        Button buttonRegister = fragmentSigninBinding.fragmentLoginButtonRegister;
+        Button buttonLogin = fragmentSigninBinding.fragmentLoginButtonLogin;
+        Button buttonForgottenPassword = fragmentSigninBinding.fragmentLoginButtonForgottenPassword;
 
-        TextInputLayout textInputEmail = view.findViewById(R.id.fragmentLogin_textInputLayout_email);
-        EditText editTextEmail = view.findViewById(R.id.fragmentLogin_textInputEditText_email);
+        TextInputLayout textInputEmail = fragmentSigninBinding.fragmentLoginTextInputLayoutEmail;
+        EditText editTextEmail = fragmentSigninBinding.fragmentLoginTextInputEditTextEmail;
 
-        TextInputLayout textInputPassword = view.findViewById(R.id.fragmentLogin_textInputLayout_password);
-        EditText editTextPassword = view.findViewById(R.id.fragmentLogin_textInputEditText_password);
+        TextInputLayout textInputPassword = fragmentSigninBinding.fragmentLoginTextInputLayoutPassword;
+        EditText editTextPassword = fragmentSigninBinding.fragmentLoginTextInputEditTextPassword;
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -80,10 +83,10 @@ public class SigninFragment extends Fragment {
                         navigateTo(R.id.action_signinFragment_to_emailVerificationFragment, false);
                     }
                     else if(!currentUser.getProfileConfigured()){
-                        navigateTo(R.id.action_signinFragment_to_profileConfigurationFragment, false);
+                        navigateTo(R.id.action_signinFragment_to_profileConfigurationFragment, false, false);
                     }
                     else if(!currentUser.getCategoriesSelectionDone()){
-                        navigateTo(R.id.action_signinFragment_to_categoriesSelectionFragment, false);
+                        navigateTo(R.id.action_signinFragment_to_categoriesSelectionFragment, false, false);
                     }
                     else{
                         navigateTo(R.id.action_signinFragment_to_mainButtonMenuActivity, true);
@@ -157,22 +160,18 @@ public class SigninFragment extends Fragment {
 
         });
     }
-
-    /*
-        // TODO: capire se sta roba serve o meno
-
-        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
-        try {
-            if (!dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME).isEmpty()) {
-                SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
-            }
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
-         */
-
     private void navigateTo(int destination, boolean finishActivity) {
         Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
+    }
+
+    private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromProfileFragment", fromProfileFragment);
+        Navigation.findNavController(requireView()).navigate(destination, bundle);
         if (finishActivity) {
             requireActivity().finish();
         }

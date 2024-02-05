@@ -24,8 +24,6 @@ public class User implements Parcelable {
     private Boolean isProfileConfigured;
     private Boolean isCategoriesSelectionDone;
 
-    /* TODO aggiungere immagine*/
-
     public User(){
         this.uid = "";
         this.isEmailVerified = false;
@@ -174,4 +172,12 @@ public class User implements Parcelable {
     public void setCategoriesSelectionDone(Boolean categoriesSelectionDone) {
         isCategoriesSelectionDone = categoriesSelectionDone;
     }
+
+//    public Uri getTempPropicUri() {
+//        return tempPropicUri;
+//    }
+
+//    public void setTempPropicUri(Uri tempPropicUri) {
+//        this.tempPropicUri = tempPropicUri;
+//    }
 }

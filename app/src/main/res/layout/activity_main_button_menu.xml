@@ -7,33 +7,36 @@
     tools:context=".ui.main.MainButtonMenuActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/top_appbar"
+        android:id="@+id/activityMainButtonMenu_topAppbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.Material3.Dark"
-        app:popupTheme="@style/ThemeOverlay.Material3.Light"
-        app:menu="@menu/menu_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:logo="@drawable/risorsa_3"
+        app:logoAdjustViewBounds="false"
+        app:logoScaleType="centerInside"
+        app:menu="@menu/menu_button"
+        app:popupTheme="@style/ThemeOverlay.Material3.Light" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
+        android:id="@+id/activityMainButtonMenu_navHostFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintBottom_toTopOf="@+id/activityMainButtonMenu_bottomNavigation"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_appbar"
+        app:layout_constraintTop_toBottomOf="@+id/activityMainButtonMenu_topAppbar"
         app:navGraph="@navigation/nav_main_button_menu" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+        android:id="@+id/activityMainButtonMenu_bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:labelVisibilityMode="labeled"

@@ -23,7 +23,10 @@ public abstract class Result {
                 || this instanceof WeatherSuccess
                 || this instanceof MapSuggestionSuccess
                 || this instanceof MapSearchSuccess
-                || this instanceof MapReverseSearchSuccess;
+                || this instanceof MapReverseSearchSuccess
+                || this instanceof SingleImageReadFromRemote
+                || this instanceof UserListSuccess
+                || this instanceof SingleEventSuccess;
     }
 
 
@@ -52,6 +55,18 @@ public abstract class Result {
 
         public EventsDatabaseResponse getData() {
             return eventResponse;
+        }
+    }
+
+    public static final class SingleEventSuccess extends Result{
+        private final Event event;
+
+        public SingleEventSuccess(Event event){
+            this.event = event;
+        }
+
+        public Event getEvent() {
+            return event;
         }
     }
 
@@ -141,20 +156,35 @@ public abstract class Result {
         }
     }
 
+    public static final class UserListSuccess extends Result {
+        private final List<User> users;
+
+        public UserListSuccess(){
+            users = new ArrayList<>();
+        }
+        public void addUser(User user){
+            users.add(user);
+        }
+
+        public List<User> getUsers(){
+            return users;
+        }
+    }
+
     public static final class ResultList extends Result {
 
-        private final List<Result> messages;
+        private final List<Result> results;
 
         public ResultList() {
-            messages = new ArrayList<>();
+            results = new ArrayList<>();
         }
 
         public void addResult(Result result) {
-            messages.add(result);
+            results.add(result);
         }
 
         public List<Result> getResults() {
-            return messages;
+            return results;
         }
     }
 
@@ -170,7 +200,7 @@ public abstract class Result {
         }
     }
 
-    public static final class WeatherError extends Result{
+    public static final class WeatherError extends Result {
         private final String message;
 
         public WeatherError(String message) {
@@ -193,4 +223,19 @@ public abstract class Result {
             return message;
         }
     }
+
+    public static final class SingleImageReadFromRemote extends Result{
+        private final Uri uri;
+
+        public  SingleImageReadFromRemote(Uri uri) {
+
+            this.uri = uri;
+        }
+
+        public Uri getUri() {
+            return uri;
+        }
+    }
+
+
 }

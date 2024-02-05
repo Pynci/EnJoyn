@@ -23,8 +23,8 @@ public class Weather implements Parcelable {
 
 
 
-    public int[] getWeather_code() {
-        return weather_code;
+    public int getWeather_code(int i) {
+        return weather_code[i];
     }
     public String getWeather_codeString(int i) {
         return Integer.toString(weather_code[i]);

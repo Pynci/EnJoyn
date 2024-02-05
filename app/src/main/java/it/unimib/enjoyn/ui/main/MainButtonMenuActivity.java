@@ -3,7 +3,6 @@ package it.unimib.enjoyn.ui.main;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -26,24 +25,25 @@ public class MainButtonMenuActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main_button_menu);
 
-        Toolbar toolBar = findViewById(R.id.top_appbar);
+        Toolbar toolBar = findViewById(R.id.activityMainButtonMenu_topAppbar);
         setSupportActionBar(toolBar);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().
-                findFragmentById(R.id.nav_host_fragment);
+                findFragmentById(R.id.activityMainButtonMenu_navHostFragment);
 
         navController = navHostFragment.getNavController();
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-
+        BottomNavigationView bottomNav = findViewById(R.id.activityMainButtonMenu_bottomNavigation);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.discover,
-                R.id.todo,
-                R.id.newEventMap,
+                R.id.fragmentDiscover,
+                R.id.fragmentTodo,
+                R.id.fragmentNewEventMap,
                 R.id.friendsFragment,
                 R.id.profileFragment
                 ).build();
+
 
 
 

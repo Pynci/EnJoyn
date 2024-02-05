@@ -21,13 +21,18 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 
+
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.ViewPagerAdapter;
-import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
+import it.unimib.enjoyn.databinding.FragmentDiscoverBinding;
+import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 
@@ -38,8 +43,9 @@ import it.unimib.enjoyn.util.ServiceLocator;
  */
 public class DiscoverFragment extends Fragment {
 
-    EventViewModel eventViewModel;
-
+    private FragmentDiscoverBinding fragmentDiscoverBinding;
+    private EventViewModel eventViewModel;
+    private UserViewModel userViewModel;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     ViewPagerAdapter viewPagerAdapter;
@@ -56,45 +62,47 @@ public class DiscoverFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //creazione dell'eventViewModel si può svolgere anche in DiscoverMapFragment
-        IEventRepositoryWithLiveData eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
+        IEventRepository eventRepositoryWithLiveData = ServiceLocator.getInstance().getEventRepository(
                 requireActivity().getApplication());
-        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository(requireActivity().getApplication());
+        IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository();
 
-        MapRepository mapRepository = ServiceLocator.getInstance().getMapRepository(requireActivity().getApplication());
+        MapRepository mapRepository = ServiceLocator.getInstance().getMapRepository();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
 
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
                 new EventViewModelFactory(eventRepositoryWithLiveData, weatherRepository, mapRepository)).get(EventViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        fragmentDiscoverBinding = FragmentDiscoverBinding.inflate(inflater, container, false);
+        return fragmentDiscoverBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout = view.findViewById(R.id.discoverFragment_tabLayout);
-        viewPager2 = view.findViewById(R.id.discoverFragment_viewPager);
+        tabLayout = fragmentDiscoverBinding.discoverFragmentTabLayout;
+        viewPager2 = fragmentDiscoverBinding.discoverFragmentViewPager;
         if(this.getActivity() != null)
             viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
+
         viewPager2.setAdapter(viewPagerAdapter);
         viewPager2.setUserInputEnabled(false);
+
         requireActivity().addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menu.clear();
-                menuInflater.inflate(R.menu.menu_toolbar, menu);
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.menuToolbar_favoritesButton){
-                    startActivityBasedOnCondition(R.id.action_discover_to_favoritesFragment, false);
-                }
                 return false;
             }
         });
@@ -113,6 +121,8 @@ public class DiscoverFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
+
+
         });
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -125,13 +135,6 @@ public class DiscoverFragment extends Fragment {
 
     }
 
-    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
-        Navigation.findNavController(requireView()).navigate(destination);
 
-        //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
-            requireActivity().finish();
-        }
-    }
 
 }

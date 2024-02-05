@@ -3,18 +3,16 @@ package it.unimib.enjoyn.util;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-
 import java.util.Calendar;
 
-import it.unimib.enjoyn.R;
 
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
-
+    @NonNull
     public DatePickerDialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker.
         final Calendar c = Calendar.getInstance();

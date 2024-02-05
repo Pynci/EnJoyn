@@ -12,10 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -25,14 +23,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.databinding.FragmentProfileConfigurationBinding;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
@@ -40,6 +42,7 @@ import it.unimib.enjoyn.util.ServiceLocator;
 
 public class ProfileConfigurationFragment extends Fragment {
 
+    private FragmentProfileConfigurationBinding fragmentProfileConfigurationBinding;
     private UserViewModel userViewModel;
     private Uri currentURI;
     private Observer<Result> observerAddOptionalData;
@@ -72,28 +75,29 @@ public class ProfileConfigurationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile_configuration, container, false);
+        fragmentProfileConfigurationBinding = FragmentProfileConfigurationBinding.inflate(inflater, container,false);
+        return fragmentProfileConfigurationBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceBundle){
         super.onViewCreated(view, savedInstanceBundle);
 
-        String origin = ProfileConfigurationFragmentArgs.fromBundle(getArguments()).getOrigin();
-
-        ShapeableImageView userImage = view.findViewById(R.id.propicDescriptionConfiguration_imageView_propic);
-        Button buttonNext = view.findViewById(R.id.propicDescriptionConfiguration_button_next);
-        Button skip = view.findViewById(R.id.propicDescriptionConfiguration_button_skip);
-        ImageButton imageButtonAddPropic = view.findViewById(R.id.propicDescriptionConfiguration_imageButton_addPropic);
-        EditText cognome = view.findViewById(R.id.propicDescriptionConfiguration_editText_cognome);
-        EditText nome = view.findViewById(R.id.propicDescriptionConfiguration_editText_nome);
-        TextInputEditText description = view.findViewById(R.id.propicDescriptionConfiguration_textInputEditText_description);
-
-        if (origin.equals("fromProfile")){
-            skip.setVisibility(View.GONE);
-        }
+        boolean isFromProfileFragment = getArguments().getBoolean("fromProfileFragment");
+        ShapeableImageView userImage = fragmentProfileConfigurationBinding.fragmentProfileImageViewPropic;
+        Button buttonNext = fragmentProfileConfigurationBinding.propicDescriptionConfigurationButtonNext;
+        Button skip = fragmentProfileConfigurationBinding.propicDescriptionConfigurationButtonSkip;
+        ImageButton imageButtonAddPropic = fragmentProfileConfigurationBinding.propicDescriptionConfigurationImageButtonAddPropic;
+        TextView username = fragmentProfileConfigurationBinding.fragmentProfileConfigurationTextViewUsername;
+        EditText cognome = fragmentProfileConfigurationBinding.propicDescriptionConfigurationEditTextCognome;
+        EditText nome = fragmentProfileConfigurationBinding.propicDescriptionConfigurationEditTextNome;
+        TextInputEditText description = fragmentProfileConfigurationBinding.propicDescriptionConfigurationTextInputEditTextDescription;
 
         userViewModel.updateProfileConfigurationStatus();
+
+        if(isFromProfileFragment) {
+            skip.setText(R.string.annulla);
+        }
 
         observerAddOptionalData = result -> {
 
@@ -111,11 +115,10 @@ public class ProfileConfigurationFragment extends Fragment {
                 }
 
                 if (allSuccessfull) {
-                    if(origin.equals("fromProfile")){
-                        FragmentManager.findFragment(view).getParentFragmentManager().popBackStack();
-                    } else {
-                        navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false);
-                    }
+                    if(!isFromProfileFragment)
+                        navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false, false);
+                    else
+                        getParentFragmentManager().popBackStackImmediate();
                 }
             }
         };
@@ -130,8 +133,12 @@ public class ProfileConfigurationFragment extends Fragment {
                     }
                 });
 
-        skip.setOnClickListener(v ->
-                navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false));
+        skip.setOnClickListener(v -> {
+            if(!isFromProfileFragment)
+                navigateTo(R.id.action_profileConfigurationFragment_to_categoriesSelectionFragment, false, false);
+            else
+                getParentFragmentManager().popBackStackImmediate();
+        });
 
         buttonNext.setOnClickListener(v ->
                 userViewModel.setOptionalUserParameters(nome.getText().toString(), cognome.getText().toString(),
@@ -175,10 +182,42 @@ public class ProfileConfigurationFragment extends Fragment {
             }
         });
 
+        userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), userResult -> {
+            if(userResult.isSuccessful() && userResult instanceof Result.UserSuccess){
+                User user = ((Result.UserSuccess) userResult).getData();
+                username.setText(user.getUsername());
+
+                if(isFromProfileFragment) {
+                    nome.setText(user.getName());
+                    cognome.setText(user.getSurname());
+                    description.setText(user.getDescription());
+
+                    userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), propicResult -> {
+                        if (propicResult.isSuccessful() && propicResult instanceof Result.SingleImageReadFromRemote) {
+                            Glide
+                                    .with(this.getContext())
+                                    .load(((Result.SingleImageReadFromRemote) propicResult).getUri())
+                                    .into(userImage);
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     private void navigateTo(int destination, boolean finishActivity) {
         Navigation.findNavController(requireView()).navigate(destination);
+        if (finishActivity) {
+            requireActivity().finish();
+        }
+    }
+
+    private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromProfileFragment", fromProfileFragment);
+        Navigation.findNavController(requireView()).navigate(destination, bundle);
         if (finishActivity) {
             requireActivity().finish();
         }

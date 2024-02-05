@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.adapter;
 
+import static android.view.View.GONE;
+
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -32,7 +34,7 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return data.size() / 2; // Ogni riga contiene due elementi
+        return data.size() / 2 + 1; // Ogni riga contiene due elementi
     }
 
     @Override
@@ -62,11 +64,21 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
         ShapeableImageView imageViewLeft = rowView.findViewById(R.id.headerImageCard1);
         ShapeableImageView imageViewRight = rowView.findViewById(R.id.headerImageCard2);
 
-        Glide.with(context).load(images.get(position * 2)).into(imageViewLeft);
-        Glide.with(context).load(images.get(position * 2 + 1)).into(imageViewRight);
+        if(position * 2 < images.size()){
+            Glide.with(context).load(images.get(position * 2)).into(imageViewLeft);
+            nameCategoryCardLeft.setText(data.get(position * 2).getNome());
+        }
+        else{
+            cardViewLeft.setVisibility(GONE);
+        }
 
-        nameCategoryCardLeft.setText(data.get(position * 2).getNome());
-        nameCategoryCardRight.setText(data.get(position * 2 + 1).getNome());
+        if(position * 2 + 1 < images.size()){
+            Glide.with(context).load(images.get(position * 2 + 1)).into(imageViewRight);
+            nameCategoryCardRight.setText(data.get(position * 2 + 1).getNome());
+        }
+        else {
+            cardViewRight.setVisibility(GONE);
+        }
 
         cardViewLeft.setOnClickListener(v -> {
             cardViewLeft.setChecked(!cardViewLeft.isChecked());

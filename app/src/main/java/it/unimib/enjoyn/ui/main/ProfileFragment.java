@@ -1,11 +1,15 @@
 package it.unimib.enjoyn.ui.main;
 
+import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -15,68 +19,75 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
+import it.unimib.enjoyn.databinding.FragmentProfileBinding;
+import it.unimib.enjoyn.model.Category;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.repository.user.IUserRepository;
+import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
+import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
+import it.unimib.enjoyn.util.ServiceLocator;
+import it.unimib.enjoyn.util.SnackbarBuilder;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FragmentProfileBinding fragmentProfileBinding;
+    private UserViewModel userViewModel;
+    private CategoryViewModel categoryViewModel;
+    private InterestsViewModel interestsViewModel;
 
     public ProfileFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static ProfileFragment newInstance() {
+        return new ProfileFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+
+        categoryViewModel = new ViewModelProvider(
+                requireActivity()).get(CategoryViewModel.class);
+
+        interestsViewModel = new ViewModelProvider(requireActivity(),
+                new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getViewLifecycleOwner();
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        fragmentProfileBinding = FragmentProfileBinding.inflate(inflater, container, false);
+        return fragmentProfileBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         requireActivity().addMenuProvider(new MenuProvider() {
+
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menu.clear();
@@ -86,45 +97,114 @@ public class ProfileFragment extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 return false;
             }
+
         });
 
-        Button modify = view.findViewById(R.id.fragmentProfile_textButton_editProfile);
+        ShapeableImageView propic = fragmentProfileBinding.fragmentProfileImageViewPropic;
+        TextView username = fragmentProfileBinding.fragmentProfileTextViewUsername;
+        TextView nameSurname = fragmentProfileBinding.fragmentProfileTextViewNameSurname;
+        TextView description = fragmentProfileBinding.fragmentProfileTextViewDescriptionText;
+        ImageButton logout = fragmentProfileBinding.fragmentProfileImageButtonLogOut;
+        Button editProfile = fragmentProfileBinding.fragmentProfileTextButtonEditProfile;
+        Button editInterests = fragmentProfileBinding.fragmentProfileTextButtonEditInterests;
+        ListView listView = fragmentProfileBinding.fragmentProfileListView;
+        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
-        modify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProfileFragmentDirections.ActionProfileFragmentToProfileConfigurationFragment2 action = ProfileFragmentDirections.actionProfileFragmentToProfileConfigurationFragment2();
-                startActivityBasedOnCondition(R.id.action_profileFragment_to_profileConfigurationFragment2, false);
+        listView.setDivider(null);
+
+        Observer<Result> interestsObserver = result -> {
+            if (result.isSuccessful() && result instanceof Result.CategorySuccess) {
+                List<Category> categoryList = ((Result.CategorySuccess) result).getCategoryList();
+                categoryViewModel
+                        .getAllImages(categoryList)
+                        .observe(this.getViewLifecycleOwner(), result1 -> {
+
+                            if (result1 instanceof Result.ImagesReadFromRemote) {
+
+                                List<Uri> imagesNotSorted = ((Result.ImagesReadFromRemote) result1).getImagesUri();
+                                List<Uri> imagesSorted = new ArrayList<>();
+
+                                for (int i = 0; i < categoryList.size(); i++) {
+                                    for (int j = 0; j < imagesNotSorted.size(); j++) {
+
+                                        String tempUri = imagesNotSorted.get(j).toString();
+                                        String tempCategory = categoryList.get(i).getNome().toLowerCase();
+
+                                        if (tempUri.contains(tempCategory)) {
+                                            imagesSorted.add(imagesNotSorted.get(j));
+                                        }
+                                    }
+                                }
+
+                                if(imagesSorted.size() > 0){
+                                    CategoriesSelectionAdapter customAdapter = new CategoriesSelectionAdapter(this.getContext(),
+                                            categoryList, imagesSorted);
+                                    listView.setAdapter(customAdapter);
+                                }
+                            }
+                        });
             }
+        };
+
+        userViewModel.getUserPropic().observe(this.getViewLifecycleOwner(), result -> {
+
+            if(result.isSuccessful() && result instanceof Result.SingleImageReadFromRemote)
+                Glide
+                        .with(this.getContext())
+                        .load(((Result.SingleImageReadFromRemote) result).getUri())
+                        .into(propic);
         });
 
-        /*
-        //prova swicth di un cointener
+        userViewModel.getCurrentUser().observe(this.getViewLifecycleOwner(), result -> {
 
-        ViewSwitcher viewSwitcher = (ViewSwitcher) view.findViewById(R.id.viewSwitcher1);
-        View myFirstView = view.findViewById(R.id.view1);
-        View mySecondView = view.findViewById(R.id.view2);
-        Button button1 = (Button) view.findViewById(R.id.fragmentProfile_textButton_editProfile);
-        button1.setOnClickListener(new View.OnClickListener() {
+            if(result.isSuccessful() && result instanceof Result.UserSuccess) {
 
-            @Override
-            public void onClick(View arg0) {
-                if (viewSwitcher.getCurrentView() != myFirstView) {
-                    viewSwitcher.showPrevious();
-                } else if (viewSwitcher.getCurrentView() != mySecondView) {
-                    viewSwitcher.showNext();
+                User user = ((Result.UserSuccess) result).getData();
+                if(user != null){
+
+                    if(user.getUsername() != null)
+                        username.setText(user.getUsername());
+                    else
+                        username.setText("");
+
+                    if(user.getName() != null && user.getSurname() != null)
+                        nameSurname.setText(user.getName() + " " + user.getSurname());
+                    else
+                        nameSurname.setText("");
+
+                    if(user.getDescription() != null)
+                        description.setText(user.getDescription());
+                    else
+                        description.setText("");
                 }
             }
         });
 
-         */
+        logout.setOnClickListener(v -> userViewModel.signOut().observe(this.getViewLifecycleOwner(), result -> {
+            if(result.isSuccessful()) {
+
+                navigateTo(R.id.action_profileFragment_to_authActivity2, true,true);
+            }
+            else{
+                Snackbar snackbar;
+                snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.failed_operation, view, getContext(), currentTheme);
+                snackbar.show();
+            }
+        }));
+
+        editProfile.setOnClickListener(v -> navigateTo(R.id.action_profileFragment_to_profileConfigurationFragment2, false, true));
+
+        editInterests.setOnClickListener(v -> navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, true));
+
+        interestsViewModel.getInterests().observe(this.getViewLifecycleOwner(), interestsObserver);
     }
 
-    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
-        Navigation.findNavController(requireView()).navigate(destination);
+    private void navigateTo(int destination, boolean finishActivity, boolean fromProfileFragment) {
 
-        //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromProfileFragment", fromProfileFragment);
+        Navigation.findNavController(requireView()).navigate(destination, bundle);
+        if (finishActivity) {
             requireActivity().finish();
         }
     }

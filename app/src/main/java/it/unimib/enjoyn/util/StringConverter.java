@@ -1,5 +1,7 @@
 package it.unimib.enjoyn.util;
 
+import android.net.Uri;
+
 import androidx.room.TypeConverter;
 
 import java.lang.*;

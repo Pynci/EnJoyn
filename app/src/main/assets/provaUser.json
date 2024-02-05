@@ -1,18 +1,28 @@
 {"users":
 [
   {"email":  "giu@unimib.it",
-    "name": "giulia",
-    "surname" : "vitale",
+    "name": "Giulia",
+    "surname" : "Vitale",
     "username": "giuVi"
   },
   {"email":  "fra@unimib.it",
-    "name": "francesco",
-    "surname" : "trolli",
-    "username": "fraTro"
+    "name": "Francesco",
+    "surname" : "Trolli",
+    "username": "fraTrolli"
   },
   {"email":  "Ste@unimib.it",
     "name": "Stefano",
     "surname" : "Spinelli",
     "username": "spina"
+  },
+  {"email":  "Luca@unimib.it",
+    "name": "Luca",
+    "surname" : "Pinciroli",
+    "username": "Pynci"
+  },
+  {"email":  "marco@unimib.it",
+    "name": "Marco",
+    "surname" : "Ferioli",
+    "username": "Elsacred"
   }
 ]}

@@ -6,33 +6,31 @@ import it.unimib.enjoyn.database.LocalRoomDatabase;
 import it.unimib.enjoyn.repository.MapRepository;
 import it.unimib.enjoyn.repository.category.CategoryRepository;
 import it.unimib.enjoyn.repository.category.ICategoryRepository;
-import it.unimib.enjoyn.repository.interests.IInterestRepository;
-import it.unimib.enjoyn.repository.interests.InterestRepository;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.repository.user.UserRepository;
 import it.unimib.enjoyn.source.MapRemoteDataSource;
-import it.unimib.enjoyn.source.category.CategoryRemoteDataSource;
+import it.unimib.enjoyn.source.categories.CategoryRemoteDataSource;
+import it.unimib.enjoyn.source.events.BaseParticipationRemoteDataSource;
+import it.unimib.enjoyn.source.events.ParticipationRemoteDataSource;
+import it.unimib.enjoyn.source.events.EventRemoteDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.BaseInterestRemoteDataSource;
 import it.unimib.enjoyn.source.interests.InterestLocalDataSource;
 import it.unimib.enjoyn.source.interests.InterestRemoteDataSource;
-import it.unimib.enjoyn.source.user.AuthenticationDataSource;
-import it.unimib.enjoyn.source.user.BaseAuthenticationDataSource;
-import it.unimib.enjoyn.source.user.BaseUserLocalDataSource;
-import it.unimib.enjoyn.source.user.BaseUserRemoteDataSource;
-import it.unimib.enjoyn.source.user.UserLocalDataSource;
-import it.unimib.enjoyn.source.user.UserRemoteDataSource;
+import it.unimib.enjoyn.source.users.AuthenticationDataSource;
+import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
+import it.unimib.enjoyn.source.users.BaseUserLocalDataSource;
+import it.unimib.enjoyn.source.users.BaseUserRemoteDataSource;
+import it.unimib.enjoyn.source.users.UserLocalDataSource;
+import it.unimib.enjoyn.source.users.UserRemoteDataSource;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.WeatherRepository;
 import it.unimib.enjoyn.service.WeatherApiService;
 import it.unimib.enjoyn.source.BaseWeatherRemoteDataSource;
 import it.unimib.enjoyn.source.WeatherRemoteDataSource;
-import it.unimib.enjoyn.repository.EventRepositoryWithLiveData;
-import it.unimib.enjoyn.repository.IEventRepositoryWithLiveData;
-import it.unimib.enjoyn.source.BaseEventLocalDataSource;
-import it.unimib.enjoyn.source.BaseEventRemoteDataSource;
-import it.unimib.enjoyn.source.EventLocalDataSource;
-import it.unimib.enjoyn.source.EventMockRemoteDataSource;
+import it.unimib.enjoyn.repository.EventRepository;
+import it.unimib.enjoyn.repository.IEventRepository;
+import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -62,9 +60,12 @@ public class ServiceLocator {
 
         BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getLocalDatabase(application));
         BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
-        AuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
+        BaseInterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
+        BaseInterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
+        BaseAuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
 
-        return new UserRepository(userLocalDataSource, userRemoteDataSource, authenticationDataSource);
+        return new UserRepository(userLocalDataSource, userRemoteDataSource,
+                authenticationDataSource, interestDataSource, interestLocalDataSource);
     }
 
     public ICategoryRepository getCategoryRepository(){
@@ -77,19 +78,7 @@ public class ServiceLocator {
         return LocalRoomDatabase.getDatabase(application);
     }
 
-    public IInterestRepository getInterestRepository(Application application) {
-        BaseInterestRemoteDataSource interestDataSource = new InterestRemoteDataSource();
-        BaseInterestLocalDataSource interestLocalDataSource = new InterestLocalDataSource(getLocalDatabase(application));
-        BaseAuthenticationDataSource authenticationDataSource = new AuthenticationDataSource();
-
-        return new InterestRepository(application, interestDataSource, interestLocalDataSource, authenticationDataSource);
-    }
-
-    public LocalRoomDatabase getEventDao(Application application) { //istanza di event room database
-        return LocalRoomDatabase.getDatabase(application);
-    }
-
-    public IWeatherRepository getWeatherRepository(Application application){
+    public IWeatherRepository getWeatherRepository(){
         BaseWeatherRemoteDataSource weatherRemoteDataSource;
 
         weatherRemoteDataSource = new WeatherRemoteDataSource();
@@ -97,7 +86,7 @@ public class ServiceLocator {
         return new WeatherRepository(weatherRemoteDataSource);
     }
 
-    public MapRepository getMapRepository(Application application){
+    public MapRepository getMapRepository(){
         MapRemoteDataSource mapRemoteDataSource;
 
         mapRemoteDataSource = new MapRemoteDataSource();
@@ -105,14 +94,19 @@ public class ServiceLocator {
         return new MapRepository(mapRemoteDataSource);
     }
 
-    public IEventRepositoryWithLiveData getEventRepository(Application application){
-        BaseEventLocalDataSource eventLocalDataSource;
+    public IEventRepository getEventRepository(Application application){
         BaseEventRemoteDataSource eventRemoteDataSource;
+        BaseParticipationRemoteDataSource eventParticipationRemoteDataSource;
+        BaseAuthenticationDataSource authenticationDataSource;
         JSONParserUtil jsonParserUtil = new JSONParserUtil(application);
 
-        eventRemoteDataSource = new EventMockRemoteDataSource(jsonParserUtil);
-        eventLocalDataSource = new EventLocalDataSource(getEventDao(application));
+        eventRemoteDataSource = new EventRemoteDataSource();
+        eventParticipationRemoteDataSource = new ParticipationRemoteDataSource();
+        authenticationDataSource = new AuthenticationDataSource();
 
-        return new EventRepositoryWithLiveData(eventLocalDataSource, eventRemoteDataSource);
+        return new EventRepository(
+                eventRemoteDataSource,
+                eventParticipationRemoteDataSource,
+                authenticationDataSource);
     }
 }

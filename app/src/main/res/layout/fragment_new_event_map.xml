@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.main.NewEventMap">
+    tools:context=".ui.main.NewEventMapFragment">
 
 
     <com.mapbox.maps.MapView
@@ -60,7 +60,7 @@
         app:boxCornerRadiusTopStart="20sp"
         app:boxStrokeWidth="0sp"
         app:boxStrokeWidthFocused="0sp"
-        app:startIconDrawable="@drawable/baseline_account_circle_24">
+        app:startIconDrawable="@drawable/baseline_search_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newEventMap_textInputEditText_textSearchBar"

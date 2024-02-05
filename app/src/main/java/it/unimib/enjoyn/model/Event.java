@@ -1,74 +1,52 @@
 package it.unimib.enjoyn.model;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
-import androidx.room.Embedded;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import com.google.firebase.database.Exclude;
 
 import java.util.Objects;
 
-@Entity
+import it.unimib.enjoyn.util.ColorObject;
+
 public class Event implements Parcelable {
-
-    @PrimaryKey(autoGenerate = true)
-    private long id;
+    private String eid;
     private String title;
-
     private String description;
-
     private String date;
-
-    private String place;
-
     private String time;
-
-    private boolean confidential;
-    @Embedded(prefix = "location_")
     private EventLocation location;
-    @Embedded(prefix = "category_")
     private Category category;
-
-    private int peopleNumber;
-    @Nullable
+    private int participants;
+    @Exclude
+    private boolean isTodo;
+    @Exclude
     private double distance;
+    @Exclude
+    private int weatherCode;
+    @Exclude
+    private double weatherTemperature;
+    private ColorObject color;
 
-    private boolean isTODO;
-    @Nullable
-    private boolean isFavorite;
-    @Embedded(prefix = "weather_")
-    private Weather weather;
-
-    @Embedded
-    private Uri imageUrl;
-
-    public Event(){
+    public Event() {
 
     }
 
-    public Event(long id, String title, String description, String date, String place, String time, boolean confidential, EventLocation location, Category category, int peopleNumber, double distance, boolean isTODO, boolean isFavorite, Weather weather, Uri imageUrl) {
-        this.id = id;
+    public Event(String eid, String title, String description, String date, String time,
+                 EventLocation location, Category category, int participants, double distance,
+                 int weatherCode, double weatherTemperature, ColorObject color) {
+        this.eid = eid;
         this.title = title;
         this.description = description;
         this.date = date;
-        this.place = place;
         this.time = time;
-        this.confidential = confidential;
         this.location = location;
         this.category = category;
-        this.peopleNumber = peopleNumber;
+        this.participants = participants;
         this.distance = distance;
-        this.isTODO = isTODO;
-        this.isFavorite = isFavorite;
-        this.weather = weather;
-        this.imageUrl = imageUrl;
-    }
-
-    public long getId() {
-        return id;
+        this.weatherCode = weatherCode;
+        this.weatherTemperature = weatherTemperature;
+        this.color = color;
     }
 
     public String getTitle() {
@@ -87,57 +65,50 @@ public class Event implements Parcelable {
         return time;
     }
 
-    public boolean isConfidential() {
-        return confidential;
-    }
-
     public EventLocation getLocation() {
         return location;
-    }
-
-    public String getPlace() {
-        return place;
     }
 
     public Category getCategory() {
         return category;
     }
 
-    public int getPeopleNumber() {
-        return peopleNumber;
+    public int getParticipants() {
+        return participants;
+    }
+
+    public boolean isTodo() {
+        return isTodo;
     }
 
     public String getPeopleNumberString(){
-        return Integer.toString(peopleNumber);
+        return Integer.toString(participants);
     }
 
     public double getDistance() {
         return distance;
     }
 
+    @Exclude
     public String getDistanceString(){
-        return (distance)+" km";
-    }
-
-    public boolean isTODO() {
-        return isTODO;
-    }
-
-    public boolean isFavorite() {
-        return isFavorite;
+        return distance +" km";
     }
 
 
-    public Weather getWeather() {
-        return weather;
+    public int getWeatherCode() {
+        return weatherCode;
     }
 
-    public Uri getImageUrl() {
-        return imageUrl;
+    public void setWeatherCode(int weatherCode) {
+        this.weatherCode = weatherCode;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public double getWeatherTemperature() {
+        return weatherTemperature;
+    }
+
+    public void setWeatherTemperature(double weatherTemperature) {
+        this.weatherTemperature = weatherTemperature;
     }
 
     public void setTitle(String title) {
@@ -148,24 +119,16 @@ public class Event implements Parcelable {
         this.description = description;
     }
 
-    public void setConfidential(boolean confidential) {
-        this.confidential = confidential;
-    }
-
     public void setLocation(EventLocation location) {
         this.location = location;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
     }
 
     public void setCategory(Category category) {
         this.category = category;
     }
 
-    public void setPeopleNumber(int peopleNumber) {
-        this.peopleNumber = peopleNumber;
+    public void setParticipants(int participants) {
+        this.participants = participants;
     }
 
     public void setDistance(double distance) {
@@ -180,52 +143,48 @@ public class Event implements Parcelable {
         this.time = time;
     }
 
-    public void setTODO(boolean TODO) {
-        isTODO = TODO;
+
+    public void setTodo(boolean todo) {
+        isTodo = todo;
     }
 
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
+    public ColorObject getColor() {
+        return color;
     }
 
-    public void setWeather(Weather weather) {
-        this.weather = weather;
-    }
-
-    public void setImageUrl(Uri imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setColor(ColorObject color) {
+        this.color = color;
     }
 
     public void incrementPeopleNumber(){
-
-            peopleNumber++;
-
-        this.peopleNumber = peopleNumber;
+        participants++;
     }
 
     public void decrementPeopleNumber(){
-
-            peopleNumber--;
-            this.peopleNumber=peopleNumber;
+        participants--;
     }
 
-    //TODO aggiungere parcel di EventLocation
+    public String getEid() {
+        return eid;
+    }
 
+    public void setEid(String eid) {
+        this.eid = eid;
+    }
 
-    /*TODO
-    quando prendiamo da db Firebase aggiungere peopleNumber*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Event)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return  confidential == event.confidential && Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title) && Objects.equals(description, event.description) && Objects.equals(date, event.date) && Objects.equals(time, event.time) && Objects.equals(location, event.location) && Objects.equals(category, event.category);
+        return Objects.equals(eid, event.eid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( title, description, date, time, confidential, location, category, distance);
+        return Objects.hash( title, description, date, time, location, category, distance);
     }
+
 
     @Override
     public int describeContents() {
@@ -234,54 +193,48 @@ public class Event implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
+        dest.writeString(this.eid);
         dest.writeString(this.title);
         dest.writeString(this.description);
         dest.writeString(this.date);
-        dest.writeString(this.place);
         dest.writeString(this.time);
-        dest.writeByte(this.confidential ? (byte) 1 : (byte) 0);
         dest.writeParcelable(this.location, flags);
         dest.writeParcelable(this.category, flags);
-        dest.writeInt(this.peopleNumber);
+        dest.writeInt(this.participants);
         dest.writeDouble(this.distance);
-        dest.writeByte(this.isTODO ? (byte) 1 : (byte) 0);
-        dest.writeByte(this.isFavorite ? (byte) 1 : (byte) 0);
-        dest.writeParcelable(this.weather, flags);
+        dest.writeInt(this.weatherCode);
+        dest.writeDouble(this.weatherTemperature);
+        dest.writeParcelable(this.color, flags);
     }
 
     public void readFromParcel(Parcel source) {
-        this.id = source.readLong();
+        this.eid = source.readString();
         this.title = source.readString();
         this.description = source.readString();
         this.date = source.readString();
-        this.place = source.readString();
         this.time = source.readString();
-        this.confidential = source.readByte() != 0;
         this.location = source.readParcelable(EventLocation.class.getClassLoader());
         this.category = source.readParcelable(Category.class.getClassLoader());
-        this.peopleNumber = source.readInt();
+        this.participants = source.readInt();
         this.distance = source.readDouble();
-        this.isTODO = source.readByte() != 0;
-        this.isFavorite = source.readByte() != 0;
-        this.weather = source.readParcelable(Weather.class.getClassLoader());
+        this.weatherCode = source.readInt();
+        this.weatherTemperature = source.readDouble();
+        this.color = source.readParcelable(ColorObject.class.getClassLoader());
     }
 
     protected Event(Parcel in) {
-        this.id = in.readLong();
+        this.eid = in.readString();
         this.title = in.readString();
         this.description = in.readString();
         this.date = in.readString();
-        this.place = in.readString();
         this.time = in.readString();
-        this.confidential = in.readByte() != 0;
         this.location = in.readParcelable(EventLocation.class.getClassLoader());
         this.category = in.readParcelable(Category.class.getClassLoader());
-        this.peopleNumber = in.readInt();
+        this.participants = in.readInt();
         this.distance = in.readDouble();
-        this.isTODO = in.readByte() != 0;
-        this.isFavorite = in.readByte() != 0;
-        this.weather = in.readParcelable(Weather.class.getClassLoader());
+        this.weatherCode = in.readInt();
+        this.weatherTemperature = in.readDouble();
+        this.color = in.readParcelable(ColorObject.class.getClassLoader());
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {

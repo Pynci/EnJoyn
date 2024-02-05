@@ -1,104 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.DiscoverSingleEvent">
+    tools:context=".ui.main.DiscoverSingleEventFragment">
+
+    <Button
+        android:id="@+id/discoverSingleEvent_button_join"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/Join"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/discoverSingleEvent_button_join"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/eventListItem_imageView_background"
                 android:layout_width="438dp"
                 android:layout_height="199dp"
                 android:adjustViewBounds="true"
+                android:background="@color/seed"
                 android:contentDescription="@string/background"
-                android:foreground="#30111111"
                 android:scaleType="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.518"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/img_0410" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_title"
-                android:layout_width="315dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/ActivityName"
-                android:textColor="@color/md_theme_light_onBackground"
-                android:textColorHighlight="@color/md_theme_dark_background"
+                android:textColor="@color/md_theme_light_onPrimary"
                 android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_background"
-                app:layout_constraintEnd_toStartOf="@+id/fragmentDiscoverSingleEvent_materialCardView_eventImage"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/fragmentDiscoverSingleEvent_materialCardView_eventImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_weight="1"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="300dp"
-                app:layout_constraintBottom_toBottomOf="@+id/eventListItem_imageView_background"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/fragmentDiscoverSingleEvent_ImageView_eventImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/UserImageEvent"
-                        app:srcCompat="@drawable/baseline_camera_alt_24" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
+                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_imageView_categoryVector" />
 
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/fragmentDiscoverSingleEvent_chip_category"
-                android:layout_width="115dp"
-                android:layout_height="51dp"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Tag"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_view_secondDivider" />
+                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
 
             <ImageView
                 android:id="@+id/fragmentDiscoverSingleEvent_imageView_people"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
                 android:contentDescription="@string/peopleNumber"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
+                app:layout_constraintBottom_toBottomOf="@+id/discoverSingleEvent_textView_numberOfParticipants"
+                app:layout_constraintStart_toEndOf="@+id/discoverSingleEvent_textView_numberOfParticipants"
+                app:layout_constraintTop_toTopOf="@+id/discoverSingleEvent_textView_numberOfParticipants"
                 app:srcCompat="@drawable/baseline_people_outline_24"
                 tools:src="@tools:sample/avatars" />
 
@@ -106,21 +89,20 @@
                 android:id="@+id/discoverSingleEvent_textView_numberOfParticipants"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
                 android:text="@string/NumberOfParticipants"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/fragmentDiscoverSingleEvent_imageView_people"
-                app:layout_constraintEnd_toStartOf="@+id/fragmentDiscoverSingleEvent_imageView_people"
-                app:layout_constraintTop_toTopOf="@+id/fragmentDiscoverSingleEvent_imageView_people"
-                app:layout_constraintVertical_bias="0.619" />
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentDiscoverSingleEvent_chip_category"
+                app:layout_constraintStart_toEndOf="@+id/fragmentDiscoverSingleEvent_chip_category"
+                app:layout_constraintTop_toTopOf="@+id/fragmentDiscoverSingleEvent_chip_category" />
 
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Date"
                 android:textSize="20sp"
                 app:drawableStartCompat="@drawable/baseline_calendar_month_24"
@@ -131,107 +113,111 @@
                 android:id="@+id/discoverSingleEvent_textView_hour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="16dp"
                 android:text="@string/Time"
                 android:textSize="20sp"
                 app:drawableStartCompat="@drawable/baseline_access_time_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_date" />
+                app:layout_constraintBottom_toBottomOf="@+id/discoverSingleEvent_textView_date"
+                app:layout_constraintStart_toEndOf="@+id/discoverSingleEvent_textView_date"
+                app:layout_constraintTop_toTopOf="@+id/discoverSingleEvent_textView_date" />
 
 
             <View
                 android:id="@+id/fragmentDiscoverSingleEvent_view_firstDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
                 android:background="@color/md_theme_light_outlineVariant"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/discoverSingleEvent_textView_hour" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_imageView_weather" />
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_place"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Street"
                 android:textSize="20sp"
                 app:drawableStartCompat="@drawable/baseline_place_24"
+                app:layout_constraintEnd_toStartOf="@+id/discoverSingleEvent_textView_distance"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_view_firstDivider" />
+
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/km"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_place" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_view_firstDivider" />
 
             <View
                 android:id="@+id/fragmentDiscoverSingleEvent_view_secondDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:background="@color/md_theme_light_outlineVariant"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_distance" />
-
-
-            <Button
-                android:id="@+id/discoverSingleEvent_button_join"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="24dp"
-                android:text="@string/Join"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_description" />
+                app:layout_constraintTop_toBottomOf="@+id/discoverSingleEvent_textView_place" />
 
             <TextView
                 android:id="@+id/fragmentDiscoverSingleEvent_textView_descr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/description"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_chip_category" />
+                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_view_secondDivider" />
 
             <TextView
                 android:id="@+id/discoverSingleEvent_textView_description"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/Description"
-                android:textAlignment="center"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_textView_descr" />
 
             <ImageView
                 android:id="@+id/fragmentDiscoverSingleEvent_imageView_weather"
-                android:layout_width="153dp"
-                android:layout_height="122dp"
-                android:layout_marginEnd="24dp"
-                android:src="@drawable/drawable_sun"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:contentDescription="@string/imageWeather"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentDiscoverSingleEvent_view_secondDivider" />
+                app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
+                tools:src="@drawable/drawable_sun" />
+
+            <TextView
+                android:id="@+id/fragmentDiscoverSingleEvent_textView_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentDiscoverSingleEvent_imageView_weather"
+                app:layout_constraintEnd_toEndOf="@+id/fragmentDiscoverSingleEvent_imageView_weather"
+                tools:text="@string/temperature" />
+
+            <ImageView
+                android:id="@+id/fragmentDiscoverSingleEvent_imageView_categoryVector"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/viaggi" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
