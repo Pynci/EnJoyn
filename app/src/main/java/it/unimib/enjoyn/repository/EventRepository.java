@@ -135,9 +135,13 @@ public class EventRepository implements IEventRepository {
 
     @Override
     public MutableLiveData<Result> createEvent(Event event, User user){
+        //event.setTodo(true);
+        //event.setParticipants(1);
         eventRemoteDataSource.createEvent(event, user, result -> {
             if(result.isSuccessful()){
-                participationRemoteDataSource.createParticipation(event, user, eventCreation::postValue);
+                participationRemoteDataSource.createParticipation(event, user, resultParticipation -> {
+                    addParticipant(event, eventCreation);
+                });
             }
             else{
                 eventCreation.postValue(result);
@@ -147,9 +151,10 @@ public class EventRepository implements IEventRepository {
     }
 
     public MutableLiveData<Result> joinEvent(Event event, User user){
+        //event.setTodo(true);
         participationRemoteDataSource.createParticipation(event, user, result -> {
             if(result.isSuccessful()){
-                addParticipant(event);
+                addParticipant(event, eventJoinParticipation);
             }
             else{
                 eventJoinParticipation.postValue(result);
@@ -158,10 +163,10 @@ public class EventRepository implements IEventRepository {
         return eventJoinParticipation;
     }
 
-    private void addParticipant(Event event){
+    private void addParticipant(Event event, MutableLiveData<Result> liveData){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("participants", event.getParticipants()+1);
-        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, eventJoinParticipation::postValue);
+        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, liveData::postValue);
     }
 
     public MutableLiveData<Result> leaveEvent(Event event, User user){
