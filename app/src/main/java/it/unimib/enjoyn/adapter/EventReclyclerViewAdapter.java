@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Random;
 
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.util.ColorObject;
@@ -292,6 +293,32 @@ public class EventReclyclerViewAdapter extends
                 joinButton.setBackgroundColor(
                         ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
 
+                break;
+        }
+    }
+
+    public void setCategoryImage(ImageView imageView, Category category){
+        switch (category.getNome()){
+            case "Passeggiata":
+                imageView.setBackgroundResource(R.drawable.passeggiata);
+                break;
+            case "Viaggi":
+                imageView.setBackgroundResource(R.drawable.viaggi);
+                break;
+            case "Pranzo":
+                imageView.setBackgroundResource(R.drawable.pranzo);
+                break;
+            case "Videogiochi":
+                imageView.setBackgroundResource(R.drawable.videogiochi);
+                break;
+            case "Shopping":
+                imageView.setBackgroundResource(R.drawable.shopping);
+                break;
+            case "Cinema":
+                imageView.setBackgroundResource(R.drawable.cinema);
+                break;
+            case "Sport":
+                imageView.setBackgroundResource(R.drawable.sport);
                 break;
         }
 

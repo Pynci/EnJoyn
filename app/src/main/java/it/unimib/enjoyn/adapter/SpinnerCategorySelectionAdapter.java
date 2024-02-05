@@ -52,9 +52,37 @@ public class SpinnerCategorySelectionAdapter extends ArrayAdapter {
         }
 
         if (imageCategory != null) {
-            imageCategory.setBackgroundResource(categoryVectorDrawableHashMap.get(nome));
+            setCategoryImage(imageCategory, nome);
+            //imageCategory.setBackgroundResource(categoryVectorDrawableHashMap.get(nome));
         }
 
         return view;
+    }
+
+    public void setCategoryImage(ImageView imageView, String nomeCategory){
+        switch (nomeCategory){
+            case "Passeggiata":
+                imageView.setBackgroundResource(R.drawable.passeggiata);
+                break;
+            case "Viaggi":
+                imageView.setBackgroundResource(R.drawable.viaggi);
+                break;
+            case "Pranzo":
+                imageView.setBackgroundResource(R.drawable.pranzo);
+                break;
+            case "Videogiochi":
+                imageView.setBackgroundResource(R.drawable.videogiochi);
+                break;
+            case "Shopping":
+                imageView.setBackgroundResource(R.drawable.shopping);
+                break;
+            case "Cinema":
+                imageView.setBackgroundResource(R.drawable.cinema);
+                break;
+            case "Sport":
+                imageView.setBackgroundResource(R.drawable.sport);
+                break;
+        }
+
     }
 }
