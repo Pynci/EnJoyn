@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 
 /**
@@ -83,6 +84,7 @@ public class DiscoverSingleEvent extends Fragment {
 
         fragmentDiscoverSingleEventBinding.discoverSingleEventButtonJoin.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
         fragmentDiscoverSingleEventBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+        setCategoryImage(fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventImageViewCategoryVector, event.getCategory());
 
     }
 
@@ -104,5 +106,32 @@ public class DiscoverSingleEvent extends Fragment {
         } else if (code == 95 || code == 96 || code == 99){
             weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
         }
+    }
+
+    public void setCategoryImage(ImageView imageView, Category category){
+        switch (category.getNome()){
+            case "Passeggiata":
+                imageView.setBackgroundResource(R.drawable.passeggiata);
+                break;
+            case "Viaggi":
+                imageView.setBackgroundResource(R.drawable.viaggi);
+                break;
+            case "Pranzo":
+                imageView.setBackgroundResource(R.drawable.pranzo);
+                break;
+            case "Videogiochi":
+                imageView.setBackgroundResource(R.drawable.videogiochi);
+                break;
+            case "Shopping":
+                imageView.setBackgroundResource(R.drawable.shopping);
+                break;
+            case "Cinema":
+                imageView.setBackgroundResource(R.drawable.cinema);
+                break;
+            case "Sport":
+                imageView.setBackgroundResource(R.drawable.sport);
+                break;
+        }
+
     }
 }
