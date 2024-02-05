@@ -164,10 +164,6 @@ public class EventReclyclerViewAdapter extends
                 });
 
 
-                Log.d("index", getLayoutPosition()+" ");
-                //backgroundImage.setBackgroundColor(ContextCompat.getColor(v.getContext(),R.color.md_theme_dark_tertiary));
-                //joinButton.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.md_theme_light_error));
-
             }else{
                 onItemClickListener.onEventItemClick(eventList.get(getBindingAdapterPosition()));
             }

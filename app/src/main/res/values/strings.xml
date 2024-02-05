@@ -133,7 +133,7 @@
     <string name="ligthBlue">Ligth Blue</string>
     <string name="immagine_event_item">Immagine event Item</string>
     <string name="color">Colore :</string>
-    <string name="new_event_create">Hai creato un nuovo evento :</string>
+    <string name="new_event_create">Hai creato un nuovo evento!</string>
     <string name="add_more_interests">Prova ad aggiungere nuovi interessi!</string>
     <string name="weather_error_far_day">Meteo non disponibile, massimo 16 giorni"</string>
 

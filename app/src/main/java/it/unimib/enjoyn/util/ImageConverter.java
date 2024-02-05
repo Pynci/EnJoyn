@@ -69,8 +69,6 @@ public class ImageConverter {
 
                 joinButton.setBackgroundColor(
                         ContextCompat.getColor(itemView.getContext(), R.color.Aquamarine));
-
-
                 break;
             case "#72EFDD":
                 backgroundImage.setBackgroundColor(
@@ -120,6 +118,8 @@ public class ImageConverter {
 
                 joinButton.setBackgroundColor(
                         ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
+
+
 
                 break;
         }

@@ -109,27 +109,7 @@ public class TodoFragment extends Fragment {
 
                     @Override
                     public void onJoinButtonPressed(int position) {
-                        //eventList.get(position).setTODO(!eventList.get(position).isTODO());
-                        //if(eventList.get(position).isTODO()) {
-                            //eventList.get(position).incrementPeopleNumber();
-                        //}
-                        //else{
-                            //eventList.get(position).decrementPeopleNumber();
-                        //}
-//                        eventViewModel.updateEvent(eventList.get(position));
 
- /*                       Event event = eventList.get(position);
-                        userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
-                            if(result.isSuccessful()){
-                                user = ((Result.UserSuccess) result).getData();
-                                if(event.isTodo()){
-                                    eventViewModel.leaveEvent(event, user);
-                                } else {
-                                    eventViewModel.joinEvent(event, user);
-                                }
-                            }
-                        });
-                        eventsRecyclerViewAdapter.notifyDataSetChanged();*/
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
@@ -165,44 +145,5 @@ public class TodoFragment extends Fragment {
 
     }
 
-
-
-
-    /*@Override
-    public void onSuccess(List<Event> eventList, long lastUpdate) {
-        if (eventList != null) {
-            this.eventList.clear();
-            this.eventList.addAll(eventList);
-            requireActivity().runOnUiThread(() -> {
-                eventsRecyclerViewAdapter.notifyDataSetChanged();
-                //progressBar.setVisibility(View.GONE);
-            });
-        }
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-
-    }
-
-    @Override
-    public void onEventFavoriteStatusChanged(Event event) {
-
-    }
-
-    @Override
-    public void onEventTodoStatusChanged(Event event) {
-        eventList.remove(event);
-        if (event.isTODO()) {
-            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
-            Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.eventAddToDo),
-                    Snackbar.LENGTH_LONG).show();
-        } else {
-            requireActivity().runOnUiThread(() -> eventsRecyclerViewAdapter.notifyDataSetChanged());
-            Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.eventRemoveToDo),
-                    Snackbar.LENGTH_LONG).show();
-        }
-    }*/
+    
 }
