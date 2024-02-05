@@ -25,6 +25,7 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
+import it.unimib.enjoyn.databinding.FragmentTodoBinding;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
@@ -38,7 +39,7 @@ import it.unimib.enjoyn.util.ErrorMessagesUtil;
  */
 public class TodoFragment extends Fragment {
 
-
+    private FragmentTodoBinding fragmentTodoBinding;
     private EventViewModel eventViewModel;
    // private UserViewModel userViewModel;
     private List<Event> eventList;
@@ -73,8 +74,8 @@ public class TodoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getViewLifecycleOwner();
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_todo, container, false);
+        fragmentTodoBinding = FragmentTodoBinding.inflate(inflater, container, false);
+        return fragmentTodoBinding.getRoot();
     }
 
     @Override
@@ -92,7 +93,7 @@ public class TodoFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.fragmentTODO_recyclerView);
+        RecyclerView recyclerViewDiscoverEvents = fragmentTodoBinding.fragmentTODORecyclerView;
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);

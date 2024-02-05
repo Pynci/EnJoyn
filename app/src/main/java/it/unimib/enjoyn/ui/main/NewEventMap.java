@@ -215,19 +215,19 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         }
 
 
-        suggestionListView = view.findViewById(R.id.fragmentNewEventMap_ListView);
+        suggestionListView = fragmentNewEventMapBinding.fragmentNewEventMapListView;
         suggestionClicked = false;
         searchClicked = false;
         firstTime = false;
         selfLocation = null;
         eventCoordinates = null;
-        mapView = view.findViewById(R.id.newEventMap_mapView);
-        positionButton= view.findViewById(R.id.newEventMap_floatingButton_resetInCurrentPosition);
-        newEventButton = view.findViewById(R.id.newEventMap_materialButton_eventLocation);
+        mapView = fragmentNewEventMapBinding.newEventMapMapView;
+        positionButton= fragmentNewEventMapBinding.newEventMapFloatingButtonResetInCurrentPosition;
+        newEventButton = fragmentNewEventMapBinding.newEventMapMaterialButtonEventLocation;
 
 
 
-        searchBar = view.findViewById(R.id.newEventMap_textInputEditText_textSearchBar);
+        searchBar = fragmentNewEventMapBinding.newEventMapTextInputEditTextTextSearchBar;
 
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
         pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, mapView);
@@ -303,7 +303,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
                     if (s.length() > 3) {
                         searchResultList = new ArrayList<>();
                         suggestions = new ArrayList<>();
-                        Log.d("TAH", "ASJBDIJAHBNSDHJKABSDHJBASJHDBAUISHEIJQWIEJAJSND");
+
                         eventViewModel.getMapSuggestion(s.toString(), selfLocation).observe(getViewLifecycleOwner(), suggestionObserver);
                     } else {
                         suggestionListView.setVisibility(View.GONE);

@@ -32,6 +32,7 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.CategoriesSelectionAdapter;
+import it.unimib.enjoyn.databinding.FragmentProfileBinding;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
@@ -46,6 +47,7 @@ import it.unimib.enjoyn.util.SnackbarBuilder;
 
 public class ProfileFragment extends Fragment {
 
+    private FragmentProfileBinding fragmentProfileBinding;
     private UserViewModel userViewModel;
     private CategoryViewModel categoryViewModel;
     private InterestsViewModel interestsViewModel;
@@ -76,7 +78,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getViewLifecycleOwner();
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        fragmentProfileBinding = FragmentProfileBinding.inflate(inflater, container, false);
+        return fragmentProfileBinding.getRoot();
     }
 
     @Override
@@ -97,14 +100,14 @@ public class ProfileFragment extends Fragment {
 
         });
 
-        ShapeableImageView propic = view.findViewById(R.id.fragmentProfile_imageView_propic);
-        TextView username = view.findViewById(R.id.fragmentProfile_textView_username);
-        TextView nameSurname = view.findViewById(R.id.fragmentProfile_textView_nameSurname);
-        TextView description = view.findViewById(R.id.fragmentProfile_textView_descriptionText);
-        ImageButton logout = view.findViewById(R.id.fragmentProfile_imageButton_logOut);
-        Button modificaProfilo = view.findViewById(R.id.fragmentProfile_textButton_editProfile);
-        Button modificaInteressi = view.findViewById(R.id.fragmentProfile_textButton_EditIInterests);
-        ListView listView = view.findViewById(R.id.fragmentProfile_listView);
+        ShapeableImageView propic = fragmentProfileBinding.fragmentProfileImageViewPropic;
+        TextView username = fragmentProfileBinding.fragmentProfileTextViewUsername;
+        TextView nameSurname = fragmentProfileBinding.fragmentProfileTextViewNameSurname;
+        TextView description = fragmentProfileBinding.fragmentProfileTextViewDescriptionText;
+        ImageButton logout = fragmentProfileBinding.fragmentProfileImageButtonLogOut;
+        Button modificaProfilo = fragmentProfileBinding.fragmentProfileTextButtonEditProfile;
+        Button modificaInteressi = fragmentProfileBinding.fragmentProfileTextButtonEditProfile;
+        ListView listView = fragmentProfileBinding.fragmentProfileListView;
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         listView.setDivider(null);

@@ -25,7 +25,6 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.databinding.FragmentDiscoverRecyclerViewBinding;
-import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
@@ -95,7 +94,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
-        RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.discoverRecyclerView_recyclerview_event);
+        RecyclerView recyclerViewDiscoverEvents = fragmentDiscoverRecyclerViewBinding.discoverRecyclerViewRecyclerviewEvent;
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
