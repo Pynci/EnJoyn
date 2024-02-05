@@ -73,7 +73,6 @@ public class JSONParserUtil {
         List<Weather> newsList;
             newsList = new ArrayList<>();
             Weather weather;
-            //for (int i = 0; i < articlesCount; i++) {
 
                 JSONArray timeJSONArray = meteoJSONObject.getJSONArray("time");
                 JSONArray temperatureJSONArray = meteoJSONObject.getJSONArray( "temperature_2m");
@@ -97,7 +96,7 @@ public class JSONParserUtil {
                 weather.setWeather_code(meteoWeatherCode);
 
                         newsList.add(weather);
-                   // }
+
 
             weatherDataBaseResponse.setWeatherList(newsList);
 

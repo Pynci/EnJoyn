@@ -80,12 +80,7 @@ public class EventRepository implements IEventRepository {
         return allEvents;
     }
 
-    /*
-    Piazza nel livedata ritornato un SingleEventSuccess contenente l'evento con
-    i dati aggiornati ad ogni cambio nel nodo firebase.
-    Se l'evento viene rimosso o non esiste, nel livedata ci piazza un SingleEventSuccess
-    contenente null.
-     */
+
     @Override
     public MutableLiveData<Result> fetchSingleEvent(Event eventToObserve){
         if(currentlyObservedEvent != null){
@@ -135,8 +130,7 @@ public class EventRepository implements IEventRepository {
 
     @Override
     public MutableLiveData<Result> createEvent(Event event, User user){
-        //event.setTodo(true);
-        //event.setParticipants(1);
+
         eventRemoteDataSource.createEvent(event, user, result -> {
             if(result.isSuccessful()){
                 participationRemoteDataSource.createParticipation(event, user, resultParticipation -> {
@@ -151,7 +145,7 @@ public class EventRepository implements IEventRepository {
     }
 
     public MutableLiveData<Result> joinEvent(Event event, User user){
-        //event.setTodo(true);
+
         participationRemoteDataSource.createParticipation(event, user, result -> {
             if(result.isSuccessful()){
                 addParticipant(event, eventJoinParticipation);

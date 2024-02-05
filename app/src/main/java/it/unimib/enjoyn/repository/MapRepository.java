@@ -1,6 +1,6 @@
 package it.unimib.enjoyn.repository;
 
-import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import com.mapbox.geojson.Point;
 import com.mapbox.search.result.SearchResult;
@@ -30,7 +30,7 @@ public class MapRepository implements MapCallBack {
     @Override
     public void onSuccessSuggestionFromRemote(List<SearchSuggestion> suggestions) {
         if ( mapMutableLiveData.getValue() != null &&  mapMutableLiveData.getValue().isSuccessful()) {
-           // List<SearchSuggestion> suggestions = ((Result.WeatherSuccess) mapMutableLiveData.getValue()).getData().getWeather();
+
 
             Result.MapSuggestionSuccess result = new Result.MapSuggestionSuccess(suggestions);
             mapMutableLiveData.postValue(result);
@@ -43,7 +43,7 @@ public class MapRepository implements MapCallBack {
     @Override
     public void onSuccessSearchFromRemote(List<SearchResult> searchResult) {
         if (  mapMutableSearchLiveData.getValue() != null &&   mapMutableSearchLiveData.getValue().isSuccessful()) {
-            // List<SearchSuggestion> suggestions = ((Result.WeatherSuccess) mapMutableLiveData.getValue()).getData().getWeather();
+
 
             Result.MapSearchSuccess result = new Result.MapSearchSuccess(searchResult);
             mapMutableSearchLiveData.postValue(result);
@@ -56,7 +56,7 @@ public class MapRepository implements MapCallBack {
     @Override
     public void onSuccessReverseSearchFromRemote(SearchResult reverseSearchResult) {
         if (  mapMutableReverseSearchLiveData.getValue() != null &&   mapMutableReverseSearchLiveData.getValue().isSuccessful()) {
-            // List<SearchSuggestion> suggestions = ((Result.WeatherSuccess) mapMutableLiveData.getValue()).getData().getWeather();
+
 
             Result.MapReverseSearchSuccess result = new Result.MapReverseSearchSuccess(reverseSearchResult);
             mapMutableReverseSearchLiveData.postValue(result);
@@ -81,7 +81,7 @@ public class MapRepository implements MapCallBack {
     }
 
     public MutableLiveData<Result> fetchMapSu(String searchBarText, Point selfLocation) {
-        Log.d("API map", "dentro fetchMapSu su Reposity");
+
         mapRemoteDataSource.getMapSuggestion(searchBarText, selfLocation);
 
         return mapMutableLiveData;
@@ -89,14 +89,14 @@ public class MapRepository implements MapCallBack {
 
 
     public MutableLiveData<Result> fetchMapSearch( List<SearchSuggestion> suggestion) {
-        Log.d("API map", "dentro fetchMapSu su Reposity");
+
         mapRemoteDataSource.getMapSearch(suggestion);
 
         return mapMutableSearchLiveData;
     }
 
     public MutableLiveData<Result> fetchMapReverseSearch( Point point) {
-        Log.d("API map", "dentro fetchMapSu su Reposity");
+
         mapMutableReverseSearchLiveData.setValue(null);
         mapRemoteDataSource.getMapReverseSearch(point);
 

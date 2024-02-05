@@ -82,11 +82,7 @@ import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.Constants;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NewEventMapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class NewEventMapFragment extends Fragment implements PermissionsListener {
 
     Observer<Result> suggestionObserver;

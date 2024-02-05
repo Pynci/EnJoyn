@@ -11,9 +11,6 @@ public class UsersDatabaseResponse implements Parcelable {
 
     private List<User> users;
 
-    public UsersDatabaseResponse(List<User> users) {
-        this.users = users;
-    }
 
     public static final Parcelable.Creator<UsersDatabaseResponse> CREATOR = new Parcelable.Creator<UsersDatabaseResponse>() {
         @Override

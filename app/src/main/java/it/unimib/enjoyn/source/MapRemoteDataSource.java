@@ -1,6 +1,11 @@
 package it.unimib.enjoyn.source;
 
-import static it.unimib.enjoyn.util.Constants.API_ERROR;
+
+
+import static it.unimib.enjoyn.util.Constants.API_MULTIPLE_SEARCH_ERROR;
+import static it.unimib.enjoyn.util.Constants.NO_PLACES_AVAILABLE;
+import static it.unimib.enjoyn.util.Constants.PLACE_NOT_FOUND_ERROR;
+import static it.unimib.enjoyn.util.Constants.SUGGESTIONS_NOT_FOUND;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -60,7 +65,7 @@ public class MapRemoteDataSource {
     }
 
     public void getMapSuggestion(String searchBarText, Point selfLocation) {
-        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+
         startSearchEngine();
 
         searchEngine.search(searchBarText, getSearchOption(selfLocation), searchCallback);
@@ -68,7 +73,7 @@ public class MapRemoteDataSource {
     }
 
     public void getMapSearch( List<SearchSuggestion> suggestion) {
-        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+
         startSearchEngine();
 
 
@@ -77,7 +82,7 @@ public class MapRemoteDataSource {
 
     }
     public void getMapReverseSearch( Point point) {
-        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+
         startSearchEngine();
         searchEngine.search( getReverseOption(point), searchReverseCallback);
     }
@@ -88,12 +93,12 @@ public class MapRemoteDataSource {
             if (searchResult.size() > 0) {
                 mapCallBack.onSuccessSearchFromRemote(searchResult);
             } else {
-                mapCallBack.onFailureSearchFromRemote(new Exception("Non ci sono posti con questo nome"));
+                mapCallBack.onFailureSearchFromRemote(new Exception(PLACE_NOT_FOUND_ERROR));
             }
         }
         @Override
         public void onError(@NonNull Exception e) {
-            mapCallBack.onFailureSearchFromRemote(new Exception("errore API ricerca multipla"));
+            mapCallBack.onFailureSearchFromRemote(new Exception(API_MULTIPLE_SEARCH_ERROR));
         }
     };
 
@@ -103,10 +108,10 @@ public class MapRemoteDataSource {
         @Override
         public void onSuggestions(@NonNull List<SearchSuggestion> suggestions, @NonNull ResponseInfo responseInfo) {
             if (suggestions.isEmpty()) {
-                mapCallBack.onFailureSuggestionFromRemote(new Exception("nessun suggerimento disponibile"));
-                Log.i("SearchApiExample", "No suggestions found");
+                mapCallBack.onFailureSuggestionFromRemote(new Exception(SUGGESTIONS_NOT_FOUND));
+
             } else {
-                Log.i("SearchApi", "Search suggestions: " + suggestions + "\nSelecting first...");
+
 
                 mapCallBack.onSuccessSuggestionFromRemote(suggestions);
 
@@ -115,8 +120,7 @@ public class MapRemoteDataSource {
 
         @Override
         public void onError(@NonNull Exception e) {
-            //TODO cambiare stringa errore
-            mapCallBack.onFailureSuggestionFromRemote(new Exception("errore API suggerimenti"));
+            mapCallBack.onFailureSuggestionFromRemote(new Exception(SUGGESTIONS_NOT_FOUND));
         }
 
         @Override
@@ -126,17 +130,11 @@ public class MapRemoteDataSource {
 
         @Override
         public void onResult(@NonNull SearchSuggestion searchSuggestion, @NonNull SearchResult searchResult, @NonNull ResponseInfo responseInfo) {
-           /* if (searchResult != null) {
-
-                mapCallBack.onSuccessSearchFromRemote(searchResult);
-            } else {
-*/
-
 
         }
     };
     private final SearchCallback searchReverseCallback = new SearchCallback() {
-        @SuppressLint("SuspiciousIndentation")
+
         @Override
         public void onResults(@NonNull List<SearchResult> list, @NonNull ResponseInfo responseInfo) {
 
@@ -146,7 +144,7 @@ public class MapRemoteDataSource {
                 }
             }
             else {
-                mapCallBack.onFailureReverseFromRemote(new Exception("non trovo luoghi, riprova "));
+                mapCallBack.onFailureReverseFromRemote(new Exception(NO_PLACES_AVAILABLE));
             }
         }
 

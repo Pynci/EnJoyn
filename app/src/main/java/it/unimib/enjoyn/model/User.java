@@ -173,11 +173,4 @@ public class User implements Parcelable {
         isCategoriesSelectionDone = categoriesSelectionDone;
     }
 
-//    public Uri getTempPropicUri() {
-//        return tempPropicUri;
-//    }
-
-//    public void setTempPropicUri(Uri tempPropicUri) {
-//        this.tempPropicUri = tempPropicUri;
-//    }
 }

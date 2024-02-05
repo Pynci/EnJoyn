@@ -100,12 +100,6 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                         Navigation.findNavController(view).navigate(action);
                     }
 
-                    @Override
-                    public void onJoinButtonPressed(int position) {
-                        if(!(eventList.get(position).isTodo())){
-                            Snackbar.make(view, R.string.eventAddedToTodo , Snackbar.LENGTH_SHORT).show();
-                        }
-                    }
 
                 } );
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);

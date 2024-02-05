@@ -61,70 +61,7 @@ public class ImageConverter {
     }
 
     public void setColorEvent(TextView textViewPlace, ImageView backgroundImage, Button joinButton, ColorObject color, View itemView){
-/*
-        switch (color.getHex()){
-            case "#80FFDB":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Aquamarine));
 
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Aquamarine));
-                break;
-            case "#72EFDD":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Turquoise));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Turquoise));
-                break;
-            case "#64DFDF":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Tiffany_Blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Tiffany_Blue));
-                break;
-            case "#56CFE1":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Sky_blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Sky_blue));
-                break;
-            case "#48BFE3":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Aero));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Aero));
-                break;
-            case "#4EA8DE":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Picton_Blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Picton_Blue));
-                break;
-            case "#5390D9":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.United_Nations_Blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.United_Nations_Blue));
-                break;
-            case "#5E60CE":
-                backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
-
-                joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
-
-
-
-                break;
-        }
-
- */
         switch (color.getHex()){
             case "#805D93":
                 backgroundImage.setBackgroundColor(

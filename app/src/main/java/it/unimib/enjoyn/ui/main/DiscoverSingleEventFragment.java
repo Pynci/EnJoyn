@@ -22,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
 import it.unimib.enjoyn.model.Event;
@@ -100,7 +102,7 @@ public class DiscoverSingleEventFragment extends Fragment {
                 setEventParameters();
             }
             else{
-                //TODO mettere snackbar
+                Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
             }
         });
 

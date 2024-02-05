@@ -23,7 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unimib.enjoyn.R;
+
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
 import it.unimib.enjoyn.databinding.FragmentTodoBinding;
 import it.unimib.enjoyn.model.Event;
@@ -32,16 +32,12 @@ import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TodoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class TodoFragment extends Fragment {
 
     private FragmentTodoBinding fragmentTodoBinding;
     private EventViewModel eventViewModel;
-   // private UserViewModel userViewModel;
+
     private List<Event> eventList;
     private List<Event> todoEventList;
     private User user;
@@ -64,8 +60,6 @@ public class TodoFragment extends Fragment {
         eventList = new ArrayList<>();
         todoEventList = new ArrayList<>();
 
-        //IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
-        //userViewModel = new ViewModelProvider(requireActivity(), new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
 
     }
@@ -107,10 +101,6 @@ public class TodoFragment extends Fragment {
                         Navigation.findNavController(view).navigate(action);
                     }
 
-                    @Override
-                    public void onJoinButtonPressed(int position) {
-
-                    }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
@@ -138,7 +128,7 @@ public class TodoFragment extends Fragment {
                     Snackbar.make(view, errorMessagesUtil.getEventErrorMessage(((Result.Error)result).getMessage()),
                             Snackbar.LENGTH_SHORT).show();
                 }
-               // progressBar.setVisibility(View.GONE);
+
             }
         });
 

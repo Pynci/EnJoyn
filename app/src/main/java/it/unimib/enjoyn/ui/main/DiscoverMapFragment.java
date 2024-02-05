@@ -153,7 +153,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
         if (!PermissionsManager.areLocationPermissionsGranted(requireActivity())) {
             PermissionsManager permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
@@ -201,7 +201,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     distanceList.add(round(distance, 1));
                 }
             }else{
-                Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(view, errorMessagesUtil.getMapErrorMessage(((Result.Error) result).getMessage()) , Snackbar.LENGTH_SHORT).show();
             }
 
             suggestionListAdapter = new SuggestionListAdapter(requireContext(), R.layout.suggestion_list_item, locationList, distanceList, (eventLocation, position) -> {
@@ -325,7 +325,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                                     .withPoint(Point.fromLngLat(event.getLocation().getLongitude(), event.getLocation().getLatitude()))
                                     .withIconImage(bitmap));
                         } else {
-                            ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
                             Snackbar.make(view, errorMessagesUtil.getWeatherErrorMessage(((Result.WeatherError) weatherResult).getMessage()), Snackbar.LENGTH_LONG).show();
                         }
                     });
@@ -333,8 +332,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
                 }
             } else {
-                ErrorMessagesUtil errorMessagesUtil =
-                        new ErrorMessagesUtil(requireActivity().getApplication());
                 Snackbar.make(view, errorMessagesUtil.
                                 getEventErrorMessage(VIEW_MODEL_ERROR),
                         Snackbar.LENGTH_SHORT).show();
@@ -357,7 +354,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     find = true;
                 }
             }
-            //event = eventList.get((int)annotation.getId());
             eventItem.setVisibility(View.VISIBLE);
             setEventParameters();
             Log.d("code", event.getWeatherCode()+"");
@@ -387,7 +383,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     setEventParameters();
                 }
                 else{
-                    //TODO mettere snackbar
+                    Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
                 }
             });
 
