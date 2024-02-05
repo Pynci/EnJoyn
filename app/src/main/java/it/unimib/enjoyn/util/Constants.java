@@ -2,14 +2,6 @@ package it.unimib.enjoyn.util;
 
 public class Constants {
 
-    public static final String SHARED_PREFERENCES_FILE_NAME = "it.unimib.enjoyn.preferences";
-    public static final String SHARED_PREFERENCES_TAGS_OF_INTEREST = "tags_of_interest";
-
-    // Constants for EncryptedSharedPreferences
-    public static final String ENCRYPTED_SHARED_PREFERENCES_FILE_NAME = "it.unimib.enjoyn.encrypted_preferences";
-    //public static final String EMAIL_ADDRESS = "email_address";
-    //public static final String PASSWORD = "password";
-
     public static final String EVENTS_DATABASE_NAME = "events_db";
 
     // Constants for encrypted files
@@ -79,4 +71,8 @@ public class Constants {
     public static final String PARTICIPATION_REMOTE_CREATION_ERROR = "PARTICIPATION_REMOTE_CREATION_FAILED";
     public static final String PARTICIPATION_REMOTE_FETCH_ERROR = "PARTICIPATION_REMOTE_FETCH_FAILED";
     public static final String PARTICIPATION_REMOTE_DELETION_ERROR = "PARTICIPATION_REMOTE_DELETION_FAILED";
+    public static final String PLACE_NOT_FOUND_ERROR = "PLACE_NOT_FOUND_ERROR";
+    public static final String API_MULTIPLE_SEARCH_ERROR = "API_MULTIPLE_SEARCH_ERROR";
+    public static final String SUGGESTIONS_NOT_FOUND = "SUGGESTIONS_NOT_FOUND";
+    public static final String NO_PLACES_AVAILABLE = "NO_PLACES_AVAILABLE";
 }

@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,7 @@ import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
 import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 public class CategoriesSelectionFragment extends Fragment {
@@ -71,7 +74,7 @@ public class CategoriesSelectionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
         boolean isFromProfileFragment = getArguments().getBoolean("fromProfileFragment");
         Button buttonSkip = fragmentCategoriesSelectionBinding.fragmentCategoriesSelectionButtonSkip;
         Button buttonConfirm = fragmentCategoriesSelectionBinding.fragmentCategoriesSelectionButtonConfirm;

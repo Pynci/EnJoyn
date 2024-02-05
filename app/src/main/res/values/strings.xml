@@ -167,7 +167,10 @@
     <string name="email_reset_password_sending_error"> Impossibile inviare la mail di ripristino password</string>
     <string name="informationRequiredError">Questo campo è obbligatorio</string>
     <string name="invalidEmail">Email non valida</string>
-
+    <string name="place_not_found">Non ci sono posti con questo nome</string>
+    <string name="API_multiple_search_error"> Errore API ricerca multipla</string>
+    <string name="suggestions_not_found"> nessun suggerimento disponibile</string>
+    <string name="no_places_available"> non ci sono luoghi disponibili</string>
     <string name="weather_error_far_day">Meteo non disponibile, massimo 16 giorni"</string>
 
 

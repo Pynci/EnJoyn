@@ -1,11 +1,11 @@
 package it.unimib.enjoyn.util;
 
-import android.net.Uri;
+
 
 import androidx.room.TypeConverter;
 
 import java.lang.*;
-import java.util.Arrays;
+
 
 
 public class StringConverter {
@@ -105,13 +105,7 @@ public class StringConverter {
 
     private String[] toStringArray(String string) {
         String[] stringArray = string.split(" ");
-       /* double[] intArray = new double[stringArray.length];
-        for (int i = 0; i < stringArray.length; i++) {
 
-            intArray[i] = Integer.parseInt(stringArray[i]);
-
-
-        }*/
         return stringArray;
     }
 

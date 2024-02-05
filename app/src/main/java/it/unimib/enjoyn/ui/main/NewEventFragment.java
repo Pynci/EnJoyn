@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -32,7 +31,7 @@ import android.widget.Spinner;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -58,16 +57,11 @@ import it.unimib.enjoyn.util.ColorObject;
 import it.unimib.enjoyn.util.Constants;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.ImageConverter;
-import it.unimib.enjoyn.util.JSONParserUtil;
 import it.unimib.enjoyn.util.WeatherCallback;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.databinding.FragmentNewEventBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NewEventFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
@@ -135,14 +129,14 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
             equals = savedInstanceState.getBoolean(STATE_EQUALS);
             selectedCategory = savedInstanceState.getParcelable(STATE_CATEGORY);
             selectedColor = savedInstanceState.getParcelable(STATE_COLOR);
-            Log.d("code", ""+weatherCode);
+
             eventImage = savedInstanceState.getParcelable(STATE_URI);
         }
 
         weatherAPIdata = new Weather();
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         categoryViewModel = new ViewModelProvider(requireActivity()).get(CategoryViewModel.class);
-        Log.d("API weather", "su OnCreate dopo tutto");
+
 
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         userViewModel = new ViewModelProvider(requireActivity(),
@@ -242,10 +236,10 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
 
 
 
-        Log.d("text", title+" "+description);
+
         weatherIcon = view.findViewById(R.id.fragmentNewEvent_imageView_meteoIcon);
 
-        // latitude and longitude "52.52", "13.41"
+
         Bundle finalSavedInstanceState = savedInstanceState;
         eventViewModel.getWeather(newEvent.getLocation().getLatitudeToString(), newEvent.getLocation().getLongitudeToString()).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccessful()){

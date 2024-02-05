@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.unimib.enjoyn.model.Category;
-import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.util.StringConverter;
 
