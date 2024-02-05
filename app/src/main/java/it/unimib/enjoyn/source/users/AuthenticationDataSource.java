@@ -2,6 +2,8 @@ package it.unimib.enjoyn.source.users;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -74,8 +76,14 @@ public class AuthenticationDataSource implements BaseAuthenticationDataSource{
         if(fbUser != null){
             fbUser
                     .reload()
-                    .addOnSuccessListener(task -> callback.onComplete(new Result.Success()))
-                    .addOnFailureListener(e -> callback.onComplete(new Result.Error(Constants.SESSION_REFRESH_ERROR)));
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            callback.onComplete(new Result.Success());
+                        }
+                        else{
+                            callback.onComplete(new Result.Error(Constants.USER_NOT_LOGGED_ERROR));
+                        }
+                    });
         }
         else{
             callback.onComplete(new Result.Error(Constants.USER_NOT_LOGGED_ERROR));
