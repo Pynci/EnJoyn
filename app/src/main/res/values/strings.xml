@@ -135,4 +135,5 @@
     <string name="immagine_event_item">Immagine event Item</string>
     <string name="color">Colore :</string>
     <string name="new_event_create">Hai creato un nuovo evento :</string>
+    <string name="add_more_interests">Prova ad aggiungere nuovi interessi!</string>
 </resources>

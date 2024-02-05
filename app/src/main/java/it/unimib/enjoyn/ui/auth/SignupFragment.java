@@ -272,7 +272,7 @@ public class SignupFragment extends Fragment {
             String username = String.valueOf(editTextUsername.getText());
             String email = String.valueOf(editTextEmail.getText());
             String password = String.valueOf(editTextPassword.getText());
-            String confirmPassword = String.valueOf(editTextPassword.getText());
+            String confirmPassword = String.valueOf(editTextConfirmPassword.getText());
 
             if(userViewModel.checkUsername(username).equals("ok") &&
                     userViewModel.checkEmail(email).equals("ok") &&

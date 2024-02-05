@@ -24,6 +24,8 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
+import it.unimib.enjoyn.databinding.FragmentDiscoverRecyclerViewBinding;
+import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
@@ -41,6 +43,7 @@ import it.unimib.enjoyn.util.SnackbarBuilder;
 public class DiscoverRecyclerViewFragment extends Fragment {
 
 
+    private FragmentDiscoverRecyclerViewBinding fragmentDiscoverRecyclerViewBinding;
     private EventViewModel eventViewModel;
     private InterestsViewModel interestsViewModel;
     private UserViewModel userViewModel;
@@ -79,10 +82,10 @@ public class DiscoverRecyclerViewFragment extends Fragment {
         // Use getViewLifecycleOwner() to avoid that the listener
         // associated with a menu icon is called twice
         getViewLifecycleOwner();
-
+        fragmentDiscoverRecyclerViewBinding = FragmentDiscoverRecyclerViewBinding.inflate(inflater, container, false);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover_recycler_view, container, false);
+        return fragmentDiscoverRecyclerViewBinding.getRoot();
 
     }
 
@@ -149,6 +152,14 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                                                 }
                                             }
                                         }
+
+                                        if(interestedEventList.isEmpty()){
+                                            fragmentDiscoverRecyclerViewBinding.discoverRecyclerViewFragmentTextViewNoEvents.setVisibility(View.VISIBLE);
+                                        }
+                                        else{
+                                            fragmentDiscoverRecyclerViewBinding.discoverRecyclerViewFragmentTextViewNoEvents.setVisibility(View.GONE);
+                                        }
+
                                         eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.interestedEventList.size());
                                         eventsRecyclerViewAdapter.notifyDataSetChanged();
 
