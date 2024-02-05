@@ -21,7 +21,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
         void onUserItemClick(User user);
 
-        void onAddUserClick(User user);
 
     }
 
@@ -64,7 +63,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         private final TextView textViewSurname;
         private final ImageView imageView;
 
-        /*TODO  aggiungere immagine nell'adapter*/
 
 
         public NewViewHolder(@NonNull View itemView) {
@@ -80,14 +78,13 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onUserItemClick(usersList.get(getAdapterPosition()));
+            onItemClickListener.onUserItemClick(usersList.get(getBindingAdapterPosition()));
         }
 
         public void bind(User user) {
             textViewUsername.setText(user.getUsername());
             textViewName.setText((user.getName()));
             textViewSurname.setText(user.getSurname());
-            //imageView.setImageURI();
         }
     }
 }

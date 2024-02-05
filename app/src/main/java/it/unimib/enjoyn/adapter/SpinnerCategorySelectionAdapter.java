@@ -39,7 +39,7 @@ public class SpinnerCategorySelectionAdapter extends ArrayAdapter {
     }
 
     private View getViewInternal(View view, int position) {
-      //  HashMap<String, Integer> categoryVectorDrawableHashMap = new CategoryList().categoryVectorDrawableHashMap();
+
 
         String nome = (String) getItem(position);
         if (nome == null) {
@@ -62,11 +62,11 @@ public class SpinnerCategorySelectionAdapter extends ArrayAdapter {
         }
         if (imageCategory != null) {
             imageConverter.setCategoryImage(imageCategory, nome);
-            //imageCategory.setBackgroundResource(categoryVectorDrawableHashMap.get(nome));
+
         }
         if (imageCategoryBG != null) {
             imageConverter.setCategoryImage(imageCategoryBG, nome);
-            //imageCategory.setBackgroundResource(categoryVectorDrawableHashMap.get(nome));
+
         }
 
         return view;

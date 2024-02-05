@@ -1,6 +1,6 @@
 package it.unimib.enjoyn.source;
 
-import static it.unimib.enjoyn.util.Constants.API_ERROR;
+
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -60,7 +60,7 @@ public class MapRemoteDataSource {
     }
 
     public void getMapSuggestion(String searchBarText, Point selfLocation) {
-        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+
         startSearchEngine();
 
         searchEngine.search(searchBarText, getSearchOption(selfLocation), searchCallback);
@@ -68,7 +68,7 @@ public class MapRemoteDataSource {
     }
 
     public void getMapSearch( List<SearchSuggestion> suggestion) {
-        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+
         startSearchEngine();
 
 
@@ -77,7 +77,7 @@ public class MapRemoteDataSource {
 
     }
     public void getMapReverseSearch( Point point) {
-        Log.d("API map", "dentro fetchMapSu su DATASOURCE");
+
         startSearchEngine();
         searchEngine.search( getReverseOption(point), searchReverseCallback);
     }
@@ -104,9 +104,9 @@ public class MapRemoteDataSource {
         public void onSuggestions(@NonNull List<SearchSuggestion> suggestions, @NonNull ResponseInfo responseInfo) {
             if (suggestions.isEmpty()) {
                 mapCallBack.onFailureSuggestionFromRemote(new Exception("nessun suggerimento disponibile"));
-                Log.i("SearchApiExample", "No suggestions found");
+
             } else {
-                Log.i("SearchApi", "Search suggestions: " + suggestions + "\nSelecting first...");
+
 
                 mapCallBack.onSuccessSuggestionFromRemote(suggestions);
 
@@ -115,7 +115,6 @@ public class MapRemoteDataSource {
 
         @Override
         public void onError(@NonNull Exception e) {
-            //TODO cambiare stringa errore
             mapCallBack.onFailureSuggestionFromRemote(new Exception("errore API suggerimenti"));
         }
 
@@ -126,17 +125,11 @@ public class MapRemoteDataSource {
 
         @Override
         public void onResult(@NonNull SearchSuggestion searchSuggestion, @NonNull SearchResult searchResult, @NonNull ResponseInfo responseInfo) {
-           /* if (searchResult != null) {
-
-                mapCallBack.onSuccessSearchFromRemote(searchResult);
-            } else {
-*/
-
 
         }
     };
     private final SearchCallback searchReverseCallback = new SearchCallback() {
-        @SuppressLint("SuspiciousIndentation")
+
         @Override
         public void onResults(@NonNull List<SearchResult> list, @NonNull ResponseInfo responseInfo) {
 

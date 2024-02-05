@@ -1,7 +1,6 @@
 package it.unimib.enjoyn.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -19,10 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import it.unimib.enjoyn.model.Category;
+
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
-import it.unimib.enjoyn.util.ColorObject;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
@@ -35,10 +32,10 @@ public class EventReclyclerViewAdapter extends
     private static final int EVENT_VIEW_TYPE = 0;
     private static final int LOADING_VIEW_TYPE = 1;
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onEventItemClick(Event event);
 
-        void onJoinButtonPressed(int position);
+
     }
 
     private final List<Event> eventList;
@@ -150,14 +147,14 @@ public class EventReclyclerViewAdapter extends
                             eventViewModel.leaveEvent(event, user).observe((LifecycleOwner) context, result1 -> {
                                 if(getBindingAdapterPosition() != -1){
                                     setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
-                                    //onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+
                                 }
                             });
                         } else {
                             eventViewModel.joinEvent(event, user).observe((LifecycleOwner) context, result1 -> {
                                 if(getBindingAdapterPosition() != -1){
                                     setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
-                                    //onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+
                                 }
                             });
                         }

@@ -212,17 +212,6 @@ public abstract class Result {
         }
     }
 
-    public static final class EventError extends Result {
-        private final String message;
-
-        public EventError(String message) {
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
 
     public static final class SingleImageReadFromRemote extends Result{
         private final Uri uri;

@@ -34,12 +34,11 @@ public class CategoriesSelectionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return data.size() / 2 + 1; // Ogni riga contiene due elementi
-    }
+        return data.size() / 2 + 1;}
 
     @Override
     public Object getItem(int position) {
-        return data.get(position * 2); // Ritorna il primo elemento della riga
+        return data.get(position * 2);
     }
 
     @Override

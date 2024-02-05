@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class Weather implements Parcelable {
-    //StringConverter converter = new StringConverter();
+
     @SerializedName("weather_code")
     int[] weather_code;
     @SerializedName("temperature_2m")
