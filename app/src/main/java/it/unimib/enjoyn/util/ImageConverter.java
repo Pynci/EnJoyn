@@ -61,7 +61,7 @@ public class ImageConverter {
     }
 
     public void setColorEvent(TextView textViewPlace, ImageView backgroundImage, Button joinButton, ColorObject color, View itemView){
-
+/*
         switch (color.getHex()){
             case "#80FFDB":
                 backgroundImage.setBackgroundColor(
@@ -123,5 +123,62 @@ public class ImageConverter {
 
                 break;
         }
+
+ */
+        switch (color.getHex()){
+            case "#805D93":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Pomp_and_Power));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Pomp_and_Power));
+
+
+                break;
+            case "#CE6A85":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Blush));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Blush));
+                break;
+            case "#FF8C61":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Coral));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Coral));
+                break;
+            case "#9EBD6E":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Olivine));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Olivine));
+                break;
+            case "#169873":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Shamrock_green));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Shamrock_green));
+                break;
+            case "#348AA7":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Blue));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Blue));
+                break;
+            case "#6A66A3":
+                backgroundImage.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
+
+                joinButton.setBackgroundColor(
+                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
+
+                break;
+        }
+
     }
 }

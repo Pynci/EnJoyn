@@ -27,7 +27,7 @@ public class ColorList {
 
     public List<ColorObject> basicColors(){
         List<ColorObject> colorObjectList = new ArrayList<>();
-
+/*
         colorObjectList.add(new ColorObject( "Aquamarine", "#80FFDB", "FFFFFF"));
         colorObjectList.add(new ColorObject( "Turquoise", "#72EFDD", "FFFFFF"));
         colorObjectList.add(new ColorObject( "Tiffany Blue", "#64DFDF", "FFFFFF"));
@@ -36,7 +36,7 @@ public class ColorList {
         colorObjectList.add(new ColorObject( "Picton Blue", "#4EA8DE", "FFFFFF"));
         colorObjectList.add(new ColorObject( "United Nations Blue", "#5390D9", "FFFFFF"));
         colorObjectList.add(new ColorObject( "Slate blue", "#5E60CE", "FFFFFF"));
-
+*/
         /*
         colorObjectList.add(new ColorObject( "champagnePink", "#EDDCD2", "FFFFFF", R.color.champagnePink));
         colorObjectList.add(new ColorObject( "mistyRose", "#FDE2E4","FFFFFF", R.color.mistyRose));
@@ -48,6 +48,14 @@ public class ColorList {
         colorObjectList.add(new ColorObject( "powderBlue", "#99C1DE", "FFFFFF", R.color.powderBlue));
 
          */
+
+        colorObjectList.add(new ColorObject( "Violet", "#805D93", "FFFFFF"));
+        colorObjectList.add(new ColorObject( "Purple", "#CE6A85", "FFFFFF"));
+        colorObjectList.add(new ColorObject( "Coral", "#FF8C61", "FFFFFF"));
+        colorObjectList.add(new ColorObject( "Olivine", "#9EBD6E", "FFFFFF"));
+        colorObjectList.add(new ColorObject( "Green", "#169873", "FFFFFF"));
+        colorObjectList.add(new ColorObject( "light blue", "#348AA7", "FFFFFF"));
+        colorObjectList.add(new ColorObject( "Blue", "#6A66A3", "FFFFFF"));
 
         return  colorObjectList;
     }
