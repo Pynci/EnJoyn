@@ -2,7 +2,7 @@ package it.unimib.enjoyn.ui.main;
 
 import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
 
-import android.content.res.Configuration;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,15 +28,12 @@ import it.unimib.enjoyn.databinding.FragmentDiscoverRecyclerViewBinding;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
-import it.unimib.enjoyn.model.User;
-import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.InterestViewModelFactory;
 import it.unimib.enjoyn.ui.viewmodels.InterestsViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
-import it.unimib.enjoyn.util.ServiceLocator;
-import it.unimib.enjoyn.util.SnackbarBuilder;
+
 
 
 public class DiscoverRecyclerViewFragment extends Fragment {
@@ -49,10 +46,7 @@ public class DiscoverRecyclerViewFragment extends Fragment {
     private List<Event> eventList;
     private List<Category> categoryList;
     private List<Event> interestedEventList;
-    private User user;
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
-
-
     public DiscoverRecyclerViewFragment() {
     }
 
@@ -65,7 +59,6 @@ public class DiscoverRecyclerViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         interestsViewModel = new ViewModelProvider(requireActivity(), new InterestViewModelFactory(requireActivity().getApplication())).get(InterestsViewModel.class);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
@@ -78,12 +71,11 @@ public class DiscoverRecyclerViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Use getViewLifecycleOwner() to avoid that the listener
-        // associated with a menu icon is called twice
+
         getViewLifecycleOwner();
         fragmentDiscoverRecyclerViewBinding = FragmentDiscoverRecyclerViewBinding.inflate(inflater, container, false);
 
-        // Inflate the layout for this fragment
+
         return fragmentDiscoverRecyclerViewBinding.getRoot();
 
     }
@@ -92,7 +84,6 @@ public class DiscoverRecyclerViewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         RecyclerView recyclerViewDiscoverEvents = fragmentDiscoverRecyclerViewBinding.discoverRecyclerViewRecyclerviewEvent;
 
@@ -111,18 +102,10 @@ public class DiscoverRecyclerViewFragment extends Fragment {
 
                     @Override
                     public void onJoinButtonPressed(int position) {
-                        if(eventList.get(position).isTodo()){
-                            Snackbar snackbar;
-                            snackbar = SnackbarBuilder.buildOkSnackbar("evento rimosso", view, getContext(), currentTheme);
-                            snackbar.show();
-                            //R.string.eventRemoveToDo
-                        } else {
-                            Snackbar snackbar;
-                            snackbar = SnackbarBuilder.buildOkSnackbar("evento aggiunto", view, getContext(), currentTheme);
-                            snackbar.show();
+                        if(!(eventList.get(position).isTodo())){
+                            Snackbar.make(view, R.string.eventAddedToTodo , Snackbar.LENGTH_SHORT).show();
                         }
                     }
-
 
                 } );
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);

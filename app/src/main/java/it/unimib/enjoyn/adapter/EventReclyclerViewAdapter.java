@@ -150,13 +150,13 @@ public class EventReclyclerViewAdapter extends
                             eventViewModel.leaveEvent(event, user).observe((LifecycleOwner) context, result1 -> {
                                 if(getBindingAdapterPosition() != -1)
                                     setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
-                                // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                                 onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
                             });
                         } else {
                             eventViewModel.joinEvent(event, user).observe((LifecycleOwner) context, result1 -> {
                                 if(getBindingAdapterPosition() != -1)
                                     setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
-                                // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                                 onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
                             });
                         }
 

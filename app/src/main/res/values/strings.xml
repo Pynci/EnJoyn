@@ -101,7 +101,6 @@
     <string name="registrationFailed">Registrazione fallita</string>
     <string name="authenticationFailed">Autenticazione fallita</string>
     <string name="refresh">Aggiorna</string>
-
     <string name="favorites">Preferiti</string>
     <string name="bottonAddToFavorites">Bottone aggiungi ai preferiti</string>
     <string name="remove">Rimuovi</string>
@@ -136,4 +135,8 @@
     <string name="color">Colore :</string>
     <string name="new_event_create">Hai creato un nuovo evento :</string>
     <string name="add_more_interests">Prova ad aggiungere nuovi interessi!</string>
+    <string name="weather_error_far_day">Meteo non disponibile, massimo 16 giorni"</string>
+
+
+
 </resources>
