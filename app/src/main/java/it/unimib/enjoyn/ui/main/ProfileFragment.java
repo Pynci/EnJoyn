@@ -105,8 +105,8 @@ public class ProfileFragment extends Fragment {
         TextView nameSurname = fragmentProfileBinding.fragmentProfileTextViewNameSurname;
         TextView description = fragmentProfileBinding.fragmentProfileTextViewDescriptionText;
         ImageButton logout = fragmentProfileBinding.fragmentProfileImageButtonLogOut;
-        Button modificaProfilo = fragmentProfileBinding.fragmentProfileTextButtonEditProfile;
-        Button modificaInteressi = fragmentProfileBinding.fragmentProfileTextButtonEditProfile;
+        Button editProfile = fragmentProfileBinding.fragmentProfileTextButtonEditProfile;
+        Button editInterests = fragmentProfileBinding.fragmentProfileTextButtonEditInterests;
         ListView listView = fragmentProfileBinding.fragmentProfileListView;
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
@@ -193,9 +193,9 @@ public class ProfileFragment extends Fragment {
             }
         }));
 
-        modificaProfilo.setOnClickListener(v -> navigateTo(R.id.action_profileFragment_to_profileConfigurationFragment2, false, true));
+        editProfile.setOnClickListener(v -> navigateTo(R.id.action_profileFragment_to_profileConfigurationFragment2, false, true));
 
-        modificaInteressi.setOnClickListener(v -> navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, true));
+        editInterests.setOnClickListener(v -> navigateTo(R.id.action_profileFragment_to_categoriesSelectionFragment2, false, true));
 
         interestsViewModel.getInterests().observe(this.getViewLifecycleOwner(), interestsObserver);
     }

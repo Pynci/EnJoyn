@@ -157,20 +157,6 @@ public class SigninFragment extends Fragment {
 
         });
     }
-
-    /*
-        // TODO: capire se sta roba serve o meno
-
-        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(requireContext());
-        try {
-            if (!dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME).isEmpty()) {
-                SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(requireContext());
-            }
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
-         */
-
     private void navigateTo(int destination, boolean finishActivity) {
         Navigation.findNavController(requireView()).navigate(destination);
         if (finishActivity) {

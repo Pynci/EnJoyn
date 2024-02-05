@@ -132,11 +132,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_textButton_EditIInterests"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_textButton_EditInterests"
                 tools:ignore="NestedScrolling" />
 
             <Button
-                android:id="@+id/fragmentProfile_textButton_EditIInterests"
+                android:id="@+id/fragmentProfile_textButton_EditInterests"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
                 android:layout_marginTop="28dp"
                 android:text="@string/interests"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/fragmentProfile_textButton_EditIInterests"
+                app:layout_constraintEnd_toStartOf="@+id/fragmentProfile_textButton_EditInterests"
                 app:layout_constraintHorizontal_bias="0.06"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragmentProfile_cardView_description" />
