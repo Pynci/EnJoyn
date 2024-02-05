@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import it.unimib.enjoyn.R;
+import it.unimib.enjoyn.adapter.SpinnerCategorySelectionAdapter;
 import it.unimib.enjoyn.adapter.SpinnerColorSelectionAdapter;
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
@@ -51,6 +52,7 @@ import it.unimib.enjoyn.ui.viewmodels.CategoryViewModel;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
+import it.unimib.enjoyn.util.CategoryList;
 import it.unimib.enjoyn.util.ColorList;
 import it.unimib.enjoyn.util.ColorObject;
 import it.unimib.enjoyn.util.Constants;
@@ -274,9 +276,9 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
                     for (Category category : categoryList) {
                         categoryNameList.add(category.getNome());
                     }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categoryNameList);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    categorySpinner.setAdapter(adapter);
+
+                    categorySpinner.setAdapter(new SpinnerCategorySelectionAdapter(getContext(),0, categoryNameList));
+                    categorySpinner.setSelection(new CategoryList().categoryPosition(categoryList, selectedCategory));
                     categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
