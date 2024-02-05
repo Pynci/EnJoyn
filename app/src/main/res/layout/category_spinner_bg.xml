@@ -14,23 +14,21 @@ android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textView_Category_Name_BG"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="368dp"
-            android:layout_marginEnd="211dp"
-            android:layout_marginBottom="344dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+
+
             android:gravity="center"
             android:text="TextView" />
 
         <ImageView
             android:id="@+id/imageView_Category_Image_BG"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="353dp"
-            android:layout_toStartOf="@+id/textView_Category_Name_BG" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="9dp"
+            android:layout_marginStart="139dp"
+
+            android:gravity="center"
+            app:srcCompat="@drawable/passeggiata" />
 </RelativeLayout>

@@ -184,7 +184,7 @@
 
             <Spinner
                 android:id="@+id/fragmentNewEvent_spinner_categories"
-                android:layout_width="192dp"
+                android:layout_width="202dp"
                 android:layout_height="54dp"
                 android:layout_marginStart="16dp"
                 android:entries="@android:array/emailAddressTypes"
@@ -219,7 +219,7 @@
 
             <Spinner
                 android:id="@+id/fragmentNewEvent_spinner_color"
-                android:layout_width="192dp"
+                android:layout_width="202dp"
                 android:layout_height="54dp"
                 android:layout_marginStart="40dp"
                 android:textAlignment="center"
