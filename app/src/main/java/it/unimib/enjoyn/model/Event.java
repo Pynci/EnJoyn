@@ -175,12 +175,9 @@ public class Event implements Parcelable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Event)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return  Double.compare(event.distance, distance) == 0  && Objects.equals(title, event.title)
-                && Objects.equals(description, event.description) && Objects.equals(date, event.date)
-                && Objects.equals(time, event.time) && Objects.equals(location, event.location)
-                && Objects.equals(category, event.category);
+        return Objects.equals(eid, event.eid);
     }
 
     @Override

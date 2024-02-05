@@ -33,7 +33,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:background="@color/Aero" />
+                tools:background="@color/seed" />
 
             <TextView
                 android:id="@+id/eventListItem_textView_eventTitle"

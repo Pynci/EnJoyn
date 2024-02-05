@@ -150,9 +150,12 @@ public class UserRepository implements IUserRepository {
     @Override
     public MutableLiveData<Result> signOut(){
         authenticationDataSource.signOut(result -> {
-            if(result instanceof Result.UserSuccess){
+            if(result.isSuccessful()){
                 User user = ((Result.UserSuccess) currentUser.getValue()).getData();
                 deleteLocalUser(user);
+            }
+            else{
+                currentUser.postValue(result);
             }
         });
         return currentUser;
@@ -182,12 +185,18 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public MutableLiveData<Result> getCurrentUserPropic() {
+        userRemoteDataSource.getPropicByUid(authenticationDataSource.getCurrentUserUID(), currentUserPropic::postValue);
+        return currentUserPropic;
+    }
+
+    @Override
     public MutableLiveData<Result> updatePropic(Uri uri) {
         userRemoteDataSource.updatePropic(authenticationDataSource.getCurrentUserUID(), uri,
                 result -> {
-                    currentUser.postValue(currentUser.getValue());  //notifica
+                    currentUserPropic.postValue(new Result.SingleImageReadFromRemote(uri));
                 });
-        return currentUser;
+        return currentUserPropic;
     }
 
     @Override
@@ -303,12 +312,6 @@ public class UserRepository implements IUserRepository {
     public MutableLiveData<Result> sendResetPasswordEmail(String email) {
         authenticationDataSource.sendResetPasswordEmail(email, emailSent::postValue);
         return emailSent;
-    }
-
-    @Override
-    public MutableLiveData<Result> getCurrentUserPropic() {
-        userRemoteDataSource.getPropicByUid(authenticationDataSource.getCurrentUserUID(), currentUserPropic::postValue);
-        return currentUserPropic;
     }
 
 

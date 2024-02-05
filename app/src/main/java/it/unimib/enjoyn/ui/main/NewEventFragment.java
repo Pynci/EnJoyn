@@ -173,7 +173,7 @@ public class NewEventFragment extends Fragment implements WeatherCallback {
         eventCreationObserver = result -> {
             if(result.isSuccessful()){
                 Snackbar
-                        .make(view, "FUNZICA", Snackbar.LENGTH_SHORT)
+                        .make(view, R.string.new_event_create, Snackbar.LENGTH_SHORT)
                         .show();
                 EventLocation oldLocation = NewEventFragmentArgs.fromBundle(getArguments()).getLocation();
                 oldLocation.setName(null);

@@ -16,9 +16,12 @@ import it.unimib.enjoyn.source.events.BaseEventRemoteDataSource;
 import it.unimib.enjoyn.source.users.BaseAuthenticationDataSource;
 
 public class EventRepository implements IEventRepository {
-    private final MutableLiveData<Result> allEventsMutableLiveData;
+    private final MutableLiveData<Result> allEvents;
+    private MutableLiveData<Result> singleEvent;
+    private Event currentlyObservedEvent;
     private final MutableLiveData<Result> eventCreation;
-    private final MutableLiveData<Result> eventParticipation;
+    private final MutableLiveData<Result> eventLeaveParticipation;
+    private final MutableLiveData<Result> eventJoinParticipation;
     private final List<Event> eventsList;
 
     private final BaseEventRemoteDataSource eventRemoteDataSource;
@@ -28,27 +31,29 @@ public class EventRepository implements IEventRepository {
     public EventRepository(BaseEventRemoteDataSource eventRemoteDataSource,
                            BaseParticipationRemoteDataSource participationRemoteDataSource,
                            BaseAuthenticationDataSource authenticationDataSource) {
-        allEventsMutableLiveData = new MutableLiveData<>();
+        allEvents = new MutableLiveData<>();
         this.eventRemoteDataSource = eventRemoteDataSource;
         this.authenticationDataSource = authenticationDataSource;
         this.participationRemoteDataSource = participationRemoteDataSource;
         eventCreation = new MutableLiveData<>();
         eventsList = new ArrayList<>();
-        eventParticipation = new MutableLiveData<>();
+        eventLeaveParticipation = new MutableLiveData<>();
+        eventJoinParticipation = new MutableLiveData<>();
+        singleEvent = new MutableLiveData<>();
     }
 
     @Override
     public MutableLiveData<Result> fetchAllEvents() {
-        eventRemoteDataSource.fetchAllEvents(authenticationDataSource.getCurrentUserUID(),
+        eventRemoteDataSource.fetchAllEvents(
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
                     participationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
                             resultTodo -> {
                                 if(resultTodo.isSuccessful()){
                                     event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                    addEvent(event, allEvents);
                                 }
                             });
-                    addEvent(event, allEventsMutableLiveData);
                 },
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
@@ -57,9 +62,9 @@ public class EventRepository implements IEventRepository {
                             resultTodo -> {
                                 if(resultTodo.isSuccessful()){
                                     event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                    replaceEvent(event, oldEvent, allEvents);
                                 }
                             });
-                    replaceEvent(event, oldEvent, allEventsMutableLiveData);
                 },
                 result -> {
                     Event event = ((Result.SingleEventSuccess) result).getEvent();
@@ -67,12 +72,45 @@ public class EventRepository implements IEventRepository {
                             resultTodo -> {
                                 if(resultTodo.isSuccessful()){
                                     event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                    removeEvent(event, allEvents);
                                 }
                             });
-                    removeEvent(event, allEventsMutableLiveData);
                 },
-                allEventsMutableLiveData::postValue);
-        return allEventsMutableLiveData;
+                allEvents::postValue);
+        return allEvents;
+    }
+
+    /*
+    Piazza nel livedata ritornato un SingleEventSuccess contenente l'evento con
+    i dati aggiornati ad ogni cambio nel nodo firebase.
+    Se l'evento viene rimosso o non esiste, nel livedata ci piazza un SingleEventSuccess
+    contenente null.
+     */
+    @Override
+    public MutableLiveData<Result> fetchSingleEvent(Event eventToObserve){
+        if(currentlyObservedEvent != null){
+            singleEvent = new MutableLiveData<>();
+        }
+        currentlyObservedEvent = eventToObserve;
+        eventRemoteDataSource.fetchSingleEvent(eventToObserve,
+                result -> {
+                    Event event = ((Result.SingleEventSuccess) result).getEvent();
+                    if(event != null && event.equals(currentlyObservedEvent)){
+                        participationRemoteDataSource.isTodo(event, authenticationDataSource.getCurrentUserUID(),
+                                resultTodo -> {
+                                    if(resultTodo.isSuccessful()){
+                                        event.setTodo(((Result.BooleanSuccess) resultTodo).getData());
+                                        singleEvent.postValue(new Result.SingleEventSuccess(event));
+                                    }
+                                });
+                    }
+                    else{
+                        singleEvent.postValue(new Result.SingleEventSuccess(null));
+                    }
+                },
+                singleEvent::postValue
+        );
+        return singleEvent;
     }
 
     private void removeEvent(Event event, MutableLiveData<Result> mutableLiveData) {
@@ -114,16 +152,16 @@ public class EventRepository implements IEventRepository {
                 addParticipant(event);
             }
             else{
-                eventParticipation.postValue(result);
+                eventJoinParticipation.postValue(result);
             }
         });
-        return eventParticipation;
+        return eventJoinParticipation;
     }
 
     private void addParticipant(Event event){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("participants", event.getParticipants()+1);
-        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, eventParticipation::postValue);
+        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, eventJoinParticipation::postValue);
     }
 
     public MutableLiveData<Result> leaveEvent(Event event, User user){
@@ -132,16 +170,16 @@ public class EventRepository implements IEventRepository {
                 removeParticipant(event);
             }
             else{
-                eventParticipation.postValue(result);
+                eventLeaveParticipation.postValue(result);
             }
         });
-        return eventParticipation;
+        return eventLeaveParticipation;
     }
 
     private void removeParticipant(Event event){
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put("participants", event.getParticipants()-1);
-        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, eventParticipation::postValue);
+        eventRemoteDataSource.updateEvent(event.getEid(), updateMap, eventLeaveParticipation::postValue);
     }
 
     private Event findOldEvent(Event newEvent){

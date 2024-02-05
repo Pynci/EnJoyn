@@ -39,6 +39,8 @@
     <string name="name">Nome</string>
     <string name="surname">Cognome</string>
     <string name="phoneNumber">Telefono</string>
+    <string name="eventAddedToTodo">evento aggiunto ai ToDo</string>
+    <string name="eventRemovedFromTodo"> evento rimosso dai ToDo</string>
     <string name="insertName">Nome</string>
     <string name="Register">Registrati</string>
     <string name="buttonLogin"><u>Login</u></string>
@@ -71,6 +73,14 @@
     <string name="emailNotReceived">"Non hai ricevuto nessuna mail?"</string>
     <string name="tapHere">premi qui</string>
     <string name="error_retriving_weather"> errore nel caricamento del weather</string>
+    <string name="error_signing_up"> Errore nella registrazione: </string>
+    <string name="signup_successful"> Registrazione avvenuta correttamente </string>
+    <string name="error_sending_confermation_email"> Errore durante invio della mail di conferma </string>
+    <string name="error_occured"> Si è verificato un errore: </string>
+    <string name="username_already_in_use"> Username già in uso</string>
+    <string name="email_already_in_use"> Email già in uso</string>
+    <string name="failed_registration"> Registrazione fallita </string>
+
 
     <string name="helloBlankFragment">Hello blank fragment</string>
     <string name="appLogo">Immagine rappresentante il logo dell\'applicazione</string>
@@ -124,4 +134,6 @@
     <string name="ligthBlue">Ligth Blue</string>
     <string name="immagine_event_item">Immagine event Item</string>
     <string name="color">Colore :</string>
+    <string name="new_event_create">Hai creato un nuovo evento :</string>
+    <string name="add_more_interests">Prova ad aggiungere nuovi interessi!</string>
 </resources>

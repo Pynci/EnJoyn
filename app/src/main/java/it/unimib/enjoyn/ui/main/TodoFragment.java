@@ -25,8 +25,10 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.EventReclyclerViewAdapter;
+import it.unimib.enjoyn.databinding.FragmentTodoBinding;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
@@ -37,10 +39,12 @@ import it.unimib.enjoyn.util.ErrorMessagesUtil;
  */
 public class TodoFragment extends Fragment {
 
-
+    private FragmentTodoBinding fragmentTodoBinding;
     private EventViewModel eventViewModel;
-
+   // private UserViewModel userViewModel;
     private List<Event> eventList;
+    private List<Event> todoEventList;
+    private User user;
     private EventReclyclerViewAdapter eventsRecyclerViewAdapter;
 
     public TodoFragment() {
@@ -58,7 +62,10 @@ public class TodoFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         eventList = new ArrayList<>();
+        todoEventList = new ArrayList<>();
 
+        //IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        //userViewModel = new ViewModelProvider(requireActivity(), new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
 
     }
@@ -67,8 +74,8 @@ public class TodoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getViewLifecycleOwner();
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_todo, container, false);
+        fragmentTodoBinding = FragmentTodoBinding.inflate(inflater, container, false);
+        return fragmentTodoBinding.getRoot();
     }
 
     @Override
@@ -86,12 +93,12 @@ public class TodoFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerViewDiscoverEvents = view.findViewById(R.id.fragmentTODO_recyclerView);
+        RecyclerView recyclerViewDiscoverEvents = fragmentTodoBinding.fragmentTODORecyclerView;
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
 
-         eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(eventList, requireActivity().getApplication(),
+         eventsRecyclerViewAdapter = new EventReclyclerViewAdapter(todoEventList, getContext(),
                 new EventReclyclerViewAdapter.OnItemClickListener() {
                     @Override
                     public void onEventItemClick(Event event) {
@@ -111,19 +118,38 @@ public class TodoFragment extends Fragment {
                         //}
 //                        eventViewModel.updateEvent(eventList.get(position));
 
-                        eventsRecyclerViewAdapter.notifyDataSetChanged();
+ /*                       Event event = eventList.get(position);
+                        userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
+                            if(result.isSuccessful()){
+                                user = ((Result.UserSuccess) result).getData();
+                                if(event.isTodo()){
+                                    eventViewModel.leaveEvent(event, user);
+                                } else {
+                                    eventViewModel.joinEvent(event, user);
+                                }
+                            }
+                        });
+                        eventsRecyclerViewAdapter.notifyDataSetChanged();*/
                     }
                 });
         recyclerViewDiscoverEvents.setLayoutManager(layoutManager);
         recyclerViewDiscoverEvents.setAdapter(eventsRecyclerViewAdapter);
 
-        eventViewModel.getEvent().observe(getViewLifecycleOwner(), result -> {
+        eventViewModel.getAllEvents().observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
                 if (result.isSuccessful()) {
-                    int initialSize = this.eventList.size();
+
                     this.eventList.clear();
                     this.eventList.addAll(((Result.EventSuccess) result).getData().getEventList());
-                    eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
+
+                    int initialSize = this.todoEventList.size();
+                    todoEventList.clear();
+                    for (Event event: eventList){
+                        if(event.isTodo()){
+                            todoEventList.add(event);
+                        }
+                    }
+                    eventsRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.todoEventList.size());
                     eventsRecyclerViewAdapter.notifyDataSetChanged();
 
                 } else {

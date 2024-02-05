@@ -25,7 +25,8 @@ public abstract class Result {
                 || this instanceof MapSearchSuccess
                 || this instanceof MapReverseSearchSuccess
                 || this instanceof SingleImageReadFromRemote
-                || this instanceof UserListSuccess;
+                || this instanceof UserListSuccess
+                || this instanceof SingleEventSuccess;
     }
 
 

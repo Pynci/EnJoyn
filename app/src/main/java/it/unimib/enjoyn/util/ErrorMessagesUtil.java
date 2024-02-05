@@ -1,12 +1,7 @@
 package it.unimib.enjoyn.util;
 
 import android.app.Application;
-
-import static it.unimib.enjoyn.util.Constants.API_ERROR;
-import static it.unimib.enjoyn.util.Constants.EMPTY_FIELDS;
-import static it.unimib.enjoyn.util.Constants.EMPTY_LOCATION;
-import static it.unimib.enjoyn.util.Constants.RETROFIT_ERROR;
-import static it.unimib.enjoyn.util.Constants.VIEW_MODEL_ERROR;
+import static it.unimib.enjoyn.util.Constants.*;
 
 public class ErrorMessagesUtil {
 

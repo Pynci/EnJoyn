@@ -34,7 +34,7 @@ public class MainButtonMenuActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
 
         BottomNavigationView bottomNav = findViewById(R.id.activityMainButtonMenu_bottomNavigation);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.fragmentDiscover,
@@ -43,6 +43,8 @@ public class MainButtonMenuActivity extends AppCompatActivity {
                 R.id.friendsFragment,
                 R.id.profileFragment
                 ).build();
+
+
 
 
         // For the Toolbar

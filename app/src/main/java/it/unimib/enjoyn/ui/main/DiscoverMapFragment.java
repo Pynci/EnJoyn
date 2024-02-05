@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -77,8 +78,10 @@ import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.model.Weather;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 public class DiscoverMapFragment extends Fragment implements PermissionsListener {
@@ -109,7 +112,10 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     private SuggestionListAdapter suggestionListAdapter;
     private TextInputEditText searchBar;
     private Weather weatherAPIdata;
+    private UserViewModel userViewModel;
+    private User user;
     CardView eventItem;
+    Button joinButton;
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
         if(result){
@@ -130,6 +136,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         eventList = new ArrayList<>();
     }
 
@@ -149,15 +156,17 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             PermissionsManager permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
         }
-
-        suggestionListView = view.findViewById(R.id.fragmentDiscoverMap_listView);
+        joinButton = fragmentDiscoverMapBinding.eventListItemButtonJoinButton;
+        eventItem = fragmentDiscoverMapBinding.fragmentDiscoverMapCardViewEventItem;
+        eventItem.setVisibility(View.GONE);
+        suggestionListView = fragmentDiscoverMapBinding.fragmentDiscoverMapListView;
         suggestionClicked = false;
         searchClicked = false;
         firstTime = false;
-        positionButton = view.findViewById(R.id.fragmentDiscoverMap_FloatingActionButton);
+        positionButton = fragmentDiscoverMapBinding.fragmentDiscoverMapFloatingActionButton;
         selfLocation = null;
-        searchBar = view.findViewById(R.id.fragmentDiscoverMap_TextInputEditText_searchBar);
-        mapView = view.findViewById(R.id.fragmentDiscoverMap_mapView);
+        searchBar = fragmentDiscoverMapBinding.fragmentDiscoverMapTextInputEditTextSearchBar;
+        mapView = fragmentDiscoverMapBinding.fragmentDiscoverMapMapView;
 
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
         AnnotationConfig annotationConfig = new AnnotationConfig();
@@ -271,7 +280,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
         bitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.location_pin);
 
-        eventViewModel.getEvent().observe(getViewLifecycleOwner(), result -> {
+        eventViewModel.getAllEvents().observe(getViewLifecycleOwner(), result -> {
 
             if(result.isSuccessful()){
                 this.eventList.clear();
@@ -333,7 +342,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             return false;
         });
 
-        eventItem = view.findViewById(R.id.fragmentDiscoverMap_cardView_eventItem);
+
 
         pointAnnotationManager.addClickListener(annotation -> {
 
@@ -346,23 +355,57 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             }
             //event = eventList.get((int)annotation.getId());
             eventItem.setVisibility(View.VISIBLE);
-            fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
-            fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
-            fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
-            fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getLocation().getName());
+            setEventParameters();
             Log.d("code", event.getWeatherCode()+"");
             if(event.getWeatherCode() != -1){
                 setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
             }
             setCategoryImage(fragmentDiscoverMapBinding.eventListItemMapImageViewCategoryVector, event.getCategory());
             fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText(event.getDistance()+" km");
-            fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
-            fragmentDiscoverMapBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
-            fragmentDiscoverMapBinding.eventListItemButtonJoinButton.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+
 
             eventItem.setOnClickListener(v -> {
                 DiscoverFragmentDirections.ActionFragmentDiscoverToFragmentDiscoverSingleEvent action = DiscoverFragmentDirections.actionFragmentDiscoverToFragmentDiscoverSingleEvent(event);
                 Navigation.findNavController(view).navigate(action);
+
+            });
+
+            if(event.isTodo()){
+                joinButton.setText(R.string.remove);
+            }
+            else{
+                joinButton.setText(R.string.Join);
+            }
+
+            eventViewModel.refreshEvent(event).observe(getViewLifecycleOwner(), result -> {
+                if(result.isSuccessful()){
+                    event = ((Result.SingleEventSuccess) result).getEvent();
+                    setEventParameters();
+                }
+                else{
+                    //TODO mettere snackbar
+                }
+            });
+
+            joinButton.setOnClickListener(v -> {
+
+                userViewModel.getCurrentUser().observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessful()) {
+                        user = ((Result.UserSuccess) result).getData();
+                        if (event.isTodo()) {
+                            eventViewModel.leaveEvent(event, user).observe(getViewLifecycleOwner(), result1 -> {
+                                joinButton.setText(R.string.Join);
+                            });
+
+                        } else {
+                            eventViewModel.joinEvent(event, user).observe(getViewLifecycleOwner(), result1 -> {
+                                joinButton.setText(R.string.remove);
+                            });
+
+                        }
+
+                    }
+                });
 
             });
 
@@ -371,7 +414,18 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
 
             return true;
             });
+
         }
+
+    private void setEventParameters() {
+        fragmentDiscoverMapBinding.eventListItemTextViewEventTitle.setText(event.getTitle());
+        fragmentDiscoverMapBinding.eventListItemTextViewDate.setText(event.getDate());
+        fragmentDiscoverMapBinding.eventListItemTextViewTime.setText(event.getTime());
+        fragmentDiscoverMapBinding.eventListItemTextViewPlace.setText(event.getLocation().getName());
+        fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
+        fragmentDiscoverMapBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+        fragmentDiscoverMapBinding.eventListItemButtonJoinButton.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
+    }
 
     private final OnIndicatorBearingChangedListener onIndicatorBearingChangedListener = new OnIndicatorBearingChangedListener() {
         @Override

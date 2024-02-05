@@ -1,6 +1,5 @@
 package it.unimib.enjoyn.model;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -57,7 +56,7 @@ public class User implements Parcelable {
     }
 
     public User(@NonNull String uid, String username, String email,
-                String name, String surname, String description, Uri tempPropicUri) {
+                String name, String surname, String description) {
         this.uid = uid;
         this.email = email;
         this.username = username;
@@ -173,4 +172,12 @@ public class User implements Parcelable {
     public void setCategoriesSelectionDone(Boolean categoriesSelectionDone) {
         isCategoriesSelectionDone = categoriesSelectionDone;
     }
+
+//    public Uri getTempPropicUri() {
+//        return tempPropicUri;
+//    }
+
+//    public void setTempPropicUri(Uri tempPropicUri) {
+//        this.tempPropicUri = tempPropicUri;
+//    }
 }

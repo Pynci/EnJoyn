@@ -3,6 +3,8 @@ package it.unimib.enjoyn.adapter;
 import android.app.Application;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +16,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.Random;
 
 import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.util.ColorObject;
+import it.unimib.enjoyn.model.Result;
+import it.unimib.enjoyn.model.User;
+import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 
 public class EventReclyclerViewAdapter extends
         RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -38,15 +46,19 @@ public class EventReclyclerViewAdapter extends
 
     private final List<Event> eventList;
 
-    private final Application application;
+    private final Context context;
     private final OnItemClickListener onItemClickListener;
+    private final EventViewModel eventViewModel;
+    private final UserViewModel userViewModel;
 
 
-    public EventReclyclerViewAdapter(List<Event> eventList, Application application, OnItemClickListener onItemClickListener){
+
+    public EventReclyclerViewAdapter(List<Event> eventList, Context context, OnItemClickListener onItemClickListener){
         this.eventList = eventList;
         this.onItemClickListener = onItemClickListener;
-        this.application = application;
-
+        this.context = context;
+        eventViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(EventViewModel.class);
+        userViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(UserViewModel.class);
     }
 
     public int getItemViewType(int position){
@@ -131,7 +143,7 @@ public class EventReclyclerViewAdapter extends
         private final ImageView weatherImage;
         private final ImageView backgroundImage;
         private final ImageView categoryImage;
-        private boolean todo;
+
 
 
         public EventViewHolder(@NonNull View itemView) {
@@ -156,8 +168,30 @@ public class EventReclyclerViewAdapter extends
         public void onClick(View v) {
 
             if(v.getId() == R.id.eventListItem_button_joinButton){
-                setTextButtonTodoEvent(todo);
-                onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+
+                Event event = eventList.get(getBindingAdapterPosition());
+                userViewModel.getCurrentUser().observe((LifecycleOwner) context, result -> {
+                    if(result.isSuccessful()){
+                        User user = ((Result.UserSuccess) result).getData();
+                        if(event.isTodo()){
+                            eventViewModel.leaveEvent(event, user).observe((LifecycleOwner) context, result1 -> {
+                                if(getBindingAdapterPosition() != -1)
+                                    setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
+                                // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                            });
+                        } else {
+                            eventViewModel.joinEvent(event, user).observe((LifecycleOwner) context, result1 -> {
+                                if(getBindingAdapterPosition() != -1)
+                                    setTextButtonTodoEvent(eventList.get(getBindingAdapterPosition()).isTodo());
+                                // onItemClickListener.onJoinButtonPressed(getBindingAdapterPosition());
+                            });
+                        }
+
+                    }
+                });
+
+
+                Log.d("index", getLayoutPosition()+" ");
                 //backgroundImage.setBackgroundColor(ContextCompat.getColor(v.getContext(),R.color.md_theme_dark_tertiary));
                 //joinButton.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),R.color.md_theme_light_error));
 
@@ -176,7 +210,7 @@ public class EventReclyclerViewAdapter extends
             textViewPeopleNumber.setText(event.getPeopleNumberString());
             textViewDistance.setText(event.getDistanceString());
             setWeatherIcon(weatherImage, event.getWeatherCode());
-            setTextButtonTodoEvent(!eventList.get(getAdapterPosition()).isTodo());
+            setTextButtonTodoEvent(event.isTodo());
             String color = event.getColor().getName();
 
             setColorEvent(textViewPlace, backgroundImage, joinButton, event.getColor(), itemView);
@@ -192,10 +226,10 @@ public class EventReclyclerViewAdapter extends
 
         public void setTextButtonTodoEvent(boolean isTodo){
             if(isTodo){
-                joinButton.setText(R.string.Join);
+                joinButton.setText(R.string.remove);
             }
             else{
-                joinButton.setText(R.string.remove);
+                joinButton.setText(R.string.Join);
             }
         }
 

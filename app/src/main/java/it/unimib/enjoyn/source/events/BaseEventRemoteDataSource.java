@@ -8,7 +8,10 @@ import it.unimib.enjoyn.source.Callback;
 
 public interface BaseEventRemoteDataSource {
 
-    void fetchAllEvents(String uid, Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback);
+    void fetchAllEvents(Callback addedCallback, Callback changedCallback, Callback removedCallback, Callback cancelledCallback);
+
+    void fetchSingleEvent(Event event,
+                          Callback dataChangeCallback, Callback cancelledCallback);
 
     void createEvent(Event event, User user, Callback callback);
 

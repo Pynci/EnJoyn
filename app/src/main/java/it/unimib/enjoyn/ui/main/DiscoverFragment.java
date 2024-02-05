@@ -24,11 +24,15 @@ import com.google.android.material.tabs.TabLayout;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.ViewPagerAdapter;
+import it.unimib.enjoyn.databinding.FragmentDiscoverBinding;
 import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
+import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.EventViewModelFactory;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
+import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 
@@ -39,8 +43,9 @@ import it.unimib.enjoyn.util.ServiceLocator;
  */
 public class DiscoverFragment extends Fragment {
 
-    EventViewModel eventViewModel;
-
+    private FragmentDiscoverBinding fragmentDiscoverBinding;
+    private EventViewModel eventViewModel;
+    private UserViewModel userViewModel;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     ViewPagerAdapter viewPagerAdapter;
@@ -62,24 +67,28 @@ public class DiscoverFragment extends Fragment {
         IWeatherRepository weatherRepository = ServiceLocator.getInstance().getWeatherRepository();
 
         MapRepository mapRepository = ServiceLocator.getInstance().getMapRepository();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
 
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
                 new EventViewModelFactory(eventRepositoryWithLiveData, weatherRepository, mapRepository)).get(EventViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        fragmentDiscoverBinding = FragmentDiscoverBinding.inflate(inflater, container, false);
+        return fragmentDiscoverBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout = view.findViewById(R.id.discoverFragment_tabLayout);
-        viewPager2 = view.findViewById(R.id.discoverFragment_viewPager);
+        tabLayout = fragmentDiscoverBinding.discoverFragmentTabLayout;
+        viewPager2 = fragmentDiscoverBinding.discoverFragmentViewPager;
         if(this.getActivity() != null)
             viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
 
@@ -126,13 +135,6 @@ public class DiscoverFragment extends Fragment {
 
     }
 
-    private void startActivityBasedOnCondition(int destination, boolean finishActivity) {
-        Navigation.findNavController(requireView()).navigate(destination);
 
-        //da utilizzare solo se si passa ad un'altra activity
-        if (finishActivity){
-            requireActivity().finish();
-        }
-    }
 
 }
