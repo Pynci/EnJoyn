@@ -1,6 +1,8 @@
 package it.unimib.enjoyn.ui.main;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,11 +33,6 @@ import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.util.ImageConverter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DiscoverSingleEvent#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DiscoverSingleEvent extends Fragment {
 
     private FragmentDiscoverSingleEventBinding fragmentDiscoverSingleEventBinding;
@@ -91,6 +88,13 @@ public class DiscoverSingleEvent extends Fragment {
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDistance.setText(event.getDistanceString());
         imageConverter.setWeatherIcon(fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventImageViewWeather, event.getWeatherCode());
         fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventTextViewTemperature.setText(event.getWeatherTemperature()+"°");
+
+        fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewPlace.setOnClickListener(placeView -> {
+          Uri gmmIntentUri = Uri.parse("google.navigation:q=" + event.getLocation().getLatitude() + "," + event.getLocation().getLongitude());
+          Intent googleMapsIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+          googleMapsIntent.setPackage("com.google.android.apps.maps");
+          startActivity(googleMapsIntent);
+        });
 
         eventViewModel.refreshEvent(event).observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessful()){
