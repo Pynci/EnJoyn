@@ -22,8 +22,8 @@ public class ImageConverter {
             case "Cibo":
                 imageView.setBackgroundResource(R.drawable.cibo);
                 break;
-            case "Videogiochi":
-                imageView.setBackgroundResource(R.drawable.videogiochi);
+            case "Giochi":
+                imageView.setBackgroundResource(R.drawable.giochi_da_tavolo);
                 break;
             case "Shopping":
                 imageView.setBackgroundResource(R.drawable.shopping);
