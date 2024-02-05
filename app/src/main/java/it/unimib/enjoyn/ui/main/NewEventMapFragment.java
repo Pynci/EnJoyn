@@ -28,7 +28,6 @@ import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,10 +84,10 @@ import it.unimib.enjoyn.util.ErrorMessagesUtil;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NewEventMap#newInstance} factory method to
+ * Use the {@link NewEventMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewEventMap extends Fragment implements PermissionsListener {
+public class NewEventMapFragment extends Fragment implements PermissionsListener {
 
     Observer<Result> suggestionObserver;
     Observer<Result> mapSearchObserver;
@@ -148,7 +147,7 @@ public class NewEventMap extends Fragment implements PermissionsListener {
         public void onIndicatorPositionChanged(@NonNull Point point) {
             if(positionChanged) {
                mapView.getMapboxMap().setCamera(new CameraOptions.Builder().center(point).zoom(16.0).build());
-                NewEventMap.this.selfLocation = point;
+                NewEventMapFragment.this.selfLocation = point;
                 positionChanged = false;
             }
             else{
@@ -180,12 +179,12 @@ public class NewEventMap extends Fragment implements PermissionsListener {
 
 
 
-    public NewEventMap() {
+    public NewEventMapFragment() {
 
     }
 
-    public static NewEventMap newInstance() {
-        return new NewEventMap();
+    public static NewEventMapFragment newInstance() {
+        return new NewEventMapFragment();
     }
 
 

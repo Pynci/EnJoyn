@@ -55,7 +55,7 @@
     <include app:graph="@navigation/nav_auth" />
     <fragment
         android:id="@+id/fragmentDiscoverSingleEvent"
-        android:name="it.unimib.enjoyn.ui.main.DiscoverSingleEvent"
+        android:name="it.unimib.enjoyn.ui.main.DiscoverSingleEventFragment"
         android:label="fragment_discover_single_event"
         tools:layout="@layout/fragment_discover_single_event" >
         <argument
@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentNewEventMap"
-        android:name="it.unimib.enjoyn.ui.main.NewEventMap"
+        android:name="it.unimib.enjoyn.ui.main.NewEventMapFragment"
         android:label="fragment_new_event_map"
         tools:layout="@layout/fragment_new_event_map" >
         <action

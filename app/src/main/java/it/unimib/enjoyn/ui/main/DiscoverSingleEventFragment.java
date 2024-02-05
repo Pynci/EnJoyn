@@ -1,6 +1,5 @@
 package it.unimib.enjoyn.ui.main;
 
-import android.content.res.ColorStateList;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -22,11 +21,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.databinding.FragmentDiscoverSingleEventBinding;
-import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
@@ -34,7 +31,7 @@ import it.unimib.enjoyn.ui.viewmodels.EventViewModel;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 import it.unimib.enjoyn.util.ImageConverter;
 
-public class DiscoverSingleEvent extends Fragment {
+public class DiscoverSingleEventFragment extends Fragment {
 
     private FragmentDiscoverSingleEventBinding fragmentDiscoverSingleEventBinding;
     private EventViewModel eventViewModel;
@@ -42,11 +39,11 @@ public class DiscoverSingleEvent extends Fragment {
     private Event event;
     private ImageConverter imageConverter;
 
-    public DiscoverSingleEvent() {
+    public DiscoverSingleEventFragment() {
         // Required empty public constructor
     }
-    public static DiscoverSingleEvent newInstance() {
-        return new DiscoverSingleEvent();
+    public static DiscoverSingleEventFragment newInstance() {
+        return new DiscoverSingleEventFragment();
     }
 
     @Override
