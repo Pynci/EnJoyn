@@ -357,7 +357,6 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     find = true;
                 }
             }
-            //event = eventList.get((int)annotation.getId());
             eventItem.setVisibility(View.VISIBLE);
             setEventParameters();
             Log.d("code", event.getWeatherCode()+"");
@@ -387,7 +386,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
                     setEventParameters();
                 }
                 else{
-                    //TODO mettere snackbar
+                    Snackbar.make(view, ((Result.Error) result).getMessage() , Snackbar.LENGTH_SHORT).show();
                 }
             });
 

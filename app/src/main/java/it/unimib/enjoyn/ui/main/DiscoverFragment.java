@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 
@@ -22,7 +21,7 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 
 
-import it.unimib.enjoyn.R;
+
 import it.unimib.enjoyn.adapter.ViewPagerAdapter;
 import it.unimib.enjoyn.databinding.FragmentDiscoverBinding;
 import it.unimib.enjoyn.repository.IEventRepository;
@@ -36,11 +35,7 @@ import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
 import it.unimib.enjoyn.util.ServiceLocator;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the  factory method to
- * create an instance of this fragment.
- */
+
 public class DiscoverFragment extends Fragment {
 
     private FragmentDiscoverBinding fragmentDiscoverBinding;
@@ -79,7 +74,7 @@ public class DiscoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         fragmentDiscoverBinding = FragmentDiscoverBinding.inflate(inflater, container, false);
         return fragmentDiscoverBinding.getRoot();
     }
