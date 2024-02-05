@@ -46,7 +46,7 @@
                 android:ellipsize="end"
                 android:maxLength="30"
                 android:maxLines="1"
-                android:textColor="@color/cardview_light_background"
+                android:textColor="@color/md_theme_light_onPrimary"
                 app:layout_constraintEnd_toEndOf="@+id/eventListItem_imageView_background"
                 app:layout_constraintStart_toEndOf="@+id/eventListItem_imageView_categoryVector"
                 app:layout_constraintTop_toTopOf="@+id/eventListItem_imageView_background"
