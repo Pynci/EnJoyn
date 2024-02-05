@@ -21,16 +21,12 @@ public class User implements Parcelable {
     private String name;
     private String surname;
     private String description;
-    private Uri tempPropicUri;
     private Boolean isEmailVerified;
     private Boolean isProfileConfigured;
     private Boolean isCategoriesSelectionDone;
 
-    /* TODO aggiungere immagine*/
-
     public User(){
         this.uid = "";
-        this.tempPropicUri = Uri.parse("");
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
         this.isCategoriesSelectionDone = false;
@@ -38,7 +34,6 @@ public class User implements Parcelable {
 
     public User(@NonNull String uid) {
         this.uid = uid;
-        this.tempPropicUri = Uri.parse("");
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
         this.isCategoriesSelectionDone = false;
@@ -47,7 +42,6 @@ public class User implements Parcelable {
     public User(@NonNull String uid, String email){
         this.uid = uid;
         this.email = email;
-        this.tempPropicUri = Uri.parse("");
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
         this.isCategoriesSelectionDone = false;
@@ -57,7 +51,6 @@ public class User implements Parcelable {
         this.uid = uid;
         this.username = username;
         this.email = email;
-        this.tempPropicUri = Uri.parse("");
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
         this.isCategoriesSelectionDone = false;
@@ -71,7 +64,6 @@ public class User implements Parcelable {
         this.name = name;
         this.surname = surname;
         this.description = description;
-        this.tempPropicUri = tempPropicUri;
         this.isEmailVerified = false;
         this.isProfileConfigured = false;
         this.isCategoriesSelectionDone = false;
@@ -180,13 +172,5 @@ public class User implements Parcelable {
 
     public void setCategoriesSelectionDone(Boolean categoriesSelectionDone) {
         isCategoriesSelectionDone = categoriesSelectionDone;
-    }
-
-    public Uri getTempPropicUri() {
-        return tempPropicUri;
-    }
-
-    public void setTempPropicUri(Uri tempPropicUri) {
-        this.tempPropicUri = tempPropicUri;
     }
 }

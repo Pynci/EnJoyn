@@ -41,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="32dp"
                 android:text="@string/ActivityName"
                 android:textColor="@color/md_theme_light_onBackground"
                 android:textSize="30sp"
@@ -216,9 +215,11 @@
                 android:id="@+id/fragmentDiscoverSingleEvent_imageView_categoryVector"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                tools:src="@drawable/viaggi"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/viaggi" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
