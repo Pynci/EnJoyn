@@ -132,6 +132,6 @@ public class DiscoverSingleEvent extends Fragment {
                 imageView.setBackgroundResource(R.drawable.sport);
                 break;
         }
-
     }
+
 }

@@ -73,6 +73,7 @@ import java.util.List;
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.SuggestionListAdapter;
 import it.unimib.enjoyn.databinding.FragmentDiscoverMapBinding;
+import it.unimib.enjoyn.model.Category;
 import it.unimib.enjoyn.model.Event;
 import it.unimib.enjoyn.model.EventLocation;
 import it.unimib.enjoyn.model.Result;
@@ -353,6 +354,7 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             if(event.getWeatherCode() != -1){
                 setWeatherIcon(fragmentDiscoverMapBinding.eventListItemImageViewWeather, event.getWeatherCode());
             }
+            setCategoryImage(fragmentDiscoverMapBinding.eventListItemMapImageViewCategoryVector, event.getCategory());
             fragmentDiscoverMapBinding.eventListItemTextViewDistance.setText(event.getDistance()+" km");
             fragmentDiscoverMapBinding.eventListItemTextViewPeopleNumber.setText(event.getPeopleNumberString());
             fragmentDiscoverMapBinding.eventListItemImageViewBackground.setBackgroundColor(Color.parseColor(event.getColor().getHex()));
@@ -458,4 +460,31 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             weatherIcon.setBackgroundResource(R.drawable.drawable_thunderstorm);
         }
     }
+
+    public void setCategoryImage(ImageView imageView, Category category){
+        switch (category.getNome()){
+            case "Passeggiata":
+                imageView.setBackgroundResource(R.drawable.passeggiata);
+                break;
+            case "Viaggi":
+                imageView.setBackgroundResource(R.drawable.viaggi);
+                break;
+            case "Pranzo":
+                imageView.setBackgroundResource(R.drawable.pranzo);
+                break;
+            case "Videogiochi":
+                imageView.setBackgroundResource(R.drawable.videogiochi);
+                break;
+            case "Shopping":
+                imageView.setBackgroundResource(R.drawable.shopping);
+                break;
+            case "Cinema":
+                imageView.setBackgroundResource(R.drawable.cinema);
+                break;
+            case "Sport":
+                imageView.setBackgroundResource(R.drawable.sport);
+                break;
+        }
+    }
+
 }
