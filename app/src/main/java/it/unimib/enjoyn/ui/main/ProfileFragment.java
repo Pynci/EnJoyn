@@ -186,9 +186,8 @@ public class ProfileFragment extends Fragment {
                 navigateTo(R.id.action_profileFragment_to_authActivity2, true,true);
             }
             else{
-                String text = "Impossibile completare l'operazione richiesta";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.failed_operation, view, getContext(), currentTheme);
                 snackbar.show();
             }
         }));

@@ -113,12 +113,11 @@ public class DiscoverRecyclerViewFragment extends Fragment {
                     public void onJoinButtonPressed(int position) {
                         if(eventList.get(position).isTodo()){
                             Snackbar snackbar;
-                            snackbar = SnackbarBuilder.buildOkSnackbar("evento rimosso", view, getContext(), currentTheme);
+                            snackbar = SnackbarBuilder.buildOkSnackbar(R.string.eventAddToDo, view, getContext(), currentTheme);
                             snackbar.show();
-                            //R.string.eventRemoveToDo
                         } else {
                             Snackbar snackbar;
-                            snackbar = SnackbarBuilder.buildOkSnackbar("evento aggiunto", view, getContext(), currentTheme);
+                            snackbar = SnackbarBuilder.buildOkSnackbar(R.string.eventRemoveToDo, view, getContext(), currentTheme);
                             snackbar.show();
                         }
                     }

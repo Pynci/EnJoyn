@@ -70,16 +70,9 @@
     <string name="confirmEmail">CONFERMA MAIL</string>
     <string name="textRegistrationCodeSubtitles">Per confermare il tuo profilo, premi il link che hai ricevuto tramite mail</string>
     <string name="pinviewDescription">Prova</string>
-    <string name="emailNotReceived">"Non hai ricevuto nessuna mail?"</string>
     <string name="tapHere">premi qui</string>
-    <string name="error_retriving_weather"> errore nel caricamento del weather</string>
-    <string name="error_signing_up"> Errore nella registrazione: </string>
     <string name="signup_successful"> Registrazione avvenuta correttamente </string>
-    <string name="error_sending_confermation_email"> Errore durante invio della mail di conferma </string>
-    <string name="error_occured"> Si è verificato un errore: </string>
-    <string name="username_already_in_use"> Username già in uso</string>
-    <string name="email_already_in_use"> Email già in uso</string>
-    <string name="failed_registration"> Registrazione fallita </string>
+    <string name="new_email_sent"> È stata inviata una nuova mail di conferma</string>
 
 
     <string name="helloBlankFragment">Hello blank fragment</string>
@@ -88,11 +81,9 @@
     <string name="passwordReset">Ripristino password</string>
     <string name="alreadyHasAccount">Hai già un account?</string>
     <string name="resetHere">Ripristinala qui</string>
-
+    <string name="email_sent_to_specified_address"> Inviata una mail di ripristino password all\'indirizzo specificato</string>
 
     <!-- Qui ci sono le stringhe che sono state ricontrollate e sono corrette-->
-    <string name="informationRequiredError">Questo campo è obbligatorio</string>
-    <string name="invalidEmail">Email non valida</string>
     <string name="whitespaceNotAllowed">Gli spazi non sono ammessi</string>
     <string name="newCode">Per generare un nuova nuova mail</string>
     <string name="backToLogin">Torna al login</string>
@@ -136,4 +127,45 @@
     <string name="color">Colore :</string>
     <string name="new_event_create">Hai creato un nuovo evento :</string>
     <string name="add_more_interests">Prova ad aggiungere nuovi interessi!</string>
+
+    <!-- Errors-->
+    <string name="error_retrieving_weather"> errore nel caricamento del weather</string>
+    <string name="error_sending_confermation_email"> Errore durante invio della mail</string>
+    <string name="error_on_API">Errore API</string>
+    <string name="unexpected_error"> Errore inaspettato</string>
+    <string name="location_missing"> luogo mancante</string>
+    <string name="some_fields_must_be_empty"> Alcuni campi sono mancanti</string>
+    <string name="error_retrieving_events"> Errore nel caricamento degli eventi</string>
+    <string name="user_already_logged_error"> Utente già autenticato</string>
+    <string name="user_not_logged_error"> Utente non autenticato</string>
+    <string name="signup_error"> Errore nella registrazione</string>
+    <string name="signin_error"> Errore nell\'autenticazione</string>
+    <string name="session_refresh_error"> Errore nel refresh della sessione</string>
+    <string name="user_local_fetch_error"> Errore durante il caricamento dei dati dell\'utente dal locale</string>
+    <string name="user_local_update_error"> Errore durante l\'aggiornamento dei dati dell\'utente in locale</string>
+    <string name="user_local_creation_error"> Errore durante la creazione dei dati dell\'utente in locale</string>
+    <string name="user_local_deletion_error"> Errore durante la cancellazione dei dati dell\'utente in locale</string>
+    <string name="user_remote_fetch_error"> Errore durante il caricamento dei dati dell\'utente da remoto</string>
+    <string name="user_remote_update_error"> Errore durante l\'aggiornamento dei dati dell\'utente su remoto</string>
+    <string name="interest_local_fetch_error"> Errore nel caricamento degli interessi da locale</string>
+    <string name="interest_local_creation_error"> Errore nella creazione degli interessi in locale</string>
+    <string name="interest_local_deletion_error"> Errore nella cancellazione degli interessi in locale</string>
+    <string name="interest_remote_fetch_error"> Errore nel caricamento degli interessi da remoto</string>
+    <string name="interest_remote_creation_error"> Errore nella creazione degli interessi su remoto</string>
+    <string name="event_remote_creation_error"> Errore nella creazione dell\'evento su remoto</string>
+    <string name="event_remote_fetch_error"> Errore nel caricamento dell\'evento da remoto</string>
+    <string name="event_remote_update_error"> Errore durante l\'aggiornamento dell\'evento su remoto</string>
+    <string name="participation_remote_creation_error"> Errore durante la creazione di una partecipazione su remoto</string>
+    <string name="participation_remote_fetch_error"> Errore durante il caricamento di una partecipazione da remoto</string>
+    <string name="participation_remote_deletion_error"> Errore durante la cancellazione di una partecipazione su remoto</string>
+    <string name="failed_operation"> Impossibile completare l\'operazione richiesta</string>
+    <string name="emailNotReceived">"Non hai ricevuto nessuna mail?"</string>
+    <string name="username_already_in_use"> Username già in uso</string>
+    <string name="email_already_in_use"> Email già in uso</string>
+    <string name="signup_failed"> Registrazione fallita </string>
+    <string name="logout_error"> Si è verificato un errore durante il logout</string>
+    <string name="email_reset_password_sending_error"> Impossibile inviare la mail di ripristino password</string>
+    <string name="informationRequiredError">Questo campo è obbligatorio</string>
+    <string name="invalidEmail">Email non valida</string>
+
 </resources>

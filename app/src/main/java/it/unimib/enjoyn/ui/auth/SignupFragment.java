@@ -26,6 +26,7 @@ import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModelFactory;
+import it.unimib.enjoyn.util.ErrorMessagesUtil;
 import it.unimib.enjoyn.util.ServiceLocator;
 import it.unimib.enjoyn.util.SnackbarBuilder;
 import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
@@ -87,6 +88,8 @@ public class SignupFragment extends Fragment {
         TextInputLayout textInputUsername = view.findViewById(R.id.fragmentRegister_textInputLayout_username);
         EditText editTextUsername = view.findViewById(R.id.fragmentRegister_textInputEditText_username);
 
+        ErrorMessagesUtil errorMessagesUtil = new ErrorMessagesUtil(requireActivity().getApplication());
+
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         //Observers
@@ -99,9 +102,9 @@ public class SignupFragment extends Fragment {
                 }
             }
             else{
-                String text = "Errore nella registrazione: " + ((Result.Error) result).getMessage();
+
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -110,15 +113,13 @@ public class SignupFragment extends Fragment {
             if(result.isSuccessful()){
                 navigateTo(R.id.action_registerFragment_to_emailVerificationFragment, false);
 
-                String text = "Registrazione avvenuta correttamente";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildOkSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildOkSnackbar(R.string.signup_successful, view, getContext(), currentTheme);
                 snackbar.show();
             }
             else{
-                String text = "Errore nell'invio della mail di conferma";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -134,9 +135,8 @@ public class SignupFragment extends Fragment {
                 }
             }
             else{
-                String text = "Si è verificato un errore: " + ((Result.Error) result).getMessage();
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -152,9 +152,8 @@ public class SignupFragment extends Fragment {
                 }
             }
             else{
-                String text = "Si è verificato un errore: " + ((Result.Error) result).getMessage();
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(errorMessagesUtil.getUserErrorMessage(((Result.Error) result).getMessage()), view, getContext(), currentTheme);
                 snackbar.show();
             }
         };
@@ -284,22 +283,19 @@ public class SignupFragment extends Fragment {
                 }
                 else if(!isUsernameOK){
 
-                    String text = "Username già in uso";
                     Snackbar snackbar;
-                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                    snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.usernameAlreadyInUse, view, getContext(), currentTheme);
                     snackbar.show();
                 }
                 else {
-                    String text = "Email già in uso";
                     Snackbar snackbar;
-                    snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                    snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.emailAlreadyInUse, view, getContext(), currentTheme);
                     snackbar.show();
                 }
             }
             else{
-                String text = "Registrazione fallita";
                 Snackbar snackbar;
-                snackbar = SnackbarBuilder.buildErrorSnackbar(text, view, getContext(), currentTheme);
+                snackbar = SnackbarBuilder.buildErrorSnackbar(R.string.signup_failed, view, getContext(), currentTheme);
                 snackbar.show();
             }
 
