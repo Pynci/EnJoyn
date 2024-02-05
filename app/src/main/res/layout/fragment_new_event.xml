@@ -227,9 +227,10 @@
                 android:background="@color/md_theme_dark_primary"
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
-                app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_color"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_textView_color"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
-                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_color" />
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_color"
+                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_textView_color" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
