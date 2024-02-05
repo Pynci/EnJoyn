@@ -184,9 +184,9 @@
 
             <Spinner
                 android:id="@+id/fragmentNewEvent_spinner_categories"
-                android:layout_width="202dp"
+                android:layout_width="0dp"
                 android:layout_height="54dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="8dp"
                 android:entries="@android:array/emailAddressTypes"
                 android:minHeight="48dp"
                 android:spinnerMode="dropdown"
@@ -200,7 +200,7 @@
                 android:id="@+id/fragmentNewEvent_textView_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="48dp"
                 android:text="@string/category"
                 android:textSize="24sp"
@@ -211,7 +211,7 @@
                 android:id="@+id/fragmentNewEvent_textView_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="48dp"
                 android:text="@string/color"
                 android:textSize="24sp"
@@ -221,9 +221,9 @@
 
             <Spinner
                 android:id="@+id/fragmentNewEvent_spinner_color"
-                android:layout_width="202dp"
+                android:layout_width="0dp"
                 android:layout_height="54dp"
-                android:layout_marginStart="44dp"
+                android:layout_marginStart="40dp"
                 android:background="@color/md_theme_dark_primary"
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
