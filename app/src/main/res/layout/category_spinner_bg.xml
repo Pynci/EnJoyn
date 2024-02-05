@@ -22,5 +22,5 @@
             app:layout_constraintBottom_toBottomOf="@+id/textView_Category_Name_BG"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView_Category_Name_BG"
-            app:srcCompat="@drawable/passeggiata" />
+            tools:srcCompat="@drawable/passeggiata" />
 </androidx.constraintlayout.widget.ConstraintLayout>

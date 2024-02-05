@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import it.unimib.enjoyn.R;
 
+import it.unimib.enjoyn.databinding.FragmentSignupBinding;
 import it.unimib.enjoyn.model.Result;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.repository.user.IUserRepository;
@@ -33,6 +34,7 @@ import it.unimib.enjoyn.ui.viewmodels.UserViewModel;
 // TODO: sistemare la presentazione degli errori all'utente ed eventuali stringhe hardcodate
 public class SignupFragment extends Fragment {
 
+    private FragmentSignupBinding fragmentSignupBinding;
     private UserViewModel userViewModel;
     private Observer<Result> signUpObserver;
     private Observer<Result> emailVerificationSendingObserver;
@@ -63,7 +65,8 @@ public class SignupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_signup, container, false);
+        fragmentSignupBinding = FragmentSignupBinding.inflate(inflater, container, false);
+        return fragmentSignupBinding.getRoot();
     }
 
     @Override
@@ -72,20 +75,20 @@ public class SignupFragment extends Fragment {
 
         //Widgets
 
-        Button buttonRegister = view.findViewById(R.id.fragmentRegister_button_register);
-        Button buttonLogin = view.findViewById(R.id.fragmentRegister_button_login);
+        Button buttonRegister = fragmentSignupBinding.fragmentRegisterButtonRegister;
+        Button buttonLogin = fragmentSignupBinding.fragmentRegisterButtonLogin;
 
-        TextInputLayout textInputEmail = view.findViewById(R.id.fragmentRegister_textInputLayout_email);
-        EditText editTextEmail = view.findViewById(R.id.fragmentRegister_textInputEditText_email);
+        TextInputLayout textInputEmail = fragmentSignupBinding.fragmentRegisterTextInputLayoutEmail;
+        EditText editTextEmail = fragmentSignupBinding.fragmentRegisterTextInputEditTextEmail;
 
-        TextInputLayout textInputPassword = view.findViewById(R.id.fragmentRegister_textInputLayout_password);
-        EditText editTextPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_password);
+        TextInputLayout textInputPassword = fragmentSignupBinding.fragmentRegisterTextInputLayoutPassword;
+        EditText editTextPassword = fragmentSignupBinding.fragmentRegisterTextInputEditTextPassword;
 
-        TextInputLayout textInputConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputLayout_confirmPassword);
-        EditText editTextConfirmPassword = view.findViewById(R.id.fragmentRegister_textInputEditText_confirmPassword);
+        TextInputLayout textInputConfirmPassword = fragmentSignupBinding.fragmentRegisterTextInputLayoutConfirmPassword;
+        EditText editTextConfirmPassword = fragmentSignupBinding.fragmentRegisterTextInputEditTextConfirmPassword;
 
-        TextInputLayout textInputUsername = view.findViewById(R.id.fragmentRegister_textInputLayout_username);
-        EditText editTextUsername = view.findViewById(R.id.fragmentRegister_textInputEditText_username);
+        TextInputLayout textInputUsername = fragmentSignupBinding.fragmentRegisterTextInputLayoutUsername;
+        EditText editTextUsername = fragmentSignupBinding.fragmentRegisterTextInputEditTextUsername;
 
         int currentTheme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 

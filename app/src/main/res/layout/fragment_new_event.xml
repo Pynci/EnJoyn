@@ -191,9 +191,10 @@
                 android:minHeight="48dp"
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
-                app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_category"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentNewEvent_textView_category"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
-                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_category" />
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_category"
+                app:layout_constraintTop_toTopOf="@+id/fragmentNewEvent_textView_category" />
 
             <TextView
                 android:id="@+id/fragmentNewEvent_textView_category"
