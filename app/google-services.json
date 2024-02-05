@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "633154498869",
+    "project_id": "enjoyn-9adca",
+    "storage_bucket": "enjoyn-9adca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633154498869:android:d5b207b56dc31896285c7c",
+        "android_client_info": {
+          "package_name": "it.unimib.enjoyn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFcT8mqVVcrrhZGfOoF33VtPPoAPQidVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
