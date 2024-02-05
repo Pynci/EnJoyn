@@ -81,7 +81,7 @@ public class DiscoverSingleEventFragment extends Fragment {
             }
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
-        event = DiscoverSingleEventArgs.fromBundle(getArguments()).getEvent();
+        event = DiscoverSingleEventFragmentArgs.fromBundle(getArguments()).getEvent();
         setEventParameters();
         fragmentDiscoverSingleEventBinding.discoverSingleEventTextViewDistance.setText(event.getDistanceString());
         imageConverter.setWeatherIcon(fragmentDiscoverSingleEventBinding.fragmentDiscoverSingleEventImageViewWeather, event.getWeatherCode());
