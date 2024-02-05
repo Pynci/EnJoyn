@@ -180,7 +180,7 @@ public class EventReclyclerViewAdapter extends
             textViewDistance.setText(event.getDistanceString());
             imageConverter.setWeatherIcon(weatherImage, event.getWeatherCode());
             setTextButtonTodoEvent(event.isTodo());
-            String color = event.getColor().getName();
+            
 
             imageConverter.setColorEvent(textViewPlace, backgroundImage, joinButton, event.getColor(), itemView);
             imageConverter.setCategoryImage(categoryImage, event.getCategory().getNome());
