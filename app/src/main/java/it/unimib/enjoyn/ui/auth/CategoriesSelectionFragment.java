@@ -35,6 +35,8 @@ public class CategoriesSelectionFragment extends Fragment {
 
     private InterestsViewModel interestsViewModel;
     private CategoryViewModel categoryViewModel;
+    private UserViewModel userViewModel;
+
 
     public CategoriesSelectionFragment() {
     }
@@ -52,9 +54,8 @@ public class CategoriesSelectionFragment extends Fragment {
         categoryViewModel = new ViewModelProvider(
                 requireActivity()).get(CategoryViewModel.class);
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
-        UserViewModel userViewModel = new ViewModelProvider(requireActivity(),
+        userViewModel = new ViewModelProvider(requireActivity(),
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-        userViewModel.updateCategoriesSelectionStatus();
 
     }
 
@@ -77,6 +78,9 @@ public class CategoriesSelectionFragment extends Fragment {
 
         if(isFromProfileFragment) {
             buttonSkip.setText(R.string.annulla);
+        }
+        else{
+            userViewModel.updateCategoriesSelectionStatus();
         }
 
         Observer<Result> categoriesObserver = result -> {
