@@ -165,17 +165,17 @@ public class ImageConverter {
                 break;
             case "#348AA7":
                 backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Blue));
+                        ContextCompat.getColor(itemView.getContext(), R.color.Light_Blue));
 
                 joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Blue));
+                        ContextCompat.getColor(itemView.getContext(), R.color.Light_Blue));
                 break;
-            case "#6A66A3":
+            case "#355691":
                 backgroundImage.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
+                        ContextCompat.getColor(itemView.getContext(), R.color.Blue));
 
                 joinButton.setBackgroundColor(
-                        ContextCompat.getColor(itemView.getContext(), R.color.Slate_blue));
+                        ContextCompat.getColor(itemView.getContext(), R.color.Blue));
 
                 break;
         }

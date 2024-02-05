@@ -78,7 +78,7 @@
     <color name="Coral"> #FF8C61</color>
     <color name="Olivine"> #9EBD6E</color>
     <color name="Shamrock_green"> #169873</color>
-    <color name="Blue"> #348AA7</color>
-    <color name="Slate_blue">#6A66A3</color>
+    <color name="Light_Blue"> #348AA7</color>
+    <color name="Blue"> #355691</color>
 
 </resources>

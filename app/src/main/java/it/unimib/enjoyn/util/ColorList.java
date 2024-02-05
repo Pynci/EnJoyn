@@ -55,7 +55,7 @@ public class ColorList {
         colorObjectList.add(new ColorObject( "Olivine", "#9EBD6E", "FFFFFF"));
         colorObjectList.add(new ColorObject( "Green", "#169873", "FFFFFF"));
         colorObjectList.add(new ColorObject( "light blue", "#348AA7", "FFFFFF"));
-        colorObjectList.add(new ColorObject( "Blue", "#6A66A3", "FFFFFF"));
+        colorObjectList.add(new ColorObject( "Blue", "#355691", "FFFFFF"));
 
         return  colorObjectList;
     }
