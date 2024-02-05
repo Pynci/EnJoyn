@@ -12,7 +12,7 @@ import it.unimib.enjoyn.R;
 
 public class SnackbarBuilder {
 
-    public static Snackbar buildErrorSnackbar(String text, View view, Context context, int currentTheme) {
+    public static Snackbar buildErrorSnackbar(int text, View view, Context context, int currentTheme) {
         Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_SHORT);
 
         if(currentTheme == Configuration.UI_MODE_NIGHT_YES) {
@@ -35,7 +35,7 @@ public class SnackbarBuilder {
         return snackbar;
     }
 
-    public static Snackbar buildOkSnackbar(String text, View view, Context context, int currentTheme) {
+    public static Snackbar buildOkSnackbar(int text, View view, Context context, int currentTheme) {
         Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_SHORT);
 
         if(currentTheme == Configuration.UI_MODE_NIGHT_YES) {
