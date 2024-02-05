@@ -130,6 +130,7 @@ public class EventReclyclerViewAdapter extends
         private final Button joinButton;
         private final ImageView weatherImage;
         private final ImageView backgroundImage;
+        private final ImageView categoryImage;
         private boolean todo;
 
 
@@ -144,6 +145,7 @@ public class EventReclyclerViewAdapter extends
             joinButton = itemView.findViewById(R.id.eventListItem_button_joinButton);
             weatherImage = itemView.findViewById(R.id.eventListItem_imageView_weather);
             backgroundImage = itemView.findViewById(R.id.eventListItem_imageView_background);
+            categoryImage = itemView.findViewById(R.id.eventListItem_imageView_categoryVector);
 
             itemView.setOnClickListener(this);
             joinButton.setOnClickListener(this);
@@ -178,6 +180,7 @@ public class EventReclyclerViewAdapter extends
             String color = event.getColor().getName();
 
             setColorEvent(textViewPlace, backgroundImage, joinButton, event.getColor(), itemView);
+            setCategoryImage(categoryImage, event.getCategory());
 
 //            backgroundImage.setBackgroundColor(
 //                    ContextCompat.getColor(itemView.getContext(), event.getColor().getIdColor()));
