@@ -25,16 +25,13 @@ import java.util.List;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.UserRecyclerViewAdapter;
+import it.unimib.enjoyn.databinding.FragmentFriendsBinding;
 import it.unimib.enjoyn.model.User;
 import it.unimib.enjoyn.util.JSONParserUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FriendsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class FriendsFragment extends Fragment {
 
+public class FriendsFragment extends Fragment {
+    private FragmentFriendsBinding fragmentFriendsBinding;
     public FriendsFragment() {
         // Required empty public constructor
     }
@@ -51,8 +48,9 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getViewLifecycleOwner();
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friends, container, false);
+
+        fragmentFriendsBinding = FragmentFriendsBinding.inflate(inflater, container, false);
+        return fragmentFriendsBinding.getRoot();
     }
 
     @Override
@@ -70,7 +68,7 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerViewFriendsList = view.findViewById(R.id.fragmentFriends_recyclerView);
+        RecyclerView recyclerViewFriendsList = fragmentFriendsBinding.fragmentFriendsRecyclerView;
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false);
@@ -97,9 +95,7 @@ public class FriendsFragment extends Fragment {
     private List<User> getUserListWithGSon() {
         JSONParserUtil jsonParserUtil = new JSONParserUtil(requireActivity().getApplication());
         try {
-            /**TODO
-             * sistemare questa parte
-             * */
+
 
             Context context = requireActivity().getApplication().getApplicationContext();
             InputStream inputStream = context.getAssets().open("provaUser.json"); //apro file

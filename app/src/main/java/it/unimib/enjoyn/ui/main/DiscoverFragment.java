@@ -24,6 +24,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import it.unimib.enjoyn.R;
 import it.unimib.enjoyn.adapter.ViewPagerAdapter;
+import it.unimib.enjoyn.databinding.FragmentDiscoverBinding;
 import it.unimib.enjoyn.repository.IEventRepository;
 import it.unimib.enjoyn.repository.IWeatherRepository;
 import it.unimib.enjoyn.repository.MapRepository;
@@ -42,6 +43,7 @@ import it.unimib.enjoyn.util.ServiceLocator;
  */
 public class DiscoverFragment extends Fragment {
 
+    private FragmentDiscoverBinding fragmentDiscoverBinding;
     private EventViewModel eventViewModel;
     private UserViewModel userViewModel;
     TabLayout tabLayout;
@@ -78,14 +80,15 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        fragmentDiscoverBinding = FragmentDiscoverBinding.inflate(inflater, container, false);
+        return fragmentDiscoverBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout = view.findViewById(R.id.discoverFragment_tabLayout);
-        viewPager2 = view.findViewById(R.id.discoverFragment_viewPager);
+        tabLayout = fragmentDiscoverBinding.discoverFragmentTabLayout;
+        viewPager2 = fragmentDiscoverBinding.discoverFragmentViewPager;
         if(this.getActivity() != null)
             viewPagerAdapter = new ViewPagerAdapter(this.getActivity());
 

@@ -155,17 +155,17 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             PermissionsManager permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(requireActivity());
         }
-        joinButton = view.findViewById(R.id.eventListItem_button_joinButton);
-        eventItem = view.findViewById(R.id.fragmentDiscoverMap_cardView_eventItem);
+        joinButton = fragmentDiscoverMapBinding.eventListItemButtonJoinButton;
+        eventItem = fragmentDiscoverMapBinding.fragmentDiscoverMapCardViewEventItem;
         eventItem.setVisibility(View.GONE);
-        suggestionListView = view.findViewById(R.id.fragmentDiscoverMap_listView);
+        suggestionListView = fragmentDiscoverMapBinding.fragmentDiscoverMapListView;
         suggestionClicked = false;
         searchClicked = false;
         firstTime = false;
-        positionButton = view.findViewById(R.id.fragmentDiscoverMap_FloatingActionButton);
+        positionButton = fragmentDiscoverMapBinding.fragmentDiscoverMapFloatingActionButton;
         selfLocation = null;
-        searchBar = view.findViewById(R.id.fragmentDiscoverMap_TextInputEditText_searchBar);
-        mapView = view.findViewById(R.id.fragmentDiscoverMap_mapView);
+        searchBar = fragmentDiscoverMapBinding.fragmentDiscoverMapTextInputEditTextSearchBar;
+        mapView = fragmentDiscoverMapBinding.fragmentDiscoverMapMapView;
 
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
         AnnotationConfig annotationConfig = new AnnotationConfig();
