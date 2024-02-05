@@ -189,9 +189,10 @@
                 android:layout_marginStart="16dp"
                 android:entries="@android:array/emailAddressTypes"
                 android:minHeight="48dp"
-                android:spinnerMode="dropdown"
+                android:spinnerMode="dialog"
                 android:textAlignment="center"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_category"
+                app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
                 app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_category" />
 
             <TextView
@@ -222,11 +223,12 @@
                 android:layout_width="202dp"
                 android:layout_height="54dp"
                 android:layout_marginStart="40dp"
-                android:textAlignment="center"
                 android:background="@color/md_theme_dark_primary"
+                android:spinnerMode="dialog"
+                android:textAlignment="center"
                 app:layout_constraintBaseline_toBaselineOf="@+id/fragmentNewEvent_textView_color"
-                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_color"
-                android:spinnerMode="dialog"/>
+                app:layout_constraintEnd_toStartOf="@+id/fragmentNewEvent_guideline_right"
+                app:layout_constraintStart_toEndOf="@+id/fragmentNewEvent_textView_color" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
