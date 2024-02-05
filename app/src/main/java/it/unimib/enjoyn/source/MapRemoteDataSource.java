@@ -2,6 +2,11 @@ package it.unimib.enjoyn.source;
 
 
 
+import static it.unimib.enjoyn.util.Constants.API_MULTIPLE_SEARCH_ERROR;
+import static it.unimib.enjoyn.util.Constants.NO_PLACES_AVAILABLE;
+import static it.unimib.enjoyn.util.Constants.PLACE_NOT_FOUND_ERROR;
+import static it.unimib.enjoyn.util.Constants.SUGGESTIONS_NOT_FOUND;
+
 import android.annotation.SuppressLint;
 import android.util.Log;
 
@@ -88,12 +93,12 @@ public class MapRemoteDataSource {
             if (searchResult.size() > 0) {
                 mapCallBack.onSuccessSearchFromRemote(searchResult);
             } else {
-                mapCallBack.onFailureSearchFromRemote(new Exception("Non ci sono posti con questo nome"));
+                mapCallBack.onFailureSearchFromRemote(new Exception(PLACE_NOT_FOUND_ERROR));
             }
         }
         @Override
         public void onError(@NonNull Exception e) {
-            mapCallBack.onFailureSearchFromRemote(new Exception("errore API ricerca multipla"));
+            mapCallBack.onFailureSearchFromRemote(new Exception(API_MULTIPLE_SEARCH_ERROR));
         }
     };
 
@@ -103,7 +108,7 @@ public class MapRemoteDataSource {
         @Override
         public void onSuggestions(@NonNull List<SearchSuggestion> suggestions, @NonNull ResponseInfo responseInfo) {
             if (suggestions.isEmpty()) {
-                mapCallBack.onFailureSuggestionFromRemote(new Exception("nessun suggerimento disponibile"));
+                mapCallBack.onFailureSuggestionFromRemote(new Exception(SUGGESTIONS_NOT_FOUND));
 
             } else {
 
@@ -115,7 +120,7 @@ public class MapRemoteDataSource {
 
         @Override
         public void onError(@NonNull Exception e) {
-            mapCallBack.onFailureSuggestionFromRemote(new Exception("errore API suggerimenti"));
+            mapCallBack.onFailureSuggestionFromRemote(new Exception(SUGGESTIONS_NOT_FOUND));
         }
 
         @Override
@@ -139,7 +144,7 @@ public class MapRemoteDataSource {
                 }
             }
             else {
-                mapCallBack.onFailureReverseFromRemote(new Exception("non trovo luoghi, riprova "));
+                mapCallBack.onFailureReverseFromRemote(new Exception(NO_PLACES_AVAILABLE));
             }
         }
 

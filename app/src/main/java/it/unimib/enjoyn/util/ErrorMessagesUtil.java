@@ -46,24 +46,6 @@ public class ErrorMessagesUtil {
         }
     }
 
-    public int getInterestErrorMessage(String error){
-        switch (error){
-            case INTEREST_LOCAL_FETCH_ERROR:
-                return R.string.interest_local_fetch_error;
-            case INTEREST_LOCAL_CREATION_ERROR:
-                return R.string.interest_local_creation_error;
-            case INTEREST_LOCAL_DELETION_ERROR:
-                return R.string.interest_local_deletion_error;
-            case INTEREST_REMOTE_FETCH_ERROR:
-                return R.string.interest_remote_fetch_error;
-            case INTEREST_REMOTE_CREATION_ERROR:
-                return R.string.interest_remote_creation_error;
-            default:
-                return R.string.unexpected_error;
-        }
-    }
-
-
     public int getWeatherErrorMessage(String error){
         switch (error){
             case RETROFIT_ERROR:
@@ -79,7 +61,14 @@ public class ErrorMessagesUtil {
         switch (error){
             case EMPTY_LOCATION:
                 return R.string.location_missing;
-
+            case PLACE_NOT_FOUND_ERROR:
+                return R.string.place_not_found;
+            case API_MULTIPLE_SEARCH_ERROR:
+                return R.string.API_multiple_search_error;
+            case SUGGESTIONS_NOT_FOUND:
+                return R.string.suggestions_not_found;
+            case NO_PLACES_AVAILABLE:
+                return R.string.no_places_available;
             default:
                 return R.string.unexpected_error;
         }
