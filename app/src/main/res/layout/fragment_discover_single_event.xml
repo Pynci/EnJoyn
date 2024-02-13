@@ -195,7 +195,8 @@
                 android:contentDescription="@string/imageWeather"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
-                tools:src="@drawable/drawable_sun" />
+                tools:src="@drawable/drawable_sun"
+                android:backgroundTint = "?android:fullDark"/>
 
             <TextView
                 android:id="@+id/fragmentDiscoverSingleEvent_textView_temperature"

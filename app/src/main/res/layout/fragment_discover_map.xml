@@ -217,7 +217,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/eventListItem_button_joinButton"
                 app:layout_constraintStart_toStartOf="@+id/eventListItem_button_joinButton"
                 app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
-                tools:srcCompat="@drawable/drawable_thunderstorm" />
+                tools:srcCompat="@drawable/drawable_thunderstorm"
+                android:textColor = "?android:fullDark"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

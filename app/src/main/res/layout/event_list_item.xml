@@ -21,7 +21,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:descendantFocusability="blocksDescendants">
 
             <ImageView
@@ -127,7 +126,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/eventListItem_button_joinButton"
                 app:layout_constraintStart_toStartOf="@+id/eventListItem_button_joinButton"
                 app:layout_constraintTop_toBottomOf="@+id/eventListItem_imageView_background"
-                tools:srcCompat="@drawable/drawable_thunderstorm" />
+                tools:srcCompat="@drawable/drawable_thunderstorm"
+                android:backgroundTint = "?android:fullDark"/>
 
             <ImageView
                 android:id="@+id/eventListItem_imageView_categoryVector"

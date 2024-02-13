@@ -374,10 +374,13 @@ public class DiscoverMapFragment extends Fragment implements PermissionsListener
             else{
                 joinButton.setText(R.string.Join);
             }
-
+            Event provaEvent = event;
             eventViewModel.refreshEvent(event).observe(getViewLifecycleOwner(), result -> {
                 if(result.isSuccessful()){
                     event = ((Result.SingleEventSuccess) result).getEvent();
+                    event.setWeatherCode(provaEvent.getWeatherCode());
+                    event.setWeatherTemperature(provaEvent.getWeatherTemperature());
+                    event.setDistance(provaEvent.getDistance());
                     setEventParameters();
                 }
                 else{
